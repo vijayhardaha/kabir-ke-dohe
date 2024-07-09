@@ -3,6 +3,7 @@ import path from "path";
 import axios from "axios";
 import matter from "gray-matter";
 import ora from "ora";
+import * as prettier from "prettier";
 
 import {fileURLToPath} from "url";
 
@@ -47,7 +48,7 @@ const readMetadata = async (filePath) => {
     for (const [key, value] of Object.entries(metadata)) {
       metadataContent += `${key}: ${value}\n`;
     }
-    metadataContent += "---\n";
+    metadataContent += "---\n\n\n\n\n\n";
     return metadataContent;
   } catch (error) {
     if (error.code !== "ENOENT") {
@@ -92,9 +93,8 @@ const createMarkdownFiles = async (data, spinner) => {
     const content = `${heading}\n\n${generateMarkdownContent(entries, startNum)}`;
     const fileName = `collection-${startNumber}-to-${endNumber}.md`;
     const filePath = path.join(docsDir, fileName);
-
     const metadata = await readMetadata(filePath);
-    const finalContent = `${metadata}${content}`;
+    const finalContent = await prettier.format(`${metadata}${content}`, {parser: "markdown"});
 
     await fs.writeFile(filePath, finalContent, "utf8");
     spinner.start(`File created: ${path.basename(filePath)}`);
