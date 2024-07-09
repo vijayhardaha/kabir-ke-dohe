@@ -5,9 +5,10 @@
   "main": ".eslintrc.js",
   "scripts": {
     "build": "node src/index.js",
+    "postbuild": "npm run pretty:md",
     "lint": "eslint --ext .js",
     "lint:fix": "eslint --ext .js --fix",
-    "format:md": "prettier --write 'collections/**/*.md'"
+    "pretty:md": "prettier --write 'collections/**/*.md'"
   },
   "author": "Vijay Hardaha",
   "license": "MIT",
