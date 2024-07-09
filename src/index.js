@@ -2,6 +2,8 @@ import fs from "fs/promises";
 import path from "path";
 import axios from "axios";
 import matter from "gray-matter";
+import ora from "ora";
+
 import {fileURLToPath} from "url";
 
 // Get the directory name of the current module
@@ -71,11 +73,12 @@ const padNumber = (number, width) => {
  * Creates markdown files from the given filtered data, with each file containing a specified number of entries.
  *
  * @param {Array<Object>} data - The filtered data to write to markdown files.
- * @param {number} [entriesPerFile=50] - The number of entries per markdown file.
+ * @param {Object} spinner - ora spinner object.
  * @return {Promise<void>}
  */
-const createMarkdownFiles = async (data, entriesPerFile = 50) => {
+const createMarkdownFiles = async (data, spinner) => {
   const docsDir = path.resolve(__dirname, "..", "collections");
+  const entriesPerFile = 50;
 
   // Ensure the docs directory exists
   await fs.mkdir(docsDir, {recursive: true});
@@ -94,7 +97,7 @@ const createMarkdownFiles = async (data, entriesPerFile = 50) => {
     const finalContent = `${metadata}${content}`;
 
     await fs.writeFile(filePath, finalContent, "utf8");
-    console.log(`File created: ${path.basename(filePath)}`);
+    spinner.start(`File created: ${path.basename(filePath)}`);
   }
 };
 
@@ -104,6 +107,8 @@ const createMarkdownFiles = async (data, entriesPerFile = 50) => {
  * @return {Promise<void>}
  */
 const main = async () => {
+  const spinner = ora("Fetching data and creating markdown files...").start();
+
   try {
     // URL to fetch Kabir Ke Dohe API data
     const apiUrl = "https://santo-ki-seekh.netlify.app/api/kabir-ke-dohe/";
@@ -112,9 +117,11 @@ const main = async () => {
     const response = await axios.get(apiUrl);
     const jsonData = response.data;
 
-    await createMarkdownFiles(jsonData);
+    await createMarkdownFiles(jsonData, spinner);
+    spinner.succeed("Markdown files created successfully.");
   } catch (error) {
-    console.error("Error reading or processing data:", error);
+    spinner.fail("Error reading or processing data:");
+    console.error(error);
   }
 };
 
