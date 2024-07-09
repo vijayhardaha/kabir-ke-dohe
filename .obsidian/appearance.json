@@ -2,9 +2,10 @@
   "textFontFamily": "Lexend",
   "interfaceFontFamily": "Lexend",
   "monospaceFontFamily": "Test Söhne Mono",
-  "cssTheme": "GitHub Theme",
+  "cssTheme": "Border",
   "accentColor": "",
   "translucency": false,
   "theme": "moonstone",
-  "baseFontSize": 18
+  "baseFontSize": 18,
+  "showViewHeader": true
 }
