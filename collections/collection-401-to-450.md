@@ -1,3 +1,8 @@
+---
+share_link: https://share.note.sx/lcq7mu3h#m3zCVQLOoWLXYNeKXg/BOBdxPvkVLZ+KSJNm2IZ0Q/c
+share_updated: Tue Jul 09 2024 15:20:08 GMT+0530 (India Standard Time)
+---
+
 # **संत कबीर जी के दोहे — 401 to 450**
 
 अबरन कों का बरनिये, भोपै लख्या न जाइ।\

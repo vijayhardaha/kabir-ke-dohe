@@ -1,3 +1,8 @@
+---
+share_link: https://share.note.sx/lgt1853a#AHfLWG7fl+EOrwCJ6UZd8tmzHzz6r0zHJbWi1b8+wxk
+share_updated: Tue Jul 09 2024 15:20:25 GMT+0530 (India Standard Time)
+---
+
 # **संत कबीर जी के दोहे — 751 to 800**
 
 कबीर थोड़ा जीवना, माढ़ै बहुत मढ़ान।\

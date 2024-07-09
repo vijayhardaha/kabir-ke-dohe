@@ -1,3 +1,8 @@
+---
+share_link: https://share.note.sx/gyxlyqhf#xqrMe+LSaVHD1wlc9K0/UW7DPiAUnNIQbEOQ8B6Vg44
+share_updated: Tue Jul 09 2024 15:22:51 GMT+0530 (India Standard Time)
+---
+
 # **संत कबीर जी के दोहे — 301 to 350**
 
 कबीर इस संसार का, झूठा माया मोह।\

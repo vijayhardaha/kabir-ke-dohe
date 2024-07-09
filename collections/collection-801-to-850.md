@@ -1,3 +1,8 @@
+---
+share_link: https://share.note.sx/63w6qeko#jargVFirj5NMUKNKLTMYJNkAzOod74iPFT7AIc/nTbI
+share_updated: Tue Jul 09 2024 15:20:29 GMT+0530 (India Standard Time)
+---
+
 # **संत कबीर जी के दोहे — 801 to 850**
 
 कुल करनी के कारने, हंसा गया बिगोय।\

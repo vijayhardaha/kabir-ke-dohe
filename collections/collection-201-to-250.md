@@ -1,3 +1,8 @@
+---
+share_link: https://share.note.sx/ogm8ds3q#kjk/75otsz0Ub/sZmnAv+YZcYybuBi8RtFP3sbosXN4
+share_updated: Tue Jul 09 2024 15:20:00 GMT+0530 (India Standard Time)
+---
+
 # **संत कबीर जी के दोहे — 201 to 250**
 
 ते दिन गये अकारथी, संगत भई न संत।\

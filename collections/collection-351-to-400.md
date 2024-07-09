@@ -1,3 +1,8 @@
+---
+share_link: https://share.note.sx/hhf2zxgc#KdxXOeMvc2s+fbea3Ol29LA2z+/8ihP/6XHNacLYQPM
+share_updated: Tue Jul 09 2024 15:22:53 GMT+0530 (India Standard Time)
+---
+
 # **संत कबीर जी के दोहे — 351 to 400**
 
 बिन रखवाले बाहिरा, चिड़िया खाया खेत।\

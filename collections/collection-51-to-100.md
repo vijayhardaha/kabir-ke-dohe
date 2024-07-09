@@ -1,3 +1,8 @@
+---
+share_link: https://share.note.sx/kq2u944f#e9jJgqJPmKaGL0+ECuSxhbspAr8QyieRSwshW4lqT/c
+share_updated: Tue Jul 09 2024 15:19:48 GMT+0530 (India Standard Time)
+---
+
 # **संत कबीर जी के दोहे — 51 to 100**
 
 समझाये समझे नहीं, पर के साथ बिकाय।\
