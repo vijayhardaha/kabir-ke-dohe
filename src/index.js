@@ -52,7 +52,7 @@ const createMarkdownFiles = async (data, entriesPerFile = 50) => {
     const startNum = i + 1;
     const startNumber = padNumber(i + 1, 2);
     const endNumber = padNumber(Math.min(i + entriesPerFile, data.length), 2);
-    const heading = `संत कबीर जी के दोहों का संग्रह — ${startNumber} to ${endNumber}`;
+    const heading = `संत कबीर जी के दोहे — ${startNumber} to ${endNumber}`;
     const content = `# ${heading}\n\n${generateMarkdownContent(entries, startNum)}`;
     const fileName = `collection-${startNumber}-to-${endNumber}.md`;
     const filePath = path.join(docsDir, fileName);
