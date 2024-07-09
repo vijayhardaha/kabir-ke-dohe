@@ -18,7 +18,7 @@ const generateMarkdownContent = (entries, startNum) => {
   return entries
     .map((entry, index) => {
       const entryIndex = startNum + index;
-      return `${entryIndex}. ${entry.doha.split("\n").join("\\\n") +`${entryIndex}।।`}`;
+      return `${entry.doha.split("\n").join("\\\n") +`${entryIndex}।।`}`;
     })
     .join("\n\n---\n\n");
 };
