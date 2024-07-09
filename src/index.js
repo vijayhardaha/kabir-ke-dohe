@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import axios from "axios";
+import matter from "gray-matter";
 import {fileURLToPath} from "url";
 
 // Get the directory name of the current module
@@ -22,6 +23,38 @@ const generateMarkdownContent = (entries, startNum) => {
     })
     .join("\n\n---\n\n");
 };
+
+/**
+ * Reads metadata from an existing Markdown file.
+ *
+ * @param {string} filePath - Path to the Markdown file.
+ * @return {string} - The metadata content in the required format.
+ */
+const readMetadata = async (filePath) => {
+  try {
+    const content = await fs.readFile(filePath, "utf8");
+    const parsed = matter(content);
+    const metadata = parsed.data;
+
+    if (Object.keys(metadata).length === 0) {
+      return "";
+    }
+
+    // Format metadata as required
+    let metadataContent = "---\n";
+    for (const [key, value] of Object.entries(metadata)) {
+      metadataContent += `${key}: ${value}\n`;
+    }
+    metadataContent += "---\n";
+    return metadataContent;
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      throw error;
+    }
+  }
+  return "";
+};
+
 /**
  * Pads a number with leading zeros.
  *
@@ -57,7 +90,10 @@ const createMarkdownFiles = async (data, entriesPerFile = 50) => {
     const fileName = `collection-${startNumber}-to-${endNumber}.md`;
     const filePath = path.join(docsDir, fileName);
 
-    await fs.writeFile(filePath, content, "utf8");
+    const metadata = await readMetadata(filePath);
+    const finalContent = `${metadata}${content}`;
+
+    await fs.writeFile(filePath, finalContent, "utf8");
     console.log(`File created: ${path.basename(filePath)}`);
   }
 };
