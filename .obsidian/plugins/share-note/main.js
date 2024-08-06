@@ -40,7 +40,7 @@ var require_manifest = __commonJS({
     module2.exports = {
       id: "share-note",
       name: "Share Note",
-      version: "0.8.11",
+      version: "0.8.14",
       minAppVersion: "0.15.0",
       description: "Instantly share a note, with the full theme and content exactly like you see in Reading View. Data is shared encrypted by default, and only you and the person you send it to have the key.",
       author: "Alan Grainger",
@@ -3590,7 +3590,7 @@ var API = class {
   }
 };
 function parseExistingShareUrl(url) {
-  const match = url.match(/https:\/\/[^/]+(?:\/\w{2}|)\/(\w+).*?(#.+?|)$/);
+  const match = url.match(/(\w+)(#.+?|)$/);
   if (match) {
     return {
       filename: match[1],
@@ -14948,12 +14948,12 @@ var Note = class {
     return this.plugin.field(key);
   }
   async share() {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o;
     if (!this.plugin.settings.apiKey) {
       this.plugin.authRedirect("share").then();
       return;
     }
-    this.status = new StatusMessage("Parsing note content, please do not change to another note while this message is displayed.", 0 /* Default */, 60 * 1e3);
+    this.status = new StatusMessage("If this message is showing, please do not change to another note as the current note data is still being parsed.", 0 /* Default */, 60 * 1e3);
     const startMode = this.leaf.getViewState();
     const previewMode = this.leaf.getViewState();
     previewMode.state.mode = "preview";
@@ -14998,8 +14998,23 @@ var Note = class {
       (_b = this.contentDom.querySelector("pre.frontmatter")) == null ? void 0 : _b.remove();
       (_c = this.contentDom.querySelector("div.frontmatter-container")) == null ? void 0 : _c.remove();
     } else {
-      this.contentDom.querySelectorAll("input.metadata-property-key-input").forEach((el) => {
-        el.setAttribute("value", el.getAttribute("aria-label") || "");
+      this.contentDom.querySelectorAll("div.metadata-property").forEach((propertyContainerEl) => {
+        var _a2, _b2;
+        const propertyName = propertyContainerEl.getAttribute("data-property-key");
+        if (propertyName) {
+          console.log(propertyContainerEl);
+          const nameEl = propertyContainerEl.querySelector("input.metadata-property-key-input");
+          nameEl == null ? void 0 : nameEl.setAttribute("value", propertyName);
+          const valueEl = propertyContainerEl.querySelector("div.metadata-property-value > input");
+          const value = ((_b2 = (_a2 = this.meta) == null ? void 0 : _a2.frontmatter) == null ? void 0 : _b2[propertyName]) || "";
+          valueEl == null ? void 0 : valueEl.setAttribute("value", value);
+          switch (valueEl == null ? void 0 : valueEl.getAttribute("type")) {
+            case "checkbox":
+              if (value)
+                valueEl.setAttribute("checked", "checked");
+              break;
+          }
+        }
       });
     }
     if (this.plugin.settings.removeBacklinksFooter) {
@@ -15032,7 +15047,7 @@ var Note = class {
         if (linkedFile instanceof import_obsidian4.TFile) {
           const linkedMeta = this.plugin.app.metadataCache.getFileCache(linkedFile);
           if ((_f = linkedMeta == null ? void 0 : linkedMeta.frontmatter) == null ? void 0 : _f[this.field(0 /* link */)]) {
-            el.setAttribute("href", linkedMeta.frontmatter[this.field(0 /* link */)]);
+            el.setAttribute("href", (_g = linkedMeta == null ? void 0 : linkedMeta.frontmatter) == null ? void 0 : _g[this.field(0 /* link */)]);
             el.removeAttribute("target");
             continue;
           }
@@ -15048,8 +15063,8 @@ var Note = class {
     this.cssResult = uploadResult.css;
     await this.processCss();
     let decryptionKey = "";
-    if ((_h = (_g = this.meta) == null ? void 0 : _g.frontmatter) == null ? void 0 : _h[this.field(0 /* link */)]) {
-      const match = parseExistingShareUrl(this.meta.frontmatter[this.field(0 /* link */)]);
+    if ((_i = (_h = this.meta) == null ? void 0 : _h.frontmatter) == null ? void 0 : _i[this.field(0 /* link */)]) {
+      const match = parseExistingShareUrl((_k = (_j = this.meta) == null ? void 0 : _j.frontmatter) == null ? void 0 : _k[this.field(0 /* link */)]);
       if (match) {
         this.template.filename = match.filename;
         decryptionKey = match.decryptionKey;
@@ -15059,10 +15074,10 @@ var Note = class {
     let title;
     switch (this.plugin.settings.titleSource) {
       case 1 /* First H1 */:
-        title = (_j = (_i = this.contentDom.getElementsByTagName("h1")) == null ? void 0 : _i[0]) == null ? void 0 : _j.innerText;
+        title = (_m = (_l = this.contentDom.getElementsByTagName("h1")) == null ? void 0 : _l[0]) == null ? void 0 : _m.innerText;
         break;
       case 2 /* Frontmatter property */:
-        title = (_l = (_k = this.meta) == null ? void 0 : _k.frontmatter) == null ? void 0 : _l[this.field(4 /* title */)];
+        title = (_o = (_n = this.meta) == null ? void 0 : _n.frontmatter) == null ? void 0 : _o[this.field(4 /* title */)];
         break;
     }
     if (!title) {
@@ -15097,7 +15112,6 @@ var Note = class {
     this.template.mathJax = !!this.contentDom.body.innerHTML.match(/<mjx-container/);
     this.status.setStatus("Uploading note...");
     let shareLink = await this.plugin.api.createNote(this.template, this.expiration);
-    (0, import_obsidian4.requestUrl)(shareLink).then().catch();
     if (shareLink && this.isEncrypted) {
       shareLink += "#" + decryptionKey;
     }
