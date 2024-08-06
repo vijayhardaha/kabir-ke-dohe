@@ -1,7 +1,3 @@
----
-share_link: https://share.note.sx/5n9d8ai3#IkQ9B3FQ6F81F8VmoUr8KBJt2lBPzAbessq7t3Q6on0
-share_updated: Tue Jul 09 2024 15:19:54 GMT+0530 (India Standard Time)
----
 
 # **संत कबीर जी के दोहे — 151 to 200**
 

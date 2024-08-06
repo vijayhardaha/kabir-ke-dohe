@@ -1,7 +1,3 @@
----
-share_link: https://share.note.sx/90jebswo#0rMyjHv7CiPwggpIuKoectS3uOh2oy+GKNGBFUkiQIU
-share_updated: Tue Jul 09 2024 15:20:35 GMT+0530 (India Standard Time)
----
 
 # **संत कबीर जी के दोहे — 851 to 894**
 
