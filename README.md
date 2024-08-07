@@ -126,6 +126,26 @@ In this repository, we have compiled a collection of some of Saint Kabir's coupl
 [markdown-2751-to-2800]: collections/collection-2751-to-2800.md
 [markdown-2801-to-2850]: collections/collection-2801-to-2850.md
 
+## Converting Markdown Files to PDF
+
+To convert Markdown files from the raw GitHub repository into PDF format, you can use the online tool [md2pdf.netlify.app](https://md2pdf.netlify.app). This tool allows you to easily transform Markdown files into well-formatted PDFs.
+
+Here's how you can convert the Markdown files from GitHub to PDF:
+
+1. **Access the Raw Markdown File**: Navigate to the raw version of the Markdown file in the GitHub repository. You can do this by clicking on the "Raw" button when viewing the file on GitHub. This will display the file in plain text.
+
+2. **Copy the Raw Markdown Code**: Select and copy all the raw Markdown code from the file.
+
+3. **Visit md2pdf**: Open [md2pdf.netlify.app](https://md2pdf.netlify.app) in your web browser.
+
+4. **Paste the Markdown Code**: On the md2pdf website, paste the copied Markdown code into the provided text area or upload the Markdown file if the tool supports direct file uploads.
+
+5. **Convert to PDF**: Click the button to start the conversion process. The tool will process the Markdown and generate a PDF file.
+
+6. **Download the PDF**: Once the conversion is complete, download the PDF from the website.
+
+This method allows you to efficiently convert Markdown files directly from GitHub into PDF format for easier sharing and presentation.
+
 ## Contribution
 
 If you have Kabir's couplets and would like to add them to this collection, please submit a pull request. We welcome all contributions.
