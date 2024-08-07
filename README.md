@@ -1,14 +1,14 @@
-# संत कबीर जी के दोहों का संग्रह
+# Collection of Saint Kabir's Couplets
 
-इस GitHub रिपॉजिटरी में हमने महान संत कबीर जी के अद्भुत दोहों का संग्रह किया है। कबीर के दोहे भारतीय साहित्य और धार्मिक धारा के महत्वपूर्ण हिस्से में आते हैं और इस रिपॉजिटरी में आपको उनके शिक्षाप्रद और गहरे भावनात्मक दोहों का संग्रह मिलेगा।
+In this GitHub repository, we have compiled a collection of the remarkable couplets of the great saint Kabir. Kabir's couplets are an essential part of Indian literature and religious tradition, and in this repository, you will find a collection of his instructive and deeply emotional couplets.
 
-यह रिपॉजिटरी हमारी संग्रहणा में सहायक बन सकती है और संत कबीर जी के दोहों को ज्यादा जानने और समझने में मदद कर सकती है। सभी भक्तों और साहित्य प्रेमियों को इस योगदान में शामिल होने की आमंत्रण है।
+This repository may serve as a valuable resource for our collection and can help in learning and understanding the couplets of Saint Kabir more deeply. All devotees and literature enthusiasts are invited to contribute to this effort.
 
-> यदि आप कबीरदास और अन्य किसी संतों के भजन में रूचि रखते है तो आप हमारी दूसरी रिपॉजिटरी [संतों की सीख (Santon ki Seekh)](https://github.com/vijayhardaha/santo-ki-seekh/) को भी एक बार देख सकते है।
+> If you are interested in bhajans of Kabirdas and other saints, you can also check out our other repository [Teachings of Saints (Santon ki Seekh)](https://github.com/vijayhardaha/santo-ki-seekh/).
 
-## विवरण
+## Details
 
-इस रिपॉजिटरी में हमने संत कबीर जी के कुछ दोहों का संग्रह किया है। जो कि निम्नानुसार है:
+In this repository, we have compiled a collection of some of Saint Kabir's couplets, which are as follows:
 
 - [दोहे संग्रह - 01 से 50 तक][markdown-01-to-50]
 - [दोहे संग्रह - 51 से 100 तक][markdown-51-to-100]
@@ -126,16 +126,16 @@
 [markdown-2751-to-2800]: collections/collection-2751-to-2800.md
 [markdown-2801-to-2850]: collections/collection-2801-to-2850.md
 
-## योगदान
+## Contribution
 
-यदि आपके पास कबीर के दोहे हैं और आप इस संग्रह में जोड़ना चाहते हैं, तो कृपया एक पुल अनुरोध जमा करें। हम सभी योगदान का स्वागत करते हैं।
+If you have Kabir's couplets and would like to add them to this collection, please submit a pull request. We welcome all contributions.
 
-यदि आप स्वयं से कबीरदास जी के दोहे को लेकर कुछ तैयार करना चाहते है और आपको सभी दोहों के डाटा की जरुरत है तो आप नीचे हमारे द्वारा बनाई API Url से डाटा प्राप्त कर सकते है।
+If you wish to create something related to Kabirdas's couplets and need data for all the couplets, you can obtain the data from the API URL created by us:
 
-```txt
-https://santo-ki-seekh.netlify.app/api/kabir-ke-dohe/
+```bash
+curl https://santo-ki-seekh.netlify.app/api/kabir-ke-dohe/
 ```
 
-## लाइसेंस
+## License
 
-यह रिपॉजिटरी [MIT लाइसेंस](LICENSE) के तहत जारी किया गया है।
+This repository is licensed under the [MIT License](LICENSE).
