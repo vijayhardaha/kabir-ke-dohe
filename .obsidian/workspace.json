@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "collections/collection-851-to-894.md",
+                "file": "collections/collection-2801-to-2850.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "collections/collection-851-to-894.md",
+                "file": "collections/collection-2801-to-2850.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "collections/collection-851-to-894.md",
+                "file": "collections/collection-2801-to-2850.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "collections/collection-851-to-894.md"
+                "file": "collections/collection-2801-to-2850.md"
               }
             }
           }
@@ -148,6 +148,10 @@
   },
   "active": "251cc7c05a04095e",
   "lastOpenFiles": [
+    "collections/collection-851-to-894.md",
+    "collections/collection-801-to-850.md",
+    "collections/collection-851-to-900.md",
+    "collections/collection-701-to-750.md",
     "node_modules/core-js/README.md",
     "node_modules/core-js/package.json",
     "node_modules/core-js/postinstall.js",
@@ -180,10 +184,6 @@
     "node_modules/@typescript-eslint/eslint-plugin/docs/rules/space-before-function-paren.md",
     "node_modules/@typescript-eslint/eslint-plugin/docs/rules/semi.md",
     "node_modules/@typescript-eslint/eslint-plugin/docs/rules/return-await.md",
-    "node_modules/@typescript-eslint/eslint-plugin/docs/rules/restrict-template-expressions.md",
-    "node_modules/@typescript-eslint/eslint-plugin/docs/rules/restrict-plus-operands.md",
-    "node_modules/@typescript-eslint/eslint-plugin/docs/rules/require-await.md",
-    "node_modules/@typescript-eslint/eslint-plugin/docs/rules/require-array-sort-compare.md",
     "Untitled.canvas"
   ]
 }
