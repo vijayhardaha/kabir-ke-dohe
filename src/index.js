@@ -2,7 +2,6 @@ import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import axios from "axios";
 import matter from "gray-matter";
 import ora from "ora";
 import * as prettier from "prettier";
@@ -10,6 +9,21 @@ import * as prettier from "prettier";
 // Get the directory name of the current module
 const __filename = fileURLToPath( import.meta.url );
 const __dirname = path.dirname( __filename );
+
+/**
+ * Converts a Latin number to a Hindi number.
+ *
+ * @param {number|string} latinNumber - The Latin number to be converted. Can be a number or a string.
+ * @return {string} The Hindi representation of the input number.
+ */
+const latinToHindiNumber = ( latinNumber ) => {
+	const hindiDigits = [ "०", "१", "२", "३", "४", "५", "६", "७", "८", "९" ];
+
+	return latinNumber.toString().split( "" ).map( ( digit ) => {
+		const num = parseInt( digit, 10 );
+		return hindiDigits[ num ];
+	} ).join( "" );
+};
 
 /**
  * Generates Markdown content with numbered entries.
@@ -22,7 +36,7 @@ const generateMarkdownContent = ( entries, startNum ) => {
 	return entries
 		.map( ( entry, index ) => {
 			const entryIndex = startNum + index;
-			return `${ entry.doha.split( "\n" ).join( "\\\n" ) + `${ entryIndex }।।` }`;
+			return `${ entry.doha.split( "\n" ).join( "\\\n" ) + `${ latinToHindiNumber( entryIndex ) }।।` }`;
 		} )
 		.join( "\n\n---\n\n" );
 };
@@ -88,8 +102,8 @@ const createMarkdownFiles = async ( data, spinner ) => {
 		const entries = data.slice( i, i + entriesPerFile );
 		const startNum = i + 1;
 		const startNumber = padNumber( i + 1, 2 );
-		const endNumber = padNumber( Math.min( i + entriesPerFile, data.length ), 2 );
-		const heading = `# **संत कबीर जी के दोहे — ${ startNumber } to ${ endNumber }**`;
+		const endNumber = padNumber( i + entriesPerFile, 2 );
+		const heading = `# संत कबीर जी के दोहे — ${ startNumber } to ${ endNumber }`;
 		const content = `${ heading }\n\n${ generateMarkdownContent( entries, startNum ) }`;
 		const fileName = `collection-${ startNumber }-to-${ endNumber }.md`;
 		const filePath = path.join( docsDir, fileName );
@@ -114,8 +128,8 @@ const main = async () => {
 		const apiUrl = "https://santo-ki-seekh.netlify.app/api/kabir-ke-dohe/";
 
 		// Fetch data from API endpoint
-		const response = await axios.get( apiUrl );
-		const jsonData = response.data;
+		const response = await fetch( apiUrl );
+		const jsonData = await response.json();
 
 		await createMarkdownFiles( jsonData, spinner );
 		spinner.succeed( "Markdown files created successfully." );
