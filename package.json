@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node src/index.js",
     "lint": "eslint ./ --ext .js,.ts,.jsx,.tsx",
-		"fix": "eslint ./ --ext .js,.ts,.jsx,.tsx --fix",
+    "fix": "eslint ./ --ext .js,.ts,.jsx,.tsx --fix",
     "pretty:md": "prettier --write 'collections/**/*.md'"
   },
   "author": "Vijay Hardaha",
@@ -14,14 +14,12 @@
   "type": "module",
   "devDependencies": {
     "@wordpress/eslint-plugin": "^20.1.0",
-		"eslint": "^8.57.0"
+    "eslint": "^8.57.0"
   },
   "dependencies": {
-    "axios": "^1.7.2",
     "gray-matter": "^4.0.3",
     "node-html-to-image": "^4.0.0",
     "ora": "^8.0.1",
-    "prettier": "^3.3.2",
-    "sharp": "^0.33.4"
+    "prettier": "^3.3.2"
   }
 }

@@ -148,6 +148,7 @@
   },
   "active": "251cc7c05a04095e",
   "lastOpenFiles": [
+    "node_modules/@emnapi/runtime",
     "collections/collection-851-to-894.md",
     "collections/collection-801-to-850.md",
     "collections/collection-851-to-900.md",
@@ -183,7 +184,6 @@
     "node_modules/@typescript-eslint/eslint-plugin/docs/rules/space-before-blocks.md",
     "node_modules/@typescript-eslint/eslint-plugin/docs/rules/space-before-function-paren.md",
     "node_modules/@typescript-eslint/eslint-plugin/docs/rules/semi.md",
-    "node_modules/@typescript-eslint/eslint-plugin/docs/rules/return-await.md",
     "Untitled.canvas"
   ]
 }
