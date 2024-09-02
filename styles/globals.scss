@@ -5,25 +5,6 @@ img {
 	height: auto;
 }
 
-@keyframes slideInDown {
-	0% {
-		transform: translate3d(0, -100%, 0);
-		visibility: visible;
-	}
-
-	to {
-		transform: translateZ(0);
-	}
-}
-
-.sticky {
-	position: fixed;
-	top: 0;
-	width: 100%;
-	z-index: 101;
-	animation: slideInDown 0.25s ease-out;
-}
-
 .slick-dots {
 	bottom: 30px;
 	li {

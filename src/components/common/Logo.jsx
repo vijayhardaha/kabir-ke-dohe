@@ -25,6 +25,7 @@ const Logo = ({ link = false, linkUrl = "/", height = 40, color = "#ffffff" }) =
 				height: parseInt(height, 10),
 				display: "block",
 				verticalAlign: "middle",
+				transition: "all 0.25s ease-in-out",
 			}}
 		>
 			<path

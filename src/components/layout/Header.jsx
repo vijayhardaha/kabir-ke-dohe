@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import { AppBar, Box, Container, IconButton, InputAdornment, TextField, Toolbar, Typography, Button, Paper } from "@mui/material";
-import classNames from "classnames";
 import { useRouter } from "next/router";
 import { FaChevronDown } from "react-icons/fa";
 
@@ -46,7 +45,7 @@ const Header = () => {
 		const handleScroll = () => {
 			const currentScrollY = window.scrollY;
 			setScrollY(currentScrollY);
-			setSticky(currentScrollY > 400);
+			setSticky(currentScrollY > 200);
 		};
 
 		window.addEventListener("scroll", handleScroll);
@@ -59,21 +58,15 @@ const Header = () => {
 				id="site-header"
 				position="fixed"
 				sx={(theme) => ({
-					display: "flex",
-					background: "transparent",
-					justifyContent: "center",
-					boxShadow: "none",
-					minHeight: { xs: 70, md: 110 },
-					transition: "all 0.3s ease",
 					top: 0,
-					zIndex: scrollY > 35 ? 100 : 101,
-					"&.sticky": {
-						minHeight: 60,
-						zIndex: 101,
-						background: theme.palette.primary.main,
-					},
+					background: sticky ? theme.palette.primary.main : "transparent",
+					boxShadow: "none",
+					display: "flex",
+					justifyContent: "center",
+					minHeight: sticky ? { xs: 60 } : { xs: 70, md: 110 },
+					transition: "all 0.25s ease-in-out",
+					zIndex: sticky ? 101 : scrollY > 35 ? 100 : 101,
 				})}
-				className={classNames({ sticky })}
 			>
 				<Container>
 					<Toolbar
