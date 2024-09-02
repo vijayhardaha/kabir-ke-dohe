@@ -26,9 +26,9 @@ const clientSideEmotionCache = createEmotionCache();
  */
 const GlobalLoader = () => {
 	const { loading } = useLoader();
-	const { isFallback } = useRouter();
+	const { isFallback, isReady } = useRouter();
 
-	return loading || isFallback ? <Loader /> : null;
+	return loading || isFallback || !isReady ? <Loader /> : null;
 };
 
 /**

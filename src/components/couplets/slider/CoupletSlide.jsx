@@ -26,7 +26,7 @@ const CoupletSlide = ({ couplet }) => {
 				width: "100%",
 			}}
 		>
-			<Container>
+			<Container sx={{ position: "relative", zIndex: 10 }}>
 				<Box
 					component="article"
 					sx={{
@@ -47,16 +47,15 @@ const CoupletSlide = ({ couplet }) => {
 				sx={{
 					lineHeight: "1.2",
 					color: "rgba(0, 0, 0, .1)",
-					zIndex: "1",
+					zIndex: 1,
 					position: "absolute",
 					top: "50%",
 					left: "50%",
 					transform: "translate(-50%, -50%)",
 					userSelect: "none",
 					textTransform: "uppercase",
-					fontSize: "50rem",
-					paddingTop: "120px",
-					display: { xs: "none", md: "block" },
+					paddingTop: { xs: "80px", md: "120px" },
+					fontSize: { xs: "30rem", md: "50rem" },
 				}}
 			>
 				{couplet.couplet_hindi.charAt(0)}
