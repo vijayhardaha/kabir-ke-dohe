@@ -28,7 +28,6 @@ const CoupletSingle = ({ couplet }) => {
 		return <></>;
 	}
 
-	// Extract SEO details dynamically from the couplet data
 	const title = `${couplet.couplet_hindi}`;
 	const description = couplet.translation_hindi || couplet.translation_english || "Detailed view of the couplet.";
 	const keywords = ["couplet", "hindi couplet", "dohe", ...couplet.tags.map((tag) => tag.name)].join(", ");
@@ -65,30 +64,12 @@ CoupletSingle.propTypes = {
 export default CoupletSingle;
 
 /**
- * Get all possible couplet paths for static generation.
- *
- * @returns {Object} Object containing paths and fallback setting.
- */
-export async function getStaticPaths() {
-	const filePath = path.join(process.cwd(), "data/couplets.json");
-	const jsonData = fs.readFileSync(filePath, "utf-8");
-	const data = JSON.parse(jsonData);
-
-	// Generate paths for each couplet's unique_slug
-	const paths = data.map((couplet) => ({
-		params: { slug: couplet.unique_slug },
-	}));
-
-	return { paths, fallback: true }; // Enable fallback to handle new slugs
-}
-
-/**
  * Fetch couplet details for a given unique_slug.
  *
  * @param {Object} context - Context object containing route parameters.
  * @returns {Object} Props containing couplet data.
  */
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
 	const { slug } = params;
 	const filePath = path.join(process.cwd(), "data/couplets.json");
 	const jsonData = fs.readFileSync(filePath, "utf-8");
@@ -98,7 +79,7 @@ export async function getStaticProps({ params }) {
 
 	if (!couplet) {
 		return {
-			notFound: true, // Return 404 if the couplet is not found
+			notFound: true,
 		};
 	}
 
@@ -106,6 +87,5 @@ export async function getStaticProps({ params }) {
 		props: {
 			couplet,
 		},
-		revalidate: 10, // Revalidate the page every 10 seconds for ISR
 	};
 }

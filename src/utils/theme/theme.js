@@ -1,10 +1,15 @@
 import { createTheme } from "@mui/material/styles";
+import { Jost, Domine, Hind } from "next/font/google";
 
 import { createResponsiveFontSize } from "@/src/utils/theme/utils";
 
-const sansSerifFamily = { fontFamily: "Jost, sans-serif" };
-const serifFamily = { fontFamily: "Domine, serif" };
-const devnagiriFamily = { fontFamily: "Hind, sans-serif" };
+const jost = Jost({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
+const domine = Domine({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
+const hind = Hind({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
+
+const sansSerifFamily = { fontFamily: `${jost.style.fontFamily}, ${hind.style.fontFamily}, sans-serif` };
+const serifFamily = { fontFamily: `${domine.style.fontFamily}, ${hind.style.fontFamily}, serif, sans-serif` };
+const devnagiriFamily = { fontFamily: `${hind.style.fontFamily}, sans-serif` };
 
 const primaryColor = "#c62641";
 
