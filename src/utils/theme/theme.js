@@ -27,6 +27,7 @@ const headingFonts = {
 };
 
 const theme = createTheme({
+	cssVariables: true,
 	breakpoints: {
 		values: {
 			xs: 0, // Extra small devices (portrait phones, less than 576px)
