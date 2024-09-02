@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 
 import CoupletActions from "./CoupletActions";
@@ -24,14 +24,43 @@ const CoupletSlide = ({ couplet }) => {
 			sx={{
 				position: "relative",
 				width: "100%",
-				display: "flex",
-				flexDirection: "column",
-				alignItems: "center",
 			}}
 		>
-			<CoupletHeader couplet={couplet} />
-			<CoupletMeta couplet={couplet} />
-			<CoupletActions couplet={couplet} />
+			<Container>
+				<Box
+					component="article"
+					sx={{
+						display: "flex",
+						flexDirection: "column",
+						alignItems: "center",
+					}}
+				>
+					<CoupletHeader couplet={couplet} />
+					<CoupletMeta couplet={couplet} />
+					<CoupletActions couplet={couplet} />
+				</Box>
+			</Container>
+
+			<Typography
+				component="div"
+				variant="devnagiri"
+				sx={{
+					lineHeight: "1.2",
+					color: "rgba(0, 0, 0, .1)",
+					zIndex: "1",
+					position: "absolute",
+					top: "50%",
+					left: "50%",
+					transform: "translate(-50%, -50%)",
+					userSelect: "none",
+					textTransform: "uppercase",
+					fontSize: "50rem",
+					paddingTop: "120px",
+					display: { xs: "none", md: "block" },
+				}}
+			>
+				{couplet.couplet_hindi.charAt(0)}
+			</Typography>
 		</Box>
 	);
 };

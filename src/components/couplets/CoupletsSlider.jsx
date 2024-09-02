@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useCallback } from "react";
 
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import Slider from "react-slick";
 
 import CoupletSlide from "./slider/CoupletSlide";
@@ -94,9 +94,7 @@ const CoupletsSlider = () => {
 					height: "100%",
 				}}
 			>
-				<Container>
-					<Slider {...sliderSettings}>{renderSlides()}</Slider>
-				</Container>
+				<Slider {...sliderSettings}>{renderSlides()}</Slider>
 			</Box>
 		</Box>
 	);
