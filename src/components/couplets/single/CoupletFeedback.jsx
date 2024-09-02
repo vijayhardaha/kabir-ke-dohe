@@ -17,8 +17,19 @@ const CoupletFeedback = ({ couplet }) => {
 	const { id, couplet_hindi } = couplet;
 
 	return (
-		<Box component="div" mt={3}>
-			<Typography component="h4" variant="h3" mb={1}>
+		<Box
+			component="div"
+			sx={{
+				mt: 3,
+			}}
+		>
+			<Typography
+				component="h4"
+				variant="h3"
+				sx={{
+					mb: 1,
+				}}
+			>
 				We Value Your Feedback
 			</Typography>
 			<CoupletFeedbackForm coupletId={id} couplet={couplet_hindi} />

@@ -20,7 +20,12 @@ const CoupletContent = ({ couplet }) => {
 	const { translation_english, translation_hindi, explanation_hindi } = couplet;
 
 	return (
-		<Box component="div" mt={3}>
+		<Box
+			component="div"
+			sx={{
+				mt: 3,
+			}}
+		>
 			{translation_hindi && autop(`<strong>अर्थ:</strong> ${translation_hindi}`)}
 			{translation_english && autop(`<strong>Meaning:</strong> ${translation_english}`)}
 			{explanation_hindi && autop(`<strong>व्याख्या:</strong> ${explanation_hindi}`)}

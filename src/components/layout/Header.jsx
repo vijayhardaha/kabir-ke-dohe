@@ -76,14 +76,35 @@ const Header = () => {
 							minHeight: 0,
 						}}
 					>
-						<Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: "100%" }}>
-							<Typography component="div" py={1} sx={{ lineHeight: 1 }}>
+						<Box
+							sx={{
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "space-between",
+								width: "100%",
+							}}
+						>
+							<Typography
+								component="div"
+								sx={{
+									py: 1,
+									lineHeight: 1,
+								}}
+							>
 								<Logo link height={sticky ? 28 : 36} />
 							</Typography>
 
 							<Box sx={{ display: "flex", alignItems: "center" }}>
 								<Typography variant="sans" component="nav" sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}>
-									<Box component="ul" px={0} m={0} sx={{ display: "flex", flexWrap: "wrap" }}>
+									<Box
+										component="ul"
+										sx={{
+											px: 0,
+											m: 0,
+											display: "flex",
+											flexWrap: "wrap",
+										}}
+									>
 										{NAV_ITEMS.map((menuItem) => (
 											<NavItem component="li" key={menuItem.title}>
 												<NavLink href={menuItem.href}>
@@ -106,7 +127,12 @@ const Header = () => {
 									</Box>
 								</Typography>
 
-								<Box ml={0.5} position="relative">
+								<Box
+									sx={{
+										ml: 0.5,
+										position: "relative",
+									}}
+								>
 									<IconButton
 										edge="start"
 										color="inherit"
@@ -147,14 +173,16 @@ const Header = () => {
 														handleSearchSubmit();
 													}
 												}}
-												InputProps={{
-													endAdornment: (
-														<InputAdornment position="end">
-															<Button variant="contained" onClick={handleSearchSubmit} sx={{ zIndex: 10, minHeight: 40, width: 40, p: 0 }}>
-																{getIcon({ icon: "search", size: "20px" })}
-															</Button>
-														</InputAdornment>
-													),
+												slotProps={{
+													input: {
+														endAdornment: (
+															<InputAdornment position="end">
+																<Button variant="contained" onClick={handleSearchSubmit} sx={{ zIndex: 10, minHeight: 40, width: 40, p: 0 }}>
+																	{getIcon({ icon: "search", size: "20px" })}
+																</Button>
+															</InputAdornment>
+														),
+													},
 												}}
 												sx={{ "& .MuiInputBase-root": { pr: 0 }, "& .MuiOutlinedInput-notchedOutline": { borderWidth: "1px !important" } }}
 											/>
@@ -162,7 +190,12 @@ const Header = () => {
 									)}
 								</Box>
 
-								<Box ml={0.5} position="relative">
+								<Box
+									sx={{
+										ml: 0.5,
+										position: "relative",
+									}}
+								>
 									<IconButton
 										edge="start"
 										color="inherit"

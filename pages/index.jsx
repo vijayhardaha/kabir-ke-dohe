@@ -30,12 +30,16 @@ const Home = () => {
 	return (
 		<PageTemplate coverChildren={<CoupletsSlider />}>
 			<SEO title={title} description={description} keywords={keywords} url={getPermalinkWithBase()} isHomePage={true} />
-
 			<SectionHeader title="Latest Dohe" />
-
 			<SectionBody>
 				<CoupletsList query={queryParams} />
-				<Box display="flex" justifyContent="center" mt={2}>
+				<Box
+					sx={{
+						display: "flex",
+						justifyContent: "center",
+						mt: 2,
+					}}
+				>
 					<Button variant="contained" color="dark" component={Link} href="/couplets" size="large">
 						View All Dohe
 					</Button>

@@ -50,8 +50,6 @@ export async function getServerSideProps(context) {
 
 	if (page?.length) {
 		const pageNumber = page[0];
-
-		// Check if pageNumber consists only of digits
 		const isNumber = /^\d+$/.test(pageNumber);
 
 		if (!isNumber || parseInt(pageNumber, 10) <= 0) {

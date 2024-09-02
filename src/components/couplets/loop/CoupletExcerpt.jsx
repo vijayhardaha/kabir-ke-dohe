@@ -16,7 +16,14 @@ const CoupletExcerpt = ({ couplet }) => {
 	const { translation_hindi, translation_english } = couplet;
 
 	return (
-		<Box component="div" display="flex" flexDirection="column" gap={0.5}>
+		<Box
+			component="div"
+			sx={{
+				display: "flex",
+				flexDirection: "column",
+				gap: 0.5,
+			}}
+		>
 			{translation_hindi && autop(`<strong>अर्थ:</strong> ${translation_hindi}`, { paragraph: false })}
 			{translation_english && autop(`<strong>Meaning:</strong> ${translation_english}`, { paragraph: false })}
 		</Box>

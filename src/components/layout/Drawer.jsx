@@ -142,14 +142,23 @@ const Drawer = ({ open, onClose }) => {
 					</IconButton>
 				</Box>
 				<Box sx={{ px: 4, pt: 5 }}>
-					<Box mb={4} sx={{ display: { md: "none" } }}>
+					<Box
+						sx={{
+							mb: 4,
+							display: { md: "none" },
+						}}
+					>
 						<List>
 							{NAV_ITEMS.map((item) => (
 								<NavItem key={item.title} item={item} handleToggle={handleToggle} expanded={expanded} onClose={onClose} />
 							))}
 						</List>
 					</Box>
-					<Box mb={4}>
+					<Box
+						sx={{
+							mb: 4,
+						}}
+					>
 						<Typography variant="h4" sx={{ mb: 2, textTransform: "uppercase", fontWeight: 300, letterSpacing: 1.5 }}>
 							Vijay Hardaha
 						</Typography>
@@ -170,7 +179,11 @@ const Drawer = ({ open, onClose }) => {
 							about new challenges and strive to integrate the teachings of Sant Kabir Das into my life and work.
 						</Typography>
 					</Box>
-					<Box mb={4}>
+					<Box
+						sx={{
+							mb: 4,
+						}}
+					>
 						<Typography variant="h4" sx={{ mb: 2, textTransform: "uppercase", fontWeight: 300, letterSpacing: 1.5 }}>
 							Get in Touch
 						</Typography>

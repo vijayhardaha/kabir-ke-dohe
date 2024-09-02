@@ -65,11 +65,29 @@ const CoupletShare = ({ couplet }) => {
 	const twitterShareMessage = generateShareMessage(couplet, false);
 
 	return (
-		<Box component="div" mt={4} mb={2}>
-			<Typography variant="h6" mb={1}>
+		<Box
+			component="div"
+			sx={{
+				mt: 4,
+				mb: 2,
+			}}
+		>
+			<Typography
+				variant="h6"
+				sx={{
+					mb: 1,
+				}}
+			>
 				Share this inspiring couplet with your friends:
 			</Typography>
-			<Box display="flex" alignItems="center" justifyContent="space-between" gap={2}>
+			<Box
+				sx={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "space-between",
+					gap: 2,
+				}}
+			>
 				<ShareButton
 					href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterShareMessage)}`}
 					ariaLabel="Share on Twitter"

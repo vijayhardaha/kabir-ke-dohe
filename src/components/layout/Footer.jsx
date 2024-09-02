@@ -19,7 +19,18 @@ const Footer = () => {
 		>
 			<Container>
 				<Typography component="div" variant="body2" sx={{ marginBottom: "4rem" }}>
-					<Box component="div" display="flex" alignItems="center" flexDirection="column" mb={1} sx={(theme) => ({ color: theme.palette.grey[700] })}>
+					<Box
+						component="div"
+						sx={[
+							{
+								display: "flex",
+								alignItems: "center",
+								flexDirection: "column",
+								mb: 1,
+							},
+							(theme) => ({ color: theme.palette.grey[700] }),
+						]}
+					>
 						<Logo link={true} height={28} color="currentcolor" />
 					</Box>
 

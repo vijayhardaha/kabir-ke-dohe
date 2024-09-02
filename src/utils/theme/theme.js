@@ -126,6 +126,16 @@ const theme = createTheme({
 		},
 	},
 	components: {
+		MuiButtonBase: {
+			defaultProps: {
+				disableRipple: true,
+			},
+		},
+		MuiButtonGroup: {
+			defaultProps: {
+				disableRipple: true,
+			},
+		},
 		MuiContainer: {
 			defaultProps: {
 				maxWidth: "xl",
@@ -274,8 +284,14 @@ const theme = createTheme({
 		MuiMenuItem: {
 			styleOverrides: {
 				root: {
+					paddingTop: "8px",
+					paddingBottom: "8px",
 					fontSize: "0.85rem",
 					fontWeight: 400,
+					...sansSerifFamily,
+					"&:hover": {
+						background: "rgba(0,0,0,0.1)",
+					},
 					"& .MuiListItemIcon-root": {
 						minWidth: 26,
 					},
@@ -286,6 +302,7 @@ const theme = createTheme({
 			styleOverrides: {
 				root: {
 					"& .MuiTypography-root": {
+						...sansSerifFamily,
 						fontSize: "0.85rem",
 						fontWeight: 400,
 					},

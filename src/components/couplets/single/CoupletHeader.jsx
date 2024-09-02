@@ -15,7 +15,12 @@ const CoupletHeader = ({ couplet }) => {
 	const { couplet_hindi } = couplet;
 
 	return (
-		<Typography variant="h1" mb={1}>
+		<Typography
+			variant="h1"
+			sx={{
+				mb: 1,
+			}}
+		>
 			<Typography component="span" variant="dohaTitle">
 				{nl2br(couplet_hindi)}
 			</Typography>

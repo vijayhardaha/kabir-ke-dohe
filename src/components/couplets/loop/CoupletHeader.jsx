@@ -18,7 +18,13 @@ const CoupletHeader = ({ couplet }) => {
 	const { couplet_hindi, unique_slug } = couplet;
 
 	return (
-		<Typography component="h2" variant="h1" mb={1}>
+		<Typography
+			component="h2"
+			variant="h1"
+			sx={{
+				mb: 1,
+			}}
+		>
 			<Typography component={Link} variant="dohaTitle" href={getCoupletLink(unique_slug)}>
 				{nl2br(couplet_hindi)}
 			</Typography>

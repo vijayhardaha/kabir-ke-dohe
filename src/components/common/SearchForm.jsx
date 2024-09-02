@@ -21,8 +21,19 @@ const SearchForm = () => {
 	};
 
 	return (
-		<Box display="flex" justifyContent="center" alignItems="center" flexDirection="row">
-			<Box flex={1}>
+		<Box
+			sx={{
+				display: "flex",
+				justifyContent: "center",
+				alignItems: "center",
+				flexDirection: "row",
+			}}
+		>
+			<Box
+				sx={{
+					flex: 1,
+				}}
+			>
 				<TextField
 					fullWidth
 					variant="outlined"

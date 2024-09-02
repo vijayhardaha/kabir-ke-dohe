@@ -50,13 +50,12 @@ const About = () => {
 	return (
 		<PageTemplate>
 			<SEO title={title} description={description} keywords={keywords} url={getPermalinkWithBase("about")} />
-
 			<SectionBody>
 				<Box component="article">
 					<PageHeader title="About Sant Kabir Das" />
 
 					<Box>
-						<Typography paragraph>
+						<Typography component="p">
 							Sant Kabir, born in the 15th century, is one of India’s most revered poets and spiritual leaders. His life and works have left an
 							indelible mark on the spiritual landscape of India, transcending the boundaries of religion, caste, and creed. Kabir’s teachings were
 							primarily conveyed through his dohas (couplets), which are simple yet profound reflections on life, spirituality, and human nature.
@@ -85,11 +84,17 @@ const About = () => {
 							</Box>
 						</Box>
 
-						<Typography variant="h3" mt={5} gutterBottom>
+						<Typography
+							variant="h3"
+							sx={{
+								mt: 5,
+								mb: 1.5,
+							}}
+						>
 							Early Life and Spiritual Awakening
 						</Typography>
 
-						<Typography paragraph>
+						<Typography component="p">
 							Kabir was born in{" "}
 							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Varanasi" aria-label="Varanasi - Wikipedia">
 								Varanasi
@@ -103,7 +108,7 @@ const About = () => {
 							. Despite his humble beginnings, Kabir was drawn to the teachings of various religious traditions from a young age.
 						</Typography>
 
-						<Typography paragraph>
+						<Typography component="p">
 							His spiritual journey began under the guidance of the Hindu saint,{" "}
 							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Ramananda" aria-label="Ramananda - Wikipedia">
 								Ramananda
@@ -119,11 +124,22 @@ const About = () => {
 							, religious orthodoxy, and ritualistic practices, advocating instead for a direct and simple relationship with the Divine.
 						</Typography>
 
-						<Typography variant="h3" mt={5} gutterBottom>
+						<Typography
+							variant="h3"
+							sx={{
+								mt: 5,
+								mb: 1.5,
+							}}
+						>
 							Core Teachings of Sant Kabir
 						</Typography>
 
-						<Typography component="ul" mb={2}>
+						<Typography
+							component="ul"
+							sx={{
+								mb: 2,
+							}}
+						>
 							<li>
 								<strong>Unity of God:</strong> Kabir emphasized that there is only one God, who is known by different names in different religions. He
 								believed in the unity of all religions and that the Divine resides within every individual.
@@ -146,11 +162,17 @@ const About = () => {
 							</li>
 						</Typography>
 
-						<Typography variant="h3" mt={5} gutterBottom>
+						<Typography
+							variant="h3"
+							sx={{
+								mt: 5,
+								mb: 1.5,
+							}}
+						>
 							The Legacy of Sant Kabir
 						</Typography>
 
-						<Typography paragraph>
+						<Typography component="p">
 							Kabir’s influence extends far beyond his lifetime. His teachings inspired the formation of the{" "}
 							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Kabir_Panth" aria-label="Kabir Panth - Wikipedia">
 								Kabir Panth
@@ -159,7 +181,7 @@ const About = () => {
 							focused on the teachings of Kabir. His dohas are recited, sung, and revered across India, particularly in the northern states.
 						</Typography>
 
-						<Typography paragraph>
+						<Typography component="p">
 							Kabir’s works have been included in the{" "}
 							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Guru_Granth_Sahib" aria-label="Guru Granth Sahib - Wikipedia">
 								Guru Granth Sahib
@@ -172,11 +194,17 @@ const About = () => {
 							humanism, serving as a bridge between different faiths and philosophies.
 						</Typography>
 
-						<Typography variant="h3" mt={5} gutterBottom>
+						<Typography
+							variant="h3"
+							sx={{
+								mt: 5,
+								mb: 1.5,
+							}}
+						>
 							Kabir’s Contribution to Indian Literature
 						</Typography>
 
-						<Typography paragraph>
+						<Typography component="p">
 							Kabir’s dohas are considered literary treasures, reflecting the wisdom and experiences of a mystic deeply connected with the essence of
 							life. Written in the{" "}
 							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Indian_languages" aria-label="Indian languages - Wikipedia">
@@ -186,7 +214,7 @@ const About = () => {
 							language is one of the reasons his teachings have endured for centuries.
 						</Typography>
 
-						<Typography paragraph>
+						<Typography component="p">
 							Kabir’s poetry is characterized by its brevity and depth, often using{" "}
 							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Metaphor" aria-label="Metaphor - Wikipedia">
 								metaphors
@@ -199,19 +227,37 @@ const About = () => {
 							of reality itself. This blend of simplicity and profundity makes Kabir’s work a timeless guide to living a life of meaning and purpose.
 						</Typography>
 
-						<Typography variant="h3" mt={5} gutterBottom>
+						<Typography
+							variant="h3"
+							sx={{
+								mt: 5,
+								mb: 1.5,
+							}}
+						>
 							Famous Dohas by Sant Kabir
 						</Typography>
 
-						<Typography component="ul" mb={2}>
+						<Typography
+							component="ul"
+							sx={{
+								mb: 2,
+							}}
+						>
 							{VERSES.map((doha, index) => (
-								<Typography component="li" key={index} mb={1} fontWeight={600}>
+								<Typography
+									component="li"
+									key={index}
+									sx={{
+										mb: 1,
+										fontWeight: 600,
+									}}
+								>
 									{nl2br(doha)}
 								</Typography>
 							))}
 						</Typography>
 
-						<Typography paragraph>
+						<Typography component="p">
 							Sant Kabir’s teachings and writings offer a path to spiritual awakening and a life of harmony. This website is dedicated to sharing his
 							wisdom, helping you explore the depths of his dohas, and guiding you on your spiritual journey. Let Kabir’s words illuminate your path
 							and inspire you to live a life of truth, simplicity, and love.

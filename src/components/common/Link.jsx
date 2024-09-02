@@ -53,7 +53,14 @@ const Link = ({ children, href, showExternalIcon = false, ...props }) => {
 	}
 
 	return (
-		<Box component="span" display="inline-flex" alignItems="center" gap={0.25}>
+		<Box
+			component="span"
+			sx={{
+				display: "inline-flex",
+				alignItems: "center",
+				gap: 0.25,
+			}}
+		>
 			<MuiLink href={href} target="_blank" rel="noopener noreferrer" {...props}>
 				{children}
 			</MuiLink>

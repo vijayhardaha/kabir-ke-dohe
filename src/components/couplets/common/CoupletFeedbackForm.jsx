@@ -92,14 +92,17 @@ const CoupletFeedbackForm = ({ coupletId, couplet }) => {
 					</Alert>
 				</Box>
 			)}
-
 			<Box component="form" onSubmit={handleSubmit}>
 				<Typography variant="body1" paragraph>
 					Your feedback helps us improve our content. You can submit corrections for typos, proofreading, meaning adjustments, and reference links.
 					Feel free to provide any suggestions that could enhance the clarity and accuracy of the couplet.
 				</Typography>
 
-				<Box mt={2}>
+				<Box
+					sx={{
+						mt: 2,
+					}}
+				>
 					<TextField
 						label="Name"
 						name="name"
@@ -114,7 +117,11 @@ const CoupletFeedbackForm = ({ coupletId, couplet }) => {
 					/>
 				</Box>
 
-				<Box mt={2}>
+				<Box
+					sx={{
+						mt: 2,
+					}}
+				>
 					<TextField
 						label="Message"
 						name="message"
@@ -131,12 +138,22 @@ const CoupletFeedbackForm = ({ coupletId, couplet }) => {
 						disabled={loading}
 						inputProps={{ maxLength: 1000 }}
 					/>
-					<Typography variant="caption" color="textSecondary" sx={{ mt: 1 }}>
+					<Typography
+						variant="caption"
+						sx={{
+							color: "textSecondary",
+							mt: 1,
+						}}
+					>
 						{formData.message.length} / 1000 characters
 					</Typography>
 				</Box>
 
-				<Box mt={2}>
+				<Box
+					sx={{
+						mt: 2,
+					}}
+				>
 					<input type="text" name="honey" value={formData.honey} onChange={handleChange} style={{ display: "none" }} />
 					<Button
 						type="submit"
