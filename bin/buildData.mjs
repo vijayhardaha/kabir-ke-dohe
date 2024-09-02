@@ -87,38 +87,45 @@ const getGoogleSheetData = async (sheetName) => {
 	const spinner = ora("Fetching data...").start();
 
 	try {
+		// Fetch data from Google Sheets
 		const couplets = await getGoogleSheetData("kabir-ke-dohe");
 
+		// Validate data format
 		if (!Array.isArray(couplets)) {
 			throw new Error("Invalid data format received from Google Sheets.");
 		}
 
+		// Process the fetched data
 		let processedData = couplets.map((row) => ({
-			index: parseInt(row.index ?? 0),
-			slug: cleanString(createSlug(row.title_english, "-")),
-			popular: row.popular?.toLowerCase() === "yes" || false,
-			couplet_hindi: cleanString(row.couplet_hindi ?? ""),
-			translation_hindi: row?.translation_hindi?.trim() ?? "",
-			explanation_hindi: row?.explanation_hindi?.trim() ?? "",
-			couplet_english: cleanString(row.couplet_english ?? ""),
-			translation_english: row?.translation_english?.trim() ?? "",
-			explanation_english: row?.explanation_english?.trim() ?? "",
-			tags: row?.tags?.trim() ?? "",
+			index: parseInt(row.index ?? 0, 10), // Ensure integer parsing
+			slug: cleanString(createSlug(row.title_english, "-")), // Create slug from title
+			popular: row.popular?.toLowerCase() === "yes" || false, // Handle popularity status
+			couplet_hindi: cleanString(row.couplet_hindi ?? ""), // Clean Hindi couplet
+			translation_hindi: row?.translation_hindi?.trim() ?? "", // Clean Hindi translation
+			explanation_hindi: row?.explanation_hindi?.trim() ?? "", // Clean Hindi explanation
+			couplet_english: cleanString(row.couplet_english ?? ""), // Clean English couplet
+			translation_english: row?.translation_english?.trim() ?? "", // Clean English translation
+			explanation_english: row?.explanation_english?.trim() ?? "", // Clean English explanation
+			tags: row?.tags?.trim() ?? "", // Clean tags
 		}));
 
-		const usedHashes = new Set();
-		const tagCounts = new Map();
-		processedData = processedData.map((item, index) => {
-			const indexPadded = padIndex(index);
-			const originalText = `${item.slug}-${indexPadded}`;
-			const cleanSlug = createSlug(originalText);
-			let shortHash = generateShortHash(cleanSlug);
+		const usedHashes = new Set(); // Set to track used hashes
+		const tagCounts = new Map(); // Map to count occurrences of each tag
 
+		// Generate unique slugs and count tags
+		processedData = processedData.map((item, index) => {
+			const indexPadded = padIndex(index); // Pad index for slug
+			const originalText = `${item.slug}-${indexPadded}`; // Create original text
+			const cleanSlug = createSlug(originalText); // Generate clean slug
+			let shortHash = generateShortHash(cleanSlug); // Generate initial hash
+
+			// Ensure unique hash
 			while (usedHashes.has(shortHash)) {
 				shortHash = generateShortHash(`${cleanSlug}${Math.random()}`);
 			}
 			usedHashes.add(shortHash);
 
+			// Process and count tags
 			const tags = parseAndUniqueList(item.tags);
 			tags.forEach((tag) => {
 				const slugifiedTag = createSlug(tag);
@@ -130,16 +137,16 @@ const getGoogleSheetData = async (sheetName) => {
 			});
 
 			return {
-				id: index + 1,
-				slug: createSlug(item.slug),
-				unique_slug: createSlug(`${cleanSlug}-${shortHash}`),
+				id: index + 1, // Assign unique ID
+				slug: createSlug(item.slug), // Generate slug
+				unique_slug: createSlug(`${cleanSlug}-${shortHash}`), // Generate unique slug
 				couplet_hindi: item.couplet_hindi,
 				couplet_english: item.couplet_english,
 				translation_hindi: item.translation_hindi,
 				translation_english: item.translation_english,
 				explanation_hindi: item.explanation_hindi,
 				explanation_english: item.explanation_english,
-				popular: Boolean(item.popular) || false,
+				popular: Boolean(item.popular) || false, // Ensure boolean value
 				tags: tags.map((tag) => ({
 					slug: createSlug(tag),
 					name: tag,
@@ -147,16 +154,32 @@ const getGoogleSheetData = async (sheetName) => {
 			};
 		});
 
+		// Save tags to file
+		const tagsFilePath = path.join(process.cwd(), "data/tags.json");
+		const filteredTags = Array.from(tagCounts.entries())
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			.filter(([_, { count }]) => count >= 10) // Filter tags with count >= 10
+			.map(([slugifiedTag, { name, count }]) => ({
+				slug: slugifiedTag,
+				name,
+				count,
+			}))
+			.sort((a, b) => b.count - a.count); // Sort tags by count descending
+
+		fs.writeFileSync(tagsFilePath, JSON.stringify(filteredTags, null, 2));
+
+		// Create a Set of valid tag slugs based on filtered tags
+		const validTagSlugs = new Set(filteredTags.map((tag) => tag.slug));
+
+		// Update processedData to only include valid tags
+		processedData = processedData.map((item) => ({
+			...item,
+			tags: item.tags.filter((tag) => validTagSlugs.has(tag.slug)),
+		}));
+
+		// Save processed data to file
 		const coupletsFilePath = path.join(process.cwd(), "data/couplets.json");
 		fs.writeFileSync(coupletsFilePath, JSON.stringify(processedData, null, 2));
-
-		const tagsFilePath = path.join(process.cwd(), "data/tags.json");
-		const uniqueTags = Array.from(tagCounts.entries(), ([slugifiedTag, { name, count }]) => ({
-			slug: slugifiedTag,
-			name,
-			count,
-		})).sort((a, b) => b.count - a.count);
-		fs.writeFileSync(tagsFilePath, JSON.stringify(uniqueTags, null, 2));
 
 		spinner.succeed("Data fetched and saved to data/couplets.json, data/tags.json");
 	} catch (error) {
