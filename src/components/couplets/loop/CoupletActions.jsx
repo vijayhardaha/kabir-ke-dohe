@@ -17,7 +17,7 @@ const CoupletActions = ({ couplet, onOpenFeedbackForm }) => {
 	const { unique_slug } = couplet;
 
 	return (
-		<Box sx={{ display: "flex", gap: 1, mt: 1.5 }}>
+		<Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1.5 }}>
 			<Button component={Link} href={getCoupletLink(unique_slug)} variant="contained" color="primary" size="medium">
 				Read More
 			</Button>

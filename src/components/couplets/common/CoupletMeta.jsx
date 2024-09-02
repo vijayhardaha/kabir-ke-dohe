@@ -15,9 +15,10 @@ import { getTagLink } from "@/src/utils/seo";
  * @param {Array<Object>} props.couplet.tags - List of tags associated with the couplet.
  * @param {string} props.couplet.tags[].name - The name of the tag.
  * @param {string} props.couplet.tags[].slug - The slug of the tag.
+ * @param {Object} props.sx - Additional styles to merge with the default styles.
  * @returns {JSX.Element} The rendered CoupletMeta component.
  */
-const CoupletMeta = ({ couplet }) => {
+const CoupletMeta = ({ couplet, sx = {} }) => {
 	const { tags } = couplet;
 
 	return (
@@ -26,10 +27,15 @@ const CoupletMeta = ({ couplet }) => {
 				display: "flex",
 				gap: 1,
 				mb: 1.5,
-				"& > div:not(:last-of-type)::after": {
-					content: '"/"',
-					ml: 1,
+				flexDirection: {
+					xs: "column",
+					sm: "row",
 				},
+				"& > div:not(:last-of-type)::after": {
+					content: { sm: '"/"' },
+					ml: { sm: 1 },
+				},
+				...sx,
 			}}
 		>
 			<Typography component="div" variant="body2">
@@ -63,6 +69,7 @@ CoupletMeta.propTypes = {
 			})
 		),
 	}).isRequired,
+	sx: PropTypes.object, // Prop type for additional styles
 };
 
 export default CoupletMeta;

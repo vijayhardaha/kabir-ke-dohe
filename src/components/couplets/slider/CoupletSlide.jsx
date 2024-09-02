@@ -36,7 +36,9 @@ const CoupletSlide = ({ couplet }) => {
 					}}
 				>
 					<CoupletHeader couplet={couplet} />
-					<CoupletMeta couplet={couplet} />
+					<CoupletMeta
+						couplet={couplet}
+					/>
 					<CoupletActions couplet={couplet} />
 				</Box>
 			</Container>
