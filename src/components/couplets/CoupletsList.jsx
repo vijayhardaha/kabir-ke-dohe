@@ -149,7 +149,7 @@ const CoupletsList = ({ query = {} }) => {
 					</Box>
 
 					{pagination && totalPages > 1 && (
-						<Pagination page={page} count={totalPages} onChange={handlePageChange} variant="outlined" shape="rounded" siblingCount={0} />
+						<Pagination page={page} count={totalPages} onChange={handlePageChange} variant="outlined" shape="rounded" siblingCount={1} />
 					)}
 				</>
 			)}
