@@ -30,47 +30,35 @@ const Cover = ({ children = null }) => {
 			if (coverElements.length === 0) return;
 
 			const hasContent = Array.from(coverElements).some((element) => element.children.length > 0);
-			const windowHeight = window.innerHeight;
-			const sectionElement = document.querySelector(".main-section:first-of-type");
-			const sectionTop = Math.abs(parseInt(getComputedStyle(sectionElement)?.top, 10)) || 0;
-			const isMobile = window.innerWidth <= 768;
-
-			const coverContentElement = document.querySelector(".slider-item-container");
-			const headerElement = document.getElementById("site-header");
-
-			const coverContentHeight = coverContentElement?.offsetHeight || 0;
-			const headerHeight = headerElement?.offsetHeight || 0;
-
-			let computedCoverHeight = windowHeight - defaultDesktopHeight + sectionTop;
-			computedCoverHeight -= isMobile ? defaultDesktopHeight * 0.75 : 0;
-
+			const isMobile = window.innerWidth < 768;
 			if (!hasContent) {
 				setCoverHeight(isMobile ? defaultMobileHeight : defaultDesktopHeight);
 				return;
 			}
 
-			computedCoverHeight = Math.max(computedCoverHeight, 450);
-			if (coverContentHeight > computedCoverHeight - headerHeight) {
-				computedCoverHeight = coverContentHeight + headerHeight + 100;
-			}
+			const mainHeight = isMobile ? "65vh" : "85vh";
+			const sectionElement = document.querySelector(".main-section:first-of-type");
+			const sectionTop = Math.abs(parseInt(getComputedStyle(sectionElement)?.top, 10)) || 0;
+
+			const headerElement = document.getElementById("site-header");
+			const headerHeight = headerElement?.offsetHeight || 0;
+
+			let itemHeight = `calc(${mainHeight} - ${sectionTop}px)`;
 
 			document.querySelectorAll(".slider-item").forEach((element) => {
 				if (element) {
-					element.style.height = `${computedCoverHeight}px`;
+					element.style.height = itemHeight;
+					element.style.paddingTop = `${headerHeight}px`;
+					element.style.paddingBottom = `${headerHeight}px`;
 				}
 			});
 
 			const mainCoverElement = document.querySelector(".main-cover");
 			if (mainCoverElement) {
-				mainCoverElement.style.height = `${computedCoverHeight}px`;
+				mainCoverElement.style.height = mainHeight;
 			}
 
-			const slickDots = document.querySelector(".slick-dots");
-			if (slickDots) {
-				slickDots.style.bottom = `${isMobile ? defaultMobileHeight : defaultDesktopHeight}px`;
-			}
-
-			setCoverHeight(computedCoverHeight);
+			setCoverHeight(mainHeight);
 		};
 
 		setTimeout(() => {
@@ -110,7 +98,6 @@ const Cover = ({ children = null }) => {
  */
 const MainComponent = ({ children }) => (
 	<Box
-		component="main"
 		sx={(theme) => ({
 			position: "relative",
 			zIndex: 100,
@@ -124,6 +111,7 @@ const MainComponent = ({ children }) => (
 			}}
 		>
 			<Box
+				component="main"
 				className="main-section"
 				sx={(theme) => ({
 					zIndex: 900,
@@ -145,6 +133,7 @@ const MainComponent = ({ children }) => (
 				{children}
 			</Box>
 		</Container>
+		<Footer />
 	</Box>
 );
 
@@ -164,7 +153,6 @@ const PageTemplate = ({ children, coverChildren = null }) => (
 		<Header />
 		<Cover>{coverChildren}</Cover>
 		<MainComponent>{children}</MainComponent>
-		<Footer />
 	</Box>
 );
 

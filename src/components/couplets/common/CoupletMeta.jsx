@@ -24,12 +24,11 @@ const CoupletMeta = ({ couplet }) => {
 		<Box
 			sx={{
 				display: "flex",
-				flexDirection: { xs: "column", sm: "row" },
 				gap: 1,
 				mb: 1.5,
 				"& > div:not(:last-of-type)::after": {
-					content: { sm: '"/"' },
-					ml: { sm: 1 },
+					content: '"/"',
+					ml: 1,
 				},
 			}}
 		>

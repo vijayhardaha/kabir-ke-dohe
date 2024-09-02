@@ -18,7 +18,7 @@ const CoupletActions = ({ couplet }) => {
 	const { unique_slug } = couplet;
 
 	return (
-		<Box sx={{ display: "flex", gap: 2, mt: 3, flexDirection: { xs: "column", sm: "row" } }}>
+		<Box sx={{ display: "flex", gap: 2, mt: 3 }}>
 			<Button
 				component={Link}
 				href={getCoupletLink(unique_slug)}

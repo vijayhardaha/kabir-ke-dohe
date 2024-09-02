@@ -53,7 +53,7 @@ const CoupletsSlider = () => {
 						display: "flex",
 						flexDirection: "column",
 						justifyContent: "center",
-						padding: { xs: "1px 0", sm: "155px 0 215px" },
+						padding: "1px 0",
 					}}
 				>
 					<Box
@@ -85,6 +85,7 @@ const CoupletsSlider = () => {
 				position: "fixed",
 				height: "100%",
 				width: "100%",
+				zIndex: 10,
 			}}
 		>
 			<Box
