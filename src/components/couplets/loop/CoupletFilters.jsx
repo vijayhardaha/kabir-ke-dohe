@@ -50,7 +50,7 @@ const CoupletFilters = ({ selectedSort, onSortChange, page, perPage, paginationE
 						textAlign: { xs: "left", md: "inherit" },
 					}}
 				>
-					Showing {start}–{end} of {totalCount} results.
+					Showing {start}&ndash;{end} of {totalCount} results.
 				</Typography>
 			)}
 
