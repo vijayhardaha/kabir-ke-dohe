@@ -19,16 +19,15 @@ import getIcon from "@/src/utils/icon";
  * @param {Function} props.handleToggle - Function to handle submenu toggle.
  * @param {Object} props.expanded - State of expanded submenus.
  * @param {boolean} props.isSubItem - Indicates if the item is a submenu item.
- * @param {Function} props.onClose - Callback to close the menu.
  * @returns {JSX.Element} The rendered Navigation Item component.
  */
-const NavItem = ({ item, handleToggle, expanded, isSubItem = false, onClose }) => (
+const NavItem = ({ item, handleToggle, expanded, isSubItem = false }) => (
 	<>
 		<ListItemButton
 			onClick={() => item.submenu && handleToggle(item.title)}
 			sx={{ pl: isSubItem ? 2 : 0, pr: 0, borderBottom: "1px solid rgba(0,0,0,.1)", "&:hover": { background: "none" } }}
 		>
-			<Link href={item.href} onClick={onClose} sx={{ color: "inherit !important", textDecoration: "none", flexGrow: 1 }}>
+			<Link href={item.href} sx={{ color: "inherit !important", textDecoration: "none", flexGrow: 1 }}>
 				<ListItemText primary={item.title} sx={{ color: "inherit !important", textDecoration: "none", flexGrow: 1 }} />
 			</Link>
 			{item.submenu && (
@@ -41,7 +40,7 @@ const NavItem = ({ item, handleToggle, expanded, isSubItem = false, onClose }) =
 			<Collapse in={expanded[item.title]}>
 				<List component="div" disablePadding>
 					{item.submenu.map((subitem) => (
-						<NavItem key={subitem.title} item={subitem} handleToggle={handleToggle} expanded={expanded} isSubItem onClose={onClose} />
+						<NavItem key={subitem.title} item={subitem} handleToggle={handleToggle} expanded={expanded} isSubItem />
 					))}
 				</List>
 			</Collapse>
@@ -128,6 +127,7 @@ const Drawer = ({ open, onClose }) => {
 					})}
 				>
 					<Logo link height={28} color="#ffffff" />
+
 					<IconButton
 						onClick={onClose}
 						sx={(theme) => ({
@@ -150,7 +150,7 @@ const Drawer = ({ open, onClose }) => {
 					>
 						<List>
 							{NAV_ITEMS.map((item) => (
-								<NavItem key={item.title} item={item} handleToggle={handleToggle} expanded={expanded} onClose={onClose} />
+								<NavItem key={item.title} item={item} handleToggle={handleToggle} expanded={expanded} />
 							))}
 						</List>
 					</Box>
@@ -174,7 +174,7 @@ const Drawer = ({ open, onClose }) => {
 								float: "left",
 							}}
 						/>
-						<Typography variant="body2" paragraph>
+						<Typography variant="body2" component="p">
 							I am a web developer with expertise in WordPress and WooCommerce, and I also work on React and Next.js projects. I’m always excited
 							about new challenges and strive to integrate the teachings of Sant Kabir Das into my life and work.
 						</Typography>
@@ -187,7 +187,7 @@ const Drawer = ({ open, onClose }) => {
 						<Typography variant="h4" sx={{ mb: 2, textTransform: "uppercase", fontWeight: 300, letterSpacing: 1.5 }}>
 							Get in Touch
 						</Typography>
-						<Typography variant="body2" paragraph>
+						<Typography variant="body2" component="p">
 							Feel free to reach out for collaboration or inquiries. I’m passionate about creating innovative web solutions and would love to discuss
 							how we can work together.
 						</Typography>
