@@ -1,4 +1,4 @@
-import { getCoupletLink, getPermalinkWithBase } from "../seo";
+import { getCoupletLink } from "../seo";
 
 /**
  * Generates a share message for a couplet with links to the couplet and the website.
@@ -6,25 +6,18 @@ import { getCoupletLink, getPermalinkWithBase } from "../seo";
  * @param {Object} couplet - The couplet data.
  * @param {string} couplet.couplet_hindi - The couplet text in Hindi.
  * @param {string} couplet.unique_slug - The unique slug for the couplet.
- * @param {boolean} [long=true] - Determines if the message should include a link to the website.
  * @returns {string} The formatted share message.
  */
-export const generateShareMessage = (couplet, long = true) => {
+export const generateShareMessage = (couplet) => {
 	const { couplet_hindi, unique_slug } = couplet;
 
 	const coupletLink = getCoupletLink(unique_slug, true);
-	const websiteLink = getPermalinkWithBase();
 
 	// Message for the couplet with a link to the specific couplet page
 	let message = couplet_hindi;
 
-	message += `\n\n— संत कबीर साहेब जी 🔥 🙏`;
+	message += `\n\n— संत कबीर साहेब`;
 	message += `\n\nDiscover this profound couplet at ${coupletLink}`;
-
-	// Append website link if long message is required
-	if (long) {
-		message += `\n\nFor even more inspiring couplets and teachings, visit: ${websiteLink}`;
-	}
 
 	return message;
 };

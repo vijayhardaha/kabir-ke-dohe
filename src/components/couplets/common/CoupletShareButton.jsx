@@ -60,12 +60,11 @@ const CoupletShareButton = ({ couplet, ...props }) => {
 		let url = "";
 
 		const shareMessage = generateShareMessage(couplet);
-		const twitterShareMessage = generateShareMessage(couplet, false);
 
 		if (platform === "whatsapp") {
 			url = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage)}`;
 		} else if (platform === "twitter") {
-			url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterShareMessage)}`;
+			url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}`;
 		} else if (platform === "copy") {
 			toast.success("Copied to clipboard!");
 			navigator.clipboard.writeText(shareMessage);

@@ -62,7 +62,6 @@ const ShareButton = ({ href, ariaLabel, backgroundColor, icon, onClick }) => {
  */
 const CoupletShare = ({ couplet }) => {
 	const shareMessage = generateShareMessage(couplet);
-	const twitterShareMessage = generateShareMessage(couplet, false);
 
 	return (
 		<Box
@@ -89,7 +88,7 @@ const CoupletShare = ({ couplet }) => {
 				}}
 			>
 				<ShareButton
-					href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterShareMessage)}`}
+					href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}`}
 					ariaLabel="Share on Twitter"
 					backgroundColor="#1DA1F2"
 					icon={<RiTwitterFill size={20} color="#ffffff" />}
