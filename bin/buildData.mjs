@@ -157,25 +157,14 @@ const getGoogleSheetData = async (sheetName) => {
 		// Save tags to file
 		const tagsFilePath = path.join(process.cwd(), "data/tags.json");
 		const filteredTags = Array.from(tagCounts.entries())
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			.filter(([_, { count }]) => count >= 10) // Filter tags with count >= 10
 			.map(([slugifiedTag, { name, count }]) => ({
 				slug: slugifiedTag,
 				name,
 				count,
 			}))
-			.sort((a, b) => b.count - a.count); // Sort tags by count descending
+			.sort((a, b) => b.count - a.count);
 
 		fs.writeFileSync(tagsFilePath, JSON.stringify(filteredTags, null, 2));
-
-		// Create a Set of valid tag slugs based on filtered tags
-		const validTagSlugs = new Set(filteredTags.map((tag) => tag.slug));
-
-		// Update processedData to only include valid tags
-		processedData = processedData.map((item) => ({
-			...item,
-			tags: item.tags.filter((tag) => validTagSlugs.has(tag.slug)),
-		}));
 
 		// Save processed data to file
 		const coupletsFilePath = path.join(process.cwd(), "data/couplets.json");
