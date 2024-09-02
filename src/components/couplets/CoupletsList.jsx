@@ -61,21 +61,11 @@ const CoupletsList = ({ query = {} }) => {
 		}
 	}, [error, router]);
 
-	/**
-	 * Updates the query parameters in the URL based on the provided parameters.
-	 * Handles `sort` and `page` as arrays or objects to avoid duplication.
-	 * Converts parameters to key-value pairs and merges them into the query string.
-	 *
-	 * @param {Object} params - The parameters to include in the query string.
-	 * @param {number | number[]} params.page - The page number(s) to include in the query string.
-	 * @param {string | string[]} params.selectedSort - The selected sort option(s) to include in the query string.
-	 */
 	const updateQueryParams = (params) => {
-		const { page: paramPage, selectedSort } = params; // Destructure the page and selectedSort from params.
-		const queryParams = new URLSearchParams(); // Initialize URLSearchParams to handle query parameters.
-		const { q: searchQuery, ...existingQueries } = router.query; // Extract existing query parameters and searchQuery.
+		const { page: paramPage, selectedSort } = params;
+		const queryParams = new URLSearchParams();
+		const { q: searchQuery, ...existingQueries } = router.query;
 
-		// Add existing query parameters to URLSearchParams.
 		Object.entries(existingQueries).forEach(([key, value]) => {
 			if (value) {
 				if (Array.isArray(value)) {
@@ -86,28 +76,24 @@ const CoupletsList = ({ query = {} }) => {
 			}
 		});
 
-		// Add the search query parameter if it exists and is not empty.
 		if (searchQuery && searchQuery.trim() !== "") {
 			queryParams.set("q", encodeURIComponent(searchQuery.trim()));
 		}
 
 		if (paramPage > 1) {
-			queryParams.set("page", paramPage); // Set the page parameter if page > 1
+			queryParams.set("page", paramPage);
 		} else {
-			queryParams.delete("page"); // Remove the page parameter if page is 1 or less
+			queryParams.delete("page");
 		}
 
-		// Set or remove the `sort` parameter based on its value
 		if (selectedSort && selectedSort !== "default") {
-			queryParams.set("sort", sort); // Set the sort parameter if it is valid
+			queryParams.set("sort", selectedSort);
 		} else {
-			queryParams.delete("sort"); // Remove the sort parameter if it is "default" or invalid
+			queryParams.delete("sort");
 		}
 
-		// Construct the query string from URLSearchParams.
 		const queryString = queryParams.toString() ? `?${queryParams.toString()}` : "";
 
-		// Update the router with the new query string.
 		router.push(queryString);
 	};
 
