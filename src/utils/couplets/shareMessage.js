@@ -16,13 +16,14 @@ export const generateShareMessage = (couplet, long = true) => {
 	const websiteLink = getPermalinkWithBase();
 
 	// Message for the couplet with a link to the specific couplet page
-	let message = `${couplet_hindi}\n\n— संत कबीर साहेब जी 🔥 🙏`;
+	let message = couplet_hindi;
+
+	message += `\n\n— संत कबीर साहेब जी 🔥 🙏`;
+	message += `\n\nDiscover this profound couplet at ${coupletLink}`;
 
 	// Append website link if long message is required
 	if (long) {
-		message += `\n\nDiscover this profound couplet and explore more at ${coupletLink}.\n\nFor even more inspiring couplets and teachings, visit our website: ${websiteLink} 🌟`;
-	} else {
-		message += `\n\nDiscover this profound couplet at ${coupletLink}.`;
+		message += `\n\nFor even more inspiring couplets and teachings, visit: ${websiteLink}`;
 	}
 
 	return message;
