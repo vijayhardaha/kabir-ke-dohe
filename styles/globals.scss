@@ -1,0 +1,43 @@
+img {
+	max-width: 100%;
+	vertical-align: middle;
+	border-style: none;
+	height: auto;
+}
+
+@keyframes slideInDown {
+	0% {
+		transform: translate3d(0, -100%, 0);
+		visibility: visible;
+	}
+
+	to {
+		transform: translateZ(0);
+	}
+}
+
+.sticky {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 101;
+	animation: slideInDown 0.25s ease-out;
+}
+
+.slick-dots {
+	bottom: 30px;
+	li {
+		button:before {
+			color: #ffffff;
+			opacity: 0.5;
+			font-size: 8px;
+			transition: all 0.25s ease-in-out;
+		}
+
+		&.slick-active button:before {
+			color: #ffffff;
+			opacity: 1;
+			font-size: 12px;
+		}
+	}
+}

@@ -133,5 +133,8 @@ dist
 .DS_Store
 Thumbs.db
 
-# Local Netlify folder
-.netlify
+# Nextjs
+.next
+
+# data
+data/*.json
