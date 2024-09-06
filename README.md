@@ -56,17 +56,6 @@ In this repository, we have compiled a collection of some of Saint Kabir's coupl
 - [दोहे संग्रह - 2151 से 2200 तक][markdown-2151-to-2200]
 - [दोहे संग्रह - 2201 से 2250 तक][markdown-2201-to-2250]
 - [दोहे संग्रह - 2251 से 2300 तक][markdown-2251-to-2300]
-- [दोहे संग्रह - 2301 से 2350 तक][markdown-2301-to-2350]
-- [दोहे संग्रह - 2351 से 2400 तक][markdown-2351-to-2400]
-- [दोहे संग्रह - 2401 से 2450 तक][markdown-2401-to-2450]
-- [दोहे संग्रह - 2451 से 2500 तक][markdown-2451-to-2500]
-- [दोहे संग्रह - 2501 से 2550 तक][markdown-2501-to-2550]
-- [दोहे संग्रह - 2551 से 2600 तक][markdown-2551-to-2600]
-- [दोहे संग्रह - 2601 से 2650 तक][markdown-2601-to-2650]
-- [दोहे संग्रह - 2651 से 2700 तक][markdown-2651-to-2700]
-- [दोहे संग्रह - 2701 से 2750 तक][markdown-2701-to-2750]
-- [दोहे संग्रह - 2751 से 2800 तक][markdown-2751-to-2800]
-- [दोहे संग्रह - 2801 से 2850 तक][markdown-2801-to-2850]
 
 [markdown-01-to-50]: docs/collection-01-to-50.md
 [markdown-51-to-100]: docs/collection-51-to-100.md
@@ -114,13 +103,6 @@ In this repository, we have compiled a collection of some of Saint Kabir's coupl
 [markdown-2151-to-2200]: docs/collection-2151-to-2200.md
 [markdown-2201-to-2250]: docs/collection-2201-to-2250.md
 [markdown-2251-to-2300]: docs/collection-2251-to-2300.md
-[markdown-2301-to-2350]: docs/collection-2301-to-2350.md
-[markdown-2351-to-2400]: docs/collection-2351-to-2400.md
-[markdown-2401-to-2450]: docs/collection-2401-to-2450.md
-[markdown-2451-to-2500]: docs/collection-2451-to-2500.md
-[markdown-2501-to-2550]: docs/collection-2501-to-2550.md
-[markdown-2551-to-2600]: docs/collection-2551-to-2600.md
-[markdown-2601-to-2650]: docs/collection-2601-to-2650.md
 
 ## Converting Markdown Files to PDF
 
