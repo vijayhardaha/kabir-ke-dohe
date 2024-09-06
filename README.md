@@ -4,7 +4,7 @@ In this GitHub repository, we have compiled a collection of the remarkable coupl
 
 This repository may serve as a valuable resource for our collection and can help in learning and understanding the couplets of Saint Kabir more deeply. All devotees and literature enthusiasts are invited to contribute to this effort.
 
-> If you are interested in bhajans of Kabirdas and other saints, you can also check out our other repository [Teachings of Saints (Santon ki Seekh)](https://github.com/vijayhardaha/santo-ki-seekh/).
+> If you are interested in bhajans of Kabirdas and other saints, you can also check out our other repository [Teachings of Saints (Santon ki Seekh)](https://github.com/vijayhardaha/santon-ki-seekh/).
 
 ## Details
 
@@ -128,10 +128,10 @@ This method allows you to efficiently convert Markdown files directly from GitHu
 
 If you have Kabir's couplets and would like to add them to this collection, please submit a pull request. We welcome all contributions.
 
-If you wish to create something related to Kabirdas's couplets and need data for all the couplets, you can obtain the data from the API URL created by us:
+If you wish to create something related to Kabir das couplets and need data for all the couplets, you can obtain the data from the API URL created by us:
 
 ```bash
-curl https://santo-ki-seekh.netlify.app/api/kabir-ke-dohe/
+curl https://santonkiseekh.vercel.app/api/kabir-couplets/
 ```
 
 ## License
