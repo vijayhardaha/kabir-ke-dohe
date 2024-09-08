@@ -64,14 +64,20 @@ export function getData({
 	} else {
 		data = data.sort((a, b) => {
 			if (orderBy === "couplet_english") {
-				return order === "ASC" ? a.couplet_english.localeCompare(b.couplet_english) : b.couplet_english.localeCompare(a.couplet_english);
+				return order === "ASC"
+					? a.couplet_english.localeCompare(b.couplet_english)
+					: b.couplet_english.localeCompare(a.couplet_english);
 			}
 			if (orderBy === "couplet_hindi") {
-				return order === "ASC" ? a.couplet_hindi.localeCompare(b.couplet_hindi, "hi") : b.couplet_hindi.localeCompare(a.couplet_hindi, "hi");
+				return order === "ASC"
+					? a.couplet_hindi.localeCompare(b.couplet_hindi, "hi")
+					: b.couplet_hindi.localeCompare(a.couplet_hindi, "hi");
 			}
 			if (orderBy === "popular") {
 				if (a.popular === b.popular) {
-					return order === "ASC" ? a.couplet_hindi.localeCompare(b.couplet_hindi, "hi") : b.couplet_hindi.localeCompare(a.couplet_hindi, "hi");
+					return order === "ASC"
+						? a.couplet_hindi.localeCompare(b.couplet_hindi, "hi")
+						: b.couplet_hindi.localeCompare(a.couplet_hindi, "hi");
 				}
 				return order === "ASC" ? (a.popular ? -1 : 1) : a.popular ? 1 : -1;
 			}
@@ -116,12 +122,22 @@ export default function handler(req, res) {
 	if (req.method !== "POST") {
 		return res.status(405).json({
 			success: false,
-			message: "Method Not Allowed: This API endpoint only accepts POST requests. Please ensure you are using the correct HTTP method.",
+			message:
+				"Method Not Allowed: This API endpoint only accepts POST requests. Please ensure you are using the correct HTTP method.",
 		});
 	}
 
 	try {
-		const { search, tags, popular, orderBy = "default", order = "ASC", page = 1, perPage = 10, pagination = true } = req.body;
+		const {
+			search,
+			tags,
+			popular,
+			orderBy = "default",
+			order = "ASC",
+			page = 1,
+			perPage = 10,
+			pagination = true,
+		} = req.body;
 
 		if (orderBy && !["default", "random", "popular", "couplet_english", "couplet_hindi"].includes(orderBy)) {
 			return res.status(400).json({
@@ -134,7 +150,8 @@ export default function handler(req, res) {
 		if (order && !["ASC", "DESC"].includes(order)) {
 			return res.status(400).json({
 				success: false,
-				message: "Bad Request: The 'order' value provided is invalid. Accepted values are 'ASC' (ascending) or 'DESC' (descending).",
+				message:
+					"Bad Request: The 'order' value provided is invalid. Accepted values are 'ASC' (ascending) or 'DESC' (descending).",
 			});
 		}
 
@@ -153,7 +170,8 @@ export default function handler(req, res) {
 		if (result.totalPages > 1 && page > result.totalPages) {
 			return res.status(404).json({
 				success: false,
-				message: "Not Found: The requested page number exceeds the total number of available pages. Please adjust the page number and try again.",
+				message:
+					"Not Found: The requested page number exceeds the total number of available pages. Please adjust the page number and try again.",
 			});
 		}
 
@@ -161,7 +179,8 @@ export default function handler(req, res) {
 	} catch (error) {
 		return res.status(500).json({
 			success: false,
-			message: "Internal Server Error: An unexpected error occurred while processing the request. Please check the server logs for more details.",
+			message:
+				"Internal Server Error: An unexpected error occurred while processing the request. Please check the server logs for more details.",
 			error: error.message,
 		});
 	}

@@ -21,8 +21,9 @@ const Custom404 = () => {
 				<Box component="article" sx={{ textAlign: "center", mt: 4 }}>
 					<PageHeader title="Oops! Page Not Found" />
 					<Typography paragraph>
-						It looks like the page you’re trying to reach doesn’t exist anymore or may have been moved. We apologize for the inconvenience. You can go
-						back to our homepage or use the search function to find what you’re looking for.
+						It looks like the page you’re trying to reach doesn’t exist anymore or may have been moved. We apologize for
+						the inconvenience. You can go back to our homepage or use the search function to find what you’re looking
+						for.
 					</Typography>
 
 					<Box sx={{ mt: 2 }}>

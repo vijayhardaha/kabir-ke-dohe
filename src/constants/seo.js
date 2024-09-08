@@ -70,13 +70,15 @@ export const PAGES_SEO_CONFIG = {
 	},
 	popular: {
 		title: "Popular Dohe",
-		description: "Discover the most popular dohas by Kabir, renowned for their spiritual depth and impactful teachings.",
+		description:
+			"Discover the most popular dohas by Kabir, renowned for their spiritual depth and impactful teachings.",
 		keywords: "Popular Kabir Dohe, Kabir's Most Read Dohe, Spiritual Wisdom, Hindi Poetry, Kabir's Top Dohe",
 	},
 	couplets: {
 		title: "Complete Collection of Kabir's Dohas",
 		description:
 			"Explore the complete collection of Kabir's dohas. This page features all dohas by Kabir with detailed translations and explanations. Use our pagination feature to navigate through the full set of Kabir's spiritual wisdom.",
-		keywords: "Complete Collection Kabir Dohas, Kabir's Full Dohe Collection, All Kabir Dohas, Spiritual Teachings, Hindi Poetry, Kabir Dohe List",
+		keywords:
+			"Complete Collection Kabir Dohas, Kabir's Full Dohe Collection, All Kabir Dohas, Spiritual Teachings, Hindi Poetry, Kabir Dohe List",
 	},
 };

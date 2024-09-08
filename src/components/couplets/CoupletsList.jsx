@@ -21,7 +21,16 @@ const CoupletsList = ({ query = {} }) => {
 	const router = useRouter();
 	const { loading, setLoading } = useLoader();
 
-	const { search = "", tags = "", popular = false, orderBy, order, perPage = 10, pagination = true, filter = true } = query;
+	const {
+		search = "",
+		tags = "",
+		popular = false,
+		orderBy,
+		order,
+		perPage = 10,
+		pagination = true,
+		filter = true,
+	} = query;
 
 	const sort = filter ? router.query.sort || "default" : "default";
 	const page = pagination
@@ -122,7 +131,8 @@ const CoupletsList = ({ query = {} }) => {
 	if (couplets.length === 0) {
 		return (
 			<Typography paragraph>
-				No couplets match the criteria specified in the request. Please adjust your search or filter parameters and try again.
+				No couplets match the criteria specified in the request. Please adjust your search or filter parameters and try
+				again.
 			</Typography>
 		);
 	}
@@ -149,7 +159,14 @@ const CoupletsList = ({ query = {} }) => {
 					</Box>
 
 					{pagination && totalPages > 1 && (
-						<Pagination page={page} count={totalPages} onChange={handlePageChange} variant="outlined" shape="rounded" siblingCount={1} />
+						<Pagination
+							page={page}
+							count={totalPages}
+							onChange={handlePageChange}
+							variant="outlined"
+							shape="rounded"
+							siblingCount={1}
+						/>
 					)}
 				</>
 			)}

@@ -1,6 +1,17 @@
 import { CiHashtag } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
-import { FaTwitter, FaLinkedin, FaFacebookSquare, FaGithub, FaInstagram, FaYoutube, FaEnvelope, FaReddit, FaCheck, FaLink } from "react-icons/fa";
+import {
+	FaTwitter,
+	FaLinkedin,
+	FaFacebookSquare,
+	FaGithub,
+	FaInstagram,
+	FaYoutube,
+	FaEnvelope,
+	FaReddit,
+	FaCheck,
+	FaLink,
+} from "react-icons/fa";
 import { FaWordpress } from "react-icons/fa";
 import { FaDiscord } from "react-icons/fa";
 import { FiCopy } from "react-icons/fi";

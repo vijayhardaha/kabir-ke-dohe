@@ -94,8 +94,9 @@ const CoupletFeedbackForm = ({ coupletId, couplet }) => {
 			)}
 			<Box component="form" onSubmit={handleSubmit}>
 				<Typography variant="body1" paragraph>
-					Your feedback helps us improve our content. You can submit corrections for typos, proofreading, meaning adjustments, and reference links.
-					Feel free to provide any suggestions that could enhance the clarity and accuracy of the couplet.
+					Your feedback helps us improve our content. You can submit corrections for typos, proofreading, meaning
+					adjustments, and reference links. Feel free to provide any suggestions that could enhance the clarity and
+					accuracy of the couplet.
 				</Typography>
 
 				<Box

@@ -25,7 +25,12 @@ const SearchPage = () => {
 
 	return (
 		<PageTemplate>
-			<SEO title={seoTitle} description={seoDescription} keywords={seoKeywords.join(", ")} url={getPermalinkWithBase()} />
+			<SEO
+				title={seoTitle}
+				description={seoDescription}
+				keywords={seoKeywords.join(", ")}
+				url={getPermalinkWithBase()}
+			/>
 
 			<SectionHeader title={query ? `Search results for: ${query}` : "Search"} />
 
@@ -33,8 +38,8 @@ const SearchPage = () => {
 				<Box sx={{ mb: 6 }}>
 					{!query && (
 						<Typography paragraph>
-							Welcome to our search page! Use the search form below to find couplets by entering keywords, tags. Press Enter or click Search to view
-							the results.
+							Welcome to our search page! Use the search form below to find couplets by entering keywords, tags. Press
+							Enter or click Search to view the results.
 						</Typography>
 					)}
 

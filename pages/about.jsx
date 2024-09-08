@@ -56,10 +56,11 @@ const About = () => {
 
 					<Box>
 						<Typography component="p">
-							Sant Kabir, born in the 15th century, is one of India’s most revered poets and spiritual leaders. His life and works have left an
-							indelible mark on the spiritual landscape of India, transcending the boundaries of religion, caste, and creed. Kabir’s teachings were
-							primarily conveyed through his dohas (couplets), which are simple yet profound reflections on life, spirituality, and human nature.
-							These teachings continue to be relevant in today’s world, guiding millions toward a life of love, simplicity, and truth.
+							Sant Kabir, born in the 15th century, is one of India’s most revered poets and spiritual leaders. His life
+							and works have left an indelible mark on the spiritual landscape of India, transcending the boundaries of
+							religion, caste, and creed. Kabir’s teachings were primarily conveyed through his dohas (couplets), which
+							are simple yet profound reflections on life, spirituality, and human nature. These teachings continue to
+							be relevant in today’s world, guiding millions toward a life of love, simplicity, and truth.
 						</Typography>
 
 						<Box component="figure" sx={{ margin: 0 }}>
@@ -99,13 +100,18 @@ const About = () => {
 							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Varanasi" aria-label="Varanasi - Wikipedia">
 								Varanasi
 							</Link>
-							, one of the holiest cities in India, around 1440 CE. Though his exact birth details remain a mystery, it is widely believed that he was
-							born into a Muslim family of weavers. Kabir was adopted and raised by a poor Muslim couple, Neeru and Neema, who found him floating on a
-							lotus in the{" "}
-							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Lahartara" aria-label="Lahartara lake - Wikipedia">
+							, one of the holiest cities in India, around 1440 CE. Though his exact birth details remain a mystery, it
+							is widely believed that he was born into a Muslim family of weavers. Kabir was adopted and raised by a
+							poor Muslim couple, Neeru and Neema, who found him floating on a lotus in the{" "}
+							<Link
+								showExternalIcon
+								href="https://en.wikipedia.org/wiki/Lahartara"
+								aria-label="Lahartara lake - Wikipedia"
+							>
 								Lahartara lake
 							</Link>
-							. Despite his humble beginnings, Kabir was drawn to the teachings of various religious traditions from a young age.
+							. Despite his humble beginnings, Kabir was drawn to the teachings of various religious traditions from a
+							young age.
 						</Typography>
 
 						<Typography component="p">
@@ -114,14 +120,24 @@ const About = () => {
 								Ramananda
 							</Link>
 							, who unknowingly accepted Kabir as his disciple. Kabir’s teachings reflect a blend of both Hindu and{" "}
-							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Islamic_mysticism" aria-label="Islamic mysticism - Wikipedia">
+							<Link
+								showExternalIcon
+								href="https://en.wikipedia.org/wiki/Islamic_mysticism"
+								aria-label="Islamic mysticism - Wikipedia"
+							>
 								Islamic mysticism
 							</Link>
-							, focusing on a personal experience of the Divine rather than adherence to rituals or dogma. He rejected the{" "}
-							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Caste_system_in_India" aria-label="Caste system - Wikipedia">
+							, focusing on a personal experience of the Divine rather than adherence to rituals or dogma. He rejected
+							the{" "}
+							<Link
+								showExternalIcon
+								href="https://en.wikipedia.org/wiki/Caste_system_in_India"
+								aria-label="Caste system - Wikipedia"
+							>
 								caste system
 							</Link>
-							, religious orthodoxy, and ritualistic practices, advocating instead for a direct and simple relationship with the Divine.
+							, religious orthodoxy, and ritualistic practices, advocating instead for a direct and simple relationship
+							with the Divine.
 						</Typography>
 
 						<Typography
@@ -141,24 +157,29 @@ const About = () => {
 							}}
 						>
 							<li>
-								<strong>Unity of God:</strong> Kabir emphasized that there is only one God, who is known by different names in different religions. He
-								believed in the unity of all religions and that the Divine resides within every individual.
+								<strong>Unity of God:</strong> Kabir emphasized that there is only one God, who is known by different
+								names in different religions. He believed in the unity of all religions and that the Divine resides
+								within every individual.
 							</li>
 							<li>
-								<strong>Personal Spirituality:</strong> Kabir taught that true spirituality is found within oneself. He encouraged introspection and
-								self-realization, urging people to seek the Divine within rather than through external rituals.
+								<strong>Personal Spirituality:</strong> Kabir taught that true spirituality is found within oneself. He
+								encouraged introspection and self-realization, urging people to seek the Divine within rather than
+								through external rituals.
 							</li>
 							<li>
-								<strong>Simplicity and Humility:</strong> Kabir advocated for a life of simplicity and humility. He believed that the ego is the
-								greatest barrier to spiritual progress and that one must surrender their pride to truly connect with the Divine.
+								<strong>Simplicity and Humility:</strong> Kabir advocated for a life of simplicity and humility. He
+								believed that the ego is the greatest barrier to spiritual progress and that one must surrender their
+								pride to truly connect with the Divine.
 							</li>
 							<li>
-								<strong>Equality and Brotherhood:</strong> Kabir rejected the caste system and all forms of social discrimination. He preached that
-								all humans are equal in the eyes of God, regardless of their social or religious background.
+								<strong>Equality and Brotherhood:</strong> Kabir rejected the caste system and all forms of social
+								discrimination. He preached that all humans are equal in the eyes of God, regardless of their social or
+								religious background.
 							</li>
 							<li>
-								<strong>Detachment from Materialism:</strong> Kabir warned against attachment to material possessions and worldly pleasures, which he
-								saw as distractions from the true purpose of life—spiritual enlightenment.
+								<strong>Detachment from Materialism:</strong> Kabir warned against attachment to material possessions
+								and worldly pleasures, which he saw as distractions from the true purpose of life—spiritual
+								enlightenment.
 							</li>
 						</Typography>
 
@@ -174,24 +195,33 @@ const About = () => {
 
 						<Typography component="p">
 							Kabir’s influence extends far beyond his lifetime. His teachings inspired the formation of the{" "}
-							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Kabir_Panth" aria-label="Kabir Panth - Wikipedia">
+							<Link
+								showExternalIcon
+								href="https://en.wikipedia.org/wiki/Kabir_Panth"
+								aria-label="Kabir Panth - Wikipedia"
+							>
 								Kabir Panth
 							</Link>
-							, a religious community that follows his ideals. This community, which still exists today, practices a simple, devotional lifestyle
-							focused on the teachings of Kabir. His dohas are recited, sung, and revered across India, particularly in the northern states.
+							, a religious community that follows his ideals. This community, which still exists today, practices a
+							simple, devotional lifestyle focused on the teachings of Kabir. His dohas are recited, sung, and revered
+							across India, particularly in the northern states.
 						</Typography>
 
 						<Typography component="p">
 							Kabir’s works have been included in the{" "}
-							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Guru_Granth_Sahib" aria-label="Guru Granth Sahib - Wikipedia">
+							<Link
+								showExternalIcon
+								href="https://en.wikipedia.org/wiki/Guru_Granth_Sahib"
+								aria-label="Guru Granth Sahib - Wikipedia"
+							>
 								Guru Granth Sahib
 							</Link>
 							, the holy scripture of{" "}
 							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Sikhism" aria-label="Sikhism - Wikipedia">
 								Sikhism
 							</Link>
-							, demonstrating his impact on multiple religious traditions. His verses are often quoted in discussions on spirituality, ethics, and
-							humanism, serving as a bridge between different faiths and philosophies.
+							, demonstrating his impact on multiple religious traditions. His verses are often quoted in discussions on
+							spirituality, ethics, and humanism, serving as a bridge between different faiths and philosophies.
 						</Typography>
 
 						<Typography
@@ -205,13 +235,18 @@ const About = () => {
 						</Typography>
 
 						<Typography component="p">
-							Kabir’s dohas are considered literary treasures, reflecting the wisdom and experiences of a mystic deeply connected with the essence of
-							life. Written in the{" "}
-							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Indian_languages" aria-label="Indian languages - Wikipedia">
+							Kabir’s dohas are considered literary treasures, reflecting the wisdom and experiences of a mystic deeply
+							connected with the essence of life. Written in the{" "}
+							<Link
+								showExternalIcon
+								href="https://en.wikipedia.org/wiki/Indian_languages"
+								aria-label="Indian languages - Wikipedia"
+							>
 								vernacular language
 							</Link>{" "}
-							of his time, his verses are accessible to people of all backgrounds. His ability to convey complex spiritual truths in simple, relatable
-							language is one of the reasons his teachings have endured for centuries.
+							of his time, his verses are accessible to people of all backgrounds. His ability to convey complex
+							spiritual truths in simple, relatable language is one of the reasons his teachings have endured for
+							centuries.
 						</Typography>
 
 						<Typography component="p">
@@ -223,8 +258,9 @@ const About = () => {
 							<Link showExternalIcon href="https://en.wikipedia.org/wiki/Analogy" aria-label="Analogy - Wikipedia">
 								analogies
 							</Link>{" "}
-							drawn from everyday life. His verses challenge the listener or reader to think critically about their beliefs, behaviors, and the nature
-							of reality itself. This blend of simplicity and profundity makes Kabir’s work a timeless guide to living a life of meaning and purpose.
+							drawn from everyday life. His verses challenge the listener or reader to think critically about their
+							beliefs, behaviors, and the nature of reality itself. This blend of simplicity and profundity makes
+							Kabir’s work a timeless guide to living a life of meaning and purpose.
 						</Typography>
 
 						<Typography
@@ -258,9 +294,10 @@ const About = () => {
 						</Typography>
 
 						<Typography component="p">
-							Sant Kabir’s teachings and writings offer a path to spiritual awakening and a life of harmony. This website is dedicated to sharing his
-							wisdom, helping you explore the depths of his dohas, and guiding you on your spiritual journey. Let Kabir’s words illuminate your path
-							and inspire you to live a life of truth, simplicity, and love.
+							Sant Kabir’s teachings and writings offer a path to spiritual awakening and a life of harmony. This
+							website is dedicated to sharing his wisdom, helping you explore the depths of his dohas, and guiding you
+							on your spiritual journey. Let Kabir’s words illuminate your path and inspire you to live a life of truth,
+							simplicity, and love.
 						</Typography>
 					</Box>
 

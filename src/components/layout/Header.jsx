@@ -1,6 +1,17 @@
 import { useEffect, useState } from "react";
 
-import { AppBar, Box, Container, IconButton, InputAdornment, TextField, Toolbar, Typography, Button, Paper } from "@mui/material";
+import {
+	AppBar,
+	Box,
+	Container,
+	IconButton,
+	InputAdornment,
+	TextField,
+	Toolbar,
+	Typography,
+	Button,
+	Paper,
+} from "@mui/material";
 import { useRouter } from "next/router";
 import { FaChevronDown } from "react-icons/fa";
 
@@ -95,7 +106,11 @@ const Header = () => {
 							</Typography>
 
 							<Box sx={{ display: "flex", alignItems: "center" }}>
-								<Typography variant="sans" component="nav" sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}>
+								<Typography
+									variant="sans"
+									component="nav"
+									sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}
+								>
 									<Box
 										component="ul"
 										sx={{
@@ -177,14 +192,21 @@ const Header = () => {
 													input: {
 														endAdornment: (
 															<InputAdornment position="end">
-																<Button variant="contained" onClick={handleSearchSubmit} sx={{ zIndex: 10, minHeight: 40, width: 40, p: 0 }}>
+																<Button
+																	variant="contained"
+																	onClick={handleSearchSubmit}
+																	sx={{ zIndex: 10, minHeight: 40, width: 40, p: 0 }}
+																>
 																	{getIcon({ icon: "search", size: "20px" })}
 																</Button>
 															</InputAdornment>
 														),
 													},
 												}}
-												sx={{ "& .MuiInputBase-root": { pr: 0 }, "& .MuiOutlinedInput-notchedOutline": { borderWidth: "1px !important" } }}
+												sx={{
+													"& .MuiInputBase-root": { pr: 0 },
+													"& .MuiOutlinedInput-notchedOutline": { borderWidth: "1px !important" },
+												}}
 											/>
 										</Paper>
 									)}

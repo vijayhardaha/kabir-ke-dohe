@@ -23,7 +23,7 @@ const PageHeader = ({ title, variant = "h1", children }) => (
 				textTransform: "uppercase",
 				wordWrap: "break-word",
 				fontWeight: 700,
-				...createResponsiveFontSize("3rem")
+				...createResponsiveFontSize("3rem"),
 			}}
 		>
 			{title}

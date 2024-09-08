@@ -45,7 +45,9 @@ const CoupletMeta = ({ couplet, sx = {} }) => {
 			</Typography>
 			{tags && tags.length > 0 && (
 				<Typography component="div" variant="body2">
-					<span style={{ marginRight: "4px", position: "relative", top: "3px" }}>{getIcon({ icon: "hash", size: "1rem" })}</span>
+					<span style={{ marginRight: "4px", position: "relative", top: "3px" }}>
+						{getIcon({ icon: "hash", size: "1rem" })}
+					</span>
 					{tags.map((tag, index) => (
 						<React.Fragment key={tag.slug}>
 							<Link href={getTagLink(tag.slug)} color="inherit">

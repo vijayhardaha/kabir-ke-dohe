@@ -175,8 +175,9 @@ const Drawer = ({ open, onClose }) => {
 							}}
 						/>
 						<Typography variant="body2" component="p">
-							I am a web developer with expertise in WordPress and WooCommerce, and I also work on React and Next.js projects. I’m always excited
-							about new challenges and strive to integrate the teachings of Sant Kabir Das into my life and work.
+							I am a web developer with expertise in WordPress and WooCommerce, and I also work on React and Next.js
+							projects. I’m always excited about new challenges and strive to integrate the teachings of Sant Kabir Das
+							into my life and work.
 						</Typography>
 					</Box>
 					<Box
@@ -188,8 +189,8 @@ const Drawer = ({ open, onClose }) => {
 							Get in Touch
 						</Typography>
 						<Typography variant="body2" component="p">
-							Feel free to reach out for collaboration or inquiries. I’m passionate about creating innovative web solutions and would love to discuss
-							how we can work together.
+							Feel free to reach out for collaboration or inquiries. I’m passionate about creating innovative web
+							solutions and would love to discuss how we can work together.
 						</Typography>
 						<Box
 							sx={{

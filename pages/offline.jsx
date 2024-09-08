@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import { Box, Button, Typography } from '@mui/material';
-import { GoArrowUpLeft } from 'react-icons/go';
+import { Box, Button, Typography } from "@mui/material";
+import { GoArrowUpLeft } from "react-icons/go";
 
-import PageHeader from '@/src/components/layout/PageHeader';
-import PageTemplate from '@/src/components/layout/PageTemplate';
-import SectionBody from '@/src/components/layout/SectionBody';
+import PageHeader from "@/src/components/layout/PageHeader";
+import PageTemplate from "@/src/components/layout/PageTemplate";
+import SectionBody from "@/src/components/layout/SectionBody";
 
 /**
  * Offline page component.
@@ -16,23 +16,22 @@ import SectionBody from '@/src/components/layout/SectionBody';
  * @returns {JSX.Element} The rendered Offline page component.
  */
 const Offline = () => {
-  return (
-    <PageTemplate>
-      <SectionBody>
-        <Box component="article">
-          <PageHeader title="Offline" />
-          <Typography paragraph>
-            It looks like you are offline. Please check your internet connection
-            and try again. If the problem persists, you can always return to the
-            home page.
-          </Typography>
-          <Button variant="contained" color="primary" href="/" startIcon={<GoArrowUpLeft />}>
-            Go to Home
-          </Button>
-        </Box>
-      </SectionBody>
-    </PageTemplate>
-  );
+	return (
+		<PageTemplate>
+			<SectionBody>
+				<Box component="article">
+					<PageHeader title="Offline" />
+					<Typography paragraph>
+						It looks like you are offline. Please check your internet connection and try again. If the problem persists,
+						you can always return to the home page.
+					</Typography>
+					<Button variant="contained" color="primary" href="/" startIcon={<GoArrowUpLeft />}>
+						Go to Home
+					</Button>
+				</Box>
+			</SectionBody>
+		</PageTemplate>
+	);
 };
 
 export default Offline;
