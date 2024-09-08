@@ -21,16 +21,7 @@ const CoupletsList = ({ query = {} }) => {
 	const router = useRouter();
 	const { loading, setLoading } = useLoader();
 
-	const {
-		search = "",
-		tags = "",
-		popular = false,
-		orderBy,
-		order,
-		perPage = 10,
-		pagination = true,
-		filter = true,
-	} = query;
+	const { s = "", tags = "", popular = false, orderBy, order, perPage = 10, pagination = true, filter = true } = query;
 
 	const sort = filter ? router.query.sort || "default" : "default";
 	const page = pagination
@@ -41,7 +32,7 @@ const CoupletsList = ({ query = {} }) => {
 
 	const params = useMemo(
 		() => ({
-			search,
+			s,
 			tags,
 			popular,
 			page,
@@ -50,7 +41,7 @@ const CoupletsList = ({ query = {} }) => {
 			order: order || getSortParams(sort).order,
 			pagination,
 		}),
-		[search, tags, popular, page, perPage, orderBy, order, pagination, sort]
+		[s, tags, popular, page, perPage, orderBy, order, pagination, sort]
 	);
 
 	const { data, error, isLoading } = useCouplets(params);
@@ -130,7 +121,7 @@ const CoupletsList = ({ query = {} }) => {
 
 	if (couplets.length === 0) {
 		return (
-			<Typography paragraph>
+			<Typography component="p">
 				No couplets match the criteria specified in the request. Please adjust your search or filter parameters and try
 				again.
 			</Typography>
@@ -176,7 +167,7 @@ const CoupletsList = ({ query = {} }) => {
 
 CoupletsList.propTypes = {
 	query: PropTypes.shape({
-		search: PropTypes.string,
+		s: PropTypes.string,
 		tags: PropTypes.string,
 		popular: PropTypes.bool,
 		orderBy: PropTypes.string,

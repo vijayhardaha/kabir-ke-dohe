@@ -37,7 +37,7 @@ const SearchPage = () => {
 			<SectionBody>
 				<Box sx={{ mb: 6 }}>
 					{!query && (
-						<Typography paragraph>
+						<Typography component="p" sx={{ mb: 2 }}>
 							Welcome to our search page! Use the search form below to find couplets by entering keywords, tags. Press
 							Enter or click Search to view the results.
 						</Typography>
@@ -49,7 +49,7 @@ const SearchPage = () => {
 				{query && (
 					<CoupletsList
 						query={{
-							search: query,
+							s: query,
 						}}
 					/>
 				)}

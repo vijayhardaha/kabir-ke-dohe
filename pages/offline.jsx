@@ -21,7 +21,7 @@ const Offline = () => {
 			<SectionBody>
 				<Box component="article">
 					<PageHeader title="Offline" />
-					<Typography paragraph>
+					<Typography component="p">
 						It looks like you are offline. Please check your internet connection and try again. If the problem persists,
 						you can always return to the home page.
 					</Typography>

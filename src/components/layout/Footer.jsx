@@ -34,7 +34,7 @@ const Footer = () => {
 						<Logo link={true} height={28} color="currentcolor" />
 					</Box>
 
-					<Typography paragraph align="center" sx={{ fontSize: "0.75rem", lineHeight: 2 }}>
+					<Typography component="p" align="center" sx={{ fontSize: "0.75rem", lineHeight: 2 }}>
 						Created by <Link href="https://github.com/vijayhardaha">Vijay Hardaha</Link> &bull; Built using{" "}
 						<Link href="https://nextjs.org">Next.js</Link>
 						<br />
