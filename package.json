@@ -10,7 +10,8 @@
 		"prebuild": "npm run build:data",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"lint:fix": "next lint --fix"
 	},
 	"dependencies": {
 		"@emotion/cache": "^11.13.1",
