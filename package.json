@@ -40,15 +40,17 @@
 		"tinycolor2": "^1.6.0"
 	},
 	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "^7.17.0",
-		"@typescript-eslint/parser": "^7.17.0",
+		"@babel/eslint-parser": "^7.25.1",
 		"eslint": "^8.57.0",
-		"eslint-config-next": "^14.2.5",
-		"eslint-plugin-import": "^2.29.1",
-		"eslint-plugin-jsx-a11y": "^6.9.0",
-		"eslint-plugin-react": "^7.35.0",
+		"eslint-config-next": "^14.2.8",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-import": "^2.30.0",
+		"eslint-plugin-jsx-a11y": "^6.10.0",
+		"eslint-plugin-prettier": "^5.2.1",
 		"eslint-plugin-react-hooks": "^4.6.2",
+		"eslint-plugin-react": "^7.35.2",
 		"ora": "^8.1.0",
+		"postcss": "^8.4.45",
 		"prettier": "^3.3.3"
 	}
 }
