@@ -14,7 +14,9 @@ function loadData() {
 /**
  * Fetch filtered and paginated couplets based on query parameters.
  * @param {Object} options - The filtering and pagination options.
- * @param {string} [options.search=""] - Search term for filtering.
+ * @param {string} [options.s=""] - Search term for filtering.
+ * @param {boolean} [options.exactMatch=false] - Enable exact match search.
+ * @param {string} [options.searchWithin="all"] - Fields to search within.
  * @param {string} [options.tags=""] - Comma-separated tags for filtering.
  * @param {boolean} [options.popular=false] - Filter by popularity.
  * @param {string} [options.orderBy="id"] - Field to order by.
@@ -22,10 +24,13 @@ function loadData() {
  * @param {number} [options.page=1] - Page number for pagination.
  * @param {number} [options.perPage=10] - Number of items per page.
  * @param {boolean} [options.pagination=true] - Enable or disable pagination.
+
  * @returns {Object} Object containing filtered and paginated couplets.
  */
 export function getData({
-	search = "",
+	s = "",
+	exactMatch = false,
+	searchWithin = "all",
 	tags = "",
 	popular = false,
 	orderBy = "default",
@@ -36,29 +41,57 @@ export function getData({
 }) {
 	let data = loadData();
 
-	if (search) {
-		const searchLower = search.toLowerCase();
-		data = data.filter((post) =>
-			[
-				post.couplet_hindi,
-				post.couplet_english,
-				post.translation_hindi,
-				post.translation_english,
-				post.explanation_hindi,
-				post.explanation_english,
-			].some((field) => field.toLowerCase().includes(searchLower))
-		);
+	// Search handling
+	if (s) {
+		const searchLower = s.toLowerCase();
+		let fieldsToSearch = [];
+
+		// Determine fields to search within
+		if (searchWithin === "all" || !searchWithin) {
+			fieldsToSearch = [
+				"couplet_hindi",
+				"couplet_english",
+				"translation_hindi",
+				"translation_english",
+				"explanation_hindi",
+				"explanation_english",
+			];
+		} else {
+			const searchWithinArray = searchWithin.split(",").map((field) => field.trim().toLowerCase());
+			if (searchWithinArray.includes("couplet")) {
+				fieldsToSearch.push("couplet_hindi", "couplet_english");
+			}
+			if (searchWithinArray.includes("translation")) {
+				fieldsToSearch.push("translation_hindi", "translation_english");
+			}
+			if (searchWithinArray.includes("explanation")) {
+				fieldsToSearch.push("explanation_hindi", "explanation_english");
+			}
+		}
+
+		// Filter based on exact match or partial match
+		if (exactMatch) {
+			data = data.filter((post) => fieldsToSearch.some((field) => post[field]?.toLowerCase() === searchLower));
+		} else {
+			const searchTerms = searchLower.split(" ");
+			data = data.filter((post) =>
+				fieldsToSearch.some((field) => searchTerms.every((term) => post[field]?.toLowerCase().includes(term)))
+			);
+		}
 	}
 
+	// Tag filtering
 	if (tags) {
 		const tagsArray = tags.split(",").map((tag) => tag.trim().toLowerCase());
 		data = data.filter((post) => post.tags.some((tag) => tagsArray.includes(tag.slug.toLowerCase())));
 	}
 
+	// Popular filtering
 	if (popular) {
 		data = data.filter((post) => post.popular === popular);
 	}
 
+	// Sorting
 	if (orderBy === "random") {
 		data = data.sort(() => Math.random() - 0.5);
 	} else {
@@ -89,6 +122,7 @@ export function getData({
 		});
 	}
 
+	// Pagination setup
 	if (perPage === -1) perPage = data.length;
 	if (perPage <= 0 || isNaN(perPage)) perPage = 10;
 
@@ -128,16 +162,7 @@ export default function handler(req, res) {
 	}
 
 	try {
-		const {
-			search,
-			tags,
-			popular,
-			orderBy = "default",
-			order = "ASC",
-			page = 1,
-			perPage = 10,
-			pagination = true,
-		} = req.body;
+		const { s, exactMatch, searchWithin, tags, popular, orderBy, order, page, perPage, pagination } = req.body;
 
 		if (orderBy && !["default", "random", "popular", "couplet_english", "couplet_hindi"].includes(orderBy)) {
 			return res.status(400).json({
@@ -156,7 +181,9 @@ export default function handler(req, res) {
 		}
 
 		const result = getData({
-			search,
+			s,
+			exactMatch,
+			searchWithin,
 			tags,
 			popular,
 			orderBy,
