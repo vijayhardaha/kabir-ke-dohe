@@ -2,17 +2,28 @@
   "name": "kabir-ke-dohe",
   "version": "0.1.0",
   "private": true,
+  "description": "A curated collection of the profound couplets by Saint Kabir, offering wisdom and spiritual insights.",
+  "author": "Vijay Hardaha <https://twitter.com/vijayhardaha>",
+  "license": "MIT",
+	"homepage": "https://github.com/vijayhardaha/kabir-ke-dohe#readme",
+	"bugs": {
+		"url": "https://github.com/vijayhardaha/kabir-ke-dohe/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/vijayhardaha/kabir-ke-dohe.git"
+	},
   "scripts": {
-    "build:data": "node bin/buildData.mjs",
-    "prebuild:docs": "npm run build:data && rm -rf docs/collections && mkdir -p docs/collections",
-    "build:docs": "node bin/buildDocs.mjs",
-    "dev": "next dev",
-    "prebuild": "npm run build:data",
+    "generate:data": "node bin/buildData.mjs",
+    "prepare:docs": "npm run generate:data && rm -rf docs/collections && mkdir -p docs/collections",
+    "generate:docs": "node bin/buildDocs.mjs",
+    "start:dev": "next dev",
+    "prepare:build": "npm run generate:data",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "build:prompt": "node bin/buildPrompt.mjs"
+    "generate:prompt": "node bin/buildPrompt.mjs"
   },
   "dependencies": {
     "@emotion/cache": "^11.13.1",
