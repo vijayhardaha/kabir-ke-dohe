@@ -18,62 +18,62 @@ import { LiaExternalLinkAltSolid } from "react-icons/lia";
  * @returns {React.Element} The rendered link component.
  */
 const Link = ({ children, href, showExternalIcon = false, ...props }) => {
-	const isExternal = href && (href.startsWith("http://") || href.startsWith("https://"));
-	const isInternal = href && href.startsWith("/");
-	const isHash = href === "#";
+  const isExternal = href && (href.startsWith("http://") || href.startsWith("https://"));
+  const isInternal = href && href.startsWith("/");
+  const isHash = href === "#";
 
-	const icon = isExternal && showExternalIcon ? <LiaExternalLinkAltSolid size={14} /> : null;
+  const icon = isExternal && showExternalIcon ? <LiaExternalLinkAltSolid size={14} /> : null;
 
-	if (isHash) {
-		const handleClick = (event) => {
-			event.preventDefault();
-		};
+  if (isHash) {
+    const handleClick = (event) => {
+      event.preventDefault();
+    };
 
-		return (
-			<MuiLink href={href} onClick={handleClick} {...props}>
-				{children}
-			</MuiLink>
-		);
-	}
+    return (
+      <MuiLink href={href} onClick={handleClick} {...props}>
+        {children}
+      </MuiLink>
+    );
+  }
 
-	if (isInternal) {
-		return (
-			<MuiLink component={NextLink} href={href} {...props}>
-				{children}
-			</MuiLink>
-		);
-	}
+  if (isInternal) {
+    return (
+      <MuiLink component={NextLink} href={href} {...props}>
+        {children}
+      </MuiLink>
+    );
+  }
 
-	if (!showExternalIcon) {
-		return (
-			<MuiLink href={href} target="_blank" rel="noopener noreferrer" {...props}>
-				{children}
-			</MuiLink>
-		);
-	}
+  if (!showExternalIcon) {
+    return (
+      <MuiLink href={href} target="_blank" rel="noopener noreferrer" {...props}>
+        {children}
+      </MuiLink>
+    );
+  }
 
-	return (
-		<Box
-			component="span"
-			sx={{
-				display: "inline-flex",
-				alignItems: "center",
-				gap: 0.25,
-			}}
-		>
-			<MuiLink href={href} target="_blank" rel="noopener noreferrer" {...props}>
-				{children}
-			</MuiLink>
-			{icon}
-		</Box>
-	);
+  return (
+    <Box
+      component="span"
+      sx={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 0.25,
+      }}
+    >
+      <MuiLink href={href} target="_blank" rel="noopener noreferrer" {...props}>
+        {children}
+      </MuiLink>
+      {icon}
+    </Box>
+  );
 };
 
 Link.propTypes = {
-	children: PropTypes.node.isRequired,
-	href: PropTypes.string.isRequired,
-	showExternalIcon: PropTypes.bool,
-	props: PropTypes.object,
+  children: PropTypes.node.isRequired,
+  href: PropTypes.string.isRequired,
+  showExternalIcon: PropTypes.bool,
+  props: PropTypes.object,
 };
 
 export default Link;

@@ -15,27 +15,27 @@ import { createResponsiveFontSize } from "@/src/utils/theme/utils";
  * @returns {JSX.Element} The rendered PageHeader component.
  */
 const PageHeader = ({ title, variant = "h1", children }) => (
-	<Box component="header" sx={{ position: "relative", zIndex: 2, marginBottom: "1.5rem" }}>
-		<Typography
-			variant={variant}
-			component="h1"
-			sx={{
-				textTransform: "uppercase",
-				wordWrap: "break-word",
-				fontWeight: 700,
-				...createResponsiveFontSize("3rem"),
-			}}
-		>
-			{title}
-		</Typography>
-		{children}
-	</Box>
+  <Box component="header" sx={{ position: "relative", zIndex: 2, marginBottom: "1.5rem" }}>
+    <Typography
+      variant={variant}
+      component="h1"
+      sx={{
+        textTransform: "uppercase",
+        wordWrap: "break-word",
+        fontWeight: 700,
+        ...createResponsiveFontSize("3rem"),
+      }}
+    >
+      {title}
+    </Typography>
+    {children}
+  </Box>
 );
 
 PageHeader.propTypes = {
-	title: PropTypes.string.isRequired,
-	variant: PropTypes.string,
-	children: PropTypes.node,
+  title: PropTypes.string.isRequired,
+  variant: PropTypes.string,
+  children: PropTypes.node,
 };
 
 export default PageHeader;

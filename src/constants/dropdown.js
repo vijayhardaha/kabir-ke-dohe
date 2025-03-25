@@ -18,10 +18,10 @@ const ITEM_PADDING_TOP = 10;
  * @property {number} PaperProps.style.maxHeight - Maximum height of the dropdown menu.
  */
 export const DROPDOWN_MENU_PROPS = {
-	disableScrollLock: true,
-	PaperProps: {
-		style: {
-			maxHeight: ITEM_HEIGHT * 8 + ITEM_PADDING_TOP,
-		},
-	},
+  disableScrollLock: true,
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 8 + ITEM_PADDING_TOP,
+    },
+  },
 };

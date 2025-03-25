@@ -9,15 +9,15 @@ import { getCoupletLink } from "../seo";
  * @returns {string} The formatted share message.
  */
 export const generateShareMessage = (couplet) => {
-	const { couplet_hindi, unique_slug } = couplet;
+  const { couplet_hindi, unique_slug } = couplet;
 
-	const coupletLink = getCoupletLink(unique_slug, true);
+  const coupletLink = getCoupletLink(unique_slug, true);
 
-	// Message for the couplet with a link to the specific couplet page
-	let message = couplet_hindi;
+  // Message for the couplet with a link to the specific couplet page
+  let message = couplet_hindi;
 
-	message += `\n\n— संत कबीर साहेब`;
-	message += `\n\nDiscover this profound couplet at ${coupletLink}`;
+  message += `\n\n— संत कबीर साहेब`;
+  message += `\n\nDiscover this profound couplet at ${coupletLink}`;
 
-	return message;
+  return message;
 };

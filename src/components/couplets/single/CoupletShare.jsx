@@ -18,38 +18,38 @@ import { generateShareMessage } from "@/src/utils/couplets/shareMessage";
  * @returns {JSX.Element} The rendered ShareButton component.
  */
 const ShareButton = ({ href, ariaLabel, backgroundColor, icon, onClick }) => {
-	const getHoverColor = (color, isDark) => {
-		const baseColor = tinycolor(color);
-		return isDark ? baseColor.darken(10).toString() : baseColor.lighten(10).toString();
-	};
+  const getHoverColor = (color, isDark) => {
+    const baseColor = tinycolor(color);
+    return isDark ? baseColor.darken(10).toString() : baseColor.lighten(10).toString();
+  };
 
-	const hoverColor = getHoverColor(backgroundColor, true);
+  const hoverColor = getHoverColor(backgroundColor, true);
 
-	return (
-		<Button
-			variant="outlined"
-			color="primary"
-			href={href}
-			target="_blank"
-			rel="noopener noreferrer"
-			aria-label={ariaLabel}
-			sx={{
-				flex: 1,
-				borderColor: backgroundColor,
-				backgroundColor: backgroundColor,
-				color: "#ffffff",
-				"&:hover": {
-					borderColor: hoverColor,
-					backgroundColor: hoverColor,
-				},
-				px: 2,
-				py: 1,
-			}}
-			onClick={onClick}
-		>
-			{icon}
-		</Button>
-	);
+  return (
+    <Button
+      variant="outlined"
+      color="primary"
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={ariaLabel}
+      sx={{
+        flex: 1,
+        borderColor: backgroundColor,
+        backgroundColor: backgroundColor,
+        color: "#ffffff",
+        "&:hover": {
+          borderColor: hoverColor,
+          backgroundColor: hoverColor,
+        },
+        px: 2,
+        py: 1,
+      }}
+      onClick={onClick}
+    >
+      {icon}
+    </Button>
+  );
 };
 
 /**
@@ -61,72 +61,72 @@ const ShareButton = ({ href, ariaLabel, backgroundColor, icon, onClick }) => {
  * @returns {JSX.Element} The rendered component.
  */
 const CoupletShare = ({ couplet }) => {
-	const shareMessage = generateShareMessage(couplet);
+  const shareMessage = generateShareMessage(couplet);
 
-	return (
-		<Box
-			component="div"
-			sx={{
-				mt: 4,
-				mb: 2,
-			}}
-		>
-			<Typography
-				variant="h6"
-				sx={{
-					mb: 1,
-				}}
-			>
-				Share this inspiring couplet with your friends:
-			</Typography>
-			<Box
-				sx={{
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "space-between",
-					gap: 2,
-				}}
-			>
-				<ShareButton
-					href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}`}
-					ariaLabel="Share on Twitter"
-					backgroundColor="#1DA1F2"
-					icon={<RiTwitterFill size={20} color="#ffffff" />}
-				/>
-				<ShareButton
-					href={`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage)}`}
-					ariaLabel="Share on WhatsApp"
-					backgroundColor="#25d366"
-					icon={<RiWhatsappFill size={20} color="#ffffff" />}
-				/>
-				<ShareButton
-					ariaLabel="Copy to clipboard"
-					backgroundColor="#505050"
-					icon={<RiFileCopyFill size={20} color="#ffffff" />}
-					onClick={() => {
-						toast.success("Copied to clipboard!");
-						navigator.clipboard.writeText(shareMessage);
-					}}
-				/>
-			</Box>
-			<Divider sx={{ my: 3 }} />
-		</Box>
-	);
+  return (
+    <Box
+      component="div"
+      sx={{
+        mt: 4,
+        mb: 2,
+      }}
+    >
+      <Typography
+        variant="h6"
+        sx={{
+          mb: 1,
+        }}
+      >
+        Share this inspiring couplet with your friends:
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 2,
+        }}
+      >
+        <ShareButton
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}`}
+          ariaLabel="Share on Twitter"
+          backgroundColor="#1DA1F2"
+          icon={<RiTwitterFill size={20} color="#ffffff" />}
+        />
+        <ShareButton
+          href={`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage)}`}
+          ariaLabel="Share on WhatsApp"
+          backgroundColor="#25d366"
+          icon={<RiWhatsappFill size={20} color="#ffffff" />}
+        />
+        <ShareButton
+          ariaLabel="Copy to clipboard"
+          backgroundColor="#505050"
+          icon={<RiFileCopyFill size={20} color="#ffffff" />}
+          onClick={() => {
+            toast.success("Copied to clipboard!");
+            navigator.clipboard.writeText(shareMessage);
+          }}
+        />
+      </Box>
+      <Divider sx={{ my: 3 }} />
+    </Box>
+  );
 };
 
 ShareButton.propTypes = {
-	href: PropTypes.string,
-	ariaLabel: PropTypes.string.isRequired,
-	backgroundColor: PropTypes.string.isRequired,
-	icon: PropTypes.node.isRequired,
-	onClick: PropTypes.func,
+  href: PropTypes.string,
+  ariaLabel: PropTypes.string.isRequired,
+  backgroundColor: PropTypes.string.isRequired,
+  icon: PropTypes.node.isRequired,
+  onClick: PropTypes.func,
 };
 
 CoupletShare.propTypes = {
-	couplet: PropTypes.shape({
-		couplet_hindi: PropTypes.string.isRequired,
-		unique_slug: PropTypes.string.isRequired,
-	}).isRequired,
+  couplet: PropTypes.shape({
+    couplet_hindi: PropTypes.string.isRequired,
+    unique_slug: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default CoupletShare;

@@ -22,20 +22,20 @@ import { getTagLink } from "@/src/utils/seo";
  * @returns {JSX.Element} The rendered TagCouplets page component.
  */
 const TagCouplets = ({ isValid, tagName, tagSlug }) => {
-	return (
-		<PageTemplate>
-			<SEO title={`Tag: ${tagName}`} url={getTagLink(tagSlug, true)} />
+  return (
+    <PageTemplate>
+      <SEO title={`Tag: ${tagName}`} url={getTagLink(tagSlug, true)} />
 
-			<SectionHeader title={`Tag: ${tagName}`} component="h1" />
-			<SectionBody>{isValid && <CoupletsList query={{ tags: tagSlug }} />}</SectionBody>
-		</PageTemplate>
-	);
+      <SectionHeader title={`Tag: ${tagName}`} component="h1" />
+      <SectionBody>{isValid && <CoupletsList query={{ tags: tagSlug }} />}</SectionBody>
+    </PageTemplate>
+  );
 };
 
 TagCouplets.propTypes = {
-	isValid: PropTypes.bool.isRequired,
-	tagName: PropTypes.string.isRequired,
-	tagSlug: PropTypes.string.isRequired,
+  isValid: PropTypes.bool.isRequired,
+  tagName: PropTypes.string.isRequired,
+  tagSlug: PropTypes.string.isRequired,
 };
 
 /**
@@ -48,54 +48,54 @@ TagCouplets.propTypes = {
  * @returns {Promise<Object>} The props to be passed to the TagCouplets component.
  */
 export async function getServerSideProps(context) {
-	const { page, tag } = context.query;
+  const { page, tag } = context.query;
 
-	const filePath = path.join(process.cwd(), "data/tags.json");
-	const jsonData = fs.readFileSync(filePath, "utf-8");
-	const data = JSON.parse(jsonData);
+  const filePath = path.join(process.cwd(), "data/tags.json");
+  const jsonData = fs.readFileSync(filePath, "utf-8");
+  const data = JSON.parse(jsonData);
 
-	let isValidTag = false;
-	let tagName = "";
-	let tagSlug = "";
+  let isValidTag = false;
+  let tagName = "";
+  let tagSlug = "";
 
-	if (tag?.length) {
-		const tagObject = data.find((t) => t.slug === tag);
+  if (tag?.length) {
+    const tagObject = data.find((t) => t.slug === tag);
 
-		if (tagObject) {
-			isValidTag = true;
-			tagName = tagObject.name;
-			tagSlug = tagObject.slug;
-		}
-	}
+    if (tagObject) {
+      isValidTag = true;
+      tagName = tagObject.name;
+      tagSlug = tagObject.slug;
+    }
+  }
 
-	let isValidPage = true;
+  let isValidPage = true;
 
-	if (page?.length) {
-		const pageNumber = page;
+  if (page?.length) {
+    const pageNumber = page;
 
-		// Check if pageNumber consists only of digits
-		const isNumber = /^\d+$/.test(pageNumber);
+    // Check if pageNumber consists only of digits
+    const isNumber = /^\d+$/.test(pageNumber);
 
-		if (!isNumber || parseInt(pageNumber, 10) <= 0) {
-			isValidPage = false;
-		}
-	}
+    if (!isNumber || parseInt(pageNumber, 10) <= 0) {
+      isValidPage = false;
+    }
+  }
 
-	const isValid = isValidTag && isValidPage;
+  const isValid = isValidTag && isValidPage;
 
-	if (!isValid) {
-		return {
-			notFound: true,
-		};
-	}
+  if (!isValid) {
+    return {
+      notFound: true,
+    };
+  }
 
-	return {
-		props: {
-			isValid,
-			tagName,
-			tagSlug,
-		},
-	};
+  return {
+    props: {
+      isValid,
+      tagName,
+      tagSlug,
+    },
+  };
 }
 
 export default TagCouplets;

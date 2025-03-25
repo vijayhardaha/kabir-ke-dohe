@@ -17,28 +17,28 @@ import { autop } from "@/src/utils/formatting";
  * @returns {JSX.Element} The rendered CoupletContent component.
  */
 const CoupletContent = ({ couplet }) => {
-	const { translation_english, translation_hindi, explanation_hindi } = couplet;
+  const { translation_english, translation_hindi, explanation_hindi } = couplet;
 
-	return (
-		<Box
-			component="div"
-			sx={{
-				mt: 3,
-			}}
-		>
-			{translation_hindi && autop(`<strong>अर्थ:</strong> ${translation_hindi}`)}
-			{translation_english && autop(`<strong>Meaning:</strong> ${translation_english}`)}
-			{explanation_hindi && autop(`<strong>व्याख्या:</strong> ${explanation_hindi}`)}
-		</Box>
-	);
+  return (
+    <Box
+      component="div"
+      sx={{
+        mt: 3,
+      }}
+    >
+      {translation_hindi && autop(`<strong>अर्थ:</strong> ${translation_hindi}`)}
+      {translation_english && autop(`<strong>Meaning:</strong> ${translation_english}`)}
+      {explanation_hindi && autop(`<strong>व्याख्या:</strong> ${explanation_hindi}`)}
+    </Box>
+  );
 };
 
 CoupletContent.propTypes = {
-	couplet: PropTypes.shape({
-		translation_english: PropTypes.string,
-		translation_hindi: PropTypes.string,
-		explanation_hindi: PropTypes.string,
-	}).isRequired,
+  couplet: PropTypes.shape({
+    translation_english: PropTypes.string,
+    translation_hindi: PropTypes.string,
+    explanation_hindi: PropTypes.string,
+  }).isRequired,
 };
 
 export default CoupletContent;

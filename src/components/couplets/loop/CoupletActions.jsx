@@ -14,26 +14,26 @@ import { getCoupletLink } from "@/src/utils/seo";
  * @returns {JSX.Element} The rendered CoupletActions component.
  */
 const CoupletActions = ({ couplet, onOpenFeedbackForm }) => {
-	const { unique_slug } = couplet;
+  const { unique_slug } = couplet;
 
-	return (
-		<Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1.5 }}>
-			<Button component={Link} href={getCoupletLink(unique_slug)} variant="contained" color="primary" size="medium">
-				Read More
-			</Button>
-			<CoupletShareButton couplet={couplet} variant="outlined" color="dark" size="medium" />
-			<Button variant="contained" color="dark" size="medium" onClick={onOpenFeedbackForm}>
-				Submit Feedback
-			</Button>
-		</Box>
-	);
+  return (
+    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1.5 }}>
+      <Button component={Link} href={getCoupletLink(unique_slug)} variant="contained" color="primary" size="medium">
+        Read More
+      </Button>
+      <CoupletShareButton couplet={couplet} variant="outlined" color="dark" size="medium" />
+      <Button variant="contained" color="dark" size="medium" onClick={onOpenFeedbackForm}>
+        Submit Feedback
+      </Button>
+    </Box>
+  );
 };
 
 CoupletActions.propTypes = {
-	couplet: PropTypes.shape({
-		unique_slug: PropTypes.string.isRequired,
-	}).isRequired,
-	onOpenFeedbackForm: PropTypes.func.isRequired,
+  couplet: PropTypes.shape({
+    unique_slug: PropTypes.string.isRequired,
+  }).isRequired,
+  onOpenFeedbackForm: PropTypes.func.isRequired,
 };
 
 export default CoupletActions;

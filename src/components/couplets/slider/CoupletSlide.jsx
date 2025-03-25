@@ -18,63 +18,63 @@ import CoupletMeta from "../common/CoupletMeta";
  * @returns {JSX.Element} The rendered CoupletSlide component.
  */
 const CoupletSlide = ({ couplet }) => {
-	return (
-		<Box
-			component="article"
-			sx={{
-				position: "relative",
-				width: "100%",
-			}}
-		>
-			<Container sx={{ position: "relative", zIndex: 10 }}>
-				<Box
-					component="article"
-					sx={{
-						display: "flex",
-						flexDirection: "column",
-						alignItems: "center",
-					}}
-				>
-					<CoupletHeader couplet={couplet} />
-					<CoupletMeta couplet={couplet} />
-					<CoupletActions couplet={couplet} />
-				</Box>
-			</Container>
+  return (
+    <Box
+      component="article"
+      sx={{
+        position: "relative",
+        width: "100%",
+      }}
+    >
+      <Container sx={{ position: "relative", zIndex: 10 }}>
+        <Box
+          component="article"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <CoupletHeader couplet={couplet} />
+          <CoupletMeta couplet={couplet} />
+          <CoupletActions couplet={couplet} />
+        </Box>
+      </Container>
 
-			<Typography
-				component="div"
-				variant="devnagiri"
-				sx={{
-					lineHeight: "1.2",
-					color: "rgba(0, 0, 0, .1)",
-					zIndex: 1,
-					position: "absolute",
-					top: "50%",
-					left: "50%",
-					transform: "translate(-50%, -50%)",
-					userSelect: "none",
-					textTransform: "uppercase",
-					paddingTop: { xs: "80px", md: "120px" },
-					fontSize: { xs: "30rem", md: "50rem" },
-				}}
-			>
-				{couplet.couplet_hindi.charAt(0)}
-			</Typography>
-		</Box>
-	);
+      <Typography
+        component="div"
+        variant="devnagiri"
+        sx={{
+          lineHeight: "1.2",
+          color: "rgba(0, 0, 0, .1)",
+          zIndex: 1,
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          userSelect: "none",
+          textTransform: "uppercase",
+          paddingTop: { xs: "80px", md: "120px" },
+          fontSize: { xs: "30rem", md: "50rem" },
+        }}
+      >
+        {couplet.couplet_hindi.charAt(0)}
+      </Typography>
+    </Box>
+  );
 };
 
 CoupletSlide.propTypes = {
-	couplet: PropTypes.shape({
-		couplet_hindi: PropTypes.string.isRequired,
-		unique_slug: PropTypes.string.isRequired,
-		tags: PropTypes.arrayOf(
-			PropTypes.shape({
-				name: PropTypes.string.isRequired,
-				slug: PropTypes.string.isRequired,
-			})
-		),
-	}).isRequired,
+  couplet: PropTypes.shape({
+    couplet_hindi: PropTypes.string.isRequired,
+    unique_slug: PropTypes.string.isRequired,
+    tags: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        slug: PropTypes.string.isRequired,
+      })
+    ),
+  }).isRequired,
 };
 
 export default CoupletSlide;

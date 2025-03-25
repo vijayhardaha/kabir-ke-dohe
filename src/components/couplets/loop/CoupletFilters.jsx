@@ -19,69 +19,69 @@ import { DROPDOWN_MENU_PROPS } from "@/src/constants/dropdown";
  * @returns {JSX.Element} The rendered CoupletFilters component.
  */
 const CoupletFilters = ({ selectedSort, onSortChange, page, perPage, paginationEnabled, totalCount }) => {
-	const handleSortChange = useCallback(
-		(event) => {
-			onSortChange(event.target.value);
-		},
-		[onSortChange]
-	);
+  const handleSortChange = useCallback(
+    (event) => {
+      onSortChange(event.target.value);
+    },
+    [onSortChange]
+  );
 
-	const start = (page - 1) * perPage + 1;
-	const end = Math.min(page * perPage, totalCount);
+  const start = (page - 1) * perPage + 1;
+  const end = Math.min(page * perPage, totalCount);
 
-	return (
-		<Box
-			sx={{
-				display: { xs: "block", md: "flex" },
-				flexDirection: { xs: "column", md: "row" },
-				alignItems: { xs: "flex-start", md: "center" },
-				justifyContent: {
-					xs: "flex-start",
-					md: paginationEnabled ? "space-between" : "flex-end",
-				},
-				mb: 4,
-			}}
-		>
-			{paginationEnabled && (
-				<Typography
-					variant="body2"
-					sx={{
-						mb: { xs: 2, md: 0 },
-						textAlign: { xs: "left", md: "inherit" },
-					}}
-				>
-					Showing {start}&ndash;{end} of {totalCount} results.
-				</Typography>
-			)}
+  return (
+    <Box
+      sx={{
+        display: { xs: "block", md: "flex" },
+        flexDirection: { xs: "column", md: "row" },
+        alignItems: { xs: "flex-start", md: "center" },
+        justifyContent: {
+          xs: "flex-start",
+          md: paginationEnabled ? "space-between" : "flex-end",
+        },
+        mb: 4,
+      }}
+    >
+      {paginationEnabled && (
+        <Typography
+          variant="body2"
+          sx={{
+            mb: { xs: 2, md: 0 },
+            textAlign: { xs: "left", md: "inherit" },
+          }}
+        >
+          Showing {start}&ndash;{end} of {totalCount} results.
+        </Typography>
+      )}
 
-			<FormControl sx={{ minWidth: 150, width: { xs: "100%", md: "auto" } }}>
-				<InputLabel id="sort-select-label">Sort By</InputLabel>
-				<Select
-					labelId="sort-select-label"
-					value={selectedSort}
-					onChange={handleSortChange}
-					label="Sort By"
-					MenuProps={DROPDOWN_MENU_PROPS}
-					fullWidth
-				>
-					{SORT_OPTIONS.map((option) => (
-						<MenuItem key={option.value} value={option.value}>
-							{option.label}
-						</MenuItem>
-					))}
-				</Select>
-			</FormControl>
-		</Box>
-	);
+      <FormControl sx={{ minWidth: 150, width: { xs: "100%", md: "auto" } }}>
+        <InputLabel id="sort-select-label">Sort By</InputLabel>
+        <Select
+          labelId="sort-select-label"
+          value={selectedSort}
+          onChange={handleSortChange}
+          label="Sort By"
+          MenuProps={DROPDOWN_MENU_PROPS}
+          fullWidth
+        >
+          {SORT_OPTIONS.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Box>
+  );
 };
 
 CoupletFilters.propTypes = {
-	totalCount: PropTypes.number.isRequired,
-	onSortChange: PropTypes.func.isRequired,
-	selectedSort: PropTypes.string.isRequired,
-	paginationEnabled: PropTypes.bool.isRequired,
-	page: PropTypes.number.isRequired,
-	perPage: PropTypes.number.isRequired,
+  totalCount: PropTypes.number.isRequired,
+  onSortChange: PropTypes.func.isRequired,
+  selectedSort: PropTypes.string.isRequired,
+  paginationEnabled: PropTypes.bool.isRequired,
+  page: PropTypes.number.isRequired,
+  perPage: PropTypes.number.isRequired,
 };
 
 export default CoupletFilters;

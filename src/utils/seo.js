@@ -6,11 +6,11 @@
  * @returns {string} The constructed permalink.
  */
 export const getPermalink = (slug = "", prefix = "", baseUrl = false) => {
-	const effectiveBaseUrl = baseUrl ? process.env.NEXT_PUBLIC_BASE_URL : "";
+  const effectiveBaseUrl = baseUrl ? process.env.NEXT_PUBLIC_BASE_URL : "";
 
-	// Join parts and ensure leading slash if baseUrl is false.
-	const parts = [effectiveBaseUrl, prefix, slug].filter((part) => part).join("/");
-	return baseUrl ? parts : `/${parts}`;
+  // Join parts and ensure leading slash if baseUrl is false.
+  const parts = [effectiveBaseUrl, prefix, slug].filter((part) => part).join("/");
+  return baseUrl ? parts : `/${parts}`;
 };
 
 /**

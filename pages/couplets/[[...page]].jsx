@@ -18,20 +18,20 @@ import { getPermalinkWithBase } from "@/src/utils/seo";
  * @returns {JSX.Element} The rendered Couplets page component.
  */
 const Couplets = ({ isValidPage }) => {
-	const { title, description, keywords } = PAGES_SEO_CONFIG.popular;
+  const { title, description, keywords } = PAGES_SEO_CONFIG.popular;
 
-	return (
-		<PageTemplate>
-			<SEO title={title} description={description} keywords={keywords} url={getPermalinkWithBase("popular")} />
+  return (
+    <PageTemplate>
+      <SEO title={title} description={description} keywords={keywords} url={getPermalinkWithBase("popular")} />
 
-			<SectionHeader title="Kabir Ke Dohe" component="h1" />
-			<SectionBody>{isValidPage && <CoupletsList />}</SectionBody>
-		</PageTemplate>
-	);
+      <SectionHeader title="Kabir Ke Dohe" component="h1" />
+      <SectionBody>{isValidPage && <CoupletsList />}</SectionBody>
+    </PageTemplate>
+  );
 };
 
 Couplets.propTypes = {
-	isValidPage: PropTypes.bool.isRequired,
+  isValidPage: PropTypes.bool.isRequired,
 };
 
 /**
@@ -44,29 +44,29 @@ Couplets.propTypes = {
  * @returns {Promise<Object>} The props to be passed to the Couplets component.
  */
 export async function getServerSideProps(context) {
-	const { page } = context.query;
-	let isValidPage = true;
+  const { page } = context.query;
+  let isValidPage = true;
 
-	if (page?.length) {
-		const pageNumber = page[0];
-		const isNumber = /^\d+$/.test(pageNumber);
+  if (page?.length) {
+    const pageNumber = page[0];
+    const isNumber = /^\d+$/.test(pageNumber);
 
-		if (!isNumber || parseInt(pageNumber, 10) <= 0) {
-			isValidPage = false;
-		}
-	}
+    if (!isNumber || parseInt(pageNumber, 10) <= 0) {
+      isValidPage = false;
+    }
+  }
 
-	if (!isValidPage) {
-		return {
-			notFound: true,
-		};
-	}
+  if (!isValidPage) {
+    return {
+      notFound: true,
+    };
+  }
 
-	return {
-		props: {
-			isValidPage,
-		},
-	};
+  return {
+    props: {
+      isValidPage,
+    },
+  };
 }
 
 export default Couplets;

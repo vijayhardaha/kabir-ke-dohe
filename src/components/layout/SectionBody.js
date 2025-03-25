@@ -11,19 +11,19 @@ import PropTypes from "prop-types";
  * @returns {JSX.Element} The rendered SectionBody component.
  */
 const SectionBody = ({ children }) => (
-	<Box
-		sx={{
-			maxWidth: "820px",
-			margin: "0 auto",
-			"&>:last-child": { marginBottom: "0" },
-		}}
-	>
-		{children}
-	</Box>
+  <Box
+    sx={{
+      maxWidth: "820px",
+      margin: "0 auto",
+      "&>:last-child": { marginBottom: "0" },
+    }}
+  >
+    {children}
+  </Box>
 );
 
 SectionBody.propTypes = {
-	children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default SectionBody;

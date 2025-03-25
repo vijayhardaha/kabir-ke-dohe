@@ -9,12 +9,12 @@ import { Typography } from "@mui/material";
  * @returns {JSX.Element[]} The formatted text as an array of JSX elements.
  */
 export const nl2br = (text) => {
-	return text.split("\n").map((line, index, array) => (
-		<React.Fragment key={index}>
-			{line}
-			{index < array.length - 1 && <br />}
-		</React.Fragment>
-	));
+  return text.split("\n").map((line, index, array) => (
+    <React.Fragment key={index}>
+      {line}
+      {index < array.length - 1 && <br />}
+    </React.Fragment>
+  ));
 };
 
 /**
@@ -25,18 +25,18 @@ export const nl2br = (text) => {
  * @returns {JSX.Element} - The formatted text with <Typography> components for non-empty lines.
  */
 export const autop = (text, typographyProps = {}) => {
-	return text
-		.split("\n")
-		.filter((line) => line.trim() !== "") // Filter out empty lines
-		.map((line, index) => (
-			<Typography
-				key={index}
-				variant="body1"
-				paragraph
-				dangerouslySetInnerHTML={{ __html: line }} // Render HTML directly
-				{...typographyProps}
-			/>
-		));
+  return text
+    .split("\n")
+    .filter((line) => line.trim() !== "") // Filter out empty lines
+    .map((line, index) => (
+      <Typography
+        key={index}
+        variant="body1"
+        paragraph
+        dangerouslySetInnerHTML={{ __html: line }} // Render HTML directly
+        {...typographyProps}
+      />
+    ));
 };
 
 /**
@@ -46,5 +46,5 @@ export const autop = (text, typographyProps = {}) => {
  * @returns {string} The cleaned text.
  */
 export const cleanText = (text) => {
-	return text.replace(/[\n\r\t]/g, "");
+  return text.replace(/[\n\r\t]/g, "");
 };

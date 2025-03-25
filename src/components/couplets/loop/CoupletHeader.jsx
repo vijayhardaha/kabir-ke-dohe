@@ -15,28 +15,28 @@ import { getCoupletLink } from "@/src/utils/seo";
  * @returns {JSX.Element} The rendered CoupletHeader component.
  */
 const CoupletHeader = ({ couplet }) => {
-	const { couplet_hindi, unique_slug } = couplet;
+  const { couplet_hindi, unique_slug } = couplet;
 
-	return (
-		<Typography
-			component="h2"
-			variant="h1"
-			sx={{
-				mb: 1,
-			}}
-		>
-			<Typography component={Link} variant="dohaTitle" href={getCoupletLink(unique_slug)}>
-				{nl2br(couplet_hindi)}
-			</Typography>
-		</Typography>
-	);
+  return (
+    <Typography
+      component="h2"
+      variant="h1"
+      sx={{
+        mb: 1,
+      }}
+    >
+      <Typography component={Link} variant="dohaTitle" href={getCoupletLink(unique_slug)}>
+        {nl2br(couplet_hindi)}
+      </Typography>
+    </Typography>
+  );
 };
 
 CoupletHeader.propTypes = {
-	couplet: PropTypes.shape({
-		couplet_hindi: PropTypes.string.isRequired,
-		unique_slug: PropTypes.string.isRequired,
-	}).isRequired,
+  couplet: PropTypes.shape({
+    couplet_hindi: PropTypes.string.isRequired,
+    unique_slug: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default CoupletHeader;

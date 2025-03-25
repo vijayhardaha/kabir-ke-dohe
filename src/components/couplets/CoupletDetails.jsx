@@ -21,30 +21,30 @@ import CoupletShare from "./single/CoupletShare";
  * @returns {JSX.Element} The rendered CoupletDetails component.
  */
 const CoupletDetails = ({ couplet }) => (
-	<Box component="article">
-		<CoupletHeader couplet={couplet} />
-		<CoupletMeta couplet={couplet} />
-		<CoupletContent couplet={couplet} />
-		<CoupletShare couplet={couplet} />
-		<CoupletFeedback couplet={couplet} />
-	</Box>
+  <Box component="article">
+    <CoupletHeader couplet={couplet} />
+    <CoupletMeta couplet={couplet} />
+    <CoupletContent couplet={couplet} />
+    <CoupletShare couplet={couplet} />
+    <CoupletFeedback couplet={couplet} />
+  </Box>
 );
 
 CoupletDetails.propTypes = {
-	couplet: PropTypes.shape({
-		id: PropTypes.number.isRequired,
-		couplet_hindi: PropTypes.string.isRequired,
-		translation_english: PropTypes.string,
-		translation_hindi: PropTypes.string,
-		explanation_hindi: PropTypes.string,
-		unique_slug: PropTypes.string.isRequired,
-		tags: PropTypes.arrayOf(
-			PropTypes.shape({
-				name: PropTypes.string.isRequired,
-				slug: PropTypes.string.isRequired,
-			})
-		),
-	}).isRequired,
+  couplet: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    couplet_hindi: PropTypes.string.isRequired,
+    translation_english: PropTypes.string,
+    translation_hindi: PropTypes.string,
+    explanation_hindi: PropTypes.string,
+    unique_slug: PropTypes.string.isRequired,
+    tags: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        slug: PropTypes.string.isRequired,
+      })
+    ),
+  }).isRequired,
 };
 
 export default CoupletDetails;

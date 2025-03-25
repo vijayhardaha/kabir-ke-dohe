@@ -15,30 +15,30 @@ import SectionBody from "@/src/components/layout/SectionBody";
  * @returns {JSX.Element} The rendered 404 page component.
  */
 const Custom404 = () => {
-	return (
-		<PageTemplate>
-			<SectionBody>
-				<Box component="article" sx={{ textAlign: "center", mt: 4 }}>
-					<PageHeader title="Oops! Page Not Found" />
-					<Typography component="p">
-						It looks like the page you’re trying to reach doesn’t exist anymore or may have been moved. We apologize for
-						the inconvenience. You can go back to our homepage or use the search function to find what you’re looking
-						for.
-					</Typography>
+  return (
+    <PageTemplate>
+      <SectionBody>
+        <Box component="article" sx={{ textAlign: "center", mt: 4 }}>
+          <PageHeader title="Oops! Page Not Found" />
+          <Typography component="p">
+            It looks like the page you’re trying to reach doesn’t exist anymore or may have been moved. We apologize for
+            the inconvenience. You can go back to our homepage or use the search function to find what you’re looking
+            for.
+          </Typography>
 
-					<Box sx={{ mt: 2 }}>
-						<SearchForm />
-					</Box>
+          <Box sx={{ mt: 2 }}>
+            <SearchForm />
+          </Box>
 
-					<Box sx={{ mt: 4 }}>
-						<Button variant="contained" color="primary" href="/" startIcon={<GoArrowUpLeft />}>
-							Back to Home
-						</Button>
-					</Box>
-				</Box>
-			</SectionBody>
-		</PageTemplate>
-	);
+          <Box sx={{ mt: 4 }}>
+            <Button variant="contained" color="primary" href="/" startIcon={<GoArrowUpLeft />}>
+              Back to Home
+            </Button>
+          </Box>
+        </Box>
+      </SectionBody>
+    </PageTemplate>
+  );
 };
 
 export default Custom404;

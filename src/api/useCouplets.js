@@ -11,28 +11,28 @@ import { fetchApiData } from "./fetchApiData";
  * @returns {Object} - Contains data, error, and loading states.
  */
 export const useCouplets = (params = {}) => {
-	const { data, error } = useSWR(["/api/couplets", params], fetchApiData);
+  const { data, error } = useSWR(["/api/couplets", params], fetchApiData);
 
-	// Handle errors to include error code if available
-	const resolvedError = useMemo(() => {
-		if (data && !data.success) {
-			// Data-specific error handling
-			return { message: data.message || "Unknown error occurred.", code: data.code || null };
-		}
-		if (error) {
-			// Fetch API-specific error handling
-			if (error instanceof Error) {
-				return { message: error.message, code: error.code || null };
-			}
-			// Handle non-Error errors
-			return { message: "An unexpected error occurred.", code: null };
-		}
-		return null;
-	}, [data, error]);
+  // Handle errors to include error code if available
+  const resolvedError = useMemo(() => {
+    if (data && !data.success) {
+      // Data-specific error handling
+      return { message: data.message || "Unknown error occurred.", code: data.code || null };
+    }
+    if (error) {
+      // Fetch API-specific error handling
+      if (error instanceof Error) {
+        return { message: error.message, code: error.code || null };
+      }
+      // Handle non-Error errors
+      return { message: "An unexpected error occurred.", code: null };
+    }
+    return null;
+  }, [data, error]);
 
-	return {
-		data: data ? data.data : null,
-		error: resolvedError,
-		isLoading: !data && !error,
-	};
+  return {
+    data: data ? data.data : null,
+    error: resolvedError,
+    isLoading: !data && !error,
+  };
 };

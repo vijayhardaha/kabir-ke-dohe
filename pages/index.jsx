@@ -19,34 +19,34 @@ import { getPermalinkWithBase } from "@/src/utils/seo";
  * @returns {JSX.Element} The rendered Home page component.
  */
 const Home = () => {
-	const queryParams = {
-		pagination: false,
-		perPage: 10,
-		filter: false,
-	};
+  const queryParams = {
+    pagination: false,
+    perPage: 10,
+    filter: false,
+  };
 
-	const { title, description, keywords } = PAGES_SEO_CONFIG.home;
+  const { title, description, keywords } = PAGES_SEO_CONFIG.home;
 
-	return (
-		<PageTemplate coverChildren={<CoupletsSlider />}>
-			<SEO title={title} description={description} keywords={keywords} url={getPermalinkWithBase()} isHomePage={true} />
-			<SectionHeader title="Latest Dohe" />
-			<SectionBody>
-				<CoupletsList query={queryParams} />
-				<Box
-					sx={{
-						display: "flex",
-						justifyContent: "center",
-						mt: 2,
-					}}
-				>
-					<Button variant="contained" color="dark" component={Link} href="/couplets" size="large">
-						View All Dohe
-					</Button>
-				</Box>
-			</SectionBody>
-		</PageTemplate>
-	);
+  return (
+    <PageTemplate coverChildren={<CoupletsSlider />}>
+      <SEO title={title} description={description} keywords={keywords} url={getPermalinkWithBase()} isHomePage={true} />
+      <SectionHeader title="Latest Dohe" />
+      <SectionBody>
+        <CoupletsList query={queryParams} />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mt: 2,
+          }}
+        >
+          <Button variant="contained" color="dark" component={Link} href="/couplets" size="large">
+            View All Dohe
+          </Button>
+        </Box>
+      </SectionBody>
+    </PageTemplate>
+  );
 };
 
 export default Home;

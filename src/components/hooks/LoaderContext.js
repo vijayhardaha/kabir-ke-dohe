@@ -12,13 +12,13 @@ const LoaderContext = createContext();
  * @returns {JSX.Element} The rendered LoaderProvider component.
  */
 export const LoaderProvider = ({ children }) => {
-	const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-	return <LoaderContext.Provider value={{ loading, setLoading }}>{children}</LoaderContext.Provider>;
+  return <LoaderContext.Provider value={{ loading, setLoading }}>{children}</LoaderContext.Provider>;
 };
 
 LoaderProvider.propTypes = {
-	children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 /**
@@ -28,10 +28,10 @@ LoaderProvider.propTypes = {
  * @throws {Error} Throws an error if used outside of LoaderProvider.
  */
 export const useLoader = () => {
-	const context = useContext(LoaderContext);
-	if (!context) {
-		throw new Error("useLoader must be used within a LoaderProvider");
-	}
+  const context = useContext(LoaderContext);
+  if (!context) {
+    throw new Error("useLoader must be used within a LoaderProvider");
+  }
 
-	return context;
+  return context;
 };

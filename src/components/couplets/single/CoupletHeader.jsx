@@ -12,26 +12,26 @@ import { nl2br } from "@/src/utils/formatting";
  * @returns {JSX.Element} The rendered CoupletHeader component.
  */
 const CoupletHeader = ({ couplet }) => {
-	const { couplet_hindi } = couplet;
+  const { couplet_hindi } = couplet;
 
-	return (
-		<Typography
-			variant="h1"
-			sx={{
-				mb: 1,
-			}}
-		>
-			<Typography component="span" variant="dohaTitle">
-				{nl2br(couplet_hindi)}
-			</Typography>
-		</Typography>
-	);
+  return (
+    <Typography
+      variant="h1"
+      sx={{
+        mb: 1,
+      }}
+    >
+      <Typography component="span" variant="dohaTitle">
+        {nl2br(couplet_hindi)}
+      </Typography>
+    </Typography>
+  );
 };
 
 CoupletHeader.propTypes = {
-	couplet: PropTypes.shape({
-		couplet_hindi: PropTypes.string.isRequired,
-	}).isRequired,
+  couplet: PropTypes.shape({
+    couplet_hindi: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default CoupletHeader;

@@ -16,22 +16,22 @@ import SectionBody from "@/src/components/layout/SectionBody";
  * @returns {JSX.Element} The rendered Offline page component.
  */
 const Offline = () => {
-	return (
-		<PageTemplate>
-			<SectionBody>
-				<Box component="article">
-					<PageHeader title="Offline" />
-					<Typography component="p">
-						It looks like you are offline. Please check your internet connection and try again. If the problem persists,
-						you can always return to the home page.
-					</Typography>
-					<Button variant="contained" color="primary" href="/" startIcon={<GoArrowUpLeft />}>
-						Go to Home
-					</Button>
-				</Box>
-			</SectionBody>
-		</PageTemplate>
-	);
+  return (
+    <PageTemplate>
+      <SectionBody>
+        <Box component="article">
+          <PageHeader title="Offline" />
+          <Typography component="p">
+            It looks like you are offline. Please check your internet connection and try again. If the problem persists,
+            you can always return to the home page.
+          </Typography>
+          <Button variant="contained" color="primary" href="/" startIcon={<GoArrowUpLeft />}>
+            Go to Home
+          </Button>
+        </Box>
+      </SectionBody>
+    </PageTemplate>
+  );
 };
 
 export default Offline;

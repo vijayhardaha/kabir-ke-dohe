@@ -18,165 +18,165 @@ import { getSortParams } from "@/src/utils/couplets/filter";
  * @returns {JSX.Element} The rendered CoupletsList component.
  */
 const CoupletsList = ({ query = {} }) => {
-	const router = useRouter();
-	const { loading, setLoading } = useLoader();
+  const router = useRouter();
+  const { loading, setLoading } = useLoader();
 
-	const { s = "", tags = "", popular = false, orderBy, order, perPage = 10, pagination = true, filter = true } = query;
+  const { s = "", tags = "", popular = false, orderBy, order, perPage = 10, pagination = true, filter = true } = query;
 
-	const sort = filter ? router.query.sort || "default" : "default";
-	const page = pagination
-		? Array.isArray(router.query.page)
-			? parseInt(router.query.page[router.query.page.length - 1], 10) || 1
-			: parseInt(router.query.page, 10) || 1
-		: 1;
+  const sort = filter ? router.query.sort || "default" : "default";
+  const page = pagination
+    ? Array.isArray(router.query.page)
+      ? parseInt(router.query.page[router.query.page.length - 1], 10) || 1
+      : parseInt(router.query.page, 10) || 1
+    : 1;
 
-	const params = useMemo(
-		() => ({
-			s,
-			tags,
-			popular,
-			page,
-			perPage,
-			orderBy: orderBy || getSortParams(sort).orderBy,
-			order: order || getSortParams(sort).order,
-			pagination,
-		}),
-		[s, tags, popular, page, perPage, orderBy, order, pagination, sort]
-	);
+  const params = useMemo(
+    () => ({
+      s,
+      tags,
+      popular,
+      page,
+      perPage,
+      orderBy: orderBy || getSortParams(sort).orderBy,
+      order: order || getSortParams(sort).order,
+      pagination,
+    }),
+    [s, tags, popular, page, perPage, orderBy, order, pagination, sort]
+  );
 
-	const { data, error, isLoading } = useCouplets(params);
+  const { data, error, isLoading } = useCouplets(params);
 
-	useEffect(() => {
-		setLoading(isLoading);
-	}, [isLoading, setLoading]);
+  useEffect(() => {
+    setLoading(isLoading);
+  }, [isLoading, setLoading]);
 
-	const couplets = data ? data.couplets : [];
-	const total = data ? data.total : 0;
-	const totalPages = data ? data.totalPages : 0;
+  const couplets = data ? data.couplets : [];
+  const total = data ? data.total : 0;
+  const totalPages = data ? data.totalPages : 0;
 
-	// Handle redirection for 404 error
-	useEffect(() => {
-		if (error && error.code === 404) {
-			router.push("/404");
-		}
-	}, [error, router]);
+  // Handle redirection for 404 error
+  useEffect(() => {
+    if (error && error.code === 404) {
+      router.push("/404");
+    }
+  }, [error, router]);
 
-	const updateQueryParams = (params) => {
-		const { page: paramPage, selectedSort } = params;
-		const queryParams = new URLSearchParams();
-		const { q: searchQuery, ...existingQueries } = router.query;
+  const updateQueryParams = (params) => {
+    const { page: paramPage, selectedSort } = params;
+    const queryParams = new URLSearchParams();
+    const { q: searchQuery, ...existingQueries } = router.query;
 
-		Object.entries(existingQueries).forEach(([key, value]) => {
-			if (value) {
-				if (Array.isArray(value)) {
-					value.forEach((val) => queryParams.append(key, val));
-				} else {
-					queryParams.append(key, value);
-				}
-			}
-		});
+    Object.entries(existingQueries).forEach(([key, value]) => {
+      if (value) {
+        if (Array.isArray(value)) {
+          value.forEach((val) => queryParams.append(key, val));
+        } else {
+          queryParams.append(key, value);
+        }
+      }
+    });
 
-		if (searchQuery && searchQuery.trim() !== "") {
-			queryParams.set("q", encodeURIComponent(searchQuery.trim()));
-		}
+    if (searchQuery && searchQuery.trim() !== "") {
+      queryParams.set("q", encodeURIComponent(searchQuery.trim()));
+    }
 
-		if (paramPage > 1) {
-			queryParams.set("page", paramPage);
-		} else {
-			queryParams.delete("page");
-		}
+    if (paramPage > 1) {
+      queryParams.set("page", paramPage);
+    } else {
+      queryParams.delete("page");
+    }
 
-		if (selectedSort && selectedSort !== "default") {
-			queryParams.set("sort", selectedSort);
-		} else {
-			queryParams.delete("sort");
-		}
+    if (selectedSort && selectedSort !== "default") {
+      queryParams.set("sort", selectedSort);
+    } else {
+      queryParams.delete("sort");
+    }
 
-		const queryString = queryParams.toString() ? `?${queryParams.toString()}` : "";
+    const queryString = queryParams.toString() ? `?${queryParams.toString()}` : "";
 
-		router.push(queryString);
-	};
+    router.push(queryString);
+  };
 
-	const handlePageChange = (_, newPage) => {
-		updateQueryParams({ page: newPage, selectedSort: sort });
-	};
+  const handlePageChange = (_, newPage) => {
+    updateQueryParams({ page: newPage, selectedSort: sort });
+  };
 
-	const handleSortChange = (newSort) => {
-		updateQueryParams({ page, selectedSort: newSort });
-	};
+  const handleSortChange = (newSort) => {
+    updateQueryParams({ page, selectedSort: newSort });
+  };
 
-	if (loading) {
-		return null;
-	}
+  if (loading) {
+    return null;
+  }
 
-	if (error && error.code !== 404) {
-		return (
-			<Box>
-				<Alert variant="filled" severity="error" sx={{ mb: 2 }}>
-					{error.message}
-				</Alert>
-			</Box>
-		);
-	}
+  if (error && error.code !== 404) {
+    return (
+      <Box>
+        <Alert variant="filled" severity="error" sx={{ mb: 2 }}>
+          {error.message}
+        </Alert>
+      </Box>
+    );
+  }
 
-	if (couplets.length === 0) {
-		return (
-			<Typography component="p">
-				No couplets match the criteria specified in the request. Please adjust your search or filter parameters and try
-				again.
-			</Typography>
-		);
-	}
+  if (couplets.length === 0) {
+    return (
+      <Typography component="p">
+        No couplets match the criteria specified in the request. Please adjust your search or filter parameters and try
+        again.
+      </Typography>
+    );
+  }
 
-	return (
-		<>
-			{couplets.length > 0 && (
-				<>
-					{filter && (
-						<CoupletFilters
-							selectedSort={sort}
-							onSortChange={handleSortChange}
-							page={page}
-							perPage={perPage}
-							paginationEnabled={pagination}
-							totalCount={total}
-						/>
-					)}
+  return (
+    <>
+      {couplets.length > 0 && (
+        <>
+          {filter && (
+            <CoupletFilters
+              selectedSort={sort}
+              onSortChange={handleSortChange}
+              page={page}
+              perPage={perPage}
+              paginationEnabled={pagination}
+              totalCount={total}
+            />
+          )}
 
-					<Box component="div" sx={{ display: "flex", flexWrap: "wrap" }}>
-						{couplets.map((couplet) => (
-							<CoupletCard key={couplet.unique_slug} couplet={couplet} />
-						))}
-					</Box>
+          <Box component="div" sx={{ display: "flex", flexWrap: "wrap" }}>
+            {couplets.map((couplet) => (
+              <CoupletCard key={couplet.unique_slug} couplet={couplet} />
+            ))}
+          </Box>
 
-					{pagination && totalPages > 1 && (
-						<Pagination
-							page={page}
-							count={totalPages}
-							onChange={handlePageChange}
-							variant="outlined"
-							shape="rounded"
-							siblingCount={1}
-						/>
-					)}
-				</>
-			)}
-		</>
-	);
+          {pagination && totalPages > 1 && (
+            <Pagination
+              page={page}
+              count={totalPages}
+              onChange={handlePageChange}
+              variant="outlined"
+              shape="rounded"
+              siblingCount={1}
+            />
+          )}
+        </>
+      )}
+    </>
+  );
 };
 
 CoupletsList.propTypes = {
-	query: PropTypes.shape({
-		s: PropTypes.string,
-		tags: PropTypes.string,
-		popular: PropTypes.bool,
-		orderBy: PropTypes.string,
-		order: PropTypes.string,
-		page: PropTypes.number,
-		perPage: PropTypes.number,
-		pagination: PropTypes.bool,
-		filter: PropTypes.bool,
-	}),
+  query: PropTypes.shape({
+    s: PropTypes.string,
+    tags: PropTypes.string,
+    popular: PropTypes.bool,
+    orderBy: PropTypes.string,
+    order: PropTypes.string,
+    page: PropTypes.number,
+    perPage: PropTypes.number,
+    pagination: PropTypes.bool,
+    filter: PropTypes.bool,
+  }),
 };
 
 export default CoupletsList;

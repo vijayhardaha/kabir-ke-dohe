@@ -15,47 +15,47 @@ import { getPermalinkWithBase } from "@/src/utils/seo";
  * @returns {JSX.Element} The rendered SearchPage component.
  */
 const SearchPage = () => {
-	const router = useRouter();
-	const { q: query } = router.query;
+  const router = useRouter();
+  const { q: query } = router.query;
 
-	// Dynamic SEO configuration
-	const seoTitle = query ? `Search results for: ${query}` : "Search";
-	const seoDescription = query ? `Results for your search query: ${query}` : "Search our site for relevant content.";
-	const seoKeywords = query ? [query] : ["search", "results", "content"];
+  // Dynamic SEO configuration
+  const seoTitle = query ? `Search results for: ${query}` : "Search";
+  const seoDescription = query ? `Results for your search query: ${query}` : "Search our site for relevant content.";
+  const seoKeywords = query ? [query] : ["search", "results", "content"];
 
-	return (
-		<PageTemplate>
-			<SEO
-				title={seoTitle}
-				description={seoDescription}
-				keywords={seoKeywords.join(", ")}
-				url={getPermalinkWithBase()}
-			/>
+  return (
+    <PageTemplate>
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        keywords={seoKeywords.join(", ")}
+        url={getPermalinkWithBase()}
+      />
 
-			<SectionHeader title={query ? `Search results for: ${query}` : "Search"} />
+      <SectionHeader title={query ? `Search results for: ${query}` : "Search"} />
 
-			<SectionBody>
-				<Box sx={{ mb: 6 }}>
-					{!query && (
-						<Typography component="p" sx={{ mb: 2 }}>
-							Welcome to our search page! Use the search form below to find couplets by entering keywords, tags. Press
-							Enter or click Search to view the results.
-						</Typography>
-					)}
+      <SectionBody>
+        <Box sx={{ mb: 6 }}>
+          {!query && (
+            <Typography component="p" sx={{ mb: 2 }}>
+              Welcome to our search page! Use the search form below to find couplets by entering keywords, tags. Press
+              Enter or click Search to view the results.
+            </Typography>
+          )}
 
-					<SearchForm />
-				</Box>
+          <SearchForm />
+        </Box>
 
-				{query && (
-					<CoupletsList
-						query={{
-							s: query,
-						}}
-					/>
-				)}
-			</SectionBody>
-		</PageTemplate>
-	);
+        {query && (
+          <CoupletsList
+            query={{
+              s: query,
+            }}
+          />
+        )}
+      </SectionBody>
+    </PageTemplate>
+  );
 };
 
 export default SearchPage;

@@ -25,10 +25,10 @@ const clientSideEmotionCache = createEmotionCache();
  * @returns {JSX.Element|null} The Loader component if loading or fallback is true; otherwise, null.
  */
 const GlobalLoader = () => {
-	const { loading } = useLoader();
-	const { isFallback } = useRouter();
+  const { loading } = useLoader();
+  const { isFallback } = useRouter();
 
-	return loading || isFallback ? <Loader /> : null;
+  return loading || isFallback ? <Loader /> : null;
 };
 
 /**
@@ -41,34 +41,34 @@ const GlobalLoader = () => {
  * @returns {React.ReactElement} The rendered App component.
  */
 function App(props) {
-	const { Component, pageProps, emotionCache = clientSideEmotionCache } = props;
+  const { Component, pageProps, emotionCache = clientSideEmotionCache } = props;
 
-	React.useEffect(() => {
-		const jssStyles = document.querySelector("#jss-server-side");
-		if (jssStyles) {
-			jssStyles.parentElement.removeChild(jssStyles);
-		}
-	}, []);
+  React.useEffect(() => {
+    const jssStyles = document.querySelector("#jss-server-side");
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
+    }
+  }, []);
 
-	return (
-		<CacheProvider value={emotionCache}>
-			<ThemeProvider theme={theme}>
-				<CssBaseline />
-				<DefaultSEO />
-				<LoaderProvider>
-					<GlobalLoader />
-					<Toaster position="top-right" reverseOrder={true} />
-					<Component {...pageProps} />
-				</LoaderProvider>
-			</ThemeProvider>
-		</CacheProvider>
-	);
+  return (
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <DefaultSEO />
+        <LoaderProvider>
+          <GlobalLoader />
+          <Toaster position="top-right" reverseOrder={true} />
+          <Component {...pageProps} />
+        </LoaderProvider>
+      </ThemeProvider>
+    </CacheProvider>
+  );
 }
 
 App.propTypes = {
-	Component: PropTypes.elementType.isRequired,
-	pageProps: PropTypes.object.isRequired,
-	emotionCache: PropTypes.object,
+  Component: PropTypes.elementType.isRequired,
+  pageProps: PropTypes.object.isRequired,
+  emotionCache: PropTypes.object,
 };
 
 export default App;

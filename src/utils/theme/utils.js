@@ -6,13 +6,13 @@
  * @returns {Object} The responsive font size style object.
  */
 export const createResponsiveFontSize = (baseSize, ratio = 0.55) => {
-	const baseValue = parseFloat(baseSize);
-	const responsiveSize = baseValue * ratio;
+  const baseValue = parseFloat(baseSize);
+  const responsiveSize = baseValue * ratio;
 
-	return {
-		fontSize: `calc(${responsiveSize}rem + 1.5vw)`,
-		"@media (min-width: 1200px)": {
-			fontSize: `${baseValue}rem`,
-		},
-	};
+  return {
+    fontSize: `calc(${responsiveSize}rem + 1.5vw)`,
+    "@media (min-width: 1200px)": {
+      fontSize: `${baseValue}rem`,
+    },
+  };
 };

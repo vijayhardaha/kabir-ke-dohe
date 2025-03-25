@@ -15,35 +15,35 @@ import { getCoupletLink } from "@/src/utils/seo";
  * @returns {JSX.Element} The rendered CoupletActions component.
  */
 const CoupletActions = ({ couplet }) => {
-	const { unique_slug } = couplet;
+  const { unique_slug } = couplet;
 
-	return (
-		<Box sx={{ display: "flex", gap: 2, mt: 3 }}>
-			<Button
-				component={Link}
-				href={getCoupletLink(unique_slug)}
-				variant="contained"
-				color="white"
-				size="large"
-				sx={{ fontWeight: 600, minWidth: 180, minHeight: { sm: 46 } }}
-			>
-				Read More
-			</Button>
-			<CoupletShareButton
-				couplet={couplet}
-				variant="outlined"
-				color="white"
-				size="large"
-				sx={{ fontWeight: 600, minWidth: 180, minHeight: { sm: 46 } }}
-			/>
-		</Box>
-	);
+  return (
+    <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
+      <Button
+        component={Link}
+        href={getCoupletLink(unique_slug)}
+        variant="contained"
+        color="white"
+        size="large"
+        sx={{ fontWeight: 600, minWidth: 180, minHeight: { sm: 46 } }}
+      >
+        Read More
+      </Button>
+      <CoupletShareButton
+        couplet={couplet}
+        variant="outlined"
+        color="white"
+        size="large"
+        sx={{ fontWeight: 600, minWidth: 180, minHeight: { sm: 46 } }}
+      />
+    </Box>
+  );
 };
 
 CoupletActions.propTypes = {
-	couplet: PropTypes.shape({
-		unique_slug: PropTypes.string.isRequired,
-	}).isRequired,
+  couplet: PropTypes.shape({
+    unique_slug: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default CoupletActions;

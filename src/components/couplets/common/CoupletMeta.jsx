@@ -19,59 +19,59 @@ import { getTagLink } from "@/src/utils/seo";
  * @returns {JSX.Element} The rendered CoupletMeta component.
  */
 const CoupletMeta = ({ couplet, sx = {} }) => {
-	const { tags } = couplet;
+  const { tags } = couplet;
 
-	return (
-		<Box
-			sx={{
-				display: "flex",
-				gap: 1,
-				mb: 1.5,
-				flexDirection: {
-					xs: "column",
-					sm: "row",
-				},
-				"& > div:not(:last-of-type)::after": {
-					content: { sm: '"/"' },
-					ml: { sm: 1 },
-				},
-				...sx,
-			}}
-		>
-			<Typography component="div" variant="body2">
-				<Link href="https://en.wikipedia.org/wiki/Kabir" color="inherit">
-					By Sant Kabir Das
-				</Link>
-			</Typography>
-			{tags && tags.length > 0 && (
-				<Typography component="div" variant="body2">
-					<span style={{ marginRight: "4px", position: "relative", top: "3px" }}>
-						{getIcon({ icon: "hash", size: "1rem" })}
-					</span>
-					{tags.map((tag, index) => (
-						<React.Fragment key={tag.slug}>
-							<Link href={getTagLink(tag.slug)} color="inherit">
-								{tag.name}
-							</Link>
-							{index < tags.length - 1 && ", "}
-						</React.Fragment>
-					))}
-				</Typography>
-			)}
-		</Box>
-	);
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        gap: 1,
+        mb: 1.5,
+        flexDirection: {
+          xs: "column",
+          sm: "row",
+        },
+        "& > div:not(:last-of-type)::after": {
+          content: { sm: '"/"' },
+          ml: { sm: 1 },
+        },
+        ...sx,
+      }}
+    >
+      <Typography component="div" variant="body2">
+        <Link href="https://en.wikipedia.org/wiki/Kabir" color="inherit">
+          By Sant Kabir Das
+        </Link>
+      </Typography>
+      {tags && tags.length > 0 && (
+        <Typography component="div" variant="body2">
+          <span style={{ marginRight: "4px", position: "relative", top: "3px" }}>
+            {getIcon({ icon: "hash", size: "1rem" })}
+          </span>
+          {tags.map((tag, index) => (
+            <React.Fragment key={tag.slug}>
+              <Link href={getTagLink(tag.slug)} color="inherit">
+                {tag.name}
+              </Link>
+              {index < tags.length - 1 && ", "}
+            </React.Fragment>
+          ))}
+        </Typography>
+      )}
+    </Box>
+  );
 };
 
 CoupletMeta.propTypes = {
-	couplet: PropTypes.shape({
-		tags: PropTypes.arrayOf(
-			PropTypes.shape({
-				name: PropTypes.string.isRequired,
-				slug: PropTypes.string.isRequired,
-			})
-		),
-	}).isRequired,
-	sx: PropTypes.object, // Prop type for additional styles
+  couplet: PropTypes.shape({
+    tags: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        slug: PropTypes.string.isRequired,
+      })
+    ),
+  }).isRequired,
+  sx: PropTypes.object, // Prop type for additional styles
 };
 
 export default CoupletMeta;
