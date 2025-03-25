@@ -1,0 +1,13 @@
+{
+  "textFontFamily": "PP Agrandir,Hind",
+  "interfaceFontFamily": "Parkinsans,PP Agrandir",
+  "monospaceFontFamily": "Zed Plex Mono",
+  "cssTheme": "Red Graphite",
+  "accentColor": "",
+  "translucency": false,
+  "theme": "moonstone",
+  "baseFontSize": 18,
+  "enabledCssSnippets": [
+    "heading-line-height"
+  ]
+}
