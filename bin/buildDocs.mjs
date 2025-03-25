@@ -76,7 +76,7 @@ const padNumber = (number, width) => {
  * @return {Promise<void>}
  */
 const createMarkdownFiles = async (data, spinner) => {
-  const docsDir = path.resolve(process.cwd(), "docs");
+  const docsDir = path.resolve(process.cwd(), "docs", "collections");
   const entriesPerFile = 50;
 
   // Ensure the docs directory exists
