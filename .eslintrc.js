@@ -16,7 +16,7 @@ module.exports = {
   },
   parser: "@babel/eslint-parser",
   parserOptions: {
-    ecmaVersion: 2024, // Set to latest ECMAScript version.
+    ecmaVersion: "latest", // Use the latest ECMAScript version for better compatibility.
     sourceType: "module",
     ecmaFeatures: {
       jsx: true, // Enable JSX syntax.
@@ -52,7 +52,6 @@ module.exports = {
           caseInsensitive: true,
         },
         "newlines-between": "always",
-        warnOnUnassignedImports: true,
       },
     ],
   },
