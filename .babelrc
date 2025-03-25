@@ -1,0 +1,9 @@
+{
+  "presets": [
+    "@babel/preset-env", // Transpile modern JavaScript to older versions for compatibility
+    "@babel/preset-react" // Add support for JSX
+  ],
+  "plugins": [
+    "@babel/plugin-transform-runtime" // Optimize helper code and reduce bundle size
+  ]
+}
