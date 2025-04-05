@@ -14,16 +14,15 @@
     "url": "git+https://github.com/vijayhardaha/kabir-ke-dohe.git"
   },
   "scripts": {
-    "generate:data": "node bin/buildData.mjs",
-    "prepare:docs": "npm run generate:data && rm -rf docs/collections && mkdir -p docs/collections",
-    "generate:docs": "node bin/buildDocs.mjs",
-    "start:dev": "next dev",
-    "prepare:build": "npm run generate:data",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "next lint --fix",
-    "generate:prompt": "node bin/buildPrompt.mjs"
+    "prebuild": "npm run generate-data",
+    "generate-data": "node bin/buildData.mjs",
+    "pregenerate-docs": "npm run generate:data && rm -rf docs/collections && mkdir -p docs/collections",
+    "generate-docs": "node bin/buildDocs.mjs",
+    "generate-prompt": "node bin/buildPrompt.mjs"
   },
   "dependencies": {
     "@emotion/cache": "^11.13.1",
