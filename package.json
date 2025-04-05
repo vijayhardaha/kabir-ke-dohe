@@ -5,14 +5,14 @@
   "description": "A curated collection of the profound couplets by Saint Kabir, offering wisdom and spiritual insights.",
   "author": "Vijay Hardaha <https://twitter.com/vijayhardaha>",
   "license": "MIT",
-	"homepage": "https://github.com/vijayhardaha/kabir-ke-dohe#readme",
-	"bugs": {
-		"url": "https://github.com/vijayhardaha/kabir-ke-dohe/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/vijayhardaha/kabir-ke-dohe.git"
-	},
+  "homepage": "https://github.com/vijayhardaha/kabir-ke-dohe#readme",
+  "bugs": {
+    "url": "https://github.com/vijayhardaha/kabir-ke-dohe/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vijayhardaha/kabir-ke-dohe.git"
+  },
   "scripts": {
     "generate:data": "node bin/buildData.mjs",
     "prepare:docs": "npm run generate:data && rm -rf docs/collections && mkdir -p docs/collections",
@@ -33,7 +33,7 @@
     "@mui/material": "^6.0.1",
     "chalk": "^5.4.1",
     "classnames": "^2.5.1",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "google-auth-library": "^9.14.0",
     "google-spreadsheet": "^4.1.2",
     "latinize": "^2.0.0",
@@ -47,28 +47,25 @@
     "react-icons": "^5.3.0",
     "react-slick": "^0.30.2",
     "sass": "^1.77.8",
-    "sharp": "^0.33.5",
+    "sharp": "^0.34.0",
     "slick-carousel": "^1.8.1",
     "slugify": "^1.6.6",
-    "swr": "^2.2.5",
+    "swr": "^2.3.3",
     "tinycolor2": "^1.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",
-    "@babel/eslint-parser": "^7.25.1",
-    "@babel/plugin-transform-runtime": "^7.26.10",
-    "@babel/preset-env": "^7.26.9",
-    "@babel/preset-react": "^7.26.3",
+    "@babel/eslint-parser": "^7.27.0",
     "eslint": "^8.57.0",
-    "eslint-config-next": "^14.2.8",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-import": "^2.30.0",
-    "eslint-plugin-jsx-a11y": "^6.10.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-react": "^7.35.2",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "ora": "^8.1.0",
-    "postcss": "^8.4.45",
-    "prettier": "^3.3.3"
+    "eslint-config-next": "^15.2.4",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "ora": "^8.2.0",
+    "postcss": "^8.5.3",
+    "prettier": "^3.5.3"
   }
 }
