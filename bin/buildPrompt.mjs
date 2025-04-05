@@ -70,7 +70,7 @@ const savePrompt = (dohaNumber, prompt) => {
     console.log(chalk.green(`Created folder: ${folderName}`));
   }
 
-  const fileName = `doha-${String(dohaNumber).padStart(3, "0")}.md`;
+  const fileName = `doha-${String(dohaNumber).padStart(2, "0")}.md`;
   const filePath = path.join(folderPath, fileName);
 
   if (fs.existsSync(filePath)) {
