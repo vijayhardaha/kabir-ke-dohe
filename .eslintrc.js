@@ -1,63 +1,68 @@
 module.exports = {
-  root: true,
+  root: true, // Specify that this is the root configuration file.
   extends: [
-    "next",
-    "next/core-web-vitals",
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:jsx-a11y/recommended",
-    "plugin:prettier/recommended", // Add Prettier integration
+    "next", // Use Next.js-specific ESLint rules.
+    "next/core-web-vitals", // Include rules for Next.js Core Web Vitals.
+    "eslint:recommended", // Use recommended ESLint rules.
+    "plugin:react/recommended", // Use recommended React rules.
+    "plugin:jsx-a11y/recommended", // Use recommended accessibility rules for JSX.
+    "plugin:prettier/recommended", // Integrate Prettier with ESLint.
   ],
-  plugins: ["react", "jsx-a11y", "import", "prettier"],
+  plugins: [
+    "react", // Add React-specific linting rules.
+    "jsx-a11y", // Add accessibility linting rules for JSX.
+    "import", // Add linting rules for import/export syntax.
+    "prettier", // Add Prettier plugin for code formatting.
+  ],
   env: {
-    browser: true, // Add browser environment for web applications.
-    node: true, // Add Node.js environment for server-side code.
-    es6: true, // Enable ES6 syntax.
+    browser: true, // Define global variables for browser environments.
+    node: true, // Define global variables for Node.js environments.
+    es6: true, // Enable ES6 syntax and features.
   },
-  parser: "@babel/eslint-parser",
+  parser: "@babel/eslint-parser", // Use Babel ESLint parser for modern JavaScript syntax.
   parserOptions: {
-    ecmaVersion: "latest", // Use the latest ECMAScript version for better compatibility.
-    sourceType: "module",
+    ecmaVersion: "latest", // Use the latest ECMAScript version.
+    sourceType: "module", // Enable ECMAScript modules.
     ecmaFeatures: {
-      jsx: true, // Enable JSX syntax.
+      jsx: true, // Enable linting for JSX syntax.
     },
   },
   rules: {
     // Customize ESLint rules here
-    "react/react-in-jsx-scope": "off", // Next.js does not require importing React in JSX files.
-    "prettier/prettier": "error", // Enforce Prettier formatting as errors.
+    "react/react-in-jsx-scope": "off", // Disable the rule requiring React to be in scope in JSX files (Next.js handles this).
+    "prettier/prettier": "error", // Treat Prettier formatting issues as errors.
     "react/no-unknown-property": [
-      "error",
+      "error", // Disallow unknown DOM properties in JSX.
       {
         ignore: [
-          "jsx", // Ignore the 'jsx' property in JSX.
-          "global", // Ignore the 'global' property in JSX.
+          "jsx", // Allow the 'jsx' property in JSX.
+          "global", // Allow the 'global' property in JSX.
         ],
       },
     ],
     "import/order": [
-      "error",
+      "error", // Enforce a specific order for import statements.
       {
-        groups: ["builtin", "external", "internal"],
+        groups: ["builtin", "external", "internal"], // Group imports into categories.
         pathGroups: [
           {
-            pattern: "react",
+            pattern: "react", // Place React imports at the top of external imports.
             group: "external",
             position: "before",
           },
         ],
-        pathGroupsExcludedImportTypes: ["react"],
+        pathGroupsExcludedImportTypes: ["react"], // Exclude React from other import groups.
         alphabetize: {
-          order: "asc",
-          caseInsensitive: true,
+          order: "asc", // Alphabetize imports in ascending order.
+          caseInsensitive: true, // Ignore case when alphabetizing.
         },
-        "newlines-between": "always",
+        "newlines-between": "always", // Require newlines between import groups.
       },
     ],
   },
   settings: {
     react: {
-      version: "detect",
+      version: "detect", // Automatically detect the React version.
     },
   },
 };
