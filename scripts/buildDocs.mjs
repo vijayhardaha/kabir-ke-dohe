@@ -107,7 +107,7 @@ const createMarkdownFiles = async (data, spinner) => {
   const spinner = ora("Fetching data and creating markdown files...").start();
 
   try {
-    const filePath = path.join(process.cwd(), "data/couplets.json");
+    const filePath = path.join(process.cwd(), "web-app/data", "couplets.json");
     const jsonData = await fs.readFile(filePath, "utf-8");
     const data = JSON.parse(jsonData);
 

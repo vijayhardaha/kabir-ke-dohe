@@ -137,4 +137,4 @@ Thumbs.db
 .next
 
 # data
-data/*.json
+web-app/data/*.json

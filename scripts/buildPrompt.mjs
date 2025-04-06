@@ -3,10 +3,8 @@
 import fs from "fs";
 import path from "path";
 
-import chalk from "chalk";
-
 // Load the JSON file
-const coupletsPath = path.resolve(process.cwd(), "data", "couplets.json");
+const coupletsPath = path.resolve(process.cwd(), "web-app/data", "couplets.json");
 const couplets = JSON.parse(fs.readFileSync(coupletsPath, "utf8"));
 
 // Function to generate the prompt
@@ -14,7 +12,7 @@ const buildPrompt = (dohaNumber) => {
   const doha = couplets.find((item) => item.id === dohaNumber);
 
   if (!doha) {
-    console.error(chalk.red(`Error: Doha with number ${dohaNumber} not found.`));
+    console.error(`Error: Doha with number ${dohaNumber} not found.`);
     process.exit(1);
   }
 
@@ -67,19 +65,19 @@ const savePrompt = (dohaNumber, prompt) => {
   const folderPath = path.resolve(process.cwd(), "docs", "couplets", folderName);
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath, { recursive: true });
-    console.log(chalk.green(`Created folder: ${folderName}`));
+    console.log(`Created folder: ${folderName}`);
   }
 
   const fileName = `doha-${String(dohaNumber).padStart(2, "0")}.md`;
   const filePath = path.join(folderPath, fileName);
 
   if (fs.existsSync(filePath)) {
-    console.log(chalk.yellow(`File already exists.`));
+    console.log(`File already exists.`);
     return;
   }
 
   fs.writeFileSync(filePath, prompt, "utf8");
-  console.log(chalk.green(`Prompt saved to: ${fileName}`));
+  console.log(`Prompt saved to: ${fileName}`);
 };
 
 // Main function
@@ -87,13 +85,13 @@ const main = () => {
   const args = process.argv.slice(2);
 
   if (args.length < 1) {
-    console.error(chalk.red("Usage: buildPrompt <dohaNumber>"));
+    console.error("Usage: buildPrompt <dohaNumber>");
     process.exit(1);
   }
 
   const dohaNumber = parseInt(args[0], 10);
   if (isNaN(dohaNumber) || dohaNumber <= 0) {
-    console.error(chalk.red("Error: Please provide a valid doha number."));
+    console.error("Error: Please provide a valid doha number.");
     process.exit(1);
   }
 

@@ -167,7 +167,7 @@ const getGoogleSheetData = async (sheetName) => {
     fs.writeFileSync(tagsFilePath, JSON.stringify(filteredTags, null, 2));
 
     // Save processed data to file
-    const coupletsFilePath = path.join(process.cwd(), "data/couplets.json");
+    const coupletsFilePath = path.join(process.cwd(), "data", "couplets.json");
     fs.writeFileSync(coupletsFilePath, JSON.stringify(processedData, null, 2));
 
     spinner.succeed("Data fetched and saved to data/couplets.json, data/tags.json");
