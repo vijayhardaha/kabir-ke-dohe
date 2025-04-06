@@ -18,7 +18,6 @@ trim_trailing_whitespace = false
 [*.{md,yml}]
 indent_style = space  # Use spaces for indentation
 indent_size = 2       # Set indentation size to 2 spaces
-trim_trailing_whitespace = false
 
 # Override for JSON files (use tabs but keep indent size as 2)
 [*.json]
