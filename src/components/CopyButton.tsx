@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type JSX } from 'react';
 
 /**
  * Interface for the CopyButton component props.
  */
-interface ICopyButtonProps {
+interface CopyButtonProps {
   textToCopy: string;
 }
 
@@ -15,11 +15,9 @@ interface ICopyButtonProps {
  * @param {object} props - Component props
  * @param {string} props.textToCopy - The text to be copied to clipboard
  *
- * @returns {React.JSX.Element} A button with copy functionality
- *
- * @component
+ * @returns {JSX.Element} A button with copy functionality
  */
-export function CopyButton({ textToCopy }: ICopyButtonProps): React.JSX.Element {
+export function CopyButton({ textToCopy }: CopyButtonProps): JSX.Element {
   const [isCopied, setIsCopied] = useState(false);
 
   /**
