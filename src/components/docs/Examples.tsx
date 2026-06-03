@@ -22,6 +22,7 @@ const canonicalUrl: string = getPermaLink();
  * Returns the full API endpoint URL with canonical base.
  *
  * @param {string} apiEndpoint - The API endpoint path (e.g., '/api/couplets').
+ *
  * @returns {string} Full URL with canonical base and endpoint.
  */
 const getApiEndpointUrl = (apiEndpoint: string): string => canonicalUrl + apiEndpoint;
@@ -30,6 +31,7 @@ const getApiEndpointUrl = (apiEndpoint: string): string => canonicalUrl + apiEnd
  * Returns a curl command for the given URL.
  *
  * @param {string} url - The API endpoint path to curl.
+ *
  * @returns {string} Curl command string.
  */
 const getCurlCommand = (url: string): string => `curl -X GET ${getApiEndpointUrl(url)}`;
