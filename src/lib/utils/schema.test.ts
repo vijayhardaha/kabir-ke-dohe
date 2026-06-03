@@ -1,6 +1,7 @@
 /**
  * Unit tests for schema utility builders, verifying stable JSON-LD output for SEO metadata features.
- * @package vitest
+ *
+ * @package
  */
 
 import { describe, it, expect } from 'vitest';
