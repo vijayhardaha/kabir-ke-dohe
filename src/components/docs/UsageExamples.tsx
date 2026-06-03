@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, type JSX } from 'react';
 
 import { CodeBlock } from '@/components/CodeBlock';
 import { cn } from '@/lib/utils/classnames';
@@ -21,13 +21,9 @@ type ExampleKey = 'curl' | 'javascript' | 'python';
  * Component that displays example API usage.
  * Shows code examples in different programming languages with a tab-based design.
  *
- * @returns {React.JSX.Element} - The rendered examples section
+ * @returns {JSX.Element} The rendered examples section.
  */
-
-/**
- *
- */
-export default function UsageExamples(): React.JSX.Element {
+export default function UsageExamples(): JSX.Element {
   const [activeTab, setActiveTab] = useState<ExampleKey>('curl');
 
   const keys = Object.keys({ curl: 1, javascript: 1, python: 1 }) as ExampleKey[];
