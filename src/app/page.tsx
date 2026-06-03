@@ -6,6 +6,7 @@ import {
   webSiteSchema,
 } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
+import type { JSX } from 'react/jsx-runtime';
 
 import {
   Introduction,
@@ -74,9 +75,9 @@ const schema = [
  * Displays various documentation sections including introduction,
  * endpoints, parameters, response formats, and usage examples.
  *
- * @returns {React.ReactElement} The rendered documentation page
+ * @returns {JSX.Element} The rendered documentation page
  */
-export default function Home(): React.JSX.Element {
+export default function Home(): JSX.Element {
   return (
     <div className="box">
       <JsonLd data={schema} />
