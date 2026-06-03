@@ -1,11 +1,12 @@
+import type { JSX } from 'react/jsx-runtime';
 import { LuArrowUpRight } from 'react-icons/lu';
 
 /**
  * Footer component displaying copyright information, credits and tech stack.
  *
- * @returns {React.JSX.Element} The rendered footer component
+ * @returns {JSX.Element} The rendered footer component
  */
-export default function Footer(): React.JSX.Element {
+export default function Footer(): JSX.Element {
   return (
     <footer className="bg-primary/90 text-primary-foreground border-t py-10">
       <div className="box">
