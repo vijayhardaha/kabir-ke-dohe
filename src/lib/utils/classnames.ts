@@ -8,6 +8,7 @@ import { twMerge } from 'tailwind-merge';
  * @param {(string | string[] | boolean | undefined | { [key: string]: boolean })[]} inputs - A list of class name inputs, which can include strings,
  * arrays, or objects. These inputs are processed by `clsx` to handle conditional
  * class names and then merged by `twMerge` to resolve Tailwind CSS conflicts.
+ *
  * @returns {string} - A single string of combined and merged class names.
  *
  * @example
