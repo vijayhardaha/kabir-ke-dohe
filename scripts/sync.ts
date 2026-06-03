@@ -12,8 +12,6 @@
 
 import ora from 'ora';
 
-import { sanitizeTitle } from '@/lib/server/utils';
-
 import {
   upsertCategories,
   upsertPosts,
@@ -25,6 +23,7 @@ import {
 } from './lib/db';
 import { loadScriptEnv, type ScriptEnv } from './lib/env';
 import { sheetToJson } from './lib/gsheet';
+import { slugifyText } from './lib/slug';
 import { createSupabaseClient } from './lib/supabase';
 
 const BATCH_SIZE = 500;
@@ -114,7 +113,7 @@ async function main() {
   for (const post of posts) {
     const rawPost = rawPosts.find((r) => r.identifier === post.identifier);
     if (rawPost?.category) {
-      const categorySlug = sanitizeTitle(rawPost.category);
+      const categorySlug = slugifyText(rawPost.category);
       const categoryData = categoryCache.get(categorySlug);
       if (categoryData) {
         post.category_id = categoryData.id;
@@ -175,7 +174,7 @@ async function main() {
 
           if (rawPost.tags && rawPost.tags.length > 0) {
             for (const tagName of rawPost.tags) {
-              const slug = sanitizeTitle(tagName);
+              const slug = slugifyText(tagName);
               const tagData = tagCache.get(slug);
 
               if (tagData) {
