@@ -14,6 +14,7 @@ const CORS_HEADERS = {
  * Proxy function to add CORS headers to couplets API responses.
  *
  * @param {NextRequest} request - The incoming request object.
+ *
  * @returns {NextResponse} The response with CORS headers attached.
  */
 export function proxy(request: NextRequest) {
