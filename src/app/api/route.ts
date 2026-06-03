@@ -13,10 +13,11 @@ export const runtime = 'edge';
 /**
  * Handles GET requests to the root API endpoint.
  *
- * @async
- * @function GET
  * @returns {Promise<NextResponse>} A JSON response containing a success message
  * and instructions for using the API.
+ *
+ * @async
+ * @function GET
  */
 export async function GET(): Promise<NextResponse<ApiResponse>> {
   return NextResponse.json({
