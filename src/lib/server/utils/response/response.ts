@@ -2,16 +2,26 @@ import { NextResponse } from 'next/server';
 
 /**
  * Defines the standardized successful API response envelope carrying typed response payloads.
+ *
+ * @template T - The type of the response data.
+ *
+ * @type {ApiSuccess<T>}
+ * @property {true} success - Indicates success.
+ * @property {T} data - Response data.
  */
-export interface ApiSuccess<T> {
+interface ApiSuccess<T> {
   success: true;
   data: T;
 }
 
 /**
  * Defines the standardized error API response envelope for predictable client handling.
+ *
+ * @type {ApiError}
+ * @property {number} code - HTTP status code.
+ * @property {string} error - Error message.
  */
-export interface ApiError {
+interface ApiError {
   code: number;
   error: string;
 }
