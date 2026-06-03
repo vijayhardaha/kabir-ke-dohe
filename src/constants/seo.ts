@@ -30,7 +30,7 @@ export const SITE_CONFIG = {
 /**
  * The default metadata object used for SEO, Open Graph, and Twitter cards.
  */
-export const SEO_KEYWORDS = [
+const SEO_KEYWORDS = [
   'Kabir Dohe API',
   'Kabir couplets API',
   'Sant Kabir dohas API',
@@ -65,7 +65,7 @@ export const SEO_KEYWORDS = [
 /**
  * Google Search Console verification code for the site
  */
-export const GOOGLE_SITE_VERIFICATION = '4CyrCxZi9TWgvS-GzB1QUhgEl0bKoIzT36368e_vlx0';
+const GOOGLE_SITE_VERIFICATION = '4CyrCxZi9TWgvS-GzB1QUhgEl0bKoIzT36368e_vlx0';
 
 /**
  * Google Analytics measurement ID for site traffic tracking.
