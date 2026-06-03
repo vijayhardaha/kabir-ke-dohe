@@ -76,7 +76,9 @@ interface Post {
 /**
  * Parses a string value to boolean for query parameters.
  *
- * @param value
+ * @param {string | null | undefined} value - The value to parse.
+ *
+ * @returns {boolean} The parsed boolean value.
  */
 function parseBoolean(value: string | null | undefined): boolean {
   return value === 'true' || value === '1' || value === 'yes';
@@ -85,7 +87,9 @@ function parseBoolean(value: string | null | undefined): boolean {
 /**
  * Parses a string value to number for query parameters.
  *
- * @param value
+ * @param {string | null | undefined} value - The value to parse.
+ *
+ * @returns {number | undefined} The parsed number or undefined if invalid.
  */
 function parseNumber(value: string | null | undefined): number | undefined {
   const num = Number(value);
@@ -95,7 +99,9 @@ function parseNumber(value: string | null | undefined): number | undefined {
 /**
  * Validates and parses query parameters from URL search params.
  *
- * @param searchParams
+ * @param {URLSearchParams} searchParams - The URL search parameters.
+ *
+ * @returns {QueryParams} The validated and parsed query parameters.
  */
 function parseQueryParams(searchParams: URLSearchParams): QueryParams {
   const params: Record<string, unknown> = {};
@@ -116,7 +122,9 @@ function parseQueryParams(searchParams: URLSearchParams): QueryParams {
 /**
  * Transform a database row to post format.
  *
- * @param row
+ * @param {Record<string, unknown>} row - The database row to transform.
+ *
+ * @returns {Post} The transformed post object.
  */
 function transformPost(row: Record<string, unknown>): Post {
   const tags = Array.isArray(row.tags)
@@ -148,7 +156,9 @@ function transformPost(row: Record<string, unknown>): Post {
 /**
  * Fetches posts from Supabase using the RPC function.
  *
- * @param params
+ * @param {QueryParams} params - The query parameters for fetching posts.
+ *
+ * @returns {Promise<{ posts: Post[]; total: number }>} The fetched posts and total count.
  */
 async function fetchPosts(params: QueryParams) {
   const searchTrimmed = params.search_query?.trim() || '';
@@ -206,7 +216,9 @@ async function fetchPosts(params: QueryParams) {
 /**
  * Handle API request and return formatted response.
  *
- * @param params
+ * @param {QueryParams} params - The query parameters for the request.
+ *
+ * @returns {Promise<{ posts: Post[]; total: number; totalPages: number; page: number; per_page: number; pagination: boolean }>} The formatted response.
  */
 async function handleRequest(
   params: QueryParams
@@ -226,8 +238,10 @@ async function handleRequest(
 /**
  * Handles errors in API route handlers.
  *
- * @param error
- * @param fallbackMessage
+ * @param {unknown} error - The error that occurred.
+ * @param {string} [fallbackMessage] - Fallback message if error is not an Error.
+ *
+ * @returns {NextResponse} The error response.
  */
 function handleRouteError(error: unknown, fallbackMessage: string = 'An error occurred'): NextResponse {
   if (error instanceof z.ZodError) {
@@ -244,7 +258,9 @@ export const runtime = 'edge';
 /**
  * GET route handler for the posts API.
  *
- * @param request
+ * @param {Request} request - The incoming GET request.
+ *
+ * @returns {Promise<NextResponse>} The response with posts data.
  */
 export async function GET(request: Request): Promise<NextResponse> {
   try {
@@ -261,7 +277,9 @@ export async function GET(request: Request): Promise<NextResponse> {
 /**
  * POST route handler for the posts API.
  *
- * @param request
+ * @param {Request} request - The incoming POST request.
+ *
+ * @returns {Promise<NextResponse>} The response with posts data.
  */
 export async function POST(request: Request): Promise<NextResponse> {
   try {
