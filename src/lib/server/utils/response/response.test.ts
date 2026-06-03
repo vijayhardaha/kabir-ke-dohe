@@ -1,6 +1,7 @@
 /**
  * Unit tests for response helpers, verifying status codes and payload shapes for API outputs.
- * @package vitest
+ *
+ * @package
  */
 
 import { describe, it, expect } from 'vitest';
