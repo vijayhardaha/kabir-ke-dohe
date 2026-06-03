@@ -59,10 +59,13 @@ export interface PostTagMapping {
  *
  * @param {SupabaseClient} supabase - The Supabase client instance.
  * @param {DbPost[]} posts - The array of posts to upsert.
+ *
  * @returns {Promise<{ data: { id: string; identifier: string }[]; count: number | null }>} The upserted posts and count.
- * @throws {Error} Throws when the upsert operation fails.
+ *
  * @example
  * const result = await upsertPosts(supabase, [{ identifier: "K001", text_hi: "..." }]);
+ *
+ * @throws {Error} Throws when the upsert operation fails.
  */
 export async function upsertPosts(
   supabase: SupabaseClient,
@@ -85,10 +88,13 @@ export async function upsertPosts(
  *
  * @param {SupabaseClient} supabase - The Supabase client instance.
  * @param {DbTag[]} tags - The array of tags to upsert.
+ *
  * @returns {Promise<{ data: { id: string; slug: string }[]; count: number | null }>} The upserted tags and count.
- * @throws {Error} Throws when the upsert operation fails.
+ *
  * @example
  * const result = await upsertTags(supabase, [{ name: "Bhakti", slug: "bhakti" }]);
+ *
+ * @throws {Error} Throws when the upsert operation fails.
  */
 export async function upsertTags(
   supabase: SupabaseClient,
@@ -111,7 +117,9 @@ export async function upsertTags(
  *
  * @param {SupabaseClient} supabase - The Supabase client instance.
  * @param {DbCategory[]} categories - The array of categories to upsert.
+ *
  * @returns {Promise<{ data: { id: string; slug: string }[]; count: number | null }>} The upserted categories and count.
+ *
  * @throws {Error} Throws when the upsert operation fails.
  */
 export async function upsertCategories(
@@ -135,10 +143,13 @@ export async function upsertCategories(
  *
  * @param {SupabaseClient} supabase - The Supabase client instance.
  * @param {PostTagMapping[]} mappings - The array of post-tag mappings to upsert.
+ *
  * @returns {Promise<{ data: PostTagMapping[]; count: number | null }>} The upserted mappings and count.
- * @throws {Error} Throws when the upsert operation fails.
+ *
  * @example
  * const result = await upsertPostTags(supabase, [{ post_id: "p1", tag_id: "t1" }]);
+ *
+ * @throws {Error} Throws when the upsert operation fails.
  */
 export async function upsertPostTags(
   supabase: SupabaseClient,
