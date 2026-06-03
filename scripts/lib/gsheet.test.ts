@@ -1,6 +1,7 @@
 /**
  * Unit tests for Google Sheets integration.
- * @package vitest
+ *
+ * @package
  */
 
 import { describe, it, expect, vi, afterEach } from 'vitest';
