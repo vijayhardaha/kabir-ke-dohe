@@ -1,6 +1,7 @@
 /**
  * Unit tests for response format docs, ensuring field descriptions and links remain accurate.
- * @package vitest
+ *
+ * @package
  */
 
 import { render, screen } from '@testing-library/react';
