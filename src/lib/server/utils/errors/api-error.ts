@@ -9,8 +9,8 @@ export class ApiError extends Error {
   /**
    * Creates a new ApiError instance.
    *
-   * @param message - Human-readable error message for the client.
-   * @param statusCode - HTTP status code to return (e.g., 400, 404, 500).
+   * @param {string} message - Human-readable error message for the client.
+   * @param {number} [statusCode] - HTTP status code to return (e.g., 400, 404, 500).
    */
   constructor(message: string, statusCode: number = 500) {
     super(message);
