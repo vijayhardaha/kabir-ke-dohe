@@ -1,6 +1,7 @@
 /**
  * Unit tests for environment loading and validation.
- * @package vitest
+ *
+ * @package
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
