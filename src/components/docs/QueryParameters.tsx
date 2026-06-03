@@ -19,8 +19,9 @@ interface QueryParameters {
  * Component that displays the available query parameters for the API.
  * Shows a table of parameters with their descriptions, types, and examples.
  *
- * @param {Object} props - The component props
- * @param {Array<Object>} props.parameters - Array of parameter objects with details
+ * @param {object} props - The component props
+ * @param {Array<object>} props.parameters - Array of parameter objects with details
+ *
  * @returns {React.JSX.Element} - The rendered query parameters documentation
  */
 export default function QueryParameters({ parameters }: QueryParameters): React.JSX.Element {
