@@ -1,6 +1,7 @@
 /**
  * Unit tests for the code block component, validating rendering modes and interactive actions.
- * @package vitest
+ *
+ * @package
  */
 
 import { render, screen } from '@testing-library/react';
