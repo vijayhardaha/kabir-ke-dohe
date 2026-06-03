@@ -1,6 +1,7 @@
 /**
  * Unit tests for the copy button component, verifying clipboard interactions and UI feedback.
- * @package vitest
+ *
+ * @package
  */
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
