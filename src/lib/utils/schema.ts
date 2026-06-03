@@ -6,6 +6,8 @@ type AnyObject = Record<string, unknown>;
 
 /**
  * Build a Schema.org `Person` entity.
+ *
+ * @returns {AnyObject} The Person schema object.
  */
 export function personSchema(): AnyObject {
   const rootUrl = getPermaLink();
@@ -44,6 +46,8 @@ export function personSchema(): AnyObject {
 /**
  * Build a Schema.org `WebAPI` entity.
  * Converted from WebSite to describe the technical API service.
+ *
+ * @returns {AnyObject} The WebAPI schema object.
  */
 export function webApiSchema(): AnyObject {
   const rootUrl = getPermaLink();
@@ -65,6 +69,8 @@ export function webApiSchema(): AnyObject {
  *
  * This combines the Person, Organization, and WebAPI into a single
  * interconnected structure that search engines can easily parse.
+ *
+ * @returns {Array<AnyObject>} Array containing Person and WebAPI schema objects.
  */
 export function getFullSchemaGraph(): Array<AnyObject> {
   return [personSchema(), webApiSchema()];
