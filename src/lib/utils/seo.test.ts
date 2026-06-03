@@ -1,6 +1,7 @@
 /**
  * Unit tests for SEO utilities, verifying URL sanitization and base URL generation.
- * @package vitest
+ *
+ * @package
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
