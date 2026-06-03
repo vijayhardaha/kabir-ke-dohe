@@ -2,6 +2,32 @@ import { SupabaseClient } from '@supabase/supabase-js';
 
 /**
  * Represents a post record from the database.
+ *
+ * @type {DbPost}
+ * @property {string} slug - Post slug.
+ * @property {string} identifier - Post identifier.
+ * @property {string} text_hi - Hindi text.
+ * @property {string} text_en - English text.
+ * @property {string} [meaning_hi] - Hindi meaning.
+ * @property {string} [meaning_en] - English meaning.
+ * @property {string} [interpretation_hi] - Hindi interpretation.
+ * @property {string} [interpretation_en] - English interpretation.
+ * @property {string} [philosophical_analysis_hi] - Hindi philosophical analysis.
+ * @property {string} [philosophical_analysis_en] - English philosophical analysis.
+ * @property {string} [practical_example_hi] - Hindi practical example.
+ * @property {string} [practical_example_en] - English practical example.
+ * @property {string} [practice_guidance_hi] - Hindi practice guidance.
+ * @property {string} [practice_guidance_en] - English practice guidance.
+ * @property {string} [core_message_hi] - Hindi core message.
+ * @property {string} [core_message_en] - English core message.
+ * @property {string} [reflection_questions_hi] - Hindi reflection questions.
+ * @property {string} [reflection_questions_en] - English reflection questions.
+ * @property {number} post_number - Post number.
+ * @property {number} post_order - Post order.
+ * @property {string} post_status - Post status.
+ * @property {string} [category_id] - Category ID.
+ * @property {boolean} is_popular - Is popular flag.
+ * @property {boolean} is_featured - Is featured flag.
  */
 export interface DbPost {
   slug: string;
@@ -32,6 +58,10 @@ export interface DbPost {
 
 /**
  * Represents a tag record from the database.
+ *
+ * @type {DbTag}
+ * @property {string} name - Tag name.
+ * @property {string} slug - Tag slug.
  */
 export interface DbTag {
   name: string;
@@ -40,6 +70,10 @@ export interface DbTag {
 
 /**
  * Represents a category record from the database.
+ *
+ * @type {DbCategory}
+ * @property {string} name - Category name.
+ * @property {string} slug - Category slug.
  */
 export interface DbCategory {
   name: string;
@@ -48,6 +82,10 @@ export interface DbCategory {
 
 /**
  * Represents a post-tag mapping record for the junction table.
+ *
+ * @type {PostTagMapping}
+ * @property {string} post_id - Post ID.
+ * @property {string} tag_id - Tag ID.
  */
 export interface PostTagMapping {
   post_id: string;
