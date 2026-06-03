@@ -1,14 +1,15 @@
+import type { JSX } from 'react/jsx-runtime';
 import { LuArrowUpRight } from 'react-icons/lu';
 
 /**
  * Header component for the documentation page.
  * Displays the title and main heading for the Kabir Dohe API documentation.
  *
- * @returns {React.JSX.Element} - The rendered header for the documentation page
+ * @returns {JSX.Element} - The rendered header for the documentation page
  */
-export default function Header(): React.JSX.Element {
+export default function Header(): JSX.Element {
   return (
-    <header className="bg-primary text-primary-foreground py-8 text-white">
+    <header className="bg-primary text-primary-foreground py-8">
       <div className="box">
         <h1 className="mb-4 text-5xl font-black">Kabir Dohe API</h1>
         <p className="text-primary-foreground/80 mb-6 text-base">
