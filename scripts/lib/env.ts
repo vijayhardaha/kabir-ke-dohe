@@ -35,6 +35,8 @@ function getEnvFilePath(): string {
  * Loads environment variables from the appropriate .env file and validates them.
  *
  * @returns {ScriptEnv} Validated environment variables.
+ *
+ * @throws {Error} If environment variables are invalid.
  */
 export function loadScriptEnv(): ScriptEnv {
   const envFilePath = getEnvFilePath();
