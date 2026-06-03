@@ -6,7 +6,9 @@ import { ApiError, failure } from '@/lib/server/utils';
  * Handles API route errors consistently and returns standardized JSON failure responses.
  *
  * @param {Error} error - Error instance thrown from route handlers or service layers.
+ *
  * @returns {NextResponse} Structured error response with safe message and HTTP status.
+ *
  * @example
  * return handleError(new ApiError("Invalid token", 401));
  * // Responds with a typed 401 failure payload.
