@@ -1,3 +1,5 @@
+import type { JSX } from 'react/jsx-runtime';
+
 /**
  * Interface for paginated results.
  */
@@ -22,9 +24,9 @@ interface QueryParameters {
  * @param {object} props - The component props
  * @param {Array<object>} props.parameters - Array of parameter objects with details
  *
- * @returns {React.JSX.Element} - The rendered query parameters documentation
+ * @returns {JSX.Element} - The rendered query parameters documentation
  */
-export default function QueryParameters({ parameters }: QueryParameters): React.JSX.Element {
+export default function QueryParameters({ parameters }: QueryParameters): JSX.Element {
   return (
     <section id="query-parameters">
       <h2>Query Parameters</h2>
