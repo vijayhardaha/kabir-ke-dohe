@@ -9,6 +9,10 @@ import { getPermaLink } from '@/lib/utils/seo';
 
 /**
  * Interface representing an example API request.
+ *
+ * @type {Example}
+ * @property {string} title - Example title.
+ * @property {string} url - API endpoint URL.
  */
 interface Example {
   title: string;
