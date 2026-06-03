@@ -94,7 +94,9 @@ const SheetSchema = z.array(SheetRowSchema);
  * Transforms validated sheet rows into database-ready post records.
  *
  * @param {SheetRow[]} rows - The validated sheet rows to transform.
+ *
  * @returns {DbPost[]} Array of post records ready for database insertion.
+ *
  * @example
  * const posts = prepareDbPosts(sheetData);
  */
@@ -130,7 +132,9 @@ function prepareDbPosts(rows: SheetRow[]): DbPost[] {
  * Extracts unique tags from sheet rows and transforms them into database-ready tag records.
  *
  * @param {SheetRow[]} rows - The validated sheet rows containing tag information.
+ *
  * @returns {DbTag[]} Array of unique tag records ready for database insertion.
+ *
  * @example
  * const tags = prepareDbTags(sheetData);
  * // tags[0].name -> "Bhakti"
@@ -162,6 +166,7 @@ function prepareDbTags(rows: SheetRow[]): DbTag[] {
  * Extracts unique categories from sheet rows and transforms them into database-ready category records.
  *
  * @param {SheetRow[]} rows - The validated sheet rows containing category information.
+ *
  * @returns {DbCategory[]} Array of unique category records ready for database insertion.
  */
 function prepareDbCategories(rows: SheetRow[]): DbCategory[] {
@@ -189,10 +194,13 @@ function prepareDbCategories(rows: SheetRow[]): DbCategory[] {
  * Creates a Google JWT client for authenticating with Google Sheets API.
  *
  * @param {ScriptEnv} env - The environment variables containing service account credentials.
+ *
  * @returns {JWT} Configured JWT client for Google Sheets API.
- * @throws {Error} Throws when service account credentials are missing or invalid.
+ *
  * @example
  * const jwtClient = createJwtClient(env);
+ *
+ * @throws {Error} Throws when service account credentials are missing or invalid.
  */
 function createJwtClient(env: ScriptEnv): JWT {
   const base64ServiceAccount = env.GOOGLE_SERVICE_ACCOUNT_BASE64;
@@ -217,10 +225,13 @@ function createJwtClient(env: ScriptEnv): JWT {
  *
  * @param {ScriptEnv} env - The environment variables containing Google Sheets configuration.
  * @param {string} sheetName - The name of the worksheet to fetch data from.
+ *
  * @returns {Promise<{ rawPosts: SheetRow[]; posts: DbPost[]; tags: DbTag[] }>} Raw posts, mapped posts, and tags.
- * @throws {Error} Throws when spreadsheet ID is missing, sheet is not found, or validation fails.
+ *
  * @example
  * const { posts, tags } = await sheetToJson(env, "kabir-ke-dohe");
+ *
+ * @throws {Error} Throws when spreadsheet ID is missing, sheet is not found, or validation fails.
  */
 export async function sheetToJson(
   env: ScriptEnv,
