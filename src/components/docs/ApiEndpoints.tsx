@@ -1,10 +1,12 @@
+import type { JSX } from 'react/jsx-runtime';
+
 /**
  * Component that displays the available API endpoint.
  * Describes the GET /api/couplets route and its features.
  *
- * @returns {React.JSX.Element} - The rendered API endpoint documentation.
+ * @returns {JSX.Element} - The rendered API endpoint documentation.
  */
-export default function ApiEndpoints(): React.JSX.Element {
+export default function ApiEndpoints(): JSX.Element {
   return (
     <section id="api-endpoint">
       <h2>API Endpoint</h2>
