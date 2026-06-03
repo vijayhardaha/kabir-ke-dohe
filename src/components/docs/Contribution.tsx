@@ -1,12 +1,13 @@
+import type { JSX } from 'react/jsx-runtime';
 import { LuArrowUpRight } from 'react-icons/lu';
 
 /**
  * Component that displays contribution information for the Kabir Dohe API project.
  * Explains how users can help improve the project.
  *
- * @returns {React.JSX.Element} - The rendered contribution section
+ * @returns {JSX.Element} - The rendered contribution section
  */
-export default function Contribution(): React.JSX.Element {
+export default function Contribution(): JSX.Element {
   return (
     <section>
       <h2>Contribute to the Project</h2>
