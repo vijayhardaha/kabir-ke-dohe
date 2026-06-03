@@ -1,9 +1,11 @@
+import type { JSX } from 'react/jsx-runtime';
+
 /**
  * Component that displays SEO-friendly content for API endpoints.
  *
- * @returns {React.JSX.Element} - The rendered SEO content section.
+ * @returns {JSX.Element} - The rendered SEO content section.
  */
-export default function SEOContent(): React.JSX.Element {
+export default function SEOContent(): JSX.Element {
   return (
     <>
       <section id="who-was-sant-kabir">
@@ -126,7 +128,7 @@ export default function SEOContent(): React.JSX.Element {
           </li>
 
           <li>
-            <strong>Research and Study:</strong> Helpful for students and researchers exploring Kabir’s teachings,
+            <strong>Research and Study:</strong> Helpful for students and researchers exploring Kabir&apos;s teachings,
             Bhakti movement, or cultural studies.
           </li>
 
@@ -151,7 +153,8 @@ export default function SEOContent(): React.JSX.Element {
           </li>
 
           <li>
-            <strong>Social Media Content:</strong> Generate posts, reels, or shareable content based on Kabir’s dohe.
+            <strong>Social Media Content:</strong> Generate posts, reels, or shareable content based on Kabir&apos;s
+            dohe.
           </li>
         </ul>
       </section>
@@ -165,7 +168,7 @@ export default function SEOContent(): React.JSX.Element {
           </li>
 
           <li>
-            <strong>Students and Learners:</strong> Study Kabir’s dohe, Indian philosophy, and moral teachings in a
+            <strong>Students and Learners:</strong> Study Kabir&apos;s dohe, Indian philosophy, and moral teachings in a
             simple format.
           </li>
 
@@ -175,7 +178,8 @@ export default function SEOContent(): React.JSX.Element {
           </li>
 
           <li>
-            <strong>Content Creators:</strong> Create blogs, videos, or social media content based on Kabir’s teachings.
+            <strong>Content Creators:</strong> Create blogs, videos, or social media content based on Kabir&apos;s
+            teachings.
           </li>
 
           <li>
@@ -204,7 +208,7 @@ export default function SEOContent(): React.JSX.Element {
           </li>
 
           <li>
-            <strong>Social Media Bots:</strong> Build bots that automatically post Kabir’s dohe on platforms like{' '}
+            <strong>Social Media Bots:</strong> Build bots that automatically post Kabir&apos;s dohe on platforms like{' '}
             <a href="https://docs.x.com/overview" target="_blank" rel="noopener noreferrer">
               Twitter (X)
             </a>{' '}
@@ -224,7 +228,7 @@ export default function SEOContent(): React.JSX.Element {
           </li>
 
           <li>
-            <strong>Chatbots and AI Tools:</strong> Create bots that share dohe or answer questions using Kabir’s
+            <strong>Chatbots and AI Tools:</strong> Create bots that share dohe or answer questions using Kabir&apos;s
             teachings.
           </li>
 
