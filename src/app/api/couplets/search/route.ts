@@ -2,8 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
 import { supabase } from '@/lib/server/db/supabase';
-import { handleError } from '@/lib/server/utils/errors/error-handler';
-import { successCached } from '@/lib/server/utils/response/response';
+import { handleError, successCached } from '@/lib/server/utils';
 
 /**
  * Default parameter values for the search API.
