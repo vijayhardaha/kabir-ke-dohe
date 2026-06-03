@@ -1,10 +1,12 @@
+import type { JSX } from 'react/jsx-runtime';
+
 /**
  * Component that provides an introduction to the Kabir Dohe API.
  * Explains the purpose, benefits, and features of the API for SEO and usability.
  *
- * @returns {React.JSX.Element} - The rendered introduction section
+ * @returns {JSX.Element} - The rendered introduction section
  */
-export default function Introduction(): React.JSX.Element {
+export default function Introduction(): JSX.Element {
   return (
     <section id="introduction">
       <h2>Introduction to Kabir Dohe API</h2>
