@@ -1,6 +1,7 @@
 /**
  * Unit tests for query parameter docs, checking table structure and parameter metadata rendering.
- * @package vitest
+ *
+ * @package
  */
 
 import { render, screen } from '@testing-library/react';
