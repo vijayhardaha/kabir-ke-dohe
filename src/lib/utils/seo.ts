@@ -34,7 +34,8 @@ export const siteUrl = (): string => {
  * - Removes leading and trailing slashes
  * - Returns empty string for root
  *
- * @param {string} [path=""] - The input path or slug.
+ * @param {string} [path] - The input path or slug.
+ *
  * @returns {string} A clean relative path without leading slash.
  *
  * @example
@@ -55,7 +56,8 @@ export const cleanPath = (path: string = ''): string => {
  * Leading and trailing slashes in the path are handled safely.
  * If no path is provided, the base URL is returned.
  *
- * @param {string} [path=""] - Optional path segment to append to the base URL.
+ * @param {string} [path] - Optional path segment to append to the base URL.
+ *
  * @returns {string} The permalink absolute URL.
  *
  * @example
