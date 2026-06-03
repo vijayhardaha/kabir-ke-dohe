@@ -24,6 +24,7 @@ const envSchema = z.object({
  * Throws if any required variables are missing or invalid.
  *
  * @returns Validated environment variables
+ *
  * @throws Error if environment variables are invalid
  */
 function getEnv(): z.infer<typeof envSchema> {
