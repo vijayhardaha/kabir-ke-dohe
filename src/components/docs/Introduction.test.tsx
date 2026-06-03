@@ -1,6 +1,7 @@
 /**
  * Unit tests for the introduction docs section, ensuring core links and headings stay visible.
- * @package vitest
+ *
+ * @package
  */
 
 import { render, screen } from '@testing-library/react';
