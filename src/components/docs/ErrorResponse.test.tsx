@@ -1,6 +1,7 @@
 /**
  * Unit tests for error response docs, validating examples and status code guidance content.
- * @package vitest
+ *
+ * @package
  */
 
 import { render, screen } from '@testing-library/react';
