@@ -29,12 +29,12 @@ let supabaseClient: SupabaseClient | null = null;
  * - Avoids per-request async overhead
  * - Improves performance by reusing the same instance
  *
- * @type {SupabaseClient}
- *
  * @example
  * const { data, error } = await supabase
  *   .from('posts')
  *   .select('text_hi');
+ *
+ * @type {SupabaseClient}
  */
 export const supabase: SupabaseClient = new Proxy({} as SupabaseClient, {
   get(_target, prop) {
