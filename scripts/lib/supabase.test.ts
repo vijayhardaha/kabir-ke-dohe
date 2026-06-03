@@ -1,6 +1,7 @@
 /**
  * Unit tests for Supabase client creation.
- * @package vitest
+ *
+ * @package
  */
 
 import { createClient as supabaseCreateClient } from '@supabase/supabase-js';
