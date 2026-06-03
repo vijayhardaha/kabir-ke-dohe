@@ -6,6 +6,7 @@ import { toSentenceCase } from '@/lib/server/utils';
 
 import type { DbCategory, DbPost, DbTag } from './db';
 import type { ScriptEnv } from './env';
+import { slugifyText } from './slug';
 
 /**
  * Zod schema for validating a single row from the Google Sheet.
@@ -153,13 +154,7 @@ function prepareDbTags(rows: SheetRow[]): DbTag[] {
 
   const uniqueTags = Array.from(tagSet).sort();
 
-  return uniqueTags.map((name) => ({
-    name,
-    slug: name
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-'),
-  }));
+  return uniqueTags.map((name) => ({ name, slug: slugifyText(name) }));
 }
 
 /**
@@ -181,13 +176,7 @@ function prepareDbCategories(rows: SheetRow[]): DbCategory[] {
 
   const uniqueCategories = Array.from(categorySet).sort();
 
-  return uniqueCategories.map((name) => ({
-    name,
-    slug: name
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-'),
-  }));
+  return uniqueCategories.map((name) => ({ name, slug: slugifyText(name) }));
 }
 
 /**
