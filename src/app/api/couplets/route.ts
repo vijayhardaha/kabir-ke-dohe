@@ -75,6 +75,8 @@ interface Post {
 
 /**
  * Parses a string value to boolean for query parameters.
+ *
+ * @param value
  */
 function parseBoolean(value: string | null | undefined): boolean {
   return value === 'true' || value === '1' || value === 'yes';
@@ -82,6 +84,8 @@ function parseBoolean(value: string | null | undefined): boolean {
 
 /**
  * Parses a string value to number for query parameters.
+ *
+ * @param value
  */
 function parseNumber(value: string | null | undefined): number | undefined {
   const num = Number(value);
@@ -90,6 +94,8 @@ function parseNumber(value: string | null | undefined): number | undefined {
 
 /**
  * Validates and parses query parameters from URL search params.
+ *
+ * @param searchParams
  */
 function parseQueryParams(searchParams: URLSearchParams): QueryParams {
   const params: Record<string, unknown> = {};
@@ -109,6 +115,8 @@ function parseQueryParams(searchParams: URLSearchParams): QueryParams {
 
 /**
  * Transform a database row to post format.
+ *
+ * @param row
  */
 function transformPost(row: Record<string, unknown>): Post {
   const tags = Array.isArray(row.tags)
@@ -139,6 +147,8 @@ function transformPost(row: Record<string, unknown>): Post {
 
 /**
  * Fetches posts from Supabase using the RPC function.
+ *
+ * @param params
  */
 async function fetchPosts(params: QueryParams) {
   const searchTrimmed = params.search_query?.trim() || '';
@@ -195,6 +205,8 @@ async function fetchPosts(params: QueryParams) {
 
 /**
  * Handle API request and return formatted response.
+ *
+ * @param params
  */
 async function handleRequest(
   params: QueryParams
@@ -213,6 +225,9 @@ async function handleRequest(
 
 /**
  * Handles errors in API route handlers.
+ *
+ * @param error
+ * @param fallbackMessage
  */
 function handleRouteError(error: unknown, fallbackMessage: string = 'An error occurred'): NextResponse {
   if (error instanceof z.ZodError) {
@@ -228,6 +243,8 @@ export const runtime = 'edge';
 
 /**
  * GET route handler for the posts API.
+ *
+ * @param request
  */
 export async function GET(request: Request): Promise<NextResponse> {
   try {
@@ -243,6 +260,8 @@ export async function GET(request: Request): Promise<NextResponse> {
 
 /**
  * POST route handler for the posts API.
+ *
+ * @param request
  */
 export async function POST(request: Request): Promise<NextResponse> {
   try {
