@@ -27,7 +27,9 @@ type SearchQueryParams = z.infer<typeof SearchQuerySchema>;
 /**
  * Parses and validates query parameters from URL search params.
  *
- * @param searchParams
+ * @param {URLSearchParams} searchParams - The URL search parameters.
+ *
+ * @returns {SearchQueryParams} The validated search query parameters.
  */
 function parseQueryParams(searchParams: URLSearchParams): SearchQueryParams {
   const params: Record<string, unknown> = {};
@@ -43,7 +45,9 @@ function parseQueryParams(searchParams: URLSearchParams): SearchQueryParams {
  * Searches couplets by text in search_text column.
  * Returns only the text_hi field for each matching result.
  *
- * @param params
+ * @param {SearchQueryParams} params - The search query parameters.
+ *
+ * @returns {Promise<{ posts: string[] }>} Array of matching text_hi strings.
  */
 async function searchCouplets(params: SearchQueryParams): Promise<{ posts: string[] }> {
   const searchTerm = params.search_query?.trim() || '';
@@ -69,7 +73,9 @@ async function searchCouplets(params: SearchQueryParams): Promise<{ posts: strin
 /**
  * Handles the search API request and returns formatted response.
  *
- * @param params
+ * @param {SearchQueryParams} params - The search query parameters.
+ *
+ * @returns {Promise<{ posts: string[] }>} The search results.
  */
 async function handleRequest(params: SearchQueryParams): Promise<{ posts: string[] }> {
   return searchCouplets(params);
@@ -82,9 +88,9 @@ export const runtime = 'edge';
  * GET route handler for the search API.
  * Searches couplets by text in text_hi and text_en columns.
  *
- * @param request - The incoming GET request with query parameters
+ * @param {Request} request - The incoming GET request with query parameters.
  *
- * @returns NextResponse with search results containing only text_hi field
+ * @returns {Promise<NextResponse>} NextResponse with search results containing only text_hi field.
  */
 export async function GET(request: Request): Promise<NextResponse> {
   try {
@@ -101,7 +107,9 @@ export async function GET(request: Request): Promise<NextResponse> {
 /**
  * Handles errors in the search API route handler.
  *
- * @param error
+ * @param {unknown} error - The error that occurred.
+ *
+ * @returns {NextResponse} The error response.
  */
 function handleRouteError(error: unknown): NextResponse {
   if (error instanceof z.ZodError) {
