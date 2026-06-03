@@ -7,7 +7,7 @@ import { env } from '@/lib/server/env/server';
  * Creates a new Supabase client instance using environment variables.
  * Client is created lazily to support Edge Runtime.
  *
- * @returns A new Supabase client instance
+ * @returns {SupabaseClient} A new Supabase client instance
  */
 function getSupabaseClient(): SupabaseClient {
   return createClient(env.SUPABASE_URL, env.SUPABASE_PUBLISHABLE_DEFAULT_KEY);
