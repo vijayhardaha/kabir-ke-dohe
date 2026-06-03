@@ -1,6 +1,7 @@
 import type { NextResponse } from 'next/server';
 
-import { ApiError, failure } from '@/lib/server/utils';
+import { ApiError } from '@/lib/server/utils/errors/api-error';
+import { failure } from '@/lib/server/utils/response/response';
 
 /**
  * Handles API route errors consistently and returns standardized JSON failure responses.
