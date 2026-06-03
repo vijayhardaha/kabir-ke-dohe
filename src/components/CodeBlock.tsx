@@ -21,19 +21,22 @@ interface ICodeBlockProps {
  * and provides a copy-to-clipboard functionality.
  * Uses a separate client component for copy functionality.
  *
- * @component
- * @param {Object} props - Component props
+ * @param {object} props - Component props
  * @param {string} props.code - The code snippet to be displayed
  * @param {string} props.language - The programming language for syntax highlighting (e.g., 'javascript', 'css', 'html')
- * @param {boolean} [props.usePrism=true] - Whether to use Prism syntax highlighting or display plain text
+ * @param {boolean} [props.usePrism] - Whether to use Prism syntax highlighting or display plain text
  * @param {React.ReactNode} [props.actionElement] - Optional additional action element to display alongside the copy button
+ *
  * @returns {React.JSX.Element} A styled code block with copy functionality
+ *
  * @example
  * ```jsx
  * <CodeBlock code="console.log('Hello World');" language="javascript" />
  * <CodeBlock code="Some plain text" language="text" usePrism={false} />
  * <CodeBlock code="console.log('Hello');" language="javascript" actionElement={<button>Custom Action</button>} />
  * ```
+ *
+ * @component
  */
 export function CodeBlock({ code, language, usePrism = false, actionElement }: ICodeBlockProps): React.JSX.Element {
   const codeRef = useRef<HTMLElement | null>(null);
