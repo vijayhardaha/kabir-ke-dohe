@@ -1,5 +1,11 @@
 /**
  * Interface for the API query parameters.
+ *
+ * @type {ApiQueryParam}
+ * @property {string} name - Parameter name.
+ * @property {'string' | 'boolean' | 'number'} type - Parameter type.
+ * @property {string} description - Parameter description.
+ * @property {string} default - Default value.
  */
 export interface ApiQueryParam {
   name: string;
