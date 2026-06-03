@@ -12,7 +12,6 @@
     "format": "prettier --write --log-level error .",
     "format:check": "prettier --check --log-level error .",
     "indexnow": "bun run scripts/indexnow.ts",
-    "build:data": "bun run scripts/coupletscsv.ts",
     "sync": "bun --env-file=.env.local scripts/sync.ts",
     "sync:prod": "bun --env-file=.env.production scripts/sync.ts",
     "tsc": "tsc --noEmit",
