@@ -12,10 +12,12 @@ interface ICopyButtonProps {
 /**
  * Client-side component that provides copy-to-clipboard functionality
  *
- * @component
- * @param {Object} props - Component props
+ * @param {object} props - Component props
  * @param {string} props.textToCopy - The text to be copied to clipboard
+ *
  * @returns {React.JSX.Element} A button with copy functionality
+ *
+ * @component
  */
 export function CopyButton({ textToCopy }: ICopyButtonProps): React.JSX.Element {
   const [isCopied, setIsCopied] = useState(false);
