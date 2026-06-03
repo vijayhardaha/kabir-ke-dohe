@@ -20,7 +20,9 @@ export interface ApiError {
  * Creates a standardized success response payload for consistent API route outputs.
  *
  * @param {T} data - Serialized payload returned to API consumers.
+ *
  * @returns {NextResponse} JSON response containing success metadata and provided data.
+ *
  * @example
  * return success({ id: "abc", name: "Kabir" });
  */
@@ -32,7 +34,9 @@ export function success<T>(data: T): NextResponse {
  * Creates a cached success response with Cache-Control headers for CDN-level caching.
  *
  * @param {T} data - Serialized payload returned to API consumers.
+ *
  * @returns {NextResponse} JSON response containing success metadata, data, and cache headers.
+ *
  * @example
  * return successCached({ posts: [...], total: 100 });
  */
@@ -47,8 +51,10 @@ export function successCached<T>(data: T): NextResponse {
  * Creates a standardized error response payload for predictable API failure handling.
  *
  * @param {string} message - Human-readable error message safe for clients.
- * @param {number} [status=500] - HTTP status code returned with the failure payload.
+ * @param {number} [status] - HTTP status code returned with the failure payload.
+ *
  * @returns {NextResponse} JSON response containing error details and status code.
+ *
  * @example
  * return failure("Unauthorized request", 401);
  */
