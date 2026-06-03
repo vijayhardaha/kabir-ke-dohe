@@ -1,6 +1,6 @@
 export { default as Introduction } from './Introduction';
 export { default as ApiEndpoints } from './ApiEndpoints';
-export { default as QueryParameters } from './QueryParameters';
+export { default as QueryParameters } from './__tests__/QueryParameters';
 export { default as ResponseFormat } from './ResponseFormat';
 export { default as ErrorResponse } from './ErrorResponse';
 export { default as Examples } from './Examples';
