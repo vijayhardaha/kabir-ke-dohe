@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
 
 import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
@@ -36,11 +36,9 @@ export const metadata: Metadata = SITE_METADATA;
  *
  * @param {{ children: ReactNode }} props - The props for the RootLayout component.
  *
- * @returns {React.JSX.Element} The root layout structure.
- *
- * @component
+ * @returns {JSX.Element} The root layout structure.
  */
-const RootLayout = ({ children }: { children: ReactNode }): React.JSX.Element => {
+const RootLayout = ({ children }: { children: ReactNode }): JSX.Element => {
   return (
     <html lang="en">
       <head>
