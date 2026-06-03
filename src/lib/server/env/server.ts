@@ -23,9 +23,9 @@ const envSchema = z.object({
  * Parses and validates environment variables at runtime.
  * Throws if any required variables are missing or invalid.
  *
- * @returns Validated environment variables
+ * @returns {z.infer<typeof envSchema>} Validated environment variables
  *
- * @throws Error if environment variables are invalid
+ * @throws {Error} If environment variables are invalid
  */
 function getEnv(): z.infer<typeof envSchema> {
   const result = envSchema.safeParse(process.env);
@@ -42,8 +42,12 @@ function getEnv(): z.infer<typeof envSchema> {
  * Exposes validated server environment values as a trusted configuration source.
  * Uses lazy evaluation to support Edge Runtime where env vars are only available at request time.
  *
+ * @returns {string} The validated environment value.
+ *
  * @example
  * const supabaseUrl = env.SUPABASE_URL;
+ *
+ * @throws {Error} If environment variable is not set or invalid.
  */
 export const env = {
   get SUPABASE_URL(): string {
