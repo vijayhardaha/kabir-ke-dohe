@@ -1,6 +1,7 @@
 /**
  * Unit tests for the header component, validating key links and visible API branding.
- * @package vitest
+ *
+ * @package
  */
 
 import { render, screen } from '@testing-library/react';
