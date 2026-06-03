@@ -1,12 +1,14 @@
+import type { JSX } from 'react/jsx-runtime';
+
 import { CodeBlock } from '@/components/CodeBlock';
 
 /**
  * Component that displays API error response documentation.
  * Shows error response format with an example and a table of common error responses.
  *
- * @returns {React.JSX.Element} - The rendered error response documentation.
+ * @returns {JSX.Element} - The rendered error response documentation.
  */
-export default function ErrorResponse(): React.JSX.Element {
+export default function ErrorResponse(): JSX.Element {
   const errorExample = `{
   "code": 400,
   "error": "A descriptive error message"
