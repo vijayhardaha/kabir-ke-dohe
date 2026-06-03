@@ -1,12 +1,14 @@
+import type { JSX } from 'react/jsx-runtime';
+
 import { CodeBlock } from '@/components/CodeBlock';
 
 /**
  * Component that displays the API response format.
  * Shows the structure of a successful API response with an example.
  *
- * @returns {React.JSX.Element} - The rendered response format documentation
+ * @returns {JSX.Element} - The rendered response format documentation
  */
-export default function ResponseFormat(): React.JSX.Element {
+export default function ResponseFormat(): JSX.Element {
   const responseExample = `{
   "success": true,
   "data": {
