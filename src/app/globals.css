@@ -161,7 +161,7 @@
     @apply border-foreground text-foreground border bg-transparent;
     @apply inline-flex items-center justify-center gap-0.5;
     @apply cursor-pointer px-6 py-2;
-    @apply text-sm font-bold font-extrabold;
+    @apply text-sm font-extrabold;
     @apply transition-all duration-200;
   }
 
