@@ -2,12 +2,19 @@ import { NextResponse } from 'next/server';
 
 /**
  * Interface for the API response.
+ *
+ * @type {ApiResponse}
+ * @property {boolean} success - Indicates success.
+ * @property {string} message - Response message.
  */
 interface ApiResponse {
   success: boolean;
   message: string;
 }
 
+/**
+ * Edge runtime configuration for the API route.
+ */
 export const runtime = 'edge';
 
 /**
