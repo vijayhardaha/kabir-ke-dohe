@@ -1,6 +1,7 @@
 /**
  * Unit tests for the footer component, ensuring attribution links and copyright details render.
- * @package vitest
+ *
+ * @package
  */
 
 import { render, screen } from '@testing-library/react';
