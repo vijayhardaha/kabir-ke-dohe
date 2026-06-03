@@ -19,6 +19,8 @@ export interface ApiError {
 /**
  * Creates a standardized success response payload for consistent API route outputs.
  *
+ * @template T - The type of the response data.
+ *
  * @param {T} data - Serialized payload returned to API consumers.
  *
  * @returns {NextResponse} JSON response containing success metadata and provided data.
@@ -32,6 +34,8 @@ export function success<T>(data: T): NextResponse {
 
 /**
  * Creates a cached success response with Cache-Control headers for CDN-level caching.
+ *
+ * @template T - The type of the response data.
  *
  * @param {T} data - Serialized payload returned to API consumers.
  *
