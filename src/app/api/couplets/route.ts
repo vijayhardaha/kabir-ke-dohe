@@ -2,9 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
 import { supabase } from '@/lib/server/db/supabase';
-import { sanitizeTitle } from '@/lib/server/utils';
-import { handleError } from '@/lib/server/utils/errors/error-handler';
-import { success, successCached } from '@/lib/server/utils/response/response';
+import { sanitizeTitle, success, successCached, handleError } from '@/lib/server/utils';
 
 /**
  * Default parameter values for the API.
@@ -59,6 +57,18 @@ type QueryParams = z.infer<typeof QuerySchema>;
 
 /**
  * Type for transformed post data.
+ *
+ * @type {Post}
+ * @property {number} number - Post number.
+ * @property {string} slug - URL-friendly slug.
+ * @property {string} text_hi - Hindi text.
+ * @property {string} text_en - English text.
+ * @property {string | null} meaning_hi - Hindi meaning.
+ * @property {string | null} meaning_en - English meaning.
+ * @property {{ name: string; slug: string } | null} category - Category info.
+ * @property {Array<{ slug: string; name: string }>} tags - Tags array.
+ * @property {string} created_at - Creation timestamp.
+ * @property {string} updated_at - Update timestamp.
  */
 interface Post {
   number: number;
@@ -252,7 +262,9 @@ function handleRouteError(error: unknown, fallbackMessage: string = 'An error oc
   return handleError(error instanceof Error ? error : new Error(fallbackMessage));
 }
 
-/** Edge runtime configuration for the couplets route. */
+/**
+ * Edge runtime configuration for the API route.
+ */
 export const runtime = 'edge';
 
 /**
