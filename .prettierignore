@@ -36,9 +36,14 @@ dist/
 # ----------------------------------------------------------------------
 .cache/
 .eslintcache
+.gulp/
+.parcel-cache/
+.rollup.cache/
 .stylelintcache
 .turbo/
 .vite/
+.vitest/
+.webpack/
 
 # ----------------------------------------------------------------------
 # Testing & Coverage
@@ -52,7 +57,13 @@ test-results/
 vitest-results/
 
 # ----------------------------------------------------------------------
-# Configuration & Ide
+# Temporary Files
+# ----------------------------------------------------------------------
+.tmp/
+tmp/
+
+# ----------------------------------------------------------------------
+# Editor & Ide
 # ----------------------------------------------------------------------
 .idea/
 .vscode-insiders/
@@ -65,21 +76,62 @@ vitest-results/
 .wrangler/
 
 # ----------------------------------------------------------------------
-# Ai Coding Tools
+# Public & Static Assets
 # ----------------------------------------------------------------------
-.claude/
-.codex/
-.droid/
-.kilo/
-.opencode/
-.qoder/
-.vibe/
+# Committed CSS assets, vendor stylesheets, theme CSS (WordPress).
+assets/
+public/
+static/
 
 # ----------------------------------------------------------------------
-# Temporary Files
+# Ai Coding Tools
 # ----------------------------------------------------------------------
-.tmp/
-tmp/
+# AI agent caches and generated files.
+.agent
+.agents
+.aider
+.amazonq
+.antigravitycli
+.augmith
+.bolt
+.charliepython
+.claude
+.cline
+.codex
+.continue
+.copilot
+.crush
+.cursor
+.devin
+.fallow
+.freebuff
+.gemini
+.gptscript
+.jina
+.kilo
+.kilocode
+.maestro
+.manus
+.midjourney
+.mistral
+.nexus
+.opencode
+.perplexity
+.qoder
+.qwen
+.replit
+.starcode
+.supercursor
+.vibe
+.windsurf
+.xai
+
+# ----------------------------------------------------------------------
+# Environment & Secrets
+# ----------------------------------------------------------------------
+.env
+.env.*
+*.pem
 
 # ----------------------------------------------------------------------
 # Package Manager Lockfiles
@@ -92,23 +144,23 @@ pnpm-lock.yaml
 yarn.lock
 
 # ----------------------------------------------------------------------
-# Common Auto-Generated YAML
-# ----------------------------------------------------------------------
-# These are typically generated or CI-related - not meant to be formatted.
-.gitlab/
-._circleci/
-*.kubeconfig
-.gitlab-ci.yml
-docker-compose.yml
-azure-pipelines.yml
-docker-compose.yaml
-bitbucket-pipelines.yml
-
-# ----------------------------------------------------------------------
 # Generated & Typings Files
 # ----------------------------------------------------------------------
 *.tsbuildinfo
 next-env.d.ts
+
+# ----------------------------------------------------------------------
+# Common Auto-Generated YAML
+# ----------------------------------------------------------------------
+# These are typically generated or CI-related - not meant to be formatted.
+._circleci/
+.gitlab/
+.gitlab-ci.yml
+azure-pipelines.yml
+bitbucket-pipelines.yml
+docker-compose.yaml
+docker-compose.yml
+*.kubeconfig
 
 # ----------------------------------------------------------------------
 # Minified & Generated Files
@@ -117,13 +169,6 @@ next-env.d.ts
 *.min.css
 *.min.js
 *.min.map
-
-# ----------------------------------------------------------------------
-# Environment & Secrets
-# ----------------------------------------------------------------------
-.env
-.env.*
-*.pem
 
 # ----------------------------------------------------------------------
 # Logs
