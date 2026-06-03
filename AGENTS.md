@@ -159,7 +159,7 @@ supabase migration new <name>  # Create new migration
 ## Response Helpers
 
 ```typescript
-import { success, successCached, failure } from "@/lib/server/utils/response/response";
+import { success, successCached, failure } from "@/lib/server/utils";
 
 return success(data); // 200 OK
 return successCached(data); // 200 + cache headers
