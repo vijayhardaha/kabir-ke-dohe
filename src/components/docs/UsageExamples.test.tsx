@@ -1,6 +1,7 @@
 /**
  * Unit tests for usage example tabs, validating navigation state and visible code panels.
- * @package vitest
+ *
+ * @package
  */
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
