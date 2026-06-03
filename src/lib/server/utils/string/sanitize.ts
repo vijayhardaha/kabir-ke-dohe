@@ -5,8 +5,10 @@ import slugify from 'slugify';
  * Converts arbitrary text into a normalized slug using configurable word separators.
  *
  * @param {string} string - Source text that may include accents and symbols.
- * @param {string} [separator="-"] - Replacement character inserted between slug segments.
+ * @param {string} [separator] - Replacement character inserted between slug segments.
+ *
  * @returns {string} Lowercase slug stripped to URL-safe characters.
+ *
  * @example
  * sanitize("Hello World!"); // "hello-world"
  * @example
@@ -21,7 +23,9 @@ export function sanitize(string: string, separator: string = '-'): string {
  * Converts free-form text into a predictable snake_case key for object usage.
  *
  * @param {string} string - Human-readable key text requiring normalization.
+ *
  * @returns {string} Sanitized identifier using underscores between normalized words.
+ *
  * @example
  * sanitizeKey("Hello World"); // "hello_world"
  * @example
@@ -35,7 +39,9 @@ export function sanitizeKey(string: string): string {
  * Converts title-like text into a URL-friendly kebab-case slug representation.
  *
  * @param {string} string - Title text that will become part of route paths.
+ *
  * @returns {string} Sanitized kebab-case slug for URL and identifier usage.
+ *
  * @example
  * sanitizeTitle("My Blog Post"); // "my-blog-post"
  * @example
