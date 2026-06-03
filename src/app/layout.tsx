@@ -34,9 +34,11 @@ export const metadata: Metadata = SITE_METADATA;
 /**
  * Root layout component for the application.
  *
- * @component
  * @param {{ children: ReactNode }} props - The props for the RootLayout component.
+ *
  * @returns {React.JSX.Element} The root layout structure.
+ *
+ * @component
  */
 const RootLayout = ({ children }: { children: ReactNode }): React.JSX.Element => {
   return (
