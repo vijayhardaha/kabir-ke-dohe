@@ -10,7 +10,6 @@
 {
   "extends": "@vijayhardaha/dev-config/tsconfig",
   "compilerOptions": {
-    "baseUrl": "./",
     "paths": { "@/*": ["./src/*"] },
     // ----------------------------------------------------------------------
     // Plugins & extras
@@ -36,5 +35,5 @@
   ],
 
   // ---- Excludes ----
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "docs", "dist", "build", "coverage", ".next"]
 }
