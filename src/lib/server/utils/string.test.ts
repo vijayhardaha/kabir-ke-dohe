@@ -1,6 +1,7 @@
 /**
  * Unit tests for server string helpers, ensuring normalization logic stays predictable across input variants.
- * @package vitest
+ *
+ * @package
  */
 
 import { describe, it, expect } from 'vitest';
