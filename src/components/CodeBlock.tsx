@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import { useRef, type JSX, type ReactNode } from 'react';
 
 import { Highlight, themes } from 'prism-react-renderer';
 
@@ -9,11 +9,11 @@ import { CopyButton } from './CopyButton';
 /**
  * Interface for the CodeBlock component props.
  */
-interface ICodeBlockProps {
+interface CodeBlockProps {
   code: string;
   language: string;
   usePrism?: boolean;
-  actionElement?: React.ReactNode;
+  actionElement?: ReactNode;
 }
 
 /**
@@ -25,9 +25,9 @@ interface ICodeBlockProps {
  * @param {string} props.code - The code snippet to be displayed
  * @param {string} props.language - The programming language for syntax highlighting (e.g., 'javascript', 'css', 'html')
  * @param {boolean} [props.usePrism] - Whether to use Prism syntax highlighting or display plain text
- * @param {React.ReactNode} [props.actionElement] - Optional additional action element to display alongside the copy button
+ * @param {ReactNode} [props.actionElement] - Optional additional action element to display alongside the copy button
  *
- * @returns {React.JSX.Element} A styled code block with copy functionality
+ * @returns {JSX.Element} A styled code block with copy functionality
  *
  * @example
  * ```jsx
@@ -35,10 +35,8 @@ interface ICodeBlockProps {
  * <CodeBlock code="Some plain text" language="text" usePrism={false} />
  * <CodeBlock code="console.log('Hello');" language="javascript" actionElement={<button>Custom Action</button>} />
  * ```
- *
- * @component
  */
-export function CodeBlock({ code, language, usePrism = false, actionElement }: ICodeBlockProps): React.JSX.Element {
+export function CodeBlock({ code, language, usePrism = false, actionElement }: CodeBlockProps): JSX.Element {
   const codeRef = useRef<HTMLElement | null>(null);
 
   return (
