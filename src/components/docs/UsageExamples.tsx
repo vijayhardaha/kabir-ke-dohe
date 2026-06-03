@@ -8,6 +8,11 @@ import { getPermaLink } from '@/lib/utils/seo';
 
 /**
  * Type definition for API usage examples.
+ *
+ * @type {Example}
+ * @property {string} label - Example label.
+ * @property {string} code - Example code.
+ * @property {string} language - Programming language.
  */
 interface Example {
   label: string;
