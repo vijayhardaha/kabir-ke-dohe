@@ -47,6 +47,7 @@ type GeneratedCouplet = z.infer<typeof CoupletSchema>;
 
 /**
  * Create batches from array
+ *
  * @param arr - Array to batch
  * @param size - Batch size
  */
@@ -60,6 +61,7 @@ function createBatches<T>(arr: T[], size: number): T[][] {
 
 /**
  * Extract and parse JSON from LLM response
+ *
  * @param text - Raw response text
  */
 function extractJSON(text: string): unknown {
@@ -74,6 +76,7 @@ function extractJSON(text: string): unknown {
 
 /**
  * Sleep helper
+ *
  * @param ms - Milliseconds to sleep
  */
 function sleep(ms: number): Promise<void> {
@@ -129,6 +132,7 @@ JSON STRUCTURE:
 
 /**
  * Generate user prompt with dohe to analyze
+ *
  * @param dohe - Array of dohe to analyze
  */
 function getUserPrompt(dohe: string[]): string {
@@ -137,6 +141,7 @@ function getUserPrompt(dohe: string[]): string {
 
 /**
  * Process a batch of dohe using Ollama
+ *
  * @param dohe - Batch of dohe to process
  * @param model - Ollama model to use
  * @param maxRetries - Maximum retry attempts
@@ -191,7 +196,9 @@ async function processBatch(
 
 /**
  * Append result to dataset file
+ *
  * @param {AiResult} data
+ * @param OUTPUT_FILE
  */
 async function appendToFile(data: GeneratedCouplet[], OUTPUT_FILE: string) {
   const line = JSON.stringify(data) + '\n';
