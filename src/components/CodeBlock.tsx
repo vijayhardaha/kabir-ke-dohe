@@ -8,6 +8,12 @@ import { CopyButton } from './CopyButton';
 
 /**
  * Interface for the CodeBlock component props.
+ *
+ * @type {CodeBlockProps}
+ * @property {string} code - The code snippet to be displayed.
+ * @property {string} language - The programming language for syntax highlighting.
+ * @property {boolean} [usePrism] - Whether to use Prism syntax highlighting.
+ * @property {ReactNode} [actionElement] - Optional additional action element.
  */
 interface CodeBlockProps {
   code: string;
