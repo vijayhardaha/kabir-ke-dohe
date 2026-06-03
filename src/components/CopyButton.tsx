@@ -4,6 +4,9 @@ import { useState, type JSX } from 'react';
 
 /**
  * Interface for the CopyButton component props.
+ *
+ * @type {CopyButtonProps}
+ * @property {string} textToCopy - The text to be copied to clipboard.
  */
 interface CopyButtonProps {
   textToCopy: string;
