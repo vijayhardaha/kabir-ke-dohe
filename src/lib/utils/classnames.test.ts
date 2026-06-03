@@ -1,6 +1,7 @@
 /**
  * Unit tests for classnames utility function.
- * @package vitest
+ *
+ * @package
  */
 
 import { describe, it, expect } from 'vitest';
