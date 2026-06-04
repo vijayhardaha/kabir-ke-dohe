@@ -4,7 +4,7 @@ import { type JSX, useState, useEffect, useRef } from 'react';
 
 import { LuArrowUpRight } from 'react-icons/lu';
 
-import { CodeBlock } from '@/components/CodeBlock';
+import { CodeBlock } from '@/components/ui/CodeBlock';
 import { getPermaLink } from '@/lib/utils/seo';
 
 /**
@@ -43,17 +43,17 @@ const getCurlCommand = (url: string): string => `curl -X GET ${getApiEndpointUrl
 /** Example API request configurations */
 const examples: Example[] = [
   { title: '1. Fetch All Couplets', url: '/api/couplets' },
-  { title: '2. Search for a Couplet', url: '/api/couplets?search_query=itna%20dijai' },
-  { title: '3. Search with Content', url: '/api/couplets?search_query=wisdom&search_content=true' },
-  { title: '4. Filter by Tags', url: '/api/couplets?tags=spiritual,life' },
-  { title: '5. Filter by Category', url: '/api/couplets?category=philosophy' },
+  { title: '2. Search for a Couplet', url: '/api/couplets?search_query=balihari%20guru' },
+  { title: '3. Search with Content', url: '/api/couplets?search_query=balihari%20guru&search_content=true' },
+  { title: '4. Filter by Tags', url: '/api/couplets?tags=truth,suffering' },
+  { title: '5. Filter by Category', url: '/api/couplets?category=ego-dissolution' },
   { title: '6. Filter by Popular', url: '/api/couplets?is_popular=true' },
   { title: '7. Filter by Featured', url: '/api/couplets?is_featured=true' },
   { title: '8. Sort Results', url: '/api/couplets?sort_by=text_en&sort_order=asc' },
   { title: '9. Paginate Results', url: '/api/couplets?page=2&per_page=5' },
   {
     title: '10. Combining Multiple Filters',
-    url: '/api/couplets?search_query=wisdom&search_content=true&tags=philosophy&is_popular=false&is_featured=false&sort_by=number&sort_order=desc&page=1&per_page=10',
+    url: '/api/couplets?search_query=balihari%20guru&search_content=true&tags=truth,suffering&is_popular=false&is_featured=false&sort_by=number&sort_order=desc&page=1&per_page=10',
   },
 ];
 
@@ -141,8 +141,8 @@ export default function Examples(): JSX.Element {
                   isOpen ? 'bg-primary text-primary-foreground' : 'bg-background text-foreground'
                 } `}
               >
-                <span className="font-black">{example.title}</span>
-                <span className="ml-2 text-sm">{isOpen ? '−' : '+'}</span>
+                <span className="font-semibold">{example.title}</span>
+                <span className="ml-2 text-lg">{isOpen ? '−' : '+'}</span>
               </button>
 
               <div
