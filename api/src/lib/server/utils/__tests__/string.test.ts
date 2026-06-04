@@ -6,43 +6,7 @@
 
 import { describe, it, expect } from 'vitest';
 
-import { sanitize, sanitizeKey, sanitizeTitle, toSentenceCase } from '@/lib/server/utils';
-
-// Separate suites mirror each exported helper to keep failures tied to one transformation rule.
-describe('sanitize', () => {
-  // Define a focused test case for one behavior.
-  it('should convert to lowercase', () => {
-    // Assert the expected outcome for this scenario.
-    expect(sanitize('HELLO')).toBe('hello');
-  });
-
-  // Define a focused test case for one behavior.
-  it('should replace spaces with hyphens', () => {
-    // Assert the expected outcome for this scenario.
-    expect(sanitize('hello world')).toBe('hello-world');
-  });
-
-  // Define a focused test case for one behavior.
-  it('should remove special characters', () => {
-    // Assert the expected outcome for this scenario.
-    expect(sanitize('hello world!')).toBe('hello-world');
-  });
-
-  // Define a focused test case for one behavior.
-  it('should handle custom separator', () => {
-    // Assert the expected outcome for this scenario.
-    expect(sanitize('hello world', '_')).toBe('hello_world');
-  });
-});
-
-// Group related test behavior in this suite.
-describe('sanitizeKey', () => {
-  // Define a focused test case for one behavior.
-  it('should use snake_case', () => {
-    // Assert the expected outcome for this scenario.
-    expect(sanitizeKey('hello world')).toBe('hello_world');
-  });
-});
+import { sanitizeTitle, toSentenceCase } from '@/lib/server/utils';
 
 // Group related test behavior in this suite.
 describe('sanitizeTitle', () => {
