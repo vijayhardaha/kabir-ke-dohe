@@ -1,12 +1,42 @@
 import type { JSX } from 'react/jsx-runtime';
 
-import { CodeBlock } from '@/components/CodeBlock';
+import { CodeBlock } from '@/components/ui/CodeBlock';
+
+/**
+ * Props for the FieldRow component.
+ */
+interface FieldRowProps {
+  /** The field name/path displayed inside a <code> tag. */
+  field: string;
+  /** Description of the field. */
+  children: string;
+}
+
+/**
+ * A single row in the response fields table.
+ *
+ * @param {FieldRowProps} props - Component props.
+ *
+ * @returns {JSX.Element} A table row with field
+code and description.
+ */
+function FieldRow({ field, children }: FieldRowProps): JSX.Element {
+  return (
+    <tr>
+      <td>
+        <code>{field}</code>
+      </td>
+      <td>{children}</td>
+    </tr>
+  );
+}
 
 /**
  * Component that displays the API response format.
  * Shows the structure of a successful API response with an example.
  *
- * @returns {JSX.Element} - The rendered response format documentation
+ * @returns {JSX.Element} - The
+rendered response format documentation
  */
 export default function ResponseFormat(): JSX.Element {
   const responseExample = `{
@@ -63,108 +93,23 @@ export default function ResponseFormat(): JSX.Element {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <code>success</code>
-              </td>
-              <td>Boolean indicating if the request was successful</td>
-            </tr>
-            <tr>
-              <td>
-                <code>data.posts</code>
-              </td>
-              <td>Array of post objects</td>
-            </tr>
-            <tr>
-              <td>
-                <code>data.total</code>
-              </td>
-              <td>Total number of records matching the query</td>
-            </tr>
-            <tr>
-              <td>
-                <code>data.totalPages</code>
-              </td>
-              <td>Total number of pages</td>
-            </tr>
-            <tr>
-              <td>
-                <code>data.page</code>
-              </td>
-              <td>Current page number</td>
-            </tr>
-            <tr>
-              <td>
-                <code>data.per_page</code>
-              </td>
-              <td>Number of results per page</td>
-            </tr>
-            <tr>
-              <td>
-                <code>data.pagination</code>
-              </td>
-              <td>Boolean indicating if pagination is enabled</td>
-            </tr>
-            <tr>
-              <td>
-                <code>posts[].number</code>
-              </td>
-              <td>Post number/identifier</td>
-            </tr>
-            <tr>
-              <td>
-                <code>posts[].slug</code>
-              </td>
-              <td>URL-friendly slug</td>
-            </tr>
-            <tr>
-              <td>
-                <code>posts[].text_hi</code>
-              </td>
-              <td>Couplet text in Hindi</td>
-            </tr>
-            <tr>
-              <td>
-                <code>posts[].text_en</code>
-              </td>
-              <td>Couplet text in English</td>
-            </tr>
-            <tr>
-              <td>
-                <code>posts[].meaning_hi</code>
-              </td>
-              <td>Meaning in Hindi (nullable)</td>
-            </tr>
-            <tr>
-              <td>
-                <code>posts[].meaning_en</code>
-              </td>
-              <td>Meaning in English (nullable)</td>
-            </tr>
-            <tr>
-              <td>
-                <code>posts[].category</code>
-              </td>
-              <td>Category object with name and slug</td>
-            </tr>
-            <tr>
-              <td>
-                <code>posts[].tags</code>
-              </td>
-              <td>Array of tag objects with slug and name</td>
-            </tr>
-            <tr>
-              <td>
-                <code>posts[].created_at</code>
-              </td>
-              <td>Timestamp when the post was created</td>
-            </tr>
-            <tr>
-              <td>
-                <code>posts[].updated_at</code>
-              </td>
-              <td>Timestamp when the post was last updated</td>
-            </tr>
+            <FieldRow field="success">Boolean indicating if the request was successful</FieldRow>
+            <FieldRow field="data.posts">Array of post objects</FieldRow>
+            <FieldRow field="data.total">Total number of records matching the query</FieldRow>
+            <FieldRow field="data.totalPages">Total number of pages</FieldRow>
+            <FieldRow field="data.page">Current page number</FieldRow>
+            <FieldRow field="data.per_page">Number of results per page</FieldRow>
+            <FieldRow field="data.pagination">Boolean indicating if pagination is enabled</FieldRow>
+            <FieldRow field="posts[].number">Post number/identifier</FieldRow>
+            <FieldRow field="posts[].slug">URL-friendly slug</FieldRow>
+            <FieldRow field="posts[].text_hi">Couplet text in Hindi</FieldRow>
+            <FieldRow field="posts[].text_en">Couplet text in English</FieldRow>
+            <FieldRow field="posts[].meaning_hi">Meaning in Hindi (nullable)</FieldRow>
+            <FieldRow field="posts[].meaning_en">Meaning in English (nullable)</FieldRow>
+            <FieldRow field="posts[].category">Category object with name and slug</FieldRow>
+            <FieldRow field="posts[].tags">Array of tag objects with slug and name</FieldRow>
+            <FieldRow field="posts[].created_at">Timestamp when the post was created</FieldRow>
+            <FieldRow field="posts[].updated_at">Timestamp when the post was last updated</FieldRow>
           </tbody>
         </table>
       </div>
