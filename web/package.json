@@ -1,0 +1,16 @@
+{
+  "name": "@kabir-hub/web",
+  "version": "1.0.0",
+  "description": "Kabir Dohe Web — Web application for Kabir's couplets",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'No dev script yet'",
+    "build": "echo 'No build script yet'",
+    "lint": "echo 'No lint config yet'",
+    "lint:fix": "echo 'No lint config yet'",
+    "test": "echo 'No tests yet'",
+    "tsc": "echo 'No TypeScript config yet'"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
