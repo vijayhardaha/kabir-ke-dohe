@@ -45,7 +45,7 @@ export const siteUrl = (): string => {
  * cleanPath("")           // ""
  * cleanPath("/")          // ""
  */
-export const cleanPath = (path: string = ''): string => {
+const cleanPath = (path: string = ''): string => {
   return path.trim().replace(/^\/+/, '').replace(/\/+$/, '');
 };
 
