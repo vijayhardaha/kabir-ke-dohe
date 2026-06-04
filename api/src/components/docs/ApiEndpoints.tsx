@@ -11,7 +11,7 @@ export default function ApiEndpoints(): JSX.Element {
     <section id="api-endpoint">
       <h2>API Endpoint</h2>
 
-      <a className="text-foreground mb-2 block text-lg font-black" href="/api/couplets">
+      <a className="text-foreground mb-2 block text-lg font-bold" href="/api/couplets">
         GET /api/couplets
       </a>
 
