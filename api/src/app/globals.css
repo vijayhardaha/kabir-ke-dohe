@@ -66,7 +66,7 @@
 
   /* Headings - bold by default */
   :is(h1, h2, h3, h4, h5, h6) {
-    @apply mb-4 font-black;
+    @apply mb-4 font-bold;
   }
 
   h1 {
@@ -123,7 +123,7 @@
     }
 
     h3 {
-      @apply mb-2 text-lg font-black;
+      @apply mb-2 text-lg font-bold;
     }
 
     ul {
@@ -140,7 +140,7 @@
   .btn {
     @apply cursor-pointer border px-6 py-2.5 no-underline;
     @apply inline-flex items-center justify-center gap-0.5;
-    @apply text-xs font-black uppercase transition-all duration-200;
+    @apply text-xs font-semibold uppercase transition-all duration-200;
   }
 
   /* --- PRIMARY --- */
@@ -174,7 +174,7 @@
     }
 
     th {
-      @apply px-4 py-4 text-left font-extrabold whitespace-nowrap text-white uppercase;
+      @apply px-4 py-4 text-left font-bold whitespace-nowrap text-white uppercase;
     }
 
     td {
@@ -207,7 +207,7 @@
     @apply border-foreground text-foreground border bg-transparent;
     @apply inline-flex items-center justify-center gap-0.5;
     @apply cursor-pointer px-6 py-2;
-    @apply text-sm font-extrabold;
+    @apply text-sm font-bold;
     @apply transition-all duration-200;
   }
 
@@ -231,11 +231,11 @@
   }
 
   .info-card-key {
-    @apply bg-secondary/50 flex min-h-13 min-w-13 shrink-0 items-center justify-center px-3 py-2 font-mono text-sm;
+    @apply bg-secondary flex min-h-13 min-w-13 shrink-0 items-center justify-center px-3 py-2 font-mono text-sm;
   }
 
   .info-card-body h4 {
-    @apply font-extrabold;
+    @apply font-bold;
   }
 
   .info-card-body p {
