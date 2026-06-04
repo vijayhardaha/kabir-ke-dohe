@@ -1,8 +1,7 @@
-import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
-import { supabase } from '@/lib/server/db/supabase';
-import { sanitizeTitle, success, successCached, handleError } from '@/lib/server/utils';
+import { supabase } from '@/lib/server/supabase';
+import { sanitizeTitle, createGetHandler } from '@/lib/server/utils';
 
 /**
  * Default parameter values for the API.
@@ -170,7 +169,7 @@ function transformPost(row: Record<string, unknown>): Post {
  *
  * @returns {Promise<{ posts: Post[]; total: number }>} The fetched posts and total count.
  */
-async function fetchPosts(params: QueryParams) {
+async function fetchPosts(params: QueryParams): Promise<{ posts: Post[]; total: number }> {
   const searchTrimmed = params.search_query?.trim() || '';
   const tagsTrimmed = params.tags?.trim() || '';
   const categoryTrimmed = params.category?.trim() || '';
@@ -245,62 +244,8 @@ async function handleRequest(
   };
 }
 
-/**
- * Handles errors in API route handlers.
- *
- * @param {unknown} error - The error that occurred.
- * @param {string} [fallbackMessage] - Fallback message if error is not an Error.
- *
- * @returns {NextResponse} The error response.
- */
-function handleRouteError(error: unknown, fallbackMessage: string = 'An error occurred'): NextResponse {
-  if (error instanceof z.ZodError) {
-    const message = error.issues.map((e: z.core.$ZodIssue) => e.message).join(', ');
-    return handleError(new Error(`Validation error: ${message}`));
-  }
-
-  return handleError(error instanceof Error ? error : new Error(fallbackMessage));
-}
-
-/**
- * Edge runtime configuration for the API route.
- */
+/** Edge runtime configuration for the API route. */
 export const runtime = 'edge';
 
-/**
- * GET route handler for the posts API.
- *
- * @param {Request} request - The incoming GET request.
- *
- * @returns {Promise<NextResponse>} The response with posts data.
- */
-export async function GET(request: Request): Promise<NextResponse> {
-  try {
-    const { searchParams } = new URL(request.url);
-    const params = parseQueryParams(searchParams);
-    const result = await handleRequest(params);
-
-    return successCached(result);
-  } catch (error) {
-    return handleRouteError(error, 'Failed to fetch posts');
-  }
-}
-
-/**
- * POST route handler for the posts API.
- *
- * @param {Request} request - The incoming POST request.
- *
- * @returns {Promise<NextResponse>} The response with posts data.
- */
-export async function POST(request: Request): Promise<NextResponse> {
-  try {
-    const body = await request.json();
-    const params = QuerySchema.parse({ ...DEFAULT_PARAMS, ...body });
-    const result = await handleRequest(params);
-
-    return success(result);
-  } catch (error) {
-    return handleRouteError(error, 'Failed to fetch posts');
-  }
-}
+/** GET route handler for the posts API. */
+export const GET = createGetHandler(parseQueryParams, handleRequest, 'Failed to fetch posts');
