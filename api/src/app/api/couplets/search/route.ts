@@ -1,8 +1,7 @@
-import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
-import { supabase } from '@/lib/server/db/supabase';
-import { handleError, successCached } from '@/lib/server/utils';
+import { supabase } from '@/lib/server/supabase';
+import { createGetHandler } from '@/lib/server/utils';
 
 /**
  * Default parameter values for the search API.
@@ -86,35 +85,5 @@ export const runtime = 'edge';
 /**
  * GET route handler for the search API.
  * Searches couplets by text in text_hi and text_en columns.
- *
- * @param {Request} request - The incoming GET request with query parameters.
- *
- * @returns {Promise<NextResponse>} NextResponse with search results containing only text_hi field.
  */
-export async function GET(request: Request): Promise<NextResponse> {
-  try {
-    const { searchParams } = new URL(request.url);
-    const params = parseQueryParams(searchParams);
-    const result = await handleRequest(params);
-
-    return successCached(result);
-  } catch (error) {
-    return handleRouteError(error);
-  }
-}
-
-/**
- * Handles errors in the search API route handler.
- *
- * @param {unknown} error - The error that occurred.
- *
- * @returns {NextResponse} The error response.
- */
-function handleRouteError(error: unknown): NextResponse {
-  if (error instanceof z.ZodError) {
-    const message = error.issues.map((e: z.ZodIssue) => e.message).join(', ');
-    return handleError(new Error(`Validation error: ${message}`));
-  }
-
-  return handleError(error instanceof Error ? error : new Error('Failed to search couplets'));
-}
+export const GET = createGetHandler(parseQueryParams, handleRequest);
