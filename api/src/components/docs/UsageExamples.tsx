@@ -2,7 +2,7 @@
 
 import { useState, useRef, type JSX } from 'react';
 
-import { CodeBlock } from '@/components/CodeBlock';
+import { CodeBlock } from '@/components/ui/CodeBlock';
 import { cn } from '@/lib/utils/classnames';
 import { getPermaLink } from '@/lib/utils/seo';
 
@@ -37,7 +37,7 @@ export default function UsageExamples(): JSX.Element {
   const examples: Record<ExampleKey, Example> = {
     curl: {
       label: 'cURL',
-      code: 'curl -X GET "' + getPermaLink() + '/api/couplets?tags=devotion&per_page=5"',
+      code: 'curl -X GET "' + getPermaLink() + '/api/couplets?tags=truth,suffering&per_page=5"',
       language: 'bash',
     },
     javascript: {
@@ -45,7 +45,7 @@ export default function UsageExamples(): JSX.Element {
       code:
         'fetch("'
         + getPermaLink()
-        + '/api/couplets?tags=devotion&per_page=5")\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error("Error:", error));',
+        + '/api/couplets?tags=truth,suffering&per_page=5")\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error("Error:", error));',
       language: 'javascript',
     },
     python: {
@@ -53,7 +53,7 @@ export default function UsageExamples(): JSX.Element {
       code:
         'import requests\n\nresponse = requests.get("'
         + getPermaLink()
-        + '/api/couplets", params={\n  "tags": "devotion",\n  "per_page": 5\n})\n\ndata = response.json()\nprint(data)',
+        + '/api/couplets", params={\n  "tags": "truth,suffering",\n  "per_page": 5\n})\n\ndata = response.json()\nprint(data)',
       language: 'python',
     },
   };
