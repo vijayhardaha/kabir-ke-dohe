@@ -16,7 +16,6 @@ import {
   ErrorResponse,
   UsageExamples,
   Examples,
-  Contribution,
   SEOContent,
 } from '@/components/docs';
 import { API_QUERY_PARAMS } from '@/constants/api-params';
@@ -89,7 +88,6 @@ export default function Home(): JSX.Element {
       <UsageExamples />
       <Examples />
       <SEOContent />
-      <Contribution />
     </div>
   );
 }
