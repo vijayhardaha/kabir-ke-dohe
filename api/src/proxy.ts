@@ -17,7 +17,7 @@ const CORS_HEADERS = {
  *
  * @returns {NextResponse} The response with CORS headers attached.
  */
-export function proxy(request: NextRequest) {
+export function proxy(request: NextRequest): NextResponse {
   const response = NextResponse.next();
 
   if (request.nextUrl.pathname.startsWith('/api/couplets')) {
