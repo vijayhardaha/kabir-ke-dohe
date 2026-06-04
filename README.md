@@ -4,11 +4,11 @@ Monorepo for the Kabir Dohe ecosystem — API, web app, and image generation too
 
 ## Packages
 
-| Package                  | Path           | Description                                               |
-| ------------------------ | -------------- | --------------------------------------------------------- |
+| Package                  | Path           | Description                                                            |
+| ------------------------ | -------------- | ---------------------------------------------------------------------- |
 | `@kabir-hub/api`         | `api/`         | [RESTful API + documentation site](api/README.md) for Kabir's couplets |
-| `@kabir-hub/web`         | `web/`         | Web application for reading and learning Kabir's couplets |
-| `@kabir-hub/images-tool` | `images-tool/` | Visual quotes and image generation                        |
+| `@kabir-hub/web`         | `web/`         | Web application for reading and learning Kabir's couplets              |
+| `@kabir-hub/images-tool` | `images-tool/` | Visual quotes and image generation                                     |
 
 ## About
 
