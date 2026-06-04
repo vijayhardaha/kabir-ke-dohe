@@ -55,16 +55,16 @@ Full documentation with all parameters, examples, and response formats: **[kabir
 
 ## Tech Stack
 
-| Technology        | Purpose                           |
-| ----------------- | --------------------------------- |
-| Next.js 16        | API routes & documentation site   |
-| TypeScript        | Type safety (strict mode)         |
-| Supabase          | PostgreSQL database               |
-| Zod               | Request validation                |
-| React 19          | UI (documentation frontend)       |
-| Tailwind CSS v4   | Styling                           |
-| Vitest            | Testing                           |
-| Bun               | Package manager & runtime         |
+| Technology      | Purpose                         |
+| --------------- | ------------------------------- |
+| Next.js 16      | API routes & documentation site |
+| TypeScript      | Type safety (strict mode)       |
+| Supabase        | PostgreSQL database             |
+| Zod             | Request validation              |
+| React 19        | UI (documentation frontend)     |
+| Tailwind CSS v4 | Styling                         |
+| Vitest          | Testing                         |
+| Bun             | Package manager & runtime       |
 
 ## Project Structure
 
@@ -94,26 +94,26 @@ api/
 
 ### Endpoints
 
-| Method | Endpoint                              | Description              |
-| ------ | ------------------------------------- | ------------------------ |
-| GET    | `/api/couplets`                       | Fetch couplets with filters |
-| GET    | `/api/couplets/search`                | Search couplets by text  |
+| Method | Endpoint               | Description                 |
+| ------ | ---------------------- | --------------------------- |
+| GET    | `/api/couplets`        | Fetch couplets with filters |
+| GET    | `/api/couplets/search` | Search couplets by text     |
 
 ### Query Parameters
 
-| Parameter        | Type      | Default    | Description                            |
-| ---------------- | --------- | ---------- | -------------------------------------- |
-| `search_query`   | `string`  | `''`       | Keyword search across couplets         |
-| `search_content` | `boolean` | `false`    | Include meaning fields in search       |
-| `tags`           | `string`  | `''`       | Filter by comma-separated tags         |
-| `category`       | `string`  | `''`       | Filter by category slug                |
-| `is_popular`     | `boolean` | `false`    | Filter popular couplets                |
-| `is_featured`    | `boolean` | `false`    | Filter featured couplets               |
-| `sort_by`        | `string`  | `number`   | Sort field (`number`, `popular`, etc.) |
-| `sort_order`     | `string`  | `asc`      | Sort direction (`asc` or `desc`)       |
-| `page`           | `number`  | `1`        | Page number                            |
-| `per_page`       | `number`  | `10`       | Results per page                       |
-| `pagination`     | `boolean` | `true`     | Include pagination metadata            |
+| Parameter        | Type      | Default  | Description                            |
+| ---------------- | --------- | -------- | -------------------------------------- |
+| `search_query`   | `string`  | `''`     | Keyword search across couplets         |
+| `search_content` | `boolean` | `false`  | Include meaning fields in search       |
+| `tags`           | `string`  | `''`     | Filter by comma-separated tags         |
+| `category`       | `string`  | `''`     | Filter by category slug                |
+| `is_popular`     | `boolean` | `false`  | Filter popular couplets                |
+| `is_featured`    | `boolean` | `false`  | Filter featured couplets               |
+| `sort_by`        | `string`  | `number` | Sort field (`number`, `popular`, etc.) |
+| `sort_order`     | `string`  | `asc`    | Sort direction (`asc` or `desc`)       |
+| `page`           | `number`  | `1`      | Page number                            |
+| `per_page`       | `number`  | `10`     | Results per page                       |
+| `pagination`     | `boolean` | `true`   | Include pagination metadata            |
 
 ### Response Format
 
@@ -165,11 +165,11 @@ bun run sync             # Sync data from Google Sheets
 
 Required variables (see `.env.example`):
 
-| Variable                              | Description            |
-| ------------------------------------- | ---------------------- |
-| `SUPABASE_URL`                        | Supabase project URL   |
-| `SUPABASE_PUBLISHABLE_DEFAULT_KEY`    | Supabase anonymous key |
-| `NEXT_PUBLIC_SITE_URL`                | Public site URL        |
+| Variable                           | Description            |
+| ---------------------------------- | ---------------------- |
+| `SUPABASE_URL`                     | Supabase project URL   |
+| `SUPABASE_PUBLISHABLE_DEFAULT_KEY` | Supabase anonymous key |
+| `NEXT_PUBLIC_SITE_URL`             | Public site URL        |
 
 ## Database
 
