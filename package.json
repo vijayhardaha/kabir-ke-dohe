@@ -57,7 +57,7 @@
     "@commitlint/types": "^21.0.1",
     "@eslint/compat": "^2.1.0",
     "@prettier/plugin-xml": "^3.4.2",
-    "@vijayhardaha/dev-config": "^2.0.4",
+    "@vijayhardaha/dev-config": "^2.1.0",
     "eslint": "^10.4.1",
     "eslint-config-next": "^16.2.7",
     "eslint-config-prettier": "^10.1.8",
