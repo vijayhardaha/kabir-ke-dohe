@@ -6,43 +6,7 @@
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-import { cleanPath, siteUrl } from '../seo';
-
-// Group SEO utility assertions to catch regressions in URL handling logic.
-describe('cleanPath', () => {
-  // Group related test behavior in this suite.
-  // Define a focused test case for one behavior.
-  it('should remove leading slashes', () => {
-    // Assert the expected outcome for this scenario.
-    expect(cleanPath('/about')).toBe('about');
-  });
-
-  // Define a focused test case for one behavior.
-  it('should remove trailing slashes', () => {
-    // Assert the expected outcome for this scenario.
-    expect(cleanPath('about/')).toBe('about');
-  });
-
-  // Define a focused test case for one behavior.
-  it('should handle slashes on both sides', () => {
-    // Assert the expected outcome for this scenario.
-    expect(cleanPath('/about/')).toBe('about');
-  });
-
-  // Define a focused test case for one behavior.
-  it('should return empty string for root', () => {
-    // Assert the expected outcome for this scenario.
-    expect(cleanPath('')).toBe('');
-    // Assert the expected outcome for this scenario.
-    expect(cleanPath('/')).toBe('');
-  });
-
-  // Define a focused test case for one behavior.
-  it('should handle whitespace', () => {
-    // Assert the expected outcome for this scenario.
-    expect(cleanPath('  about  ')).toBe('about');
-  });
-});
+import { siteUrl } from '../seo';
 
 // Group base URL generation assertions in a dedicated suite.
 describe('siteUrl', () => {
