@@ -1,10 +1,16 @@
 # AGENTS.md
 
-> **This file serves as the authoritative reference for AI agents working on the `kabir-dohe-api` codebase.**
+> **This file serves as the authoritative reference for AI agents working on the `kabir-hub` codebase.**
 
 ## Project Overview
 
-Kabir Dohe API is a RESTful API that serves Kabir Das's dohas (couplets) with search, filtering, and metadata. This repository contains both the **API backend** and a **documentation frontend** for developers.
+**kabir-hub** is a monorepo containing three packages related to Kabir Das's dohas (couplets):
+
+| Package                  | Path           | Description                                               |
+| ------------------------ | -------------- | --------------------------------------------------------- |
+| `@kabir-hub/api`         | `api/`         | RESTful API + documentation frontend for Kabir's couplets |
+| `@kabir-hub/web`         | `web/`         | Web application for reading and learning Kabir's couplets |
+| `@kabir-hub/images-tool` | `images-tool/` | Image generation tool for visual quotes                   |
 
 ### What This Project Provides
 
@@ -12,7 +18,15 @@ Kabir Dohe API is a RESTful API that serves Kabir Das's dohas (couplets) with se
 - **Search API**: Full-text search across couplets with query parameters for filtering
 - **Documentation Site**: Interactive API documentation with examples, response formats, and usage guides
 
-### Tech Stack
+### Root-Level Config (Shared)
+
+- **Prettier** — `prettier.config.mjs` (root)
+- **Commitlint** — `commitlint.config.mjs` (root)
+- **ESLint** — `eslint.config.mjs` (root)
+- **VS Code** — `.vscode/settings.json` (root)
+- **Husky** — `.husky/` (root)
+
+### Tech Stack (`api/`)
 
 - **Type**: Next.js 16 API (App Router)
 - **Lang**: TypeScript (strict mode)
@@ -20,98 +34,80 @@ Kabir Dohe API is a RESTful API that serves Kabir Das's dohas (couplets) with se
 - **Validation**: Zod
 - **UI**: React 19 + Tailwind CSS v4
 - **Testing**: Vitest
-- **Package Manager**: Bun
+- **Package Manager**: Bun (workspaces)
 
 ## Project Architecture
 
 ```
-src/
-├── app/                    # Next.js App Router - routing only
-│   ├── api/               # API routes
-│   │   ├── couplets/
-│   │   │   ├── route.ts   # GET all couplets
-│   │   │   └── search/
-│   │   │       └── route.ts # GET search couplets
-│   │   └── route.ts       # Root API endpoint
-│   ├── layout.tsx         # Root layout
-│   └── page.tsx           # Documentation home page
-│
-├── components/
-│   ├── CodeBlock.tsx      # Code display component
-│   ├── CopyButton.tsx     # Copy to clipboard button
-│   ├── Footer.tsx         # Site footer
-│   ├── Header.tsx         # Site header
-│   └── docs/              # Documentation components
-│       ├── ApiEndpoints.tsx
-│       ├── Contribution.tsx
-│       ├── ErrorResponse.tsx
-│       ├── Examples.tsx
-│       ├── Introduction.tsx
-│       ├── QueryParameters.tsx
-│       ├── ResponseFormat.tsx
-│       ├── SEOContent.tsx
-│       ├── UsageExamples.tsx
-│       └── index.tsx
-│
-├── constants/             # Project-wide constants
-│   ├── api-params.ts      # API parameter defaults
-│   └── seo.ts             # SEO metadata
-│
-├── lib/
-│   ├── server/           # Server-only (NEVER import in client)
-│   │   ├── db/
-│   │   │   └── supabase.ts  # Supabase client singleton
-│   │   ├── env/
-│   │   │   └── server.ts    # Environment variables
-│   │   └── utils/
-│   │       ├── errors/
-│   │       │   ├── api-error.ts      # ApiError class
-│   │       │   └── error-handler.ts  # Error handling utilities
-│   │       ├── response/
-│   │       │   └── response.ts       # Response helpers
-│   │       ├── string/
-│   │       │   ├── formatting.ts     # String formatting
-│   │       │   └── sanitize.ts       # String sanitization
-│   │       └── index.ts
+api/
+├── src/
+│   ├── app/                    # Next.js App Router - routing only
+│   │   ├── api/               # API routes
+│   │   │   ├── couplets/
+│   │   │   │   ├── route.ts   # GET all couplets
+│   │   │   │   └── search/
+│   │   │   │       └── route.ts # GET search couplets
+│   │   │   └── route.ts       # Root API endpoint
+│   │   ├── layout.tsx         # Root layout
+│   │   └── page.tsx           # Documentation home page
 │   │
-│   └── utils/            # Client-safe utilities
-│       ├── classnames.ts  # cn() utility
-│       ├── schema.ts      # Zod schemas
-│       └── seo.ts         # SEO utilities
+│   ├── components/
+│   │   ├── CodeBlock.tsx      # Code display component
+│   │   ├── CopyButton.tsx     # Copy to clipboard button
+│   │   ├── Footer.tsx         # Site footer
+│   │   ├── Header.tsx         # Site header
+│   │   └── docs/              # Documentation components
+│   │
+│   ├── constants/             # Project-wide constants
+│   ├── lib/
+│   │   ├── server/            # Server-only (NEVER import in client)
+│   │   └── utils/             # Client-safe utilities
+│   └── proxy.ts               # Proxy configuration
 │
-├── types/                 # TypeScript definitions
-│
-└── proxy.ts               # Proxy configuration
+├── scripts/                   # Database sync & utility scripts
+├── supabase/                  # Supabase migrations & config
+├── docs/                      # Contribution docs
+├── public/                    # Static assets
+├── next.config.ts
+├── tsconfig.json
+├── vitest.config.ts
+└── package.json
 ```
 
 ## Available Commands
 
 ```bash
-# Development
-bun run dev              # Start development server
-bun run build            # Build for production
+# Development (from root)
+bun run dev              # Start api dev server (bun run --filter=api dev)
 
-# Linting & Formatting
+# Build
+bun run build            # Build api for production (bun run --filter=api build)
+
+# Linting & Formatting (root-level, applies to all packages)
 bun run lint             # Lint all files
 bun run lint:fix         # Fix auto-fixable issues
 bun run format           # Format files (Prettier)
 bun run format:check     # Check formatting
 
 # Type Checking
-bun run tsc              # TypeScript type check
+bun run tsc              # TypeScript type check (bun run --filter=api tsc)
 
 # Testing
-bun run test             # Run tests (watch mode)
-bun run test:run         # Run tests once
-bun run test:coverage    # Run tests with coverage
+bun run test             # Run api tests (bun run --filter=api test)
+bun run test:watch       # Run api tests in watch mode
 
-# Database
-supabase migration new <name>  # Create new migration
+# Workspace-specific commands
+bun run --filter=api dev              # Start api dev server
+bun run --filter=api test:coverage    # Run api tests with coverage
+bun run --filter=api sync             # Sync data to api
+
+# Database (from api/)
+cd api && supabase migration new <name>
 ```
 
-## Utils Knowledge Base
+## Utils Knowledge Base (api/)
 
-### Client-Safe (`src/lib/utils/`)
+### Client-Safe (`api/src/lib/utils/`)
 
 **`classnames.ts`**
 
@@ -129,7 +125,7 @@ supabase migration new <name>  # Create new migration
 - `webApiSchema()` — Builds Schema.org WebAPI entity
 - `getFullSchemaGraph()` — Returns complete JSON-LD graph
 
-### Server (`src/lib/server/utils/`)
+### Server (`api/src/lib/server/utils/`)
 
 **`string/sanitize.ts`**
 
