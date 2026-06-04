@@ -6,13 +6,15 @@ Monorepo for the Kabir Dohe ecosystem — API, web app, and image generation too
 
 | Package                  | Path           | Description                                               |
 | ------------------------ | -------------- | --------------------------------------------------------- |
-| `@kabir-hub/api`         | `api/`         | RESTful API + documentation site for Kabir's couplets     |
+| `@kabir-hub/api`         | `api/`         | [RESTful API + documentation site](api/README.md) for Kabir's couplets |
 | `@kabir-hub/web`         | `web/`         | Web application for reading and learning Kabir's couplets |
 | `@kabir-hub/images-tool` | `images-tool/` | Visual quotes and image generation                        |
 
 ## About
 
 Kabir Dohe API lets you fetch, search, and filter Kabir's timeless couplets in JSON format. Each doha includes the original Hindi text, English transliteration, and detailed meanings. No authentication required.
+
+See the **[API README](api/README.md)** for full documentation, endpoints, parameters, and usage examples.
 
 ## Ecosystem
 
@@ -22,7 +24,7 @@ Kabir Dohe API lets you fetch, search, and filter Kabir's timeless couplets in J
 | Kabir Dohe API    | [kabirdoheapi.vercel.app](https://kabirdoheapi.vercel.app)       | REST API for accessing couplets programmatically     |
 | Kabir Dohe Images | [kabirdoheimages.vercel.app](https://kabirdoheimages.vercel.app) | Visual quotes and image generation                   |
 
-## Features (API)
+## Features
 
 - Access 2500+ couplets with Hindi text, translations, and interpretations
 - Search by keyword across couplet content
@@ -38,18 +40,13 @@ bun install
 
 # Start the API development server
 bun run dev
-# or: cd api && bun run dev
 ```
 
 ```http
 GET https://kabirdoheapi.vercel.app/api/couplets
 ```
 
-```http
-GET https://kabirdoheapi.vercel.app/api/couplets?search_query=truth&per_page=5
-```
-
-Full documentation with all parameters, examples, and response formats is available at **[kabirdoheapi.vercel.app](https://kabirdoheapi.vercel.app)**.
+Full documentation with all parameters, examples, and response formats is available at **[kabirdoheapi.vercel.app](https://kabirdoheapi.vercel.app)** or in the **[API README](api/README.md)**.
 
 ## Development
 
@@ -60,7 +57,7 @@ bun run dev            # Start API dev server
 bun run build          # Build API for production
 bun run test           # Run API tests
 bun run tsc            # TypeScript type check (API)
-bun run lint           # Lint all files
+bun run lint           # Lint API
 bun run format         # Format all files with Prettier
 ```
 
