@@ -36,7 +36,7 @@
 - **Testing**: Vitest
 - **Package Manager**: Bun (workspaces)
 
-## Project Architecture
+## Project Architecture (`api/`)
 
 ```
 api/
@@ -49,19 +49,51 @@ api/
 │   │   │   │       └── route.ts # GET search couplets
 │   │   │   └── route.ts       # Root API endpoint
 │   │   ├── layout.tsx         # Root layout
-│   │   └── page.tsx           # Documentation home page
+│   │   ├── page.tsx           # Documentation home page
+│   │   └── globals.css        # Global styles
 │   │
 │   ├── components/
-│   │   ├── CodeBlock.tsx      # Code display component
-│   │   ├── CopyButton.tsx     # Copy to clipboard button
-│   │   ├── Footer.tsx         # Site footer
-│   │   ├── Header.tsx         # Site header
-│   │   └── docs/              # Documentation components
+│   │   ├── layout/            # Site shell components
+│   │   │   ├── Header.tsx
+│   │   │   ├── Footer.tsx
+│   │   │   └── __tests__/
+│   │   ├── ui/                # Reusable UI primitives
+│   │   │   ├── CodeBlock.tsx      # Code display with syntax highlighting
+│   │   │   ├── CopyButton.tsx     # Copy to clipboard button
+│   │   │   └── __tests__/
+│   │   └── docs/              # Documentation page sections
+│   │       ├── index.tsx          # Barrel export
+│   │       ├── ApiEndpoints.tsx
+│   │       ├── ErrorResponse.tsx
+│   │       ├── Examples.tsx
+│   │       ├── Introduction.tsx
+│   │       ├── QueryParameters.tsx
+│   │       ├── ResponseFormat.tsx
+│   │       ├── SEOContent.tsx
+│   │       ├── UsageExamples.tsx
+│   │       └── __tests__/
 │   │
 │   ├── constants/             # Project-wide constants
+│   │   ├── api-params.ts
+│   │   └── seo.ts
+│   │
 │   ├── lib/
 │   │   ├── server/            # Server-only (NEVER import in client)
+│   │   │   ├── supabase.ts    # Supabase client singleton
+│   │   │   ├── env.ts         # Server environment variables
+│   │   │   └── utils/         # Server utilities
+│   │   │       ├── api-error.ts       # ApiError class
+│   │   │       ├── error-handler.ts   # Response helpers + error handlers
+│   │   │       ├── string.ts          # String sanitization & formatting
+│   │   │       ├── index.ts           # Barrel export
+│   │   │       └── __tests__/
+│   │   │
 │   │   └── utils/             # Client-safe utilities
+│   │       ├── classnames.ts  # cn() utility
+│   │       ├── schema.ts      # Zod schemas & Schema.org builders
+│   │       ├── seo.ts         # SEO utilities (siteUrl, cleanPath, getPermaLink)
+│   │       └── __tests__/
+│   │
 │   └── proxy.ts               # Proxy configuration
 │
 ├── scripts/                   # Database sync & utility scripts
@@ -84,7 +116,7 @@ bun run dev              # Start api dev server (bun run --filter=api dev)
 bun run build            # Build api for production (bun run --filter=api build)
 
 # Linting & Formatting (root-level, applies to all packages)
-bun run lint             # Lint all files
+bun run lint             # Lint api (bun run --filter=api lint)
 bun run lint:fix         # Fix auto-fixable issues
 bun run format           # Format files (Prettier)
 bun run format:check     # Check formatting
@@ -105,7 +137,7 @@ bun run --filter=api sync             # Sync data to api
 cd api && supabase migration new <name>
 ```
 
-## Utils Knowledge Base (api/)
+## Utils Knowledge Base (`api/src/lib/`)
 
 ### Client-Safe (`api/src/lib/utils/`)
 
@@ -116,41 +148,43 @@ cd api && supabase migration new <name>
 **`seo.ts`**
 
 - `siteUrl()` — Returns the site URL
-- `cleanPath(slug)` — Normalizes a path slug
-- `getPermaLink(slug)` — Generates a permalink URL
+- `cleanPath(path)` — Normalizes a path slug
+- `getPermaLink(path)` — Generates a permalink URL
 
 **`schema.ts`**
 
-- `personSchema()` — Builds Schema.org Person entity
-- `webApiSchema()` — Builds Schema.org WebAPI entity
-- `getFullSchemaGraph()` — Returns complete JSON-LD graph
+- `globalSchema()` — Returns Person, Organization, and WebSite Schema.org graph
+
+### Server (`api/src/lib/server/`)
+
+**`env.ts`**
+
+- `env` — Validated server environment variables (lazy access)
+
+**`supabase.ts`**
+
+- `supabase` — Lazy-initialized Supabase client singleton
 
 ### Server (`api/src/lib/server/utils/`)
 
-**`string/sanitize.ts`**
+**`string.ts`**
 
 - `sanitize(str, sep)` — Normalizes string to slug
-- `sanitizeKey()` — Sanitizes a key value
-- `sanitizeTitle()` — Sanitizes a title
-
-**`string/formatting.ts`**
-
+- `sanitizeKey(string)` — Sanitizes a key value (snake_case)
+- `sanitizeTitle(string)` — Sanitizes a title (kebab-case)
 - `toSentenceCase(str)` — Converts string to sentence case
 
-**`response/response.ts`**
+**`error-handler.ts`**
 
 - `success(data)` — Returns 200 OK response
 - `successCached(data)` — Returns 200 with cache headers
 - `failure(msg, status)` — Returns error response
+- `handleError(error)` — Generic error handler
+- `handleRouteError(error)` — Route-specific error handler (handles Zod errors)
 
-**`errors/api-error.ts`**
+**`api-error.ts`**
 
 - `ApiError` — Custom error class with `statusCode` and `isOperational`
-
-**`errors/error-handler.ts`**
-
-- `handleError(error)` — Generic error handler
-- `handleRouteError(error)` — Route-specific error handler
 
 ## Response Helpers
 
@@ -164,7 +198,7 @@ return failure("Error", 400); // Error response
 
 ## Supabase
 
-- **Singleton**: `import { supabase } from '@/lib/server/db/supabase'`
+- **Singleton**: `import { supabase } from '@/lib/server/supabase'`
 - Select specific columns (no `SELECT *`)
 - Use Row Level Security (RLS)
 - Never expose service role key
@@ -196,6 +230,8 @@ type QueryParams = z.infer<typeof QuerySchema>;
 **ApiError usage:**
 
 ```typescript
+import { ApiError } from "@/lib/server/utils";
+
 throw new ApiError("Not found", 404);
 ```
 
