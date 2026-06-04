@@ -2,21 +2,21 @@ import type { JSX, ReactNode } from 'react';
 
 import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
-import { Mulish, Roboto_Mono } from 'next/font/google';
+import { Saira, JetBrains_Mono } from 'next/font/google';
 
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
+import Footer from '@/components/layout/Footer';
+import Header from '@/components/layout/Header';
 import { GOOGLE_ANALYTICS_ID, SITE_METADATA } from '@/constants/seo';
 
-const sansFont = Mulish({
+const sansFont = Saira({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-sans',
   display: 'swap',
   preload: true,
 });
 
-const monoFont = Roboto_Mono({
+const monoFont = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400'],
   variable: '--font-mono',
