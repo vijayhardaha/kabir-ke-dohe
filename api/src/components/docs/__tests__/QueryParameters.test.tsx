@@ -7,7 +7,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
-import QueryParameters from '@/components/docs/__tests__/QueryParameters';
+import QueryParameters from '@/components/docs/QueryParameters';
 
 // Use representative parameters so table assertions reflect real endpoint documentation behavior.
 const mockParameters = [
