@@ -1,14 +1,60 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #fbfbee;
-  --color-foreground: #222222;
-  --color-primary: #28666e;
+  /* Base */
+  --color-background: #fafafa;
+  --color-foreground: #444444;
+
+  /* Primary (red/crimson) */
+  --color-primary: #c62641;
+  --color-primary-light: #d15167;
+  --color-primary-dark: #8a1a2d;
   --color-primary-foreground: #ffffff;
-  --color-secondary: #e3e4b1;
-  --color-secondary-foreground: #222222;
-  --color-accent: #7c9885;
+
+  /* Secondary surface */
+  --color-secondary: #eeeeee;
+  --color-secondary-foreground: #444444;
+
+  /* Accent */
+  --color-accent: #0288d1;
   --color-accent-foreground: #ffffff;
+
+  /* White surface */
+  --color-white: #ffffff;
+  --color-white-foreground: #333333;
+
+  /* Text */
+  --color-muted: #888888;
+
+  /* Semantic colors */
+  --color-warning: #ed6c02;
+  --color-warning-light: #ff9800;
+  --color-warning-dark: #e65100;
+  --color-warning-foreground: #ffffff;
+  --color-info: #0288d1;
+  --color-info-light: #03a9f4;
+  --color-info-dark: #01579b;
+  --color-info-foreground: #ffffff;
+  --color-success: #2e7d32;
+  --color-success-light: #4caf50;
+  --color-success-dark: #1b5e20;
+  --color-success-foreground: #ffffff;
+
+  /* Grey palette */
+  --color-grey-50: #fafafa;
+  --color-grey-100: #f5f5f5;
+  --color-grey-200: #eeeeee;
+  --color-grey-300: #e0e0e0;
+  --color-grey-400: #bdbdbd;
+  --color-grey-500: #9e9e9e;
+  --color-grey-600: #757575;
+  --color-grey-700: #616161;
+  --color-grey-800: #424242;
+  --color-grey-900: #212121;
+  --color-grey-A100: #f5f5f5;
+  --color-grey-A200: #eeeeee;
+  --color-grey-A400: #bdbdbd;
+  --color-grey-A700: #616161;
 }
 
 /* Base Styles */
