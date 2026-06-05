@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { FaFacebook, FaInstagram } from 'react-icons/fa';
 
 import { CATEGORIES } from '@/constants/categories';
-import { TAGS } from '@/constants/tags';
 
 import { Container } from './Container';
 
@@ -35,11 +34,6 @@ const usefulLinks = [
  * Popular categories shown in the footer (first 6).
  */
 const popularCategories = CATEGORIES.slice(0, 10);
-
-/**
- * Popular tags shown in the footer (first 6).
- */
-const popularTags = TAGS.slice(0, 10);
 
 /**
  * Social media platform configuration.
@@ -96,7 +90,7 @@ export function Footer(): JSX.Element {
           </div>
 
           {/* ---- Link Columns (9/12 on desktop) ---- */}
-          <div className="grid grid-cols-2 gap-8 md:col-span-9 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-8 md:col-span-9 md:grid-cols-3">
             {/* ---- Quick Links ---- */}
             <div className="flex flex-col gap-3">
               <h3 className="text-sm font-semibold tracking-wider uppercase">Quick Links</h3>
@@ -125,23 +119,6 @@ export function Footer(): JSX.Element {
                       className="text-secondary-foreground/70 text-sm no-underline transition-colors duration-200 hover:text-white"
                     >
                       {cat.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* ---- Popular Tags ---- */}
-            <div className="flex flex-col gap-3">
-              <h3 className="text-sm font-semibold tracking-wider uppercase">Popular Tags</h3>
-              <ul className="flex flex-col gap-2">
-                {popularTags.map((tag) => (
-                  <li key={tag.slug}>
-                    <Link
-                      href={`/tag/${tag.slug}`}
-                      className="text-secondary-foreground/70 text-sm no-underline transition-colors duration-200 hover:text-white"
-                    >
-                      {tag.name}
                     </Link>
                   </li>
                 ))}
