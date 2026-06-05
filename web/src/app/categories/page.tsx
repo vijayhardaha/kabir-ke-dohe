@@ -31,8 +31,8 @@ export default async function CategoriesPage(): Promise<JSX.Element> {
     <PageLayout>
       <Container>
         <PageHeader
-          title="Categories"
-          description="Explore Kabir&rsquo;s dohas organised by theme &mdash; each category offers a unique lens on his spiritual and philosophical teachings."
+          title="श्रेणियाँ (Categories)"
+          description="कबीर के दोहों को विषयानुसार देखें — हर श्रेणी उनकी आध्यात्मिक और दार्शनिक शिक्षाओं का एक अनूठा दृष्टिकोण प्रस्तुत करती है (Explore Kabir&rsquo;s dohas organised by theme &mdash; each category offers a unique lens on his spiritual and philosophical teachings)"
         />
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
