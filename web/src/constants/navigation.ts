@@ -1,7 +1,5 @@
 import type { CategoryConstant } from './categories';
 import { CATEGORIES } from './categories';
-import type { TagConstant } from './tags';
-import { TAGS } from './tags';
 
 /**
  * A single navigation link item. When `children` is provided, the item
@@ -30,17 +28,6 @@ function categoryToNavLink(cat: CategoryConstant): NavLink {
 }
 
 /**
- * Converts a {@link TagConstant} into a navigation link.
- *
- * @param {TagConstant} tag - The tag constant.
- *
- * @returns {NavLink} A navigation link pointing to the tag page.
- */
-function tagToNavLink(tag: TagConstant): NavLink {
-  return { href: `/tag/${tag.slug}`, label: tag.name };
-}
-
-/**
  * Primary navigation menu items used in the Header and Footer.
  */
 export const MAIN_MENU: NavLink[] = [
@@ -48,6 +35,5 @@ export const MAIN_MENU: NavLink[] = [
   { href: '/popular-couplets', label: 'Popular Dohe' },
   { href: '/featured-couplets', label: 'Featured Dohe' },
   { href: '/categories', label: 'Categories', children: CATEGORIES.map(categoryToNavLink) },
-  { href: '/tags', label: 'Tags', children: TAGS.map(tagToNavLink) },
   { href: '/about', label: 'About Kabir' },
 ];
