@@ -71,14 +71,14 @@ export function Header(): JSX.Element {
         hidden ? '-translate-y-full' : 'translate-y-0'
       )}
     >
-      <Container className="flex h-16 items-center justify-between">
+      <Container className="flex h-20 items-center justify-between">
         <Link href="/" className="flex shrink-0 items-center text-white no-underline">
           <Image src="/logo.svg" alt="Kabir Dohe Hub" width={140} height={32} className="h-8 w-auto" priority />
         </Link>
 
         {/* Desktop nav */}
         <nav className="hidden h-full md:block" aria-label="Main menu">
-          <ul className="flex h-full items-stretch gap-2">
+          <ul className="flex h-full items-stretch gap-1.5">
             {MAIN_MENU.map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
               const hasChildren = !!link.children?.length;
@@ -88,7 +88,7 @@ export function Header(): JSX.Element {
                   <Link
                     href={link.href}
                     className={cn(
-                      'inline-flex items-center gap-1 px-3 py-2 text-sm font-semibold tracking-wide uppercase no-underline transition-colors duration-200',
+                      'inline-flex items-center gap-1 px-3 py-2 text-sm font-medium tracking-wide uppercase no-underline transition-colors duration-200',
                       isActive
                         ? 'text-primary-foreground bg-black/15'
                         : 'text-primary-foreground hover:text-primary-foreground hover:bg-black/15'
@@ -115,7 +115,7 @@ export function Header(): JSX.Element {
                                 href={child.href}
                                 className={cn(
                                   'block rounded px-3 py-1.5 text-sm font-medium no-underline transition-colors duration-200',
-                                  isChildActive ? 'text-primary font-semibold' : 'text-foreground hover:text-primary'
+                                  isChildActive ? 'text-primary' : 'text-foreground hover:text-primary'
                                 )}
                               >
                                 {child.label}
