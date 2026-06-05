@@ -44,7 +44,6 @@ function tagToNavLink(tag: TagConstant): NavLink {
  * Primary navigation menu items used in the Header and Footer.
  */
 export const MAIN_MENU: NavLink[] = [
-  { href: '/', label: 'Home' },
   { href: '/couplets', label: 'All Dohe' },
   { href: '/popular-couplets', label: 'Popular Dohe' },
   { href: '/featured-couplets', label: 'Featured Dohe' },
