@@ -73,23 +73,14 @@ function getSortValue(sortBy: string, sortOrder: string, isPopular: string | nul
  * @property {boolean} [hideSort] - When true, hides the sort dropdown
  */
 interface ArchiveListingProps {
-  /** The list of posts to display. */
   posts: Post[];
-  /** Pagination metadata. */
   pagination: PaginationMeta;
-  /** Base URL for pagination and sort links (e.g. "/archive" or "/category/xyz"). */
   baseUrl: string;
-  /** Page heading shown above the listing. */
   title?: string;
-  /** Subtitle or description shown below the heading. */
   description?: string;
-  /** Message shown when no posts are found. Defaults to a generic message. */
   emptyMessage?: string;
-  /** Current sort-by value. Defaults to 'number'. */
   currentSortBy?: string;
-  /** Current sort-order value. Defaults to 'asc'. */
   currentSortOrder?: string;
-  /** When true, hides the sort dropdown. */
   hideSort?: boolean;
 }
 
@@ -131,11 +122,6 @@ export function ArchiveListing({
       params.delete('page'); // Reset to page 1 on sort change
 
       switch (value) {
-        case 'default':
-          params.delete('sort_by');
-          params.delete('sort_order');
-          params.delete('is_popular');
-          break;
         case 'popular':
           params.set('is_popular', 'true');
           params.delete('sort_by');
@@ -149,6 +135,12 @@ export function ArchiveListing({
         case 'couplet_desc':
           params.set('sort_by', 'text_hi');
           params.set('sort_order', 'desc');
+          params.delete('is_popular');
+          break;
+        case 'default':
+        default:
+          params.delete('sort_by');
+          params.delete('sort_order');
           params.delete('is_popular');
           break;
       }
@@ -249,14 +241,14 @@ function PostCard({ post }: { post: Post }): JSX.Element {
       </h2>
 
       {/* ---- Meta: author + tags ---- */}
-      <div className="text-foreground flex flex-wrap items-center gap-y-1 text-base">
+      <div className="text-foreground flex flex-wrap items-center gap-y-1 text-base font-medium">
         <span>
           By{' '}
           <a
             href="https://en.wikipedia.org/wiki/Kabir"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-foreground hover:text-primary underline"
+            className="text-primary underline"
           >
             Sant Kabir Das
           </a>
@@ -269,7 +261,7 @@ function PostCard({ post }: { post: Post }): JSX.Element {
             <span className="flex flex-wrap items-center">
               {post.tags.map((tag, idx) => (
                 <span key={tag.slug} className="mr-1 last:mr-0">
-                  <Link href={`/tag/${tag.slug}`} className="text-foreground hover:text-primary no-underline">
+                  <Link href={`/tag/${tag.slug}`} className="text-foreground hover:text-primary underline">
                     {tag.name}
                   </Link>
                   {idx < post.tags.length - 1 && <span>, </span>}
