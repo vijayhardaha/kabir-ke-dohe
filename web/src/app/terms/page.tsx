@@ -3,6 +3,7 @@ import type { JSX } from 'react';
 import Link from 'next/link';
 
 import { Container } from '@/components/layout/Container';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
 
 /**
@@ -14,8 +15,7 @@ export default function TermsPage(): JSX.Element {
   return (
     <PageLayout>
       <Container>
-        <h1 className="text-foreground text-3xl font-bold tracking-tight sm:text-4xl">Terms &amp; Conditions</h1>
-        <p className="text-muted-foreground mt-2">Last updated: June 5, 2026</p>
+        <PageHeader title="Terms &amp; Conditions" description="Last updated: June 5, 2026" />
 
         <div className="text-foreground/80 mt-10 space-y-6 leading-relaxed">
           <section>
