@@ -41,8 +41,10 @@ export function Pagination({ page, totalPages, baseUrl, searchParams = {} }: Pag
    */
   function buildUrl(pageNum: number): string {
     const params = new URLSearchParams(searchParams);
-    params.set('page', String(pageNum));
-    return `${baseUrl}?${params.toString()}`;
+    params.delete('page');
+    const path = pageNum === 1 ? baseUrl : `${baseUrl}/${pageNum}`;
+    const qs = params.toString();
+    return qs ? `${path}?${qs}` : path;
   }
 
   /**
