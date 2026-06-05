@@ -2,9 +2,17 @@ import type { JSX } from 'react';
 
 import { ArchiveListing } from '@/components/features/ArchiveListing';
 import { Container } from '@/components/layout/Container';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { getCouplets } from '@/lib/server/couplets';
+import { handlePageRedirect } from '@/lib/server/page-utils';
 
+/**
+ * Props for the featured couplets page.
+ *
+ * @type {FeaturedCoupletsPageProps}
+ * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters for pagination and sorting.
+ */
 interface FeaturedCoupletsPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
@@ -19,13 +27,13 @@ interface FeaturedCoupletsPageProps {
  */
 export default async function FeaturedCoupletsPage({ searchParams }: FeaturedCoupletsPageProps): Promise<JSX.Element> {
   const params = await searchParams;
-  const page = typeof params.page === 'string' ? Math.max(1, parseInt(params.page, 10) || 1) : 1;
+  handlePageRedirect(params, '/featured-couplets');
   const sortBy = typeof params.sort_by === 'string' ? params.sort_by : 'number';
   const sortOrder = typeof params.sort_order === 'string' ? params.sort_order : 'asc';
   const perPage = 10;
 
   const { posts, pagination } = await getCouplets({
-    page,
+    page: 1,
     perPage,
     isFeatured: true,
     sortBy: sortBy as 'number' | 'text_en' | 'text_hi',
@@ -35,12 +43,14 @@ export default async function FeaturedCoupletsPage({ searchParams }: FeaturedCou
   return (
     <PageLayout>
       <Container>
+        <PageHeader
+          title="चुनिंदा दोहे (Featured Couplets)"
+          description="कबीर के सबसे गहन और प्रभावशाली दोहों का विशेष संग्रह — आध्यात्मिक ज्ञान और जीवन की सीख, हिंदी और अंग्रेज़ी में (A handpicked collection of Kabir's most profound and impactful dohas — spiritual wisdom and life lessons in Hindi and English)"
+        />
         <ArchiveListing
           posts={posts}
           pagination={pagination}
           baseUrl="/featured-couplets"
-          title="Featured Couplets"
-          description="A handpicked selection of Kabir&rsquo;s most profound dohas"
           currentSortBy={sortBy}
           currentSortOrder={sortOrder}
         />
