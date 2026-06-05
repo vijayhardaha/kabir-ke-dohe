@@ -5,10 +5,19 @@ import { notFound } from 'next/navigation';
 
 import { ArchiveListing } from '@/components/features/ArchiveListing';
 import { Container } from '@/components/layout/Container';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { getCategoryBySlug } from '@/constants/categories';
 import { getCategoryBySlug as getCategoryFromDb, getCouplets } from '@/lib/server/couplets';
+import { handlePageRedirect } from '@/lib/server/page-utils';
 
+/**
+ * Props for the category page.
+ *
+ * @type {CategoryPageProps}
+ * @property {Promise<{ slug: string }>} params - Route parameters containing the category slug.
+ * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters for pagination and sorting.
+ */
 interface CategoryPageProps {
   params: Promise<{ slug: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -26,7 +35,7 @@ interface CategoryPageProps {
 export default async function CategoryPage({ params, searchParams }: CategoryPageProps): Promise<JSX.Element> {
   const { slug } = await params;
   const sp = await searchParams;
-  const page = typeof sp.page === 'string' ? Math.max(1, parseInt(sp.page, 10) || 1) : 1;
+  handlePageRedirect(sp, `/category/${slug}`);
   const sortBy = typeof sp.sort_by === 'string' ? sp.sort_by : 'number';
   const sortOrder = typeof sp.sort_order === 'string' ? sp.sort_order : 'asc';
   const perPage = 10;
@@ -43,7 +52,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   }
 
   const { posts, pagination } = await getCouplets({
-    page,
+    page: 1,
     perPage,
     category: slug,
     sortBy: sortBy as 'number' | 'text_en' | 'text_hi',
@@ -61,12 +70,11 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
           &larr; Back to Couplets
         </Link>
 
+        <PageHeader title={category.name} description={category.description ?? undefined} />
         <ArchiveListing
           posts={posts}
           pagination={pagination}
           baseUrl={`/category/${slug}`}
-          title={category.name}
-          description={category.description ?? undefined}
           emptyMessage={`No couplets found in ${category.name}.`}
           currentSortBy={sortBy}
           currentSortOrder={sortOrder}
