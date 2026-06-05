@@ -97,22 +97,27 @@ export function Pagination({ page, totalPages, baseUrl, searchParams = {} }: Pag
     return pages;
   }
 
-  const iconClasses = [
-    // Layout
-    'flex h-9 w-9 items-center justify-center',
-    // Colors — secondary button with hover
-    'bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground',
-    // Decoration
-    'no-underline',
-    // Animation
-    'transition-all duration-200',
-  ].join(' ');
+  const inactivePageClasses = 'bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground';
+  const activePageClasses = 'bg-primary text-primary-foreground';
+
+  const buttonBaseClasses = 'flex h-10 min-w-10 items-center justify-center px-2';
+  const buttonDecoration = 'no-underline';
+
+  const iconClasses = [buttonBaseClasses, inactivePageClasses, buttonDecoration, 'transition-all duration-200'].join(
+    ' '
+  );
 
   const disabledIconClasses = [
-    // Layout
-    'flex h-9 w-9 cursor-not-allowed items-center justify-center',
-    // Colors — secondary button with reduced opacity
+    buttonBaseClasses,
+    'cursor-not-allowed',
     'bg-secondary text-secondary-foreground/50',
+  ].join(' ');
+
+  const pageButtonClasses = [
+    buttonBaseClasses,
+    'text-sm font-semibold',
+    'transition-colors duration-200',
+    buttonDecoration,
   ].join(' ');
 
   return (
@@ -137,20 +142,7 @@ export function Pagination({ page, totalPages, baseUrl, searchParams = {} }: Pag
             <Link
               key={pageNum}
               href={buildUrl(pageNum)}
-              className={cn(
-                // Layout
-                'flex h-9 w-9 items-center justify-center',
-                // Typography
-                'text-sm font-semibold',
-                // Animation
-                'transition-colors duration-200',
-                // Active page
-                pageNum === page
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground',
-                // Decoration
-                'no-underline'
-              )}
+              className={cn(pageButtonClasses, pageNum === page ? activePageClasses : inactivePageClasses)}
               aria-current={pageNum === page ? 'page' : undefined}
               aria-label={`Page ${pageNum}`}
             >
