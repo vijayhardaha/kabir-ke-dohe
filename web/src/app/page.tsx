@@ -33,10 +33,10 @@ export default async function HomePage(): Promise<JSX.Element> {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <ButtonLink variant="white" size="lg" href="/couplets">
-              Explore Dohas
-            </ButtonLink>
-            <ButtonLink variant="outline-white" size="lg" href="/couplets">
               Browse All
+            </ButtonLink>
+            <ButtonLink variant="outline-white" size="lg" href="/categories">
+              Explore Categories
             </ButtonLink>
           </div>
         </Container>
