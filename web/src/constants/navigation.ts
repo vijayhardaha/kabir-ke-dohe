@@ -1,0 +1,54 @@
+import type { CategoryConstant } from './categories';
+import { CATEGORIES } from './categories';
+import type { TagConstant } from './tags';
+import { TAGS } from './tags';
+
+/**
+ * A single navigation link item. When `children` is provided, the item
+ * acts as a grouping label with a dropdown of nested links.
+ *
+ * @type {NavLink}
+ * @property {string} href - URL or path for the link
+ * @property {string} label - Display text for the link
+ * @property {NavLink[]} [children] - Optional nested submenu items
+ */
+export interface NavLink {
+  href: string;
+  label: string;
+  children?: NavLink[];
+}
+
+/**
+ * Converts a {@link CategoryConstant} into a navigation link.
+ *
+ * @param {CategoryConstant} cat - The category constant.
+ *
+ * @returns {NavLink} A navigation link pointing to the category page.
+ */
+function categoryToNavLink(cat: CategoryConstant): NavLink {
+  return { href: `/category/${cat.slug}`, label: cat.name };
+}
+
+/**
+ * Converts a {@link TagConstant} into a navigation link.
+ *
+ * @param {TagConstant} tag - The tag constant.
+ *
+ * @returns {NavLink} A navigation link pointing to the tag page.
+ */
+function tagToNavLink(tag: TagConstant): NavLink {
+  return { href: `/tag/${tag.slug}`, label: tag.name };
+}
+
+/**
+ * Primary navigation menu items used in the Header and Footer.
+ */
+export const MAIN_MENU: NavLink[] = [
+  { href: '/', label: 'Home' },
+  { href: '/couplets', label: 'All Dohe' },
+  { href: '/popular-couplets', label: 'Popular Dohe' },
+  { href: '/featured-couplets', label: 'Featured Dohe' },
+  { href: '/categories', label: 'Categories', children: CATEGORIES.map(categoryToNavLink) },
+  { href: '/tags', label: 'Tags', children: TAGS.map(tagToNavLink) },
+  { href: '/about', label: 'About Kabir' },
+];

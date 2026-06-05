@@ -1,0 +1,111 @@
+import type { JSX } from 'react';
+
+import Link from 'next/link';
+
+import { Container } from '@/components/layout/Container';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { PageLayout } from '@/components/layout/PageLayout';
+import { getTags } from '@/lib/server/couplets';
+import { cn } from '@/lib/utils/cn';
+
+/**
+ * Groups an array of tag-like items by the first letter of their name.
+ *
+ * @template T - Item type with a `name` string property.
+ *
+ * @param {T[]} items - Items to group.
+ *
+ * @returns {Map<string, T[]>} Map keyed by uppercase letter to items starting with that letter.
+ */
+function groupByFirstLetter<T extends { name: string }>(items: T[]): Map<string, T[]> {
+  const groups = new Map<string, T[]>();
+
+  for (const item of items) {
+    const letter = item.name.charAt(0).toUpperCase();
+    if (!groups.has(letter)) {
+      groups.set(letter, []);
+    }
+    groups.get(letter)!.push(item);
+  }
+
+  return groups;
+}
+
+// ---------------------------------------------------------------------------
+// Page component
+// ---------------------------------------------------------------------------
+
+/**
+ * Tags overview page that displays all tags grouped alphabetically
+ * in a 3‑column directory layout with letter headings.
+ *
+ * @returns {Promise<JSX.Element>} The tags listing page.
+ */
+export default async function TagsPage(): Promise<JSX.Element> {
+  const tags = await getTags();
+
+  // Sort alphabetically by name
+  tags.sort((a, b) => a.name.localeCompare(b.name));
+
+  // Group by first letter
+  const groups = groupByFirstLetter(tags);
+  const letters = Array.from(groups.keys()).sort();
+
+  return (
+    <PageLayout>
+      <Container>
+        <PageHeader
+          title="Tags"
+          description="Browse Kabir&rsquo;s dohas by thematic tags &mdash; each tag gathers couplets around a shared spiritual thread."
+        />
+
+        {/* A–Z jump nav */}
+        <nav aria-label="Alphabetical filter" className="mb-10 flex flex-wrap gap-2">
+          {letters.map((letter) => (
+            <a
+              key={letter}
+              href={`#tag-group-${letter}`}
+              className={cn(
+                'flex size-9 items-center justify-center text-sm font-bold no-underline transition-colors duration-200',
+                'bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground'
+              )}
+            >
+              {letter}
+            </a>
+          ))}
+        </nav>
+
+        {/* Alphabetical groups in a 3‑column grid */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {letters.map((letter) => {
+            const tags = groups.get(letter)!;
+            return (
+              <section key={letter} id={`tag-group-${letter}`} className="bg-card p-5">
+                <h2 className="text-primary mb-4 text-2xl font-bold">{letter}</h2>
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag) => (
+                    <Link
+                      key={tag.slug}
+                      href={`/tag/${tag.slug}`}
+                      className={cn(
+                        'group inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium no-underline transition-colors duration-200',
+                        tag.post_count > 0
+                          ? 'bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground'
+                          : 'bg-muted/50 text-muted-foreground/50 pointer-events-none'
+                      )}
+                    >
+                      {tag.name}
+                      <span className="bg-foreground/10 text-foreground/60 px-1.5 py-0.5 text-xs font-semibold group-hover:bg-white group-hover:text-black">
+                        {tag.post_count}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            );
+          })}
+        </div>
+      </Container>
+    </PageLayout>
+  );
+}
