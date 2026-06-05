@@ -22,8 +22,8 @@ interface PageHeaderProps {
 export function PageHeader({ title, description }: PageHeaderProps): JSX.Element {
   return (
     <div className="mb-10">
-      <h1 className="text-foreground text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
-      {description && <p className="text-muted-foreground mt-2 max-w-2xl text-lg">{description}</p>}
+      <h1 className="text-foreground font-bolder text-3xl sm:text-4xl">{title}</h1>
+      {description && <p className="text-muted-foreground mt-4 text-lg">{description}</p>}
     </div>
   );
 }
