@@ -6,9 +6,9 @@ import { Share2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { Button, ButtonLink } from '@/components/ui/Button';
 import { Combobox } from '@/components/ui/Combobox';
 import { Pagination } from '@/components/ui/Pagination';
-import { cn } from '@/lib/utils/cn';
 import { formatDoha } from '@/lib/utils/doha';
 import type { Post, PaginationMeta } from '@/types';
 
@@ -65,8 +65,6 @@ function getSortValue(sortBy: string, sortOrder: string, isPopular: string | nul
  * @property {Post[]} posts - The list of posts to display
  * @property {PaginationMeta} pagination - Pagination metadata
  * @property {string} baseUrl - Base URL for pagination and sort links
- * @property {string} [title] - Page heading shown above the listing
- * @property {string} [description] - Subtitle or description below the heading
  * @property {string} [emptyMessage] - Message shown when no posts are found
  * @property {string} [currentSortBy] - Current sort‑by field value
  * @property {string} [currentSortOrder] - Current sort order value
@@ -76,12 +74,48 @@ interface ArchiveListingProps {
   posts: Post[];
   pagination: PaginationMeta;
   baseUrl: string;
-  title?: string;
-  description?: string;
   emptyMessage?: string;
   currentSortBy?: string;
   currentSortOrder?: string;
   hideSort?: boolean;
+}
+
+// ---------------------------------------------------------------------------
+// Toolbar components
+// ---------------------------------------------------------------------------
+
+/**
+ * Displays the current result range and total count (e.g. "Showing 1–10 of 2295 results").
+ *
+ * @param {{ pagination: PaginationMeta }} props - Component props.
+ * @param {PaginationMeta} props.pagination - Pagination metadata with page, perPage, and total.
+ *
+ * @returns {JSX.Element} A paragraph displaying the result range.
+ */
+function ResultCount({ pagination }: { pagination: PaginationMeta }): JSX.Element {
+  const start = (pagination.page - 1) * pagination.perPage + 1;
+  const end = Math.min(pagination.page * pagination.perPage, pagination.total);
+
+  return (
+    <p className="text-foreground mb-0 text-sm font-semibold">
+      {start === end
+        ? `Showing ${start} of ${pagination.total} result`
+        : `Showing ${start}–${end} of ${pagination.total} results`}
+    </p>
+  );
+}
+
+/**
+ * Sort dropdown that lets users change the ordering of the archive listing.
+ *
+ * @param {{ value: string; onChange: (value: string) => void }} props - Component props.
+ * @param {string} props.value - Currently selected sort option value.
+ * @param {(value: string) => void} props.onChange - Callback fired when a new sort option is selected.
+ *
+ * @returns {JSX.Element} A Combobox with sort options.
+ */
+function SortDropdown({ value, onChange }: { value: string; onChange: (value: string) => void }): JSX.Element {
+  return <Combobox label="Sort by" options={SORT_OPTIONS} value={value} onChange={onChange} className="w-46" />;
 }
 
 // ---------------------------------------------------------------------------
@@ -90,19 +124,17 @@ interface ArchiveListingProps {
 
 /**
  * Reusable archive listing component following the WordPress loop pattern.
- * Renders a heading, sort dropdown, post cards, and pagination.
+ * Renders a sort dropdown, post cards, and pagination.
  * When no posts match, displays a "content‑none" empty state.
  *
  * @param {ArchiveListingProps} props - Component props
  *
- * @returns {JSX.Element} Archive listing component
+ * @returns {JSX.Element} Archive listing component with sort dropdown and pagination.
  */
 export function ArchiveListing({
   posts,
   pagination,
   baseUrl,
-  title,
-  description,
   emptyMessage = 'No couplets found.',
   currentSortBy = 'number',
   currentSortOrder = 'asc',
@@ -151,28 +183,11 @@ export function ArchiveListing({
 
   return (
     <div>
-      {/* Heading */}
-      {(title || description) && (
-        <div className="mb-8">
-          {title && <h1 className="text-foreground">{title}</h1>}
-          {description && <p className="text-muted-foreground mt-1">{description}</p>}
-        </div>
-      )}
-
       {/* Toolbar: sort + result count */}
       {!hideSort && posts.length > 0 && (
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-          <p className="text-foreground mb-0 text-sm font-semibold">
-            Showing {Math.min(posts.length, pagination.perPage)} of {pagination.total}{' '}
-            {pagination.total === 1 ? 'result' : 'results'}
-          </p>
-          <Combobox
-            label="Sort by"
-            options={SORT_OPTIONS}
-            value={currentSortValue}
-            onChange={handleSortChange}
-            className="w-46"
-          />
+          <ResultCount pagination={pagination} />
+          <SortDropdown value={currentSortValue} onChange={handleSortChange} />
         </div>
       )}
 
@@ -281,7 +296,7 @@ function PostCard({ post }: { post: Post }): JSX.Element {
             </p>
           )}
           {post.meaning_en && (
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-foreground leading-relaxed">
               <strong className="text-foreground font-bold">Meaning:</strong> {post.meaning_en}
             </p>
           )}
@@ -290,48 +305,13 @@ function PostCard({ post }: { post: Post }): JSX.Element {
 
       {/* ---- Actions ---- */}
       <div className="flex flex-wrap items-center gap-3">
-        <Link
-          href={`/couplet/${post.slug}`}
-          className={cn(
-            // Core layout
-            'inline-flex items-center gap-2 px-4 py-2',
-            // Typography
-            'text-sm font-semibold',
-            // Colors
-            'bg-primary text-primary-foreground',
-            // Animation
-            'transition-all duration-200',
-            // Hover
-            'hover:opacity-90',
-            // Focus
-            'focus-visible:ring-primary/50 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-            // Decoration
-            'no-underline'
-          )}
-        >
+        <ButtonLink href={`/couplet/${post.slug}`} variant="primary" size="md">
           Read More
-        </Link>
-        <button
-          type="button"
-          onClick={handleShare}
-          className={cn(
-            // Core layout
-            'inline-flex cursor-pointer items-center gap-2 border px-4 py-2',
-            // Typography
-            'text-sm font-semibold',
-            // Colors
-            'bg-card text-foreground',
-            // Animation
-            'transition-all duration-200',
-            // Hover
-            'hover:bg-muted',
-            // Focus
-            'focus-visible:ring-primary/50 focus-visible:ring-2 focus-visible:outline-none'
-          )}
-        >
+        </ButtonLink>
+        <Button variant="outline-primary" size="md" onClick={handleShare}>
           <Share2 size={16} aria-label="Share" />
           Share
-        </button>
+        </Button>
       </div>
     </article>
   );
