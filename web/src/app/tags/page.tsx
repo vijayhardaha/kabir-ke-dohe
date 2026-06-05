@@ -75,13 +75,15 @@ export default async function TagsPage(): Promise<JSX.Element> {
           ))}
         </nav>
 
-        {/* Alphabetical groups in a 3‑column grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Alphabetical groups in a 1‑column grid */}
+        <div className="grid grid-cols-1 gap-6">
           {letters.map((letter) => {
             const tags = groups.get(letter)!;
             return (
-              <section key={letter} id={`tag-group-${letter}`} className="bg-card p-5">
-                <h2 className="text-primary mb-4 text-2xl font-bold">{letter}</h2>
+              <section key={letter} id={`tag-group-${letter}`} className="bg-card relative mt-5 p-5 pt-12">
+                <h2 className="bg-primary text-primary-foreground absolute -top-7 z-10 mb-4 flex h-14 w-14 items-center justify-center text-2xl font-bold">
+                  {letter}
+                </h2>
                 <div className="flex flex-wrap gap-2">
                   {tags.map((tag) => (
                     <Link
