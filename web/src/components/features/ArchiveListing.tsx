@@ -250,7 +250,6 @@ function PostCard({ post }: { post: Post }): JSX.Element {
 
       {/* ---- Meta: author + tags ---- */}
       <div className="text-foreground flex flex-wrap items-center gap-y-1 text-base">
-        {' '}
         <span>
           By{' '}
           <a
