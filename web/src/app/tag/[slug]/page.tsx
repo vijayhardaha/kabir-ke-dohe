@@ -5,9 +5,18 @@ import { notFound } from 'next/navigation';
 
 import { ArchiveListing } from '@/components/features/ArchiveListing';
 import { Container } from '@/components/layout/Container';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { getTagBySlug as getTagFromDb, getCouplets } from '@/lib/server/couplets';
+import { handlePageRedirect } from '@/lib/server/page-utils';
 
+/**
+ * Props for the tag page.
+ *
+ * @type {TagPageProps}
+ * @property {Promise<{ slug: string }>} params - Route parameters containing the tag slug.
+ * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters for pagination and sorting.
+ */
 interface TagPageProps {
   params: Promise<{ slug: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -25,7 +34,7 @@ interface TagPageProps {
 export default async function TagPage({ params, searchParams }: TagPageProps): Promise<JSX.Element> {
   const { slug } = await params;
   const sp = await searchParams;
-  const page = typeof sp.page === 'string' ? Math.max(1, parseInt(sp.page, 10) || 1) : 1;
+  handlePageRedirect(sp, `/tag/${slug}`);
   const sortBy = typeof sp.sort_by === 'string' ? sp.sort_by : 'number';
   const sortOrder = typeof sp.sort_order === 'string' ? sp.sort_order : 'asc';
   const perPage = 10;
@@ -40,7 +49,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps): P
   const tagName = tag.name;
 
   const { posts, pagination } = await getCouplets({
-    page,
+    page: 1,
     perPage,
     tag: slug,
     sortBy: sortBy as 'number' | 'text_en' | 'text_hi',
@@ -58,12 +67,11 @@ export default async function TagPage({ params, searchParams }: TagPageProps): P
           &larr; Back to Tags
         </Link>
 
+        <PageHeader title={tagName} description={`Couplets tagged with "${tagName}"`} />
         <ArchiveListing
           posts={posts}
           pagination={pagination}
           baseUrl={`/tag/${slug}`}
-          title={tagName}
-          description={`Couplets tagged with "${tagName}"`}
           emptyMessage={`No couplets found with the tag "${tagName}".`}
           currentSortBy={sortBy}
           currentSortOrder={sortOrder}
