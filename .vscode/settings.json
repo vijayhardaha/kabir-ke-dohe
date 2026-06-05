@@ -26,5 +26,8 @@
 
   // ---- Monorepo ESLint ----
   // ESLint config lives in the api/ workspace; tell VS Code to look there
-  "eslint.workingDirectories": [{ "directory": "api", "changeProcessCWD": true }]
+  "eslint.workingDirectories": [
+    { "directory": "api", "changeProcessCWD": true },
+    { "directory": "web", "changeProcessCWD": true }
+  ]
 }

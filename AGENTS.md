@@ -301,3 +301,81 @@ Explain **why**, not what. Capitalize first letter. Place on own line (avoid end
 - Files: `*.test.ts` / `*.test.tsx` next to code they test
 - Framework: Vitest
 - Run: `bun run test` (watch) · `bun run test:run` (once)
+
+---
+
+# Web Package — Design Preferences (`web/`)
+
+> UI/UX decisions established during development. Agents must follow these.
+
+## Navigation (`web/src/components/layout/Header.tsx`)
+
+### Desktop Nav Structure
+
+- Semantic HTML: `nav > ul > li > a`
+- `<nav>` uses `h-full` to stretch to header height; `<ul>` uses `h-full items-stretch` so `<li>` items fill the header
+- Stretch height ensures `absolute top-full` dropdowns extend below the header
+
+### Submenu Dropdowns
+
+- **Container**: `bg-white shadow-lg`, no `rounded-md`, no `border`
+- **Position**: `right-0` (not `left-0`)
+- **Width**: `w-max min-w-105`
+- **Columns**: `grid grid-cols-3 gap-1 p-2`
+- **No fixed height / no scroll** — content determines size
+
+### Submenu Link Colors
+
+- **Default**: `text-foreground`
+- **Hover**: `text-primary`
+- **Active (current page)**: `text-primary font-semibold`
+- No background highlight on hover — color change only
+- Items with children show a `ChevronDown` icon with `group-hover:rotate-180`
+
+### Mobile Nav
+
+- Submenu items are indented with `ml-4 border-l pl-3`
+- Parent link with children does not close the menu on click (`onClick={() => !hasChildren ? setMenuOpen(false) : undefined}`)
+
+## Icons
+
+- **Library**: `lucide-react`
+- **Pattern**: Use the `size` prop (e.g. `size={16}`) rather than `className="size-4"`
+- Icons used: `ChevronLeft`, `ChevronRight`, `ChevronDown`, `ArrowRight`, `Share2`
+
+## Pagination (`web/src/components/ui/Pagination.tsx`)
+
+- Shows start/end items: "Showing 21–30 of 2295 results"
+- **Previous/Next**: Icons only (`ChevronLeft`/`ChevronRight`), no text
+- **Default page buttons**: `bg-secondary text-secondary-foreground`
+- **Active page**: `bg-primary text-primary-foreground`
+- **Alignment**: `sm:justify-start` (left-aligned)
+- **Hover decoration**: removed (`hover:no-underline`)
+
+## Categories Page (`web/src/app/categories/page.tsx`)
+
+- Cards: `bg-card`, no `rounded-xl`, no `border`, `hover:shadow-xl`
+- Browse button: no `rounded-lg`
+- Grid: `sm:grid-cols-2 lg:grid-cols-3 gap-6`
+- Empty categories: `opacity-60` in a "Coming Soon" section
+
+## Tags Page (`web/src/app/tags/page.tsx`)
+
+- **Layout**: A–Z grouped directory style, 3-column grid (`sm:grid-cols-2 lg:grid-cols-3`)
+- **Jump nav**: Letter buttons at the top that link to `#tag-group-{letter}` sections
+- **Each section**: Letter heading + list of tag links
+- **Tag link colors**: `text-foreground` default, `hover:text-primary`
+- **Post count**: Inline number next to each tag name
+- **Empty tags**: `text-muted-foreground pointer-events-none`
+
+## Constants (`web/src/constants/`)
+
+- `categories.ts` — 20 predefined categories with slug + name + `getCategoryBySlug()` helper
+- `tags.ts` — 10 predefined tags with slug + name + `getTagBySlug()` helper
+- `navigation.ts` — `NavLink` interface supports optional `children: NavLink[]` for submenus
+
+## Supabase Queries (`web/src/lib/server/couplets.ts`)
+
+- **Category filter**: Use `!inner` on the join only when filtering: `category:categories!inner(name, slug)`, filter with `.eq('category.slug', slug)`
+- **Tag filter**: Use `!inner` on the join only when filtering: `tags:post_tags!inner(tag:tags!inner(id, name, slug))`, filter with `.eq('tags.tag.slug', slug)`
+- Without a filter, use standard LEFT JOINs (no `!inner`) to avoid excluding unassigned posts
