@@ -1,0 +1,64 @@
+import type { JSX } from 'react';
+
+import { ArchiveListing } from '@/components/features/ArchiveListing';
+import { Container } from '@/components/layout/Container';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { PageLayout } from '@/components/layout/PageLayout';
+import { getCouplets } from '@/lib/server/couplets';
+import { validatePageParam } from '@/lib/server/page-utils';
+
+/**
+ * Props for the paginated couplets archive page.
+ *
+ * @type {CoupletsPageProps}
+ * @property {Promise<{ page: string }>} params - Route parameters containing the page number.
+ * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters for sorting.
+ */
+interface CoupletsPageProps {
+  params: Promise<{ page: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+/**
+ * Paginated archive page — handles `/couplets/2`, `/couplets/3`, etc.
+ * Redirects to `/couplets` when page is 1 or invalid.
+ *
+ * @param {CoupletsPageProps} props - Component props.
+ * @param {Promise<{ page: string }>} props.params - Route parameters containing the page number.
+ * @param {Promise<Record<string, string | string[] | undefined>>} props.searchParams - URL search parameters for sorting.
+ *
+ * @returns {Promise<JSX.Element>} The paginated couplets archive page.
+ */
+export default async function CoupletsPage({ params, searchParams }: CoupletsPageProps): Promise<JSX.Element> {
+  const { page: pageStr } = await params;
+  const sp = await searchParams;
+  const page = validatePageParam(pageStr, '/couplets', sp);
+  const sortBy = typeof sp.sort_by === 'string' ? sp.sort_by : 'number';
+  const sortOrder = typeof sp.sort_order === 'string' ? sp.sort_order : 'asc';
+  const perPage = 10;
+
+  const { posts, pagination } = await getCouplets({
+    page,
+    perPage,
+    sortBy: sortBy as 'number' | 'text_en' | 'text_hi',
+    sortOrder: sortOrder as 'asc' | 'desc',
+  });
+
+  return (
+    <PageLayout>
+      <Container>
+        <PageHeader
+          title="कबीर के दोहे (Kabir's Couplets)"
+          description="कबीर के दोहों का संपूर्ण संग्रह — आध्यात्मिक ज्ञान, जीवन के सच और प्रेरणा से भरे Kabir ke dohe, हिंदी और अंग्रेज़ी अर्थ के साथ (Explore the complete collection of Sant Kabir Das's dohas — spiritual wisdom, life truths, and inspiration with Hindi and English meanings)"
+        />
+        <ArchiveListing
+          posts={posts}
+          pagination={pagination}
+          baseUrl="/couplets"
+          currentSortBy={sortBy}
+          currentSortOrder={sortOrder}
+        />
+      </Container>
+    </PageLayout>
+  );
+}
