@@ -55,8 +55,8 @@ export default async function TagsPage(): Promise<JSX.Element> {
     <PageLayout>
       <Container>
         <PageHeader
-          title="Tags"
-          description="Browse Kabir&rsquo;s dohas by thematic tags &mdash; each tag gathers couplets around a shared spiritual thread."
+          title="विषय (Tags)"
+          description="कबीर के दोहों को विषय आधार पर खोजें — हर टैग एक साझा आध्यात्मिक सूत्र के आसपास दोहों को संग्रहित करता है (Browse Kabir&rsquo;s dohas by thematic tags &mdash; each tag gathers couplets around a shared spiritual thread)"
         />
 
         {/* A–Z jump nav */}
