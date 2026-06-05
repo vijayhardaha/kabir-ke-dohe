@@ -15,24 +15,24 @@
   --color-primary-950: #480918;
 
   /* Secondary/Gray palette */
-  --color-secondary-50: #f8f8f8;
+  --color-secondary-50: #fafafa;
   --color-secondary-100: #f5f5f5;
   --color-secondary-200: #e6e6e6;
-  --color-secondary-300: #d6d6d6;
-  --color-secondary-400: #a5a5a5;
-  --color-secondary-500: #767676;
-  --color-secondary-600: #575757;
-  --color-secondary-700: #434343;
-  --color-secondary-800: #333333;
+  --color-secondary-300: #d3d3d3;
+  --color-secondary-400: #a3a3a3;
+  --color-secondary-500: #727272;
+  --color-secondary-600: #535353;
+  --color-secondary-700: #444444;
+  --color-secondary-800: #272727;
   --color-secondary-900: #1a1a1a;
-  --color-secondary-950: #0a0a0a;
+  --color-secondary-950: #0b0b0b;
 
   /* Semantic aliases (shadcn style) */
   --color-black: #000000;
   --color-white: #ffffff;
 
-  --color-background: var(--color-secondary-50);
-  --color-foreground: var(--color-secondary-900);
+  --color-background: var(--color-secondary-100);
+  --color-foreground: var(--color-secondary-700);
 
   --color-primary: var(--color-primary-600);
   --color-primary-foreground: var(--color-white);
