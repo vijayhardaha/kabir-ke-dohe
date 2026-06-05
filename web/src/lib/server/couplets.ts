@@ -1,6 +1,6 @@
 import 'server-only';
 
-import type { Category, Tag, Post, CoupletsResponse } from '@/types';
+import type { Category, Tag, TagRef, Post, CoupletsResponse } from '@/types';
 
 import { getSupabase } from './supabase';
 
@@ -146,7 +146,7 @@ export async function getCouplets(options: GetCoupletsOptions = {}): Promise<Cou
   const categorySelect = category ? 'category:categories!inner(name, slug)' : 'category:categories(name, slug)';
 
   const tagsSelect = tag
-    ? 'tags:post_tags!inner(tag:tags!inner(id, name, slug))'
+    ? 'tags:post_tags(tag:tags(id, name, slug)), filter_tags:post_tags!inner(tag:tags!inner(slug))'
     : 'tags:post_tags(tag:tags(id, name, slug))';
 
   let query = supabase
@@ -160,7 +160,7 @@ export async function getCouplets(options: GetCoupletsOptions = {}): Promise<Cou
   }
 
   if (tag) {
-    query = query.eq('tags.tag.slug', tag);
+    query = query.eq('filter_tags.tag.slug', tag);
   }
 
   if (isFeatured) {
@@ -184,6 +184,126 @@ export async function getCouplets(options: GetCoupletsOptions = {}): Promise<Cou
   const total = count ?? 0;
 
   return { posts, pagination: { page, perPage, total, totalPages: Math.ceil(total / perPage) } };
+}
+
+/**
+ * Fetch related couplets that share the same category or tags as the current post.
+ *
+ * @param {string | null} categorySlug - Slug of the current post's category, or null.
+ * @param {string[]} tagSlugs - Slugs of the current post's tags.
+ * @param {string} excludeSlug - Slug of the current post to exclude.
+ * @param {number} [limit] - Maximum number of related couplets to return.
+ *
+ * @returns {Promise<Array<{ slug: string; text_hi: string; tags: TagRef[] }>>}
+ *   Related couplets with slug, Hindi text, and their tags.
+ */
+export async function getRelatedCouplets(
+  categorySlug: string | null,
+  tagSlugs: string[],
+  excludeSlug: string,
+  limit = 4
+): Promise<Array<{ slug: string; text_hi: string; tags: TagRef[] }>> {
+  const supabase = getSupabase();
+  const seen = new Set<string>();
+  const related: Array<{ slug: string; text_hi: string; tags: TagRef[] }> = [];
+
+  function pushResult(row: { slug: string; text_hi: string; tags: TagRef[] }): void {
+    if (row.slug === excludeSlug) return;
+    if (seen.has(row.slug)) return;
+    seen.add(row.slug);
+    related.push(row);
+  }
+
+  // 1. Collect posts from the same category
+  if (categorySlug) {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('slug, text_hi, tags:post_tags(tag:tags(id, name, slug)), category:categories!inner(slug)')
+      .eq('post_status', 'publish')
+      .eq('category.slug', categorySlug)
+      .neq('slug', excludeSlug)
+      .limit(limit)
+      .order('post_order', { ascending: true });
+
+    if (error) {
+      throw new Error(`Failed to fetch related couplets: ${error.message}`);
+    }
+
+    for (const row of (data ?? []) as Array<{ slug: string; text_hi: string; tags: Array<{ tag: TagRef }> }>) {
+      pushResult({ slug: row.slug, text_hi: row.text_hi, tags: row.tags.map((t) => t.tag) });
+    }
+  }
+
+  // 2. Fill remaining slots with posts sharing a tag (first 3 tags max)
+  if (related.length < limit && tagSlugs.length > 0) {
+    for (const tagSlug of tagSlugs.slice(0, 3)) {
+      if (related.length >= limit) break;
+
+      const { data, error } = await supabase
+        .from('posts')
+        .select(
+          'slug, text_hi, tags:post_tags(tag:tags(id, name, slug)), filter_tags:post_tags!inner(tag:tags!inner(slug))'
+        )
+        .eq('post_status', 'publish')
+        .eq('filter_tags.tag.slug', tagSlug)
+        .limit(limit - related.length)
+        .order('post_order', { ascending: true });
+
+      if (error) {
+        throw new Error(`Failed to fetch related couplets: ${error.message}`);
+      }
+
+      for (const row of (data ?? []) as Array<{ slug: string; text_hi: string; tags: Array<{ tag: TagRef }> }>) {
+        pushResult({ slug: row.slug, text_hi: row.text_hi, tags: row.tags.map((t) => t.tag) });
+      }
+    }
+  }
+
+  return related.slice(0, limit);
+}
+
+/**
+ * Fetch the previous and next published couplets adjacent to the given post order.
+ *
+ * @param {number} postOrder - The post_order of the current couplet.
+ *
+ * @returns {Promise<{ prev: Pick<Post, 'slug' | 'text_hi'> | null; next: Pick<Post, 'slug' | 'text_hi'> | null }>}
+ *   Adjacent couplets with slug and Hindi text, or null when at a boundary.
+ */
+export async function getAdjacentCouplets(
+  postOrder: number
+): Promise<{ prev: Pick<Post, 'slug' | 'text_hi'> | null; next: Pick<Post, 'slug' | 'text_hi'> | null }> {
+  const supabase = getSupabase();
+
+  const [prevResult, nextResult] = await Promise.all([
+    supabase
+      .from('posts')
+      .select('slug, text_hi')
+      .eq('post_status', 'publish')
+      .lt('post_order', postOrder)
+      .order('post_order', { ascending: false })
+      .limit(1),
+    supabase
+      .from('posts')
+      .select('slug, text_hi')
+      .eq('post_status', 'publish')
+      .gt('post_order', postOrder)
+      .order('post_order', { ascending: true })
+      .limit(1),
+  ]);
+
+  if (prevResult.error) {
+    throw new Error(`Failed to fetch previous couplet: ${prevResult.error.message}`);
+  }
+
+  if (nextResult.error) {
+    throw new Error(`Failed to fetch next couplet: ${nextResult.error.message}`);
+  }
+
+  return {
+    prev: (prevResult.data?.[0] as Pick<Post, 'slug' | 'text_hi'> | undefined) ?? null,
+    next: (nextResult.data?.[0] as Pick<Post, 'slug' | 'text_hi'> | undefined) ?? null,
+  };
 }
 
 /**
@@ -377,7 +497,7 @@ function normalizePost(raw: SupabasePost): Post {
     reflection_questions_hi: raw.reflection_questions_hi,
     reflection_questions_en: raw.reflection_questions_en,
     category: raw.category ?? null,
-    tags: raw.tags.map((t) => t.tag),
+    tags: raw.tags.map((t) => t.tag).filter((t): t is NonNullable<typeof t> => t !== null),
     is_popular: raw.is_popular,
     is_featured: raw.is_featured,
     view_count: raw.view_count,
