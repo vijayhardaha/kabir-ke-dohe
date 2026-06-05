@@ -2,9 +2,17 @@ import type { JSX } from 'react';
 
 import { ArchiveListing } from '@/components/features/ArchiveListing';
 import { Container } from '@/components/layout/Container';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { getCouplets } from '@/lib/server/couplets';
+import { handlePageRedirect } from '@/lib/server/page-utils';
 
+/**
+ * Props for the popular couplets page.
+ *
+ * @type {PopularCoupletsPageProps}
+ * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters for pagination and sorting.
+ */
 interface PopularCoupletsPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
@@ -19,13 +27,13 @@ interface PopularCoupletsPageProps {
  */
 export default async function PopularCoupletsPage({ searchParams }: PopularCoupletsPageProps): Promise<JSX.Element> {
   const params = await searchParams;
-  const page = typeof params.page === 'string' ? Math.max(1, parseInt(params.page, 10) || 1) : 1;
+  handlePageRedirect(params, '/popular-couplets');
   const sortBy = typeof params.sort_by === 'string' ? params.sort_by : 'number';
   const sortOrder = typeof params.sort_order === 'string' ? params.sort_order : 'asc';
   const perPage = 10;
 
   const { posts, pagination } = await getCouplets({
-    page,
+    page: 1,
     perPage,
     isPopular: true,
     sortBy: sortBy as 'number' | 'text_en' | 'text_hi',
@@ -35,12 +43,14 @@ export default async function PopularCoupletsPage({ searchParams }: PopularCoupl
   return (
     <PageLayout>
       <Container>
+        <PageHeader
+          title="लोकप्रिय दोहे (Popular Couplets)"
+          description="सबसे अधिक पसंद किए जाने वाले कबीर के दोहे — जिन्होंने लाखों दिलों को छुआ है, हिंदी और अंग्रेज़ी अर्थ के साथ (The most loved and cherished dohas of Sant Kabir that have touched millions of hearts, with Hindi and English meanings)"
+        />
         <ArchiveListing
           posts={posts}
           pagination={pagination}
           baseUrl="/popular-couplets"
-          title="Popular Couplets"
-          description="The most loved dohas of Sant Kabir"
           currentSortBy={sortBy}
           currentSortOrder={sortOrder}
         />
