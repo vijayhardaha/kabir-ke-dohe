@@ -88,7 +88,7 @@ export function Header(): JSX.Element {
                   <Link
                     href={link.href}
                     className={cn(
-                      'inline-flex items-center gap-1 px-3 py-1.5 text-sm font-semibold tracking-wide uppercase no-underline transition-colors duration-200',
+                      'inline-flex items-center gap-1 px-3 py-2 text-sm font-semibold tracking-wide uppercase no-underline transition-colors duration-200',
                       isActive
                         ? 'text-primary-foreground bg-black/15'
                         : 'text-primary-foreground hover:text-primary-foreground hover:bg-black/15'
