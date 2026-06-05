@@ -26,7 +26,7 @@ import { sheetToJson } from './lib/gsheet';
 import { slugifyText } from './lib/slug';
 import { createSupabaseClient } from './lib/supabase';
 
-const BATCH_SIZE = 500;
+const BATCH_SIZE = 400;
 
 /**
  * Main sync function that orchestrates the data synchronization process.
@@ -201,7 +201,9 @@ async function main() {
       }
 
       spinner.text = `Syncing posts: ${Math.min(i + BATCH_SIZE, posts.length)}/${posts.length} (${mappingsCount} mappings)`;
+      await new Promise((resolve) => setTimeout(resolve, 10000));
     }
+
     spinner.succeed('Synced ' + posts.length + ' posts with ' + mappingsCount + ' post-tag mappings');
   } catch (error) {
     spinner.fail('Failed to sync posts: ' + (error as Error).message);
