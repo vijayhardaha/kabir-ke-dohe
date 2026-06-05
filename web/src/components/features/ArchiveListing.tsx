@@ -179,7 +179,7 @@ export function ArchiveListing({
             options={SORT_OPTIONS}
             value={currentSortValue}
             onChange={handleSortChange}
-            className="w-56"
+            className="w-46"
           />
         </div>
       )}
