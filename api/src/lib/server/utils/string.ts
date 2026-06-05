@@ -49,5 +49,19 @@ export function sanitizeTitle(string: string): string {
  */
 export function toSentenceCase(str: string): string {
   if (!str) return str;
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+  const lowercaseWords = new Set(['of', 'vs', 'and', 'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'by', 'with']);
+
+  return str
+    .replace(/&/g, 'and')
+    .toLowerCase()
+    .split(/\s+/)
+    .map((word, index) => {
+      if (index > 0 && lowercaseWords.has(word)) {
+        return word;
+      }
+
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
 }
