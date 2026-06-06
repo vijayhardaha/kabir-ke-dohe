@@ -17,7 +17,7 @@ export async function ArchiveSidebar(): Promise<JSX.Element> {
   const [tags, popularCouplets] = await Promise.all([getTagsByPostCount(12), getPopularCoupletsForWidget(6)]);
 
   return (
-    <aside className="flex flex-col gap-8">
+    <aside className="sticky top-10 flex flex-col gap-8">
       <SearchWidget />
       <CategoriesWidget />
       <TagCloudWidget tags={tags} />
