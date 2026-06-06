@@ -4,8 +4,9 @@ import { ArchiveListing } from '@/components/features/ArchiveListing';
 import { Container } from '@/components/layout/Container';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
+import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
 import { getCouplets } from '@/lib/server/couplets';
-import { handlePageRedirect } from '@/lib/server/page-utils';
+import { handlePageRedirect, parseSortParams } from '@/lib/server/page-utils';
 
 /**
  * Props for the couplets archive page.
@@ -28,9 +29,7 @@ interface ArchivePageProps {
 export default async function ArchivePage({ searchParams }: ArchivePageProps): Promise<JSX.Element> {
   const params = await searchParams;
   handlePageRedirect(params, '/couplets');
-  const sortBy = typeof params.sort_by === 'string' ? params.sort_by : 'number';
-  const sortOrder = typeof params.sort_order === 'string' ? params.sort_order : 'asc';
-  const perPage = 10;
+  const { sortBy, sortOrder, perPage } = parseSortParams(params);
 
   const { posts, pagination } = await getCouplets({
     page: 1,
@@ -52,6 +51,8 @@ export default async function ArchivePage({ searchParams }: ArchivePageProps): P
           baseUrl="/couplets"
           currentSortBy={sortBy}
           currentSortOrder={sortOrder}
+          showSidebar
+          sidebar={<ArchiveSidebar />}
         />
       </Container>
     </PageLayout>

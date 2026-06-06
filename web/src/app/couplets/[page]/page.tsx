@@ -4,8 +4,9 @@ import { ArchiveListing } from '@/components/features/ArchiveListing';
 import { Container } from '@/components/layout/Container';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
+import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
 import { getCouplets } from '@/lib/server/couplets';
-import { validatePageParam } from '@/lib/server/page-utils';
+import { parseSortParams, validatePageParam } from '@/lib/server/page-utils';
 
 /**
  * Props for the paginated couplets archive page.
@@ -33,9 +34,7 @@ export default async function CoupletsPage({ params, searchParams }: CoupletsPag
   const { page: pageStr } = await params;
   const sp = await searchParams;
   const page = validatePageParam(pageStr, '/couplets', sp);
-  const sortBy = typeof sp.sort_by === 'string' ? sp.sort_by : 'number';
-  const sortOrder = typeof sp.sort_order === 'string' ? sp.sort_order : 'asc';
-  const perPage = 10;
+  const { sortBy, sortOrder, perPage } = parseSortParams(sp);
 
   const { posts, pagination } = await getCouplets({
     page,
@@ -57,6 +56,8 @@ export default async function CoupletsPage({ params, searchParams }: CoupletsPag
           baseUrl="/couplets"
           currentSortBy={sortBy}
           currentSortOrder={sortOrder}
+          showSidebar
+          sidebar={<ArchiveSidebar />}
         />
       </Container>
     </PageLayout>
