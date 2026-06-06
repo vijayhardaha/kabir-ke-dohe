@@ -35,6 +35,17 @@ export function Footer(): JSX.Element {
       </Container>
 
       <FooterBottomBar />
+
+      {/* Disclaimer */}
+      <div className="border-t border-white/10">
+        <Container className="py-4">
+          <p className="text-secondary-foreground/50 text-left text-xs leading-relaxed">
+            <strong>Disclaimer:</strong> The Kabir Dohe API provides dohe of Sant Kabir Das for educational and
+            informational use. While we strive for accuracy, we do not guarantee completeness or correctness. Users are
+            responsible for their use of the content. The verses are not owned by us, only the API service is.
+          </p>
+        </Container>
+      </div>
     </footer>
   );
 }

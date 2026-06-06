@@ -8,8 +8,8 @@ import { FaFacebook, FaInstagram } from 'react-icons/fa';
  * Social media platform configuration.
  */
 const socialLinks = [
-  { href: '#', label: 'Facebook', icon: FaFacebook },
-  { href: '#', label: 'Instagram', icon: FaInstagram },
+  { href: 'https://www.facebook.com/kabirkedohe.official', label: 'Facebook', icon: FaFacebook },
+  { href: 'https://www.instagram.com/kabirkedohe.official', label: 'Instagram', icon: FaInstagram },
 ];
 
 /**

@@ -9,8 +9,8 @@ import { FaFacebook, FaInstagram } from 'react-icons/fa';
  * Social media platform configuration.
  */
 const socialLinks: Array<{ href: string; label: string; icon: IconType }> = [
-  { href: '#', label: 'Facebook', icon: FaFacebook },
-  { href: '#', label: 'Instagram', icon: FaInstagram },
+  { href: 'https://www.facebook.com/kabirkedohe.official', label: 'Facebook', icon: FaFacebook },
+  { href: 'https://www.instagram.com/kabirkedohe.official', label: 'Instagram', icon: FaInstagram },
 ];
 
 /**
@@ -33,8 +33,8 @@ export function FooterBrand(): JSX.Element {
       </Link>
 
       <p className="text-secondary-foreground/70 mb-0 text-sm leading-relaxed">
-        Explore the timeless dohas of Sant Kabir &mdash; spiritual wisdom on life, devotion, and self-realisation in
-        Hindi and English.
+        संत कबीर के अमर दोहों की दुनिया &mdash; Explore timeless spiritual wisdom on life, devotion,
+        and self-realisation in Hindi and English.
       </p>
 
       <div className="flex items-center gap-3">
