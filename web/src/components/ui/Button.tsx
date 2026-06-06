@@ -93,7 +93,7 @@ function getButtonClasses(variant: ButtonVariant, size: ButtonSize, extra?: stri
     'font-semibold no-underline whitespace-nowrap',
 
     // Hover bottom shadow
-    'hover:shadow-[0_4px_6px_rgba(0,0,0,0.1)]',
+    'hover:shadow-[0_4px_6px_rgba(0,0,0,0.15)]',
 
     // Animation
     'transition-all duration-200',
