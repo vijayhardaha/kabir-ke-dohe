@@ -1,15 +1,8 @@
 import type { JSX } from 'react';
 
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { handlePageRedirect, parseSortParams } from '@/lib/server/page-utils';
 
-import { ArchiveListing } from '@/components/features/ArchiveListing';
-import { Container } from '@/components/layout/Container';
-import { PageHeader } from '@/components/layout/PageHeader';
-import { PageLayout } from '@/components/layout/PageLayout';
-import { getCategoryBySlug } from '@/constants/categories';
-import { getCategoryBySlug as getCategoryFromDb, getCouplets } from '@/lib/server/couplets';
-import { handlePageRedirect } from '@/lib/server/page-utils';
+import { CategoryArchiveContent } from '../_components/CategoryArchiveContent';
 
 /**
  * Props for the category page.
@@ -27,8 +20,6 @@ interface CategoryPageProps {
  * Category page that displays a paginated, filtered list of couplets for a given category.
  *
  * @param {CategoryPageProps} props - Component props
- * @param {Promise<{ slug: string }>} props.params - Route parameters containing the category slug.
- * @param {Promise<Record<string, string | string[] | undefined>>} props.searchParams - URL search parameters for pagination and sorting.
  *
  * @returns {Promise<JSX.Element>} The category-specific couplets listing page.
  */
@@ -36,50 +27,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   const { slug } = await params;
   const sp = await searchParams;
   handlePageRedirect(sp, `/category/${slug}`);
-  const sortBy = typeof sp.sort_by === 'string' ? sp.sort_by : 'number';
-  const sortOrder = typeof sp.sort_order === 'string' ? sp.sort_order : 'asc';
-  const perPage = 10;
+  const sort = parseSortParams(sp);
 
-  // Validate slug against predefined categories first
-  if (!getCategoryBySlug(slug)) {
-    notFound();
-  }
-
-  const category = await getCategoryFromDb(slug);
-
-  if (!category) {
-    notFound();
-  }
-
-  const { posts, pagination } = await getCouplets({
-    page: 1,
-    perPage,
-    category: slug,
-    sortBy: sortBy as 'number' | 'text_en' | 'text_hi',
-    sortOrder: sortOrder as 'asc' | 'desc',
-  });
-
-  return (
-    <PageLayout>
-      <Container>
-        {/* Back link */}
-        <Link
-          href="/couplets"
-          className="text-muted-foreground hover:text-primary mb-6 inline-flex items-center gap-1 text-sm font-semibold no-underline transition-colors duration-200"
-        >
-          &larr; Back to Couplets
-        </Link>
-
-        <PageHeader title={category.name} description={category.description ?? undefined} />
-        <ArchiveListing
-          posts={posts}
-          pagination={pagination}
-          baseUrl={`/category/${slug}`}
-          emptyMessage={`No couplets found in ${category.name}.`}
-          currentSortBy={sortBy}
-          currentSortOrder={sortOrder}
-        />
-      </Container>
-    </PageLayout>
-  );
+  return <CategoryArchiveContent slug={slug} page={1} sort={sort} />;
 }
