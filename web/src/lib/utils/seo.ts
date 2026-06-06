@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 /**
  * Site‑wide configuration values for name, title, description, and URL.
  */
-export const SITE_CONFIG = {
+const SITE_CONFIG = {
   name: 'Kabir Dohe Hub',
   title: 'Kabir Dohe Hub — Wisdom of Sant Kabir',
   description:
@@ -46,7 +46,7 @@ export const siteMetadata: Metadata = {
  * // When no env vars are set
  * siteUrl() // -> 'http://localhost:3000'
  */
-export function siteUrl(): string {
+function siteUrl(): string {
   const url =
     process.env.NEXT_PUBLIC_SITE_URL
     || process.env.VERCEL_PROJECT_PRODUCTION_URL
@@ -76,7 +76,7 @@ export function siteUrl(): string {
  * cleanPath("")           // ""
  * cleanPath("/")          // ""
  */
-export function cleanPath(path: string = ''): string {
+function cleanPath(path: string = ''): string {
   return path.trim().replace(/^\/+/, '').replace(/\/+$/, '');
 }
 
