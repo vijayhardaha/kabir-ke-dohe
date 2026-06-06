@@ -13,18 +13,5 @@ import { cn } from '@/lib/utils/cn';
  * @returns {JSX.Element} Container component
  */
 export function Container({ children, className }: { children: ReactNode; className?: string }): JSX.Element {
-  return (
-    <div
-      className={cn(
-        // Layout
-        'mx-auto max-w-7xl px-4',
-        // Responsive
-        'md:px-6',
-        // Extensible
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
+  return <div className={cn('mx-auto max-w-7xl px-4', 'md:px-6', className)}>{children}</div>;
 }
