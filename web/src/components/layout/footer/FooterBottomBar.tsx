@@ -15,11 +15,11 @@ export function FooterBottomBar(): JSX.Element {
   return (
     <div className="border-t border-white/10">
       <Container className="py-6">
-        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p className="text-secondary-foreground/60 text-sm">
+        <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+          <p className="text-secondary-foreground/60 mb-0 text-sm">
             &copy; {currentYear} Kabir Dohe Hub. All rights reserved.
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <Link
               href="/privacy"
               className="text-secondary-foreground/60 text-sm no-underline transition-colors duration-200 hover:text-white"
@@ -34,7 +34,7 @@ export function FooterBottomBar(): JSX.Element {
             </Link>
           </div>
         </div>
-        <p className="text-secondary-foreground/50 mt-4 text-left text-xs">
+        <p className="text-secondary-foreground/50 mt-2 text-left text-xs">
           Built and actively maintained by{' '}
           <a
             href="https://github.com/vijayhardaha"

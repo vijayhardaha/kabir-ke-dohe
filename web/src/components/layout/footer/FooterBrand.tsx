@@ -33,8 +33,8 @@ export function FooterBrand(): JSX.Element {
       </Link>
 
       <p className="text-secondary-foreground/70 mb-0 text-sm leading-relaxed">
-        संत कबीर के अमर दोहों की दुनिया &mdash; Explore timeless spiritual wisdom on life, devotion,
-        and self-realisation in Hindi and English.
+        संत कबीर के अमर दोहों की दुनिया &mdash; Explore timeless spiritual wisdom on life, devotion, and
+        self-realisation in Hindi and English.
       </p>
 
       <div className="flex items-center gap-3">
