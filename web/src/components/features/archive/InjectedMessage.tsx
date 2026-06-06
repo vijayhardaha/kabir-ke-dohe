@@ -48,7 +48,7 @@ export function InjectedMessage({ message, colorIndex }: InjectedMessageProps): 
       <blockquote className="relative">
         {/* Decorative quote mark */}
         <svg
-          className={`${colors.icon} mb-2 size-8 md:size-10`}
+          className={`${colors.icon} mb-2 size-14 md:size-18`}
           fill="currentColor"
           viewBox="0 0 24 24"
           aria-hidden="true"
