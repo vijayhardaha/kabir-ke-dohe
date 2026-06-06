@@ -17,9 +17,10 @@ export const QUICK_LINKS = [
  */
 export const USEFUL_LINKS = [
   { href: '/about', label: 'About' },
-  { href: '/privacy', label: 'Privacy Policy' },
-  { href: '/terms', label: 'Terms & Conditions' },
-  { href: '/docs', label: 'API Documentation' },
+  { href: 'https://www.youtube.com/watch?v=T0ICrGkG5bc&list=PLA-W1ItUPL9KtLlS65k_4V_FN3v8tFluO', label: 'Kabir Saheb Bhajan' },
+  { href: 'https://www.youtube.com/watch?v=aKpiEXdLIrs&list=PLA-W1ItUPL9LN948SLoXxCl7PSSlNVzOV', label: 'Kabir Saheb Dohe' },
+  { href: 'https://kabirdoheapi.vercel.app/', label: 'API Documentation' },
+  { href: 'https://kabirdoheimages.vercel.app/', label: 'Couplets Images' },
 ] as const;
 
 /**
