@@ -1,6 +1,24 @@
 import { redirect } from 'next/navigation';
 
 /**
+ * Builds a query string from search params, excluding the `page` key.
+ * Shared helper for page-redirect and pagination logic.
+ *
+ * @param {Record<string, string | string[] | undefined>} searchParams - URL search params.
+ *
+ * @returns {string} The query string without the `page` param (empty string if nothing remains).
+ */
+function queryStringWithoutPage(searchParams: Record<string, string | string[] | undefined>): string {
+  const rest = new URLSearchParams();
+  for (const [key, value] of Object.entries(searchParams)) {
+    if (key !== 'page' && typeof value === 'string') {
+      rest.set(key, value);
+    }
+  }
+  return rest.toString();
+}
+
+/**
  * Redirects when `page` is present in search params, converting to path-based URLs.
  * If `?page=N` is found, redirects to `/baseUrl/N` (or `/baseUrl` for page 1).
  * Preserves all other query parameters.
@@ -17,16 +35,29 @@ export function handlePageRedirect(searchParams: Record<string, string | string[
 
   const page = Math.max(1, parseInt(pageStr, 10) || 1);
 
-  const rest = new URLSearchParams();
-  for (const [key, value] of Object.entries(searchParams)) {
-    if (key !== 'page' && typeof value === 'string') {
-      rest.set(key, value);
-    }
-  }
-
-  const qs = rest.toString();
+  const qs = queryStringWithoutPage(searchParams);
   const destination = page > 1 ? `${baseUrl}/${page}` : baseUrl;
   redirect(qs ? `${destination}?${qs}` : destination);
+}
+
+/**
+ * Parses common sort parameters from search params with defaults.
+ * Reduces repetitive extraction boilerplate across archive pages.
+ *
+ * @param {Record<string, string | string[] | undefined>} searchParams - URL search params.
+ *
+ * @returns {{ sortBy: string; sortOrder: string; perPage: number }} Parsed sort values.
+ */
+export function parseSortParams(searchParams: Record<string, string | string[] | undefined>): {
+  sortBy: string;
+  sortOrder: string;
+  perPage: number;
+} {
+  return {
+    sortBy: typeof searchParams.sort_by === 'string' ? searchParams.sort_by : 'number',
+    sortOrder: typeof searchParams.sort_order === 'string' ? searchParams.sort_order : 'asc',
+    perPage: 10,
+  };
 }
 
 /**
@@ -50,13 +81,7 @@ export function validatePageParam(
 
   if (isNaN(page) || page <= 1) {
     if (searchParams) {
-      const rest = new URLSearchParams();
-      for (const [key, value] of Object.entries(searchParams)) {
-        if (key !== 'page' && typeof value === 'string') {
-          rest.set(key, value);
-        }
-      }
-      const qs = rest.toString();
+      const qs = queryStringWithoutPage(searchParams);
       redirect(qs ? `${baseUrl}?${qs}` : baseUrl);
     }
     redirect(baseUrl);
