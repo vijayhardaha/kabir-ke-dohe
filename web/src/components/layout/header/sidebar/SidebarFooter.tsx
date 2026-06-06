@@ -20,19 +20,22 @@ const socialLinks = [
 export function SidebarFooter(): JSX.Element {
   return (
     <div className="border-t border-gray-100 px-8 py-5">
-      <div className="flex items-center gap-3">
-        {socialLinks.map((social) => (
-          <a
-            key={social.label}
-            href={social.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={social.label}
-            className="text-muted-foreground hover:text-primary-foreground bg-secondary hover:bg-primary flex h-9 w-9 items-center justify-center transition-colors duration-200"
-          >
-            <social.icon size={16} />
-          </a>
-        ))}
+      <div className="flex flex-nowrap items-center justify-between gap-4">
+        <h3 className="text-foreground text-lg font-bold">Follow us on:</h3>
+        <div className="flex items-center gap-3">
+          {socialLinks.map((social) => (
+            <a
+              key={social.label}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={social.label}
+              className="text-secondary-foreground hover:text-primary-foreground bg-secondary hover:bg-primary flex h-9 w-9 items-center justify-center transition-colors duration-200"
+            >
+              <social.icon size={16} />
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );
