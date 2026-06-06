@@ -200,11 +200,17 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
                   </Link>
                 )}
 
-                <h1 className="text-foreground mb-2 text-3xl leading-tight md:text-4xl">{formatDoha(post.text_hi)}</h1>
+                <h1 className="text-foreground mb-2 text-2xl leading-tight md:text-3xl lg:text-4xl xl:text-5xl">
+                  {formatDoha(post.text_hi)}
+                </h1>
 
-                <p className="text-lg">{post.text_en}</p>
+                <div>
+                  <p className="bg-muted inline-flex px-2 py-1 text-sm font-medium italic md:text-base">
+                    {post.text_en}
+                  </p>
+                </div>
 
-                <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+                <div className="mt-4 flex flex-wrap items-center gap-2 gap-x-2 gap-y-1.5 text-sm font-medium md:text-base">
                   <span>
                     By{' '}
                     <a
@@ -220,17 +226,17 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
                     |
                   </span>
                   {post.tags.length > 0 && (
-                    <span className="flex flex-wrap gap-2">
+                    <>
                       {post.tags.map((tag) => (
                         <Link
                           href={`/tag/${tag.slug}`}
                           key={tag.slug}
-                          className="bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground px-2 py-1 text-xs font-medium no-underline"
+                          className="bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground px-2 py-1 no-underline"
                         >
                           {tag.name}
                         </Link>
                       ))}
-                    </span>
+                    </>
                   )}
                 </div>
               </header>
@@ -241,7 +247,7 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
                   (section) =>
                     (section.contentHi || section.contentEn) && (
                       <section key={section.title}>
-                        <h2 className="text-primary mb-4 text-2xl font-bold">{section.title}:</h2>
+                        <h2 className="text-primary mb-4 text-xl font-bold md:text-2xl">{section.title}:</h2>
                         {renderSectionContent(section)}
                       </section>
                     )
