@@ -22,14 +22,14 @@ interface ComboboxOption {
  * @type {ComboboxProps}
  * @property {ComboboxOption[]} options - Available options
  * @property {string} value - Currently selected value
- * @property {(value: string) => void} onChange - Selection handler
+ * @property {(value: string) => void} onChangeAction - Selection handler
  * @property {string} label - Floating label displayed at the top-left
  * @property {string} [className] - Additional classes for the wrapper
  */
 interface ComboboxProps {
   options: ComboboxOption[];
   value: string;
-  onChange: (value: string) => void;
+  onChangeAction: (value: string) => void;
   label: string;
   className?: string;
 }
@@ -43,7 +43,7 @@ interface ComboboxProps {
  *
  * @returns {JSX.Element} Combobox component
  */
-export function Combobox({ options, value, onChange, label, className }: ComboboxProps): JSX.Element {
+export function Combobox({ options, value, onChangeAction, label, className }: ComboboxProps): JSX.Element {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -156,7 +156,7 @@ export function Combobox({ options, value, onChange, label, className }: Combobo
               role="option"
               aria-selected={option.value === value}
               onClick={() => {
-                onChange(option.value);
+                onChangeAction(option.value);
                 setOpen(false);
               }}
               className={cn(
