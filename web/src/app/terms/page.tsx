@@ -16,7 +16,7 @@ export default function TermsPage(): JSX.Element {
       <Container>
         <PageHeader title="Terms &amp; Conditions" description="Last updated: June 5, 2026" />
 
-        <div className="text-foreground/80 mt-10 space-y-6 leading-relaxed">
+        <div className="mt-10 space-y-6 leading-relaxed">
           <LegalSection title="1. Acceptance of Terms">
             <p>
               By accessing or using Kabir Dohe Hub (&ldquo;the Website&rdquo;), you agree to be bound by these Terms
@@ -29,7 +29,7 @@ export default function TermsPage(): JSX.Element {
               All content on the Website — including couplets, translations, interpretations, and commentary — is
               provided for educational, spiritual, and personal enrichment purposes. You may:
             </p>
-            <ul className="text-muted-foreground mt-2 list-disc space-y-1 pl-6">
+            <ul className="mt-2 list-disc space-y-1 pl-6">
               <li>Read, share, and reference the couplets for non-commercial purposes</li>
               <li>Link to the Website or individual couplet pages</li>
             </ul>
@@ -57,7 +57,7 @@ export default function TermsPage(): JSX.Element {
 
           <LegalSection title="5. User Conduct">
             <p>When using the Website, you agree not to:</p>
-            <ul className="text-muted-foreground mt-2 list-disc space-y-1 pl-6">
+            <ul className="mt-2 list-disc space-y-1 pl-6">
               <li>Use the site for any unlawful purpose</li>
               <li>Attempt to disrupt or compromise the Website&rsquo;s functionality</li>
               <li>Scrape, harvest, or systematically extract content without permission</li>

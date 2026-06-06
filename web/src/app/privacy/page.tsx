@@ -16,7 +16,7 @@ export default function PrivacyPage(): JSX.Element {
       <Container>
         <PageHeader title="Privacy Policy" description="Last updated: June 5, 2026" />
 
-        <div className="text-foreground/80 mt-10 space-y-6 leading-relaxed">
+        <div className="mt-10 space-y-6 leading-relaxed">
           <LegalSection title="1. Introduction">
             <p>
               Kabir Dohe Hub (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;) is committed to protecting your
@@ -27,21 +27,21 @@ export default function PrivacyPage(): JSX.Element {
 
           <LegalSection title="2. Information We Collect">
             <p>We collect minimal information necessary to provide and improve our service:</p>
-            <ul className="text-muted-foreground mt-2 list-disc space-y-1 pl-6">
+            <ul className="mt-2 list-disc space-y-1 pl-6">
               <li>
-                <strong className="text-foreground">Usage Data:</strong> Anonymous page views and interaction data
-                collected via cookies or similar technologies to understand how our site is used.
+                <strong>Usage Data:</strong> Anonymous page views and interaction data collected via cookies or similar
+                technologies to understand how our site is used.
               </li>
               <li>
-                <strong className="text-foreground">Device Information:</strong> Browser type, operating system, and
-                referring URLs — standard data sent by your browser.
+                <strong>Device Information:</strong> Browser type, operating system, and referring URLs — standard data
+                sent by your browser.
               </li>
             </ul>
           </LegalSection>
 
           <LegalSection title="3. How We Use Your Information">
             <p>The information we collect helps us to:</p>
-            <ul className="text-muted-foreground mt-2 list-disc space-y-1 pl-6">
+            <ul className="mt-2 list-disc space-y-1 pl-6">
               <li>Operate, maintain, and improve our website</li>
               <li>Analyze usage patterns to enhance user experience</li>
               <li>Detect and prevent technical issues or abuse</li>
@@ -72,7 +72,7 @@ export default function PrivacyPage(): JSX.Element {
 
           <LegalSection title="7. Your Rights">
             <p>Depending on your jurisdiction, you may have the right to:</p>
-            <ul className="text-muted-foreground mt-2 list-disc space-y-1 pl-6">
+            <ul className="mt-2 list-disc space-y-1 pl-6">
               <li>Access the personal data we hold about you</li>
               <li>Request correction or deletion of your data</li>
               <li>Opt out of analytics tracking</li>
