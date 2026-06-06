@@ -2,7 +2,7 @@
 
 import type { JSX } from 'react';
 
-import { Share2 } from 'lucide-react';
+import { ArrowRight, Share2 } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button, ButtonLink } from '@/components/ui/Button';
@@ -93,10 +93,11 @@ export function PostCard({ post }: { post: Post }): JSX.Element {
       <div className="flex flex-wrap items-center gap-3">
         <ButtonLink href={`/couplet/${post.slug}`} variant="primary" size="md">
           Read More
+          <ArrowRight className="size-3.5" aria-hidden="true" />
         </ButtonLink>
-        <Button variant="outline-primary" size="md" onClick={handleShare}>
-          <Share2 size={16} aria-label="Share" />
+        <Button variant="outline-secondary" size="md" onClick={handleShare}>
           Share
+          <Share2 className="size-3.5" aria-hidden="true" />
         </Button>
       </div>
     </article>
