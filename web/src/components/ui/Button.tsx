@@ -162,4 +162,4 @@ function ButtonLink({ variant = 'primary', size = 'md', className, children, ...
 }
 
 export { Button, ButtonLink };
-export type { ButtonLinkProps, ButtonProps, ButtonVariant, ButtonSize };
+export type { ButtonLinkProps, ButtonVariant, ButtonSize };
