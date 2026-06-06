@@ -81,7 +81,7 @@ export function ArchiveListing({
       {!hideSort && posts.length > 0 && (
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <ResultCount pagination={pagination} />
-          <SortDropdown value={currentSortValue} onChange={handleSortChange} />
+          <SortDropdown value={currentSortValue} onChangeAction={handleSortChange} />
         </div>
       )}
 

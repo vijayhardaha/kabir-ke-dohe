@@ -37,14 +37,14 @@ export function PostCard({ post }: { post: Post }): JSX.Element {
   return (
     <article className="bg-card flex flex-col gap-4 p-6 md:p-8">
       {/* ---- Doha heading ---- */}
-      <h2 className="text-foreground text-3xl leading-snug tracking-normal whitespace-pre-line lg:text-4xl">
+      <h2 className="text-foreground text-xl leading-snug tracking-normal whitespace-pre-line md:text-3xl lg:text-4xl">
         <Link href={`/couplet/${post.slug}`} className="text-secondary hover:text-primary hover:underline">
           {formatDoha(post.text_hi)}
         </Link>
       </h2>
 
       {/* ---- Meta: author + tags ---- */}
-      <div className="text-foreground flex flex-wrap items-center gap-y-1 text-base font-medium">
+      <div className="text-foreground flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium md:text-base">
         <span>
           By{' '}
           <a
@@ -58,19 +58,17 @@ export function PostCard({ post }: { post: Post }): JSX.Element {
         </span>
         {post.tags.length > 0 && (
           <>
-            <span aria-hidden="true" className="mx-2 text-xs">
+            <span aria-hidden="true" className="text-xs">
               |
             </span>{' '}
-            <span className="flex flex-wrap items-center">
-              {post.tags.map((tag, idx) => (
-                <span key={tag.slug} className="mr-1 last:mr-0">
-                  <Link href={`/tag/${tag.slug}`} className="text-foreground hover:text-primary underline">
-                    {tag.name}
-                  </Link>
-                  {idx < post.tags.length - 1 && <span>, </span>}
-                </span>
-              ))}
-            </span>
+            {post.tags.map((tag, idx) => (
+              <span key={tag.slug}>
+                <Link href={`/tag/${tag.slug}`} className="text-foreground hover:text-primary underline">
+                  {tag.name}
+                </Link>
+                {idx < post.tags.length - 1 && <span>, </span>}
+              </span>
+            ))}
           </>
         )}
       </div>
