@@ -1,6 +1,5 @@
 import type { JSX } from 'react';
 
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { ArchiveListing } from '@/components/features/ArchiveListing';
@@ -53,14 +52,6 @@ export async function TagArchiveContent({ slug, page, sort }: TagArchiveContentP
   return (
     <PageLayout>
       <Container>
-        {/* Back link */}
-        <Link
-          href="/tags"
-          className="text-muted-foreground hover:text-primary mb-6 inline-flex items-center gap-1 text-sm font-semibold no-underline transition-colors duration-200"
-        >
-          &larr; Back to Tags
-        </Link>
-
         <PageHeader title={tagName} description={`Couplets tagged with "${tagName}"`} />
         <ArchiveListing
           posts={posts}

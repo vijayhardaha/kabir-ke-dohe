@@ -1,6 +1,5 @@
 import type { JSX } from 'react';
 
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { ArchiveListing } from '@/components/features/ArchiveListing';
@@ -57,14 +56,6 @@ export async function CategoryArchiveContent({ slug, page, sort }: CategoryArchi
   return (
     <PageLayout>
       <Container>
-        {/* Back link */}
-        <Link
-          href="/couplets"
-          className="text-muted-foreground hover:text-primary mb-6 inline-flex items-center gap-1 text-sm font-semibold no-underline transition-colors duration-200"
-        >
-          &larr; Back to Couplets
-        </Link>
-
         <PageHeader title={category.name} description={category.description ?? undefined} />
         <ArchiveListing
           posts={posts}
