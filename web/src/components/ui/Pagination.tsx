@@ -39,13 +39,13 @@ export function Pagination({ page, totalPages, baseUrl, searchParams = {} }: Pag
    *
    * @returns {string} Fully qualified URL with query parameters.
    */
-  function buildUrl(pageNum: number): string {
+  const buildUrl = (pageNum: number): string => {
     const params = new URLSearchParams(searchParams);
     params.delete('page');
     const path = pageNum === 1 ? baseUrl : `${baseUrl}/${pageNum}`;
     const qs = params.toString();
     return qs ? `${path}?${qs}` : path;
-  }
+  };
 
   /**
    * Generates the array of page numbers and ellipsis markers for rendering.
@@ -53,7 +53,7 @@ export function Pagination({ page, totalPages, baseUrl, searchParams = {} }: Pag
    *
    * @returns {(number | 'ellipsis')[]} Ordered page numbers and ellipsis indicators.
    */
-  function getPageNumbers(): (number | 'ellipsis')[] {
+  const getPageNumbers = (): (number | 'ellipsis')[] => {
     const pages: (number | 'ellipsis')[] = [];
 
     if (totalPages <= 7) {
@@ -97,7 +97,7 @@ export function Pagination({ page, totalPages, baseUrl, searchParams = {} }: Pag
     }
 
     return pages;
-  }
+  };
 
   const inactivePageClasses = 'bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground';
   const activePageClasses = 'bg-primary text-primary-foreground';
