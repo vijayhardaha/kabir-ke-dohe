@@ -5,7 +5,7 @@ import { useCallback, useRef, type JSX, type SubmitEvent } from 'react';
 import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-import { Widget, WidgetContent, WidgetHeader } from './Widget';
+import { Widget, WidgetContent } from './Widget';
 
 /**
  * Search widget component for the archive sidebar.
@@ -35,7 +35,6 @@ export function SearchWidget(): JSX.Element {
 
   return (
     <Widget>
-      <WidgetHeader>खोज (Search)</WidgetHeader>
       <WidgetContent>
         <form onSubmit={handleSubmit} className="flex" role="search">
           <div className="flex w-full">
