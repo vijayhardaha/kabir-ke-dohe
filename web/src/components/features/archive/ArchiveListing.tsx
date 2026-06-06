@@ -7,6 +7,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Pagination } from '@/components/ui/Pagination';
 
 import { ContentNone } from './ContentNone';
+import { InjectedMessage } from './InjectedMessage';
+import { KABIR_MESSAGES } from './kabirMessages';
 import { PostCard } from './PostCard';
 import { ResultCount } from './ResultCount';
 import { getSortValue } from './SortControls';
@@ -91,9 +93,26 @@ export function ArchiveListing({
       ) : (
         <>
           <div className="divide-muted divide-y-2">
-            {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
+            {posts.flatMap((post, index) => {
+              const elements = [<PostCard key={post.id} post={post} />];
+
+              // Inject a spiritual message after every 2 posts (at indices 1, 3, 5, 7)
+              // Only inject up to 4 messages and skip if no more posts remain
+              if ((index + 1) % 2 === 0) {
+                const messageIndex = Math.floor((index + 1) / 2) - 1;
+                if (messageIndex < KABIR_MESSAGES.length && index + 1 < posts.length) {
+                  elements.push(
+                    <InjectedMessage
+                      key={`msg-${messageIndex}`}
+                      message={KABIR_MESSAGES[messageIndex]}
+                      colorIndex={messageIndex % 3}
+                    />
+                  );
+                }
+              }
+
+              return elements;
+            })}
           </div>
 
           {/* Pagination */}
