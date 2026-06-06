@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils/cn';
  * @property {string} value - Internal value
  * @property {string} label - Display label
  */
-export interface ComboboxOption {
+interface ComboboxOption {
   value: string;
   label: string;
 }
