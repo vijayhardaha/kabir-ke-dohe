@@ -25,7 +25,7 @@ interface TagCloudWidgetProps {
 export function TagCloudWidget({ tags }: TagCloudWidgetProps): JSX.Element {
   return (
     <Widget>
-      <WidgetHeader>टैग क्लाउड (Tag Cloud)</WidgetHeader>
+      <WidgetHeader>Tag Cloud</WidgetHeader>
 
       <WidgetContent>
         <div className="flex flex-wrap gap-2">
