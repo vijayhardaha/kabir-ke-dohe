@@ -1,73 +1,20 @@
 import 'server-only';
 
-import type { Category, Tag, TagRef, Post, CoupletsResponse } from '@/types';
+import type { Category, CoupletRef, Tag, TagRef, Post, CoupletsResponse } from '@/types';
 
 import { getSupabase } from './supabase';
 
 /**
  * Raw post shape returned by Supabase, used internally before normalisation.
+ * Extends {@link Post} but overrides `category` and `tags` with their nested join shapes.
  *
  * @type {SupabasePost}
- * @property {string} id - Unique identifier
- * @property {number} post_number - Sequential couplet number
- * @property {number} post_order - Display ordering position
- * @property {string} slug - URL‑friendly unique slug
- * @property {string} identifier - External reference identifier
- * @property {string} text_hi - Hindi couplet text (Devanagari)
- * @property {string} text_en - English transliteration
- * @property {string | null} meaning_hi - Hindi meaning
- * @property {string | null} meaning_en - English meaning
- * @property {string | null} interpretation_hi - Hindi interpretation
- * @property {string | null} interpretation_en - English interpretation
- * @property {string | null} philosophical_analysis_hi - Hindi philosophical analysis
- * @property {string | null} philosophical_analysis_en - English philosophical analysis
- * @property {string | null} practical_example_hi - Hindi practical example
- * @property {string | null} practical_example_en - English practical example
- * @property {string | null} practice_guidance_hi - Hindi practice guidance
- * @property {string | null} practice_guidance_en - English practice guidance
- * @property {string | null} core_message_hi - Hindi core message
- * @property {string | null} core_message_en - English core message
- * @property {string | null} reflection_questions_hi - Hindi reflection questions
- * @property {string | null} reflection_questions_en - English reflection questions
- * @property {{ name: string; slug: string } | null} category - Category reference object
- * @property {Array<{ tag: { id: string; name: string; slug: string } }>} tags - Tag relationship objects
- * @property {boolean} is_popular - Popular flag
- * @property {boolean} is_featured - Featured flag
- * @property {number} view_count - Total view count
- * @property {string} post_status - Publication status
- * @property {string} created_at - ISO creation timestamp
- * @property {string} updated_at - ISO last update timestamp
+ * @property {{ name: string; slug: string } | null} category - Joined category data, or null when unassigned.
+ * @property {Array<{ tag: { id: string; name: string; slug: string } }>} tags - Joined tags via the post_tags pivot table.
  */
-interface SupabasePost {
-  id: string;
-  post_number: number;
-  post_order: number;
-  slug: string;
-  identifier: string;
-  text_hi: string;
-  text_en: string;
-  meaning_hi: string | null;
-  meaning_en: string | null;
-  interpretation_hi: string | null;
-  interpretation_en: string | null;
-  philosophical_analysis_hi: string | null;
-  philosophical_analysis_en: string | null;
-  practical_example_hi: string | null;
-  practical_example_en: string | null;
-  practice_guidance_hi: string | null;
-  practice_guidance_en: string | null;
-  core_message_hi: string | null;
-  core_message_en: string | null;
-  reflection_questions_hi: string | null;
-  reflection_questions_en: string | null;
+interface SupabasePost extends Omit<Post, 'category' | 'tags'> {
   category: { name: string; slug: string } | null;
   tags: Array<{ tag: { id: string; name: string; slug: string } }>;
-  is_popular: boolean;
-  is_featured: boolean;
-  view_count: number;
-  post_status: string;
-  created_at: string;
-  updated_at: string;
 }
 
 /**
@@ -105,6 +52,7 @@ interface SupabaseCategory {
  * @property {string} [tag] - Filter by tag slug.
  * @property {boolean} [isFeatured] - Filter to featured posts only.
  * @property {boolean} [isPopular] - Filter to popular posts only.
+ * @property {string} [searchQuery] - Search keyword to filter by search_text column.
  * @property {'number' | 'text_en' | 'text_hi'} [sortBy='number'] - Sort field.
  * @property {'asc' | 'desc'} [sortOrder='asc'] - Sort direction.
  */
@@ -115,6 +63,7 @@ export interface GetCoupletsOptions {
   tag?: string;
   isFeatured?: boolean;
   isPopular?: boolean;
+  searchQuery?: string;
   sortBy?: 'number' | 'text_en' | 'text_hi';
   sortOrder?: 'asc' | 'desc';
 }
@@ -134,6 +83,7 @@ export async function getCouplets(options: GetCoupletsOptions = {}): Promise<Cou
     tag,
     isFeatured,
     isPopular,
+    searchQuery,
     sortBy = 'number',
     sortOrder = 'asc',
   } = options;
@@ -171,6 +121,10 @@ export async function getCouplets(options: GetCoupletsOptions = {}): Promise<Cou
     query = query.eq('is_popular', true);
   }
 
+  if (searchQuery) {
+    query = query.ilike('search_text', `%${searchQuery}%`);
+  }
+
   const from = (page - 1) * perPage;
   const to = from + perPage - 1;
 
@@ -201,18 +155,49 @@ export async function getRelatedCouplets(
   categorySlug: string | null,
   tagSlugs: string[],
   excludeSlug: string,
-  limit = 4
+  limit: number = 4
 ): Promise<Array<{ slug: string; text_hi: string; tags: TagRef[] }>> {
   const supabase = getSupabase();
   const seen = new Set<string>();
   const related: Array<{ slug: string; text_hi: string; tags: TagRef[] }> = [];
 
-  function pushResult(row: { slug: string; text_hi: string; tags: TagRef[] }): void {
+  const pushResult = (row: { slug: string; text_hi: string; tags: TagRef[] }): void => {
     if (row.slug === excludeSlug) return;
     if (seen.has(row.slug)) return;
     seen.add(row.slug);
     related.push(row);
-  }
+  };
+
+  /**
+   * Pushes query results into the related list, normalizing tag shapes.
+   *
+   * @param {Array<{ slug: string; text_hi: string; tags: Array<{ tag: TagRef }> }> | null} data - Raw query rows with nested tag shape, or null.
+   */
+  const collectResults = (
+    data: Array<{ slug: string; text_hi: string; tags: Array<{ tag: TagRef }> }> | null
+  ): void => {
+    for (const row of data ?? []) {
+      pushResult({ slug: row.slug, text_hi: row.text_hi, tags: row.tags.map((t) => t.tag) });
+    }
+  };
+
+  /**
+   * Processes a supabase query response — throws on error, otherwise collects results.
+   *
+   * @param {Array<{ slug: string; text_hi: string; tags: Array<{ tag: TagRef }> }> | null} data - Raw query rows with nested tag shape, or null.
+   * @param {unknown} error - Supabase error object, null on success.
+   *
+   * @throws {Error} When the Supabase query fails.
+   */
+  const processQuery = (
+    data: Array<{ slug: string; text_hi: string; tags: Array<{ tag: TagRef }> }> | null,
+    error: unknown
+  ): void => {
+    if (error) {
+      throw new Error(`Failed to fetch related couplets: ${(error as { message: string }).message}`);
+    }
+    collectResults(data);
+  };
 
   // 1. Collect posts from the same category
   if (categorySlug) {
@@ -225,13 +210,7 @@ export async function getRelatedCouplets(
       .limit(limit)
       .order('post_order', { ascending: true });
 
-    if (error) {
-      throw new Error(`Failed to fetch related couplets: ${error.message}`);
-    }
-
-    for (const row of (data ?? []) as Array<{ slug: string; text_hi: string; tags: Array<{ tag: TagRef }> }>) {
-      pushResult({ slug: row.slug, text_hi: row.text_hi, tags: row.tags.map((t) => t.tag) });
-    }
+    processQuery(data as Array<{ slug: string; text_hi: string; tags: Array<{ tag: TagRef }> }>, error);
   }
 
   // 2. Fill remaining slots with posts sharing a tag (first 3 tags max)
@@ -249,13 +228,7 @@ export async function getRelatedCouplets(
         .limit(limit - related.length)
         .order('post_order', { ascending: true });
 
-      if (error) {
-        throw new Error(`Failed to fetch related couplets: ${error.message}`);
-      }
-
-      for (const row of (data ?? []) as Array<{ slug: string; text_hi: string; tags: Array<{ tag: TagRef }> }>) {
-        pushResult({ slug: row.slug, text_hi: row.text_hi, tags: row.tags.map((t) => t.tag) });
-      }
+      processQuery(data as Array<{ slug: string; text_hi: string; tags: Array<{ tag: TagRef }> }>, error);
     }
   }
 
@@ -263,47 +236,51 @@ export async function getRelatedCouplets(
 }
 
 /**
+ * Fetches a single adjacent couplet relative to a given post_order.
+ *
+ * @param {'prev' | 'next'} direction - Direction relative to the current post.
+ * @param {number} postOrder - The post_order of the current couplet.
+ *
+ * @returns {Promise<CoupletRef | null>} The adjacent couplet, or null at the boundary.
+ */
+async function fetchAdjacentCouplet(direction: 'prev' | 'next', postOrder: number): Promise<CoupletRef | null> {
+  const supabase = getSupabase();
+
+  const comparator = direction === 'prev' ? 'lt' : 'gt';
+  const ascending = direction === 'prev' ? false : true;
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select('slug, text_hi')
+    .eq('post_status', 'publish')
+    .filter('post_order', comparator, postOrder)
+    .order('post_order', { ascending })
+    .limit(1);
+
+  if (error) {
+    throw new Error(`Failed to fetch ${direction} couplet: ${error.message}`);
+  }
+
+  return (data?.[0] as CoupletRef | undefined) ?? null;
+}
+
+/**
  * Fetch the previous and next published couplets adjacent to the given post order.
  *
  * @param {number} postOrder - The post_order of the current couplet.
  *
- * @returns {Promise<{ prev: Pick<Post, 'slug' | 'text_hi'> | null; next: Pick<Post, 'slug' | 'text_hi'> | null }>}
+ * @returns {Promise<{ prev: CoupletRef | null; next: CoupletRef | null }>}
  *   Adjacent couplets with slug and Hindi text, or null when at a boundary.
  */
 export async function getAdjacentCouplets(
   postOrder: number
-): Promise<{ prev: Pick<Post, 'slug' | 'text_hi'> | null; next: Pick<Post, 'slug' | 'text_hi'> | null }> {
-  const supabase = getSupabase();
-
-  const [prevResult, nextResult] = await Promise.all([
-    supabase
-      .from('posts')
-      .select('slug, text_hi')
-      .eq('post_status', 'publish')
-      .lt('post_order', postOrder)
-      .order('post_order', { ascending: false })
-      .limit(1),
-    supabase
-      .from('posts')
-      .select('slug, text_hi')
-      .eq('post_status', 'publish')
-      .gt('post_order', postOrder)
-      .order('post_order', { ascending: true })
-      .limit(1),
+): Promise<{ prev: CoupletRef | null; next: CoupletRef | null }> {
+  const [prev, next] = await Promise.all([
+    fetchAdjacentCouplet('prev', postOrder),
+    fetchAdjacentCouplet('next', postOrder),
   ]);
 
-  if (prevResult.error) {
-    throw new Error(`Failed to fetch previous couplet: ${prevResult.error.message}`);
-  }
-
-  if (nextResult.error) {
-    throw new Error(`Failed to fetch next couplet: ${nextResult.error.message}`);
-  }
-
-  return {
-    prev: (prevResult.data?.[0] as Pick<Post, 'slug' | 'text_hi'> | undefined) ?? null,
-    next: (nextResult.data?.[0] as Pick<Post, 'slug' | 'text_hi'> | undefined) ?? null,
-  };
+  return { prev, next };
 }
 
 /**
@@ -362,15 +339,28 @@ export async function getCategories(): Promise<(Category & { post_count: number 
 }
 
 /**
+ * Fetches couplets filtered by a partial options object.
+ * Shared helper for homepage widget functions.
+ *
+ * @param {Partial<GetCoupletsOptions>} filter - Filter options to apply.
+ * @param {number} limit - Maximum number of posts to return.
+ *
+ * @returns {Promise<Post[]>} Filtered list of posts.
+ */
+async function fetchFilteredCouplets(filter: Partial<GetCoupletsOptions>, limit: number): Promise<Post[]> {
+  const { posts } = await getCouplets({ ...filter, perPage: limit });
+  return posts;
+}
+
+/**
  * Fetch featured posts for display on the homepage.
  *
  * @param {number} [limit] - Maximum number of posts to return.
  *
  * @returns {Promise<Post[]>} List of featured posts.
  */
-export async function getFeaturedCouplets(limit = 6): Promise<Post[]> {
-  const { posts } = await getCouplets({ isFeatured: true, perPage: limit });
-  return posts;
+export async function getFeaturedCouplets(limit: number = 6): Promise<Post[]> {
+  return fetchFilteredCouplets({ isFeatured: true }, limit);
 }
 
 /**
@@ -380,9 +370,8 @@ export async function getFeaturedCouplets(limit = 6): Promise<Post[]> {
  *
  * @returns {Promise<Post[]>} List of popular posts.
  */
-export async function getPopularCouplets(limit = 4): Promise<Post[]> {
-  const { posts } = await getCouplets({ isPopular: true, perPage: limit });
-  return posts;
+export async function getPopularCouplets(limit: number = 4): Promise<Post[]> {
+  return fetchFilteredCouplets({ isPopular: true }, limit);
 }
 
 /**
@@ -392,17 +381,38 @@ export async function getPopularCouplets(limit = 4): Promise<Post[]> {
  *
  * @returns {Promise<Post[]>} List of latest posts.
  */
-export async function getLatestCouplets(limit = 6): Promise<Post[]> {
-  const { posts } = await getCouplets({ perPage: limit });
-  return posts;
+export async function getLatestCouplets(limit: number = 6): Promise<Post[]> {
+  return fetchFilteredCouplets({}, limit);
 }
 
 /**
- * Fetch all tags that have at least one published post, with post counts.
+ * Normalizes raw tag data with post_tags relationship into typed Tag with post_count.
+ *
+ * @param {Array<Tag & { post_tags: Array<{ post: Record<string, unknown> }> }>} raw - Raw tags from Supabase.
+ *
+ * @returns {Array<Tag & { post_count: number }>} Normalized tags with post counts.
+ */
+function normalizeTagCounts(
+  raw: Array<Tag & { post_tags: Array<{ post: Record<string, unknown> }> }>
+): Array<Tag & { post_count: number }> {
+  return raw.map((t) => ({
+    id: t.id,
+    slug: t.slug,
+    name: t.name,
+    meta_description: t.meta_description,
+    created_at: t.created_at,
+    updated_at: t.updated_at,
+    post_count: Array.isArray(t.post_tags) ? t.post_tags.length : 0,
+  }));
+}
+
+/**
+ * Fetches all tags with published post counts, sorted by name.
+ * Shared query used by both {@link getTags} and {@link getTagsByPostCount}.
  *
  * @returns {Promise<(Tag & { post_count: number })[]>} Tags with their published‑post counts.
  */
-export async function getTags(): Promise<(Tag & { post_count: number })[]> {
+async function fetchAllTagsWithCounts(): Promise<(Tag & { post_count: number })[]> {
   const supabase = getSupabase();
 
   const { data, error } = await supabase
@@ -415,15 +425,41 @@ export async function getTags(): Promise<(Tag & { post_count: number })[]> {
     throw new Error(`Failed to fetch tags: ${error.message}`);
   }
 
-  return ((data ?? []) as unknown as Array<Tag & { post_tags: Array<{ post: { post_status: string } }> }>).map((t) => ({
-    id: t.id,
-    slug: t.slug,
-    name: t.name,
-    meta_description: t.meta_description,
-    created_at: t.created_at,
-    updated_at: t.updated_at,
-    post_count: Array.isArray(t.post_tags) ? t.post_tags.length : 0,
-  }));
+  return normalizeTagCounts((data ?? []) as Array<Tag & { post_tags: Array<{ post: { post_status: string } }> }>);
+}
+
+/**
+ * Fetch all tags that have at least one published post, with post counts.
+ *
+ * @returns {Promise<(Tag & { post_count: number })[]>} Tags with their published‑post counts.
+ */
+export async function getTags(): Promise<(Tag & { post_count: number })[]> {
+  return fetchAllTagsWithCounts();
+}
+
+/**
+ * Generic helper to fetch a single record by slug, returning null when not found.
+ * Handles the PGRST116 not-found error code and throws on other errors.
+ *
+ * @template T - The expected return type.
+ *
+ * @param {string} table - The Supabase table name.
+ * @param {string} slug - The URL slug to match.
+ * @param {string} entityName - Human-readable entity name for error messages.
+ *
+ * @returns {Promise<T | null>} The matched record, or null when not found.
+ */
+async function fetchBySlug<T>(table: string, slug: string, entityName: string): Promise<T | null> {
+  const supabase = getSupabase();
+
+  const { data, error } = await supabase.from(table).select('*').eq('slug', slug).single();
+
+  if (error) {
+    if (error.code === 'PGRST116') return null;
+    throw new Error(`Failed to fetch ${entityName}: ${error.message}`);
+  }
+
+  return data as unknown as T;
 }
 
 /**
@@ -434,36 +470,61 @@ export async function getTags(): Promise<(Tag & { post_count: number })[]> {
  * @returns {Promise<Tag | null>} The matched tag, or null when not found.
  */
 export async function getTagBySlug(slug: string): Promise<Tag | null> {
-  const supabase = getSupabase();
-
-  const { data, error } = await supabase.from('tags').select('*').eq('slug', slug).single();
-
-  if (error) {
-    if (error.code === 'PGRST116') return null;
-    throw new Error(`Failed to fetch tag: ${error.message}`);
-  }
-
-  return data as unknown as Tag;
+  return fetchBySlug<Tag>('tags', slug, 'tag');
 }
 
 /**
- * Fetch a single category by its URL slug.
+ * Fetch a single category by its URL slug from the database.
+ *
+ * This is the async DB version. For the predefined constant lookup
+ * use the sync {@link import('@/constants/categories').getCategoryBySlug} instead.
  *
  * @param {string} slug - The URL slug of the category.
  *
  * @returns {Promise<Category | null>} The matched category, or null when not found.
  */
-export async function getCategoryBySlug(slug: string): Promise<Category | null> {
+export async function fetchCategoryBySlug(slug: string): Promise<Category | null> {
+  return fetchBySlug<Category>('categories', slug, 'category');
+}
+
+/**
+ * Fetch the top N tags sorted by post count (descending) for the tag cloud widget.
+ *
+ * @param {number} [limit] - Maximum number of tags to return.
+ *
+ * @returns {Promise<(Tag & { post_count: number })[]>} Tags with their published-post counts, sorted by count descending.
+ */
+export async function getTagsByPostCount(limit: number = 12): Promise<(Tag & { post_count: number })[]> {
+  const tags = await fetchAllTagsWithCounts();
+
+  // Sort by post_count descending and take top N
+  return tags.sort((a, b) => b.post_count - a.post_count).slice(0, limit);
+}
+
+/**
+ * Fetch popular couplets sorted by view_count (desc) and post_order (asc) for the widget.
+ *
+ * @param {number} [limit] - Maximum number of couplets to return.
+ *
+ * @returns {Promise<Post[]>} List of popular couplets.
+ */
+export async function getPopularCoupletsForWidget(limit: number = 6): Promise<Post[]> {
   const supabase = getSupabase();
 
-  const { data, error } = await supabase.from('categories').select('*').eq('slug', slug).single();
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*, category:categories(name, slug), tags:post_tags(tag:tags(id, name, slug))')
+    .eq('post_status', 'publish')
+    .is('is_popular', true)
+    .order('view_count', { ascending: false })
+    .order('post_order', { ascending: true })
+    .limit(limit);
 
   if (error) {
-    if (error.code === 'PGRST116') return null;
-    throw new Error(`Failed to fetch category: ${error.message}`);
+    throw new Error(`Failed to fetch popular couplets for widget: ${error.message}`);
   }
 
-  return data as unknown as Category;
+  return ((data ?? []) as unknown as SupabasePost[]).map(normalizePost);
 }
 
 /**
