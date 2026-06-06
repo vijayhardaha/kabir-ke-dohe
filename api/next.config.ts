@@ -28,6 +28,8 @@ const nextConfig: NextConfig = {
   // ---- Security & headers ----
   // Remove `X-Powered-By` header for a slightly improved security posture
   poweredByHeader: false,
+
+  allowedDevOrigins: ['192.168.1.2'],
 };
 
 export default nextConfig;
