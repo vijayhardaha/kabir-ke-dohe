@@ -133,13 +133,21 @@ export interface TagRef {
 }
 
 /**
+ * A light reference to a couplet — just the slug and Hindi text.
+ * Used for adjacent couplet navigation and related couplets display.
+ *
+ * @type {CoupletRef}
+ */
+export type CoupletRef = Pick<Post, 'slug' | 'text_hi'>;
+
+/**
  * Pagination metadata for list responses.
  *
  * @type {PaginationMeta}
  * @property {number} page - Current page number (1‑based)
  * @property {number} perPage - Number of items per page
  * @property {number} total - Total number of items across all pages
- * @property {number} totalPages - Total number of pages
+ * @property {number} totalPages - Number of pages
  */
 export interface PaginationMeta {
   page: number;
