@@ -1,188 +1,244 @@
 # Kabir Dohe API
 
-> Access over 2500 authentic couplets (dohe) by Sant Kabir Das through a fast, free RESTful API.
+> RESTful API for Kabir Das's couplets (dohas), with a built-in documentation site.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+**Live:** [kabirdoheapi.vercel.app](https://kabirdoheapi.vercel.app)  
+**Base URL:** `https://kabirdoheapi.vercel.app/api`
 
-## Overview
+---
 
-The Kabir Dohe API serves the timeless wisdom of Sant Kabir Das — one of India's greatest spiritual poets — as structured JSON data. Each doha includes the original Hindi text, English transliteration, detailed meanings, and metadata for tags, categories, and more.
+## Table of Contents
 
-No authentication required. Free to use.
+- [Endpoints](#endpoints)
+- [Scripts & Pipelines](#scripts--pipelines)
+- [Architecture](#architecture)
+- [Development](#development)
+- [Environment Variables](#environment-variables)
 
-**Base URL:** `https://kabirdoheapi.vercel.app`
+---
 
-## Quick Start
+## Endpoints
+
+### `GET /api/couplets`
+
+Returns a paginated list of published couplets.
+
+**Query Parameters:**
+
+| Param          | Type    | Default      | Description                                        |
+| -------------- | ------- | ------------ | -------------------------------------------------- |
+| `page`         | number  | `1`          | Page number (1-based)                              |
+| `per_page`     | number  | `10`         | Items per page (max 100)                           |
+| `category`     | string  | —            | Filter by category slug                            |
+| `tag`          | string  | —            | Filter by tag slug                                 |
+| `search_query` | string  | —            | Full-text search across `text_hi` and `text_en`    |
+| `is_popular`   | boolean | —            | Filter popular couplets only                       |
+| `is_featured`  | boolean | —            | Filter featured couplets only                      |
+| `sort_by`      | string  | `post_order` | Sort field (`post_order`, `text_hi`, `view_count`) |
+| `sort_order`   | string  | `asc`        | Sort direction (`asc`, `desc`)                     |
+
+**Response:**
+
+```json
+{
+  "posts": [ { "id": "...", "slug": "...", "text_hi": "...", ... } ],
+  "pagination": { "page": 1, "perPage": 10, "total": 2500, "totalPages": 250 }
+}
+```
+
+### `GET /api/couplets/search`
+
+Full-text search across couplets.
+
+**Query Parameters:**
+
+| Param          | Type   | Default | Description           |
+| -------------- | ------ | ------- | --------------------- |
+| `search_query` | string | `""`    | Search term           |
+| `limit`        | number | `10`    | Max results (max 100) |
+
+### `GET /api`
+
+Root endpoint returns API metadata and available routes.
+
+---
+
+## Scripts & Pipelines
+
+All scripts live in `api/scripts/` and are run via `bun run <script>` from the `api/` directory.
+
+### Couplet Data Pipeline
 
 ```bash
-# Install dependencies
-bun install
+# 1. Fetch published couplets from Supabase → output/data/couplets.json
+bun run couplets:fetch
 
-# Start development server
-bun run dev
-
-# Run tests
-bun run test
-
-# TypeScript check
-bun run tsc
+# 2. Upload couplets from Google Sheets to Supabase
+bun run couplets:upload
 ```
 
-```http
-# Fetch all couplets
-GET https://kabirdoheapi.vercel.app/api/couplets
+- `couplets:fetch` — Queries `posts` table for published couplets, writes `{ slug: text_hi }` to `scripts/output/data/couplets.json`
+- `couplets:upload` — Pulls data from Google Sheets and upserts into Supabase (categories, tags, posts, post-tag mappings in batches of 400)
+- `indexnow` — Sends IndexNow notifications for search engine indexing
 
-# Search for a couplet
-GET https://kabirdoheapi.vercel.app/api/couplets?search_query=balihari%20guru
+### OG Image Pipeline
 
-# Filter by tags
-GET https://kabirdoheapi.vercel.app/api/couplets?tags=truth,suffering
+```bash
+# 1. Generate JPEG originals (1200×630) from couplets data
+bun run couplets:images --all          # all couplets
+bun run couplets:images <slug>         # single couplet
 
-# Filter by category
-GET https://kabirdoheapi.vercel.app/api/couplets?category=ego-dissolution
+# 2. Optimize originals to WebP via sharp (quality 85)
+bun run couplets:images:optimize
+
+# 3. Upload optimized WebP images to Supabase Storage
+bun run couplets:images:upload
+bun run couplets:images:upload:prod    # production .env
 ```
 
-Full documentation with all parameters, examples, and response formats: **[kabirdoheapi.vercel.app](https://kabirdoheapi.vercel.app)**
+**Directory structure:**
 
-## Features
+```
+scripts/
+├── output/
+│   ├── data/
+│   │   └── couplets.json          # Key-value map: slug → text_hi
+│   └── images/
+│       ├── original/{slug}.jpg    # 1200×630 JPEG (generated via Puppeteer)
+│       └── optimized/{slug}.webp  # Sharp-compressed WebP (quality 85)
+├── templates/
+│   ├── quote-card.hbs             # Handlebars template for OG images
+│   └── backgrounds/
+│       └── sample-bg.jpg          # Background image for template
+│   └── index.html                 # Compiled dev preview (auto-generated)
+└── ... scripts
+```
 
-- **2500+ couplets** with Hindi text, English transliteration, and meanings
-- **Full-text search** across couplet content
-- **Filter** by tags, categories, popularity, and featured status
-- **Sort and paginate** results
-- **Edge-runtime** for fast global response times
-- **No authentication** required — completely free
+### Script Reference
 
-## Tech Stack
+| Script                | Purpose                                                        |
+| --------------------- | -------------------------------------------------------------- |
+| `couplets-fetch.ts`   | Fetch slug + text_hi from Supabase → JSON map                  |
+| `couplets-upload.ts`  | Sync Google Sheets data → Supabase (categories, tags, posts)   |
+| `indexnow.ts`         | IndexNow URL submission                                        |
+| `images-generate.ts`  | Generate OG images via `node-html-to-image` + Puppeteer        |
+| `images-optimize.ts`  | Compress JPEG originals to WebP via `sharp`                    |
+| `images-upload.ts`    | Upload WebP images to Supabase Storage `couplet-images` bucket |
+| `template-serve.ts`   | Dev server (Browsersync :2580), watches .hbs, live-reload      |
 
-| Technology      | Purpose                         |
-| --------------- | ------------------------------- |
-| Next.js 16      | API routes & documentation site |
-| TypeScript      | Type safety (strict mode)       |
-| Supabase        | PostgreSQL database             |
-| Zod             | Request validation              |
-| React 19        | UI (documentation frontend)     |
-| Tailwind CSS v4 | Styling                         |
-| Vitest          | Testing                         |
-| Bun             | Package manager & runtime       |
+All image scripts use `ora` spinners for progress feedback.
 
-## Project Structure
+---
+
+## Architecture
 
 ```
 api/
 ├── src/
-│   ├── app/
-│   │   ├── api/couplets/       # API route handlers
-│   │   ├── layout.tsx          # Root layout
-│   │   ├── page.tsx            # Documentation homepage
-│   │   └── globals.css         # Global styles
+│   ├── app/                    # Next.js App Router
+│   │   ├── api/                # API route handlers
+│   │   │   ├── couplets/
+│   │   │   │   ├── route.ts    # GET /api/couplets
+│   │   │   │   └── search/     # GET /api/couplets/search
+│   │   │   └── route.ts        # GET /api (root metadata)
+│   │   ├── layout.tsx          # Root layout (docs site)
+│   │   ├── page.tsx            # Documentation home page
+│   │   └── globals.css         # Tailwind globals
 │   ├── components/
 │   │   ├── layout/             # Header, Footer
 │   │   ├── ui/                 # CodeBlock, CopyButton
 │   │   └── docs/               # Documentation page sections
-│   ├── constants/              # SEO, API params
-│   └── lib/
-│       ├── server/             # Server-only (db, env, utils)
-│       └── utils/              # Client-safe utilities
-├── scripts/                    # Database sync & utility scripts
-├── supabase/                   # Migrations & config
-├── docs/                       # Contribution guides
+│   ├── constants/              # API params, SEO config
+│   ├── lib/
+│   │   ├── server/             # Server-only code
+│   │   │   ├── supabase.ts     # Supabase client (anon key)
+│   │   │   ├── env.ts          # Server env vars (lazy)
+│   │   │   └── utils/          # ApiError, error-handler, string utils
+│   │   └── utils/              # Client-safe: classnames, seo, schema
+│   └── proxy.ts                # Proxy config
+├── scripts/
+│   ├── lib/                    # Shared script utilities
+│   │   ├── env.ts              # Script env loader (dotenv + Zod)
+│   │   ├── supabase.ts         # Supabase client (service role)
+│   │   ├── db.ts               # Database upsert helpers
+│   │   ├── gsheet.ts           # Google Sheets reader
+│   │   └── slug.ts             # Slugify utility
+│   ├── output/
+│   │   ├── data/
+│   │   │   └── couplets.json   # Slug → text_hi map
+│   │   └── images/
+│   │       ├── original/       # Generated JPEG originals
+│   │       └── optimized/      # Sharp-compressed WebP
+│   └── templates/
+│       ├── quote-card.hbs      # OG image HTML template
+│       └── backgrounds/
+│           └── sample-bg.jpg   # Background image for template
+├── supabase/
+│   └── migrations/             # SQL migrations
+├── docs/                       # Contribution docs
 └── public/                     # Static assets
-```
-
-## API Reference
-
-### Endpoints
-
-| Method | Endpoint               | Description                 |
-| ------ | ---------------------- | --------------------------- |
-| GET    | `/api/couplets`        | Fetch couplets with filters |
-| GET    | `/api/couplets/search` | Search couplets by text     |
-
-### Query Parameters
-
-| Parameter        | Type      | Default  | Description                            |
-| ---------------- | --------- | -------- | -------------------------------------- |
-| `search_query`   | `string`  | `''`     | Keyword search across couplets         |
-| `search_content` | `boolean` | `false`  | Include meaning fields in search       |
-| `tags`           | `string`  | `''`     | Filter by comma-separated tags         |
-| `category`       | `string`  | `''`     | Filter by category slug                |
-| `is_popular`     | `boolean` | `false`  | Filter popular couplets                |
-| `is_featured`    | `boolean` | `false`  | Filter featured couplets               |
-| `sort_by`        | `string`  | `number` | Sort field (`number`, `popular`, etc.) |
-| `sort_order`     | `string`  | `asc`    | Sort direction (`asc` or `desc`)       |
-| `page`           | `number`  | `1`      | Page number                            |
-| `per_page`       | `number`  | `10`     | Results per page                       |
-| `pagination`     | `boolean` | `true`   | Include pagination metadata            |
-
-### Response Format
-
-```json
-{
-  "success": true,
-  "data": {
-    "posts": [
-      {
-        "number": 1,
-        "slug": "example-slug",
-        "text_hi": "हिंदी पाठ",
-        "text_en": "English text",
-        "meaning_hi": "हिंदी अर्थ",
-        "meaning_en": "English meaning",
-        "category": { "name": "Category", "slug": "category-slug" },
-        "tags": [{ "slug": "tag-slug", "name": "Tag Name" }],
-        "created_at": "2024-01-01T00:00:00Z",
-        "updated_at": "2024-01-01T00:00:00Z"
-      }
-    ],
-    "total": 2500,
-    "totalPages": 250,
-    "page": 1,
-    "per_page": 10,
-    "pagination": true
-  }
-}
 ```
 
 ## Development
 
-### Commands
-
 ```bash
-bun run dev              # Start dev server
-bun run build            # Build for production
-bun run test             # Run tests
-bun run test:watch       # Run tests in watch mode
-bun run test:coverage    # Run tests with coverage
-bun run tsc              # TypeScript type check
-bun run lint             # Lint code
-bun run lint:fix         # Fix lint issues
-bun run format           # Format with Prettier
-bun run sync             # Sync data from Google Sheets
-```
+cd api
 
-### Environment Variables
+# Start dev server
+bun run dev
 
-Required variables (see `.env.example`):
+# Build for production
+bun run build
 
-| Variable                           | Description            |
-| ---------------------------------- | ---------------------- |
-| `SUPABASE_URL`                     | Supabase project URL   |
-| `SUPABASE_PUBLISHABLE_DEFAULT_KEY` | Supabase anonymous key |
-| `NEXT_PUBLIC_SITE_URL`             | Public site URL        |
+# Type check
+bun run tsc
 
-## Database
+# Lint
+bun run lint
+bun run lint:fix
 
-The project uses Supabase (PostgreSQL). Migrations are in `supabase/migrations/`.
+# Test
+bun run test
+bun run test:watch
+bun run test:coverage
 
-```bash
+# Database migration (requires Supabase CLI)
 supabase migration new <name>
 ```
 
-## Contributing
+### Adding a Migration
 
-See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines on how to contribute.
+```bash
+cd api
+supabase migration new my_migration_name
+# Edit the generated .sql file
+supabase db push
+```
 
-## License
+## Environment Variables
 
-MIT License. See [LICENSE](../LICENSE) for details.
+### Scripts (`.env.local` / `.env.production`)
+
+| Variable                        | Description                    |
+| ------------------------------- | ------------------------------ |
+| `SUPABASE_URL`                  | Supabase project URL           |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Service role key (scripts)     |
+| `GOOGLE_SERVICE_ACCOUNT_BASE64` | Base64-encoded service account |
+| `GOOGLE_SHEET_ID`               | Google Sheet ID                |
+| `NODE_ENV`                      | `development` or `production`  |
+
+### API Server (`.env.local`)
+
+| Variable                                       | Description          |
+| ---------------------------------------------- | -------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`                     | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` | Anon/publishable key |
+
+## Key Conventions
+
+- **API responses** use `success()`, `successCached()`, `failure()` helpers from `@/lib/server/utils`
+- **Input validation** via Zod schemas on all endpoints
+- **Supabase queries** select specific columns (no `SELECT *`)
+- **RLS** enabled on all tables; anon role has SELECT only
+- **Scripts** use service role key for write access
+- **Image uploads** use service role key for Storage write access
