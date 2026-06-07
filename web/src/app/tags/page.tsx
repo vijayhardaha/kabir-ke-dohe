@@ -1,5 +1,8 @@
 import type { JSX } from 'react';
 
+import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { JsonLd } from '@vijayhardaha/schema-builder/react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { Container } from '@/components/layout/Container';
@@ -7,6 +10,9 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { getTags } from '@/lib/server/couplets';
 import { cn } from '@/lib/utils/cn';
+import { buildMetadata } from '@/lib/utils/meta';
+import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
+import { siteUrl } from '@/lib/utils/seo';
 
 /**
  * Groups an array of tag-like items by the first letter of their name.
@@ -35,6 +41,24 @@ function groupByFirstLetter<T extends { name: string }>(items: T[]): Map<string,
 // Page component
 // ---------------------------------------------------------------------------
 
+export const metadata: Metadata = buildMetadata({
+  title: 'Tags',
+  description: "Browse Kabir's dohas by thematic tags — each tag gathers couplets around a shared spiritual thread.",
+  path: 'tags',
+});
+
+const rootUrl = siteUrl();
+const tagsSchema = [
+  ...globalSchema(),
+  webPageSchema(
+    { rootUrl, path: 'tags' },
+    {
+      name: 'Tags — Kabir Ke Dohe',
+      keywords: [...BASE_KEYWORDS, 'Kabir tags', 'doha topics', 'spiritual tags'].join(', '),
+    }
+  ),
+];
+
 /**
  * Tags overview page that displays all tags grouped alphabetically
  * in a 3‑column directory layout with letter headings.
@@ -52,62 +76,65 @@ export default async function TagsPage(): Promise<JSX.Element> {
   const letters = Array.from(groups.keys()).sort();
 
   return (
-    <PageLayout>
-      <Container>
-        <PageHeader
-          title="विषय (Tags)"
-          description="कबीर के दोहों को विषय आधार पर खोजें — हर टैग एक साझा आध्यात्मिक सूत्र के आसपास दोहों को संग्रहित करता है (Browse Kabir&rsquo;s dohas by thematic tags &mdash; each tag gathers couplets around a shared spiritual thread)"
-        />
+    <>
+      <JsonLd data={tagsSchema} />
+      <PageLayout>
+        <Container>
+          <PageHeader
+            title="विषय (Tags)"
+            description="कबीर के दोहों को विषय आधार पर खोजें — हर टैग एक साझा आध्यात्मिक सूत्र के आसपास दोहों को संग्रहित करता है (Browse Kabir&rsquo;s dohas by thematic tags &mdash; each tag gathers couplets around a shared spiritual thread)"
+          />
 
-        {/* A–Z jump nav */}
-        <nav aria-label="Alphabetical filter" className="mb-10 flex flex-wrap gap-2">
-          {letters.map((letter) => (
-            <a
-              key={letter}
-              href={`#tag-group-${letter}`}
-              className={cn(
-                'flex size-9 items-center justify-center text-sm font-bold no-underline transition-colors duration-200',
-                'bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground'
-              )}
-            >
-              {letter}
-            </a>
-          ))}
-        </nav>
+          {/* A–Z jump nav */}
+          <nav aria-label="Alphabetical filter" className="mb-10 flex flex-wrap gap-2">
+            {letters.map((letter) => (
+              <a
+                key={letter}
+                href={`#tag-group-${letter}`}
+                className={cn(
+                  'flex size-9 items-center justify-center text-sm font-bold no-underline transition-colors duration-200',
+                  'bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground'
+                )}
+              >
+                {letter}
+              </a>
+            ))}
+          </nav>
 
-        {/* Alphabetical groups in a 1‑column grid */}
-        <div className="grid grid-cols-1 gap-6">
-          {letters.map((letter) => {
-            const tags = groups.get(letter)!;
-            return (
-              <section key={letter} id={`tag-group-${letter}`} className="bg-card relative mt-5 p-5 pt-12">
-                <h2 className="bg-primary text-primary-foreground absolute -top-7 z-10 mb-4 flex h-14 w-14 items-center justify-center text-2xl font-bold">
-                  {letter}
-                </h2>
-                <div className="flex flex-wrap gap-2">
-                  {tags.map((tag) => (
-                    <Link
-                      key={tag.slug}
-                      href={`/tag/${tag.slug}`}
-                      className={cn(
-                        'group inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium no-underline transition-colors duration-200',
-                        tag.post_count > 0
-                          ? 'bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground'
-                          : 'bg-muted/50 text-muted-foreground/50 pointer-events-none'
-                      )}
-                    >
-                      {tag.name}
-                      <span className="bg-foreground/10 text-foreground/60 px-1.5 py-0.5 text-xs font-semibold group-hover:bg-white group-hover:text-black">
-                        {tag.post_count}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            );
-          })}
-        </div>
-      </Container>
-    </PageLayout>
+          {/* Alphabetical groups in a 1‑column grid */}
+          <div className="grid grid-cols-1 gap-6">
+            {letters.map((letter) => {
+              const tags = groups.get(letter)!;
+              return (
+                <section key={letter} id={`tag-group-${letter}`} className="bg-card relative mt-5 p-5 pt-12">
+                  <h2 className="bg-primary text-primary-foreground absolute -top-7 z-10 mb-4 flex h-14 w-14 items-center justify-center text-2xl font-bold">
+                    {letter}
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {tags.map((tag) => (
+                      <Link
+                        key={tag.slug}
+                        href={`/tag/${tag.slug}`}
+                        className={cn(
+                          'group inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium no-underline transition-colors duration-200',
+                          tag.post_count > 0
+                            ? 'bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground'
+                            : 'bg-muted/50 text-muted-foreground/50 pointer-events-none'
+                        )}
+                      >
+                        {tag.name}
+                        <span className="bg-foreground/10 text-foreground/60 px-1.5 py-0.5 text-xs font-semibold group-hover:bg-white group-hover:text-black">
+                          {tag.post_count}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
+          </div>
+        </Container>
+      </PageLayout>
+    </>
   );
 }
