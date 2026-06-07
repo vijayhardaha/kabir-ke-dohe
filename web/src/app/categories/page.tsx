@@ -1,6 +1,9 @@
 import type { JSX } from 'react';
 
+import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import { ArrowRight } from 'lucide-react';
+import type { Metadata } from 'next';
 
 import { Container } from '@/components/layout/Container';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -8,6 +11,38 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { ButtonLink } from '@/components/ui/Button';
 import { CATEGORIES } from '@/constants/categories';
 import { getCategories } from '@/lib/server/couplets';
+import { buildMetadata } from '@/lib/utils/meta';
+import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
+import { siteUrl } from '@/lib/utils/seo';
+
+const CATEGORIES_DESCRIPTION =
+  "Browse Kabir's dohas organised by theme — each category offers a unique lens on his spiritual and philosophical teachings.";
+
+export const metadata: Metadata = buildMetadata({
+  title: 'Categories',
+  description: CATEGORIES_DESCRIPTION,
+  path: 'categories',
+});
+
+const rootUrl = siteUrl();
+const categoriesSchema = [
+  ...globalSchema(),
+  webPageSchema(
+    { rootUrl, path: 'categories' },
+    {
+      name: 'Categories — Kabir Ke Dohe',
+      description:
+        "Browse Kabir's dohas organised by theme — each category offers a unique lens on his spiritual and philosophical teachings.",
+      keywords: [
+        ...BASE_KEYWORDS,
+        'Kabir categories',
+        'doha themes',
+        'spiritual topics',
+        'Kabir teachings by category',
+      ].join(', '),
+    }
+  ),
+];
 
 /**
  * Categories overview page that displays all predefined categories
@@ -28,22 +63,25 @@ export default async function CategoriesPage(): Promise<JSX.Element> {
   merged.sort((a, b) => b.post_count - a.post_count);
 
   return (
-    <PageLayout>
-      <Container>
-        <PageHeader
-          title="श्रेणियाँ (Categories)"
-          description="कबीर के दोहों को विषयानुसार देखें — हर श्रेणी उनकी आध्यात्मिक और दार्शनिक शिक्षाओं का एक अनूठा दृष्टिकोण प्रस्तुत करती है (Explore Kabir&rsquo;s dohas organised by theme &mdash; each category offers a unique lens on his spiritual and philosophical teachings)"
-        />
+    <>
+      <JsonLd data={categoriesSchema} />
+      <PageLayout>
+        <Container>
+          <PageHeader
+            title="श्रेणियाँ (Categories)"
+            description="कबीर के दोहों को विषयानुसार देखें — हर श्रेणी उनकी आध्यात्मिक और दार्शनिक शिक्षाओं का एक अनूठा दृष्टिकोण प्रस्तुत करती है (Explore Kabir&rsquo;s dohas organised by theme &mdash; each category offers a unique lens on his spiritual and philosophical teachings)"
+          />
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {merged
-            .filter((c) => c.post_count > 0)
-            .map((category) => (
-              <CategoryCard key={category.slug} category={category} />
-            ))}
-        </div>
-      </Container>
-    </PageLayout>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {merged
+              .filter((c) => c.post_count > 0)
+              .map((category) => (
+                <CategoryCard key={category.slug} category={category} />
+              ))}
+          </div>
+        </Container>
+      </PageLayout>
+    </>
   );
 }
 
