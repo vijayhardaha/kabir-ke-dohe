@@ -17,7 +17,7 @@ export function PageLayout({ children, className }: { children: ReactNode; class
     <div
       className={cn(
         // Default vertical padding
-        'py-12',
+        'pt-12 pb-18',
         // Extensible — pass e.g. "pt-0" to remove top padding
         className
       )}
