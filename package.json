@@ -75,5 +75,8 @@
   },
   "trustedDependencies": [
     "unrs-resolver"
-  ]
+  ],
+  "dependencies": {
+    "@vijayhardaha/schema-builder": "^1.0.6"
+  }
 }
