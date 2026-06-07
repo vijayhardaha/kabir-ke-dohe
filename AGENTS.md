@@ -10,13 +10,15 @@
 | ------------------------ | -------------- | --------------------------------------------------------- |
 | `@kabir-hub/api`         | `api/`         | RESTful API + documentation frontend for Kabir's couplets |
 | `@kabir-hub/web`         | `web/`         | Web application for reading and learning Kabir's couplets |
-| `@kabir-hub/images-tool` | `images-tool/` | Image generation tool for visual quotes                   |
+| `@kabir-hub/images-tool` | `images-tool/` | Image generation tool for visual quotes (placeholder)     |
 
 ### What This Project Provides
 
 - **Couplets API**: REST-based endpoints for retrieving and searching Kabir's dohas with transliteration, translation, and metadata
 - **Search API**: Full-text search across couplets with query parameters for filtering
 - **Documentation Site**: Interactive API documentation with examples, response formats, and usage guides
+- **Web App**: Browse, search, filter, and share 2500+ couplets with detailed analysis
+- **OG Image Pipeline**: Generate, optimize, and upload couplet images to Supabase Storage
 
 ### Root-Level Config (Shared)
 
@@ -35,6 +37,8 @@
 - **UI**: React 19 + Tailwind CSS v4
 - **Testing**: Vitest
 - **Package Manager**: Bun (workspaces)
+- **Image Generation**: `node-html-to-image` (Puppeteer) + `sharp`
+- **CLI Spinners**: `ora`
 
 ## Project Architecture (`api/`)
 
@@ -58,11 +62,11 @@ api/
 │   │   │   ├── Footer.tsx
 │   │   │   └── __tests__/
 │   │   ├── ui/                # Reusable UI primitives
-│   │   │   ├── CodeBlock.tsx      # Code display with syntax highlighting
-│   │   │   ├── CopyButton.tsx     # Copy to clipboard button
+│   │   │   ├── CodeBlock.tsx
+│   │   │   ├── CopyButton.tsx
 │   │   │   └── __tests__/
 │   │   └── docs/              # Documentation page sections
-│   │       ├── index.tsx          # Barrel export
+│   │       ├── index.tsx
 │   │       ├── ApiEndpoints.tsx
 │   │       ├── ErrorResponse.tsx
 │   │       ├── Examples.tsx
@@ -91,12 +95,35 @@ api/
 │   │   └── utils/             # Client-safe utilities
 │   │       ├── classnames.ts  # cn() utility
 │   │       ├── schema.ts      # Zod schemas & Schema.org builders
-│   │       ├── seo.ts         # SEO utilities (siteUrl, cleanPath, getPermaLink)
+│   │       ├── seo.ts         # SEO utilities
 │   │       └── __tests__/
 │   │
 │   └── proxy.ts               # Proxy configuration
 │
-├── scripts/                   # Database sync & utility scripts
+├── scripts/                   # CLI scripts
+│   ├── lib/                   # Shared script utilities
+│   │   ├── env.ts             # Script env loader (dotenv + Zod)
+│   │   ├── supabase.ts        # Supabase client (service role)
+│   │   ├── db.ts              # Database upsert helpers
+│   │   ├── gsheet.ts          # Google Sheets reader
+│   │   └── slug.ts            # Slugify utility
+│   ├── couplets-fetch.ts      # Fetch slug+text_hi from Supabase → JSON
+│   ├── couplets-upload.ts     # Upload Google Sheets data → Supabase
+│   ├── indexnow.ts            # IndexNow URL submission
+│   ├── images-generate.ts     # Generate OG images via Puppeteer
+│   ├── images-optimize.ts     # Compress JPEG → WebP via sharp
+│   ├── images-upload.ts       # Upload WebP to Supabase Storage
+│   ├── template-serve.ts      # Dev server for template (Browsersync :2580)
+│   ├── output/
+│   │   ├── data/
+│   │   │   └── couplets.json  # Slug → text_hi map
+│   │   └── images/
+│   │       ├── original/      # Generated JPEG originals (1200×630)
+│   │       └── optimized/     # Sharp-compressed WebP (quality 85)
+│   └── templates/
+│       ├── quote-card.hbs     # OG image HTML template
+│       └── backgrounds/
+│           └── sample-bg.jpg  # Background image for template
 ├── supabase/                  # Supabase migrations & config
 ├── docs/                      # Contribution docs
 ├── public/                    # Static assets
@@ -106,38 +133,101 @@ api/
 └── package.json
 ```
 
-## Available Commands
+## Project Architecture (`web/`)
 
-```bash
-# Development (from root)
-bun run dev              # Start api dev server (bun run --filter=api dev)
-
-# Build
-bun run build            # Build api for production (bun run --filter=api build)
-
-# Linting & Formatting (root-level, applies to all packages)
-bun run lint             # Lint api (bun run --filter=api lint)
-bun run lint:fix         # Fix auto-fixable issues
-bun run format           # Format files (Prettier)
-bun run format:check     # Check formatting
-
-# Type Checking
-bun run tsc              # TypeScript type check (bun run --filter=api tsc)
-
-# Testing
-bun run test             # Run api tests (bun run --filter=api test)
-bun run test:watch       # Run api tests in watch mode
-
-# Workspace-specific commands
-bun run --filter=api dev              # Start api dev server
-bun run --filter=api test:coverage    # Run api tests with coverage
-bun run --filter=api sync             # Sync data to api
-
-# Database (from api/)
-cd api && supabase migration new <name>
+```
+web/src/
+├── app/                       # Next.js App Router pages
+│   ├── api/couplets/view/     # View tracking POST endpoint
+│   ├── couplet/[slug]/        # Single couplet detail page
+│   ├── couplets/[page]/       # Paginated couplet listing
+│   ├── category/[slug]/       # Category filter pages
+│   ├── tag/[slug]/            # Tag filter pages
+│   ├── popular-couplets/      # Popular collection
+│   ├── featured-couplets/     # Featured collection
+│   ├── categories/            # Category directory
+│   ├── tags/                  # Tag A–Z directory
+│   ├── search/                # Full-text search
+│   ├── about/                 # About page
+│   ├── privacy/               # Privacy policy
+│   ├── terms/                 # Terms of service
+│   └── layout.tsx
+├── components/
+│   ├── layout/                # Header, Footer, Container, PageHeader, PageLayout
+│   ├── features/archive/      # ArchiveListing, PostCard, CoupletImage, etc.
+│   ├── features/ViewTracker.tsx # Client view tracking trigger
+│   ├── ui/                    # Button, Combobox, Input, Pagination
+│   └── widgets/               # Sidebar widgets
+├── lib/
+│   ├── server/                # Server-only (never import in client)
+│   │   ├── couplets.ts        # All DB queries (getCouplets, getCoupletBySlug, etc.)
+│   │   ├── supabase.ts        # Supabase client singleton (anon key)
+│   │   ├── env.ts             # Server env vars
+│   │   └── page-utils.ts      # Pagination + sort param helpers
+│   └── utils/                 # Client-safe utilities
+│       ├── og-image.ts        # getOgImageUrl(slug) → Storage URL
+│       ├── seo.ts             # siteUrl(), getPermaLink()
+│       ├── doha.tsx           # formatDoha() – splits at danda
+│       ├── fonts.ts
+│       ├── cn.ts
+│       ├── meta.ts            # buildMetadata() for Next.js Metadata
+│       └── schema.ts          # Schema.org builders
+├── constants/
+│   ├── categories.ts          # 20 predefined categories
+│   ├── navigation.ts          # NavLink with children for dropdowns
+│   └── ...other constants
+└── types/
+    └── index.ts               # Post, Category, Tag, PaginationMeta, etc.
 ```
 
-## Utils Knowledge Base (`api/src/lib/`)
+## Available Commands
+
+### Root Level
+
+```bash
+bun run dev              # Start API + web dev servers
+bun run build            # Build API + web for production
+bun run lint             # Lint all packages
+bun run lint:fix         # Auto-fix lint issues
+bun run tsc              # TypeScript type check (all packages)
+bun run format           # Format files with Prettier
+bun run format:check     # Check formatting
+```
+
+### API Data Pipeline (from `api/`)
+
+```bash
+# Couplet data
+bun run couplets:fetch              # Fetch slug+text_hi from Supabase → output/data/couplets.json
+bun run couplets:fetch              # Fetch from Supabase
+bun run couplets:fetch:prod         # Production mode
+bun run couplets:upload             # Sync Google Sheets → Supabase
+bun run couplets:upload:prod        # Production mode
+
+# OG image pipeline
+bun run couplets:images --all       # Generate JPEG for all couplets
+bun run couplets:images <slug>      # Generate for a single slug
+bun run couplets:images:optimize    # Compress JPEG → WebP (sharp, q85)
+bun run couplets:images:upload      # Upload WebP to Supabase Storage
+bun run couplets:images:upload:prod # Upload to production bucket
+
+# Template dev server
+bun run couplets:template:serve     # Start Browsersync on :2580, watch .hbs
+```
+
+### Web Package
+
+```bash
+bun run dev              # Start web dev server
+bun run build            # Build for production
+bun run tsc              # Type check
+bun run lint             # Lint
+bun run lint:fix         # Auto-fix
+bun run test             # Run tests
+bun run test:watch       # Tests in watch mode
+```
+
+## API Utils Knowledge Base (`api/src/lib/`)
 
 ### Client-Safe (`api/src/lib/utils/`)
 
@@ -163,7 +253,7 @@ cd api && supabase migration new <name>
 
 **`supabase.ts`**
 
-- `supabase` — Lazy-initialized Supabase client singleton
+- `supabase` — Lazy-initialized Supabase client singleton (anon key)
 
 ### Server (`api/src/lib/server/utils/`)
 
@@ -186,6 +276,23 @@ cd api && supabase migration new <name>
 
 - `ApiError` — Custom error class with `statusCode` and `isOperational`
 
+## Script Utils (`api/scripts/lib/`)
+
+**`env.ts`**
+
+- `loadScriptEnv()` — Loads `.env.local` or `.env.production` via dotenv + Zod validation. Requires `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `GOOGLE_SERVICE_ACCOUNT_BASE64`, `GOOGLE_SHEET_ID`.
+
+**`supabase.ts`**
+
+- `createSupabaseClient(env)` — Creates Supabase client with service role key (for write access in scripts).
+
+**`db.ts`**
+
+- `upsertCategories()` — Batch upsert categories
+- `upsertTags()` — Batch upsert tags
+- `upsertPosts()` — Batch upsert posts
+- `upsertPostTags()` — Batch upsert post-tag mappings
+
 ## Response Helpers
 
 ```typescript
@@ -198,10 +305,13 @@ return failure("Error", 400); // Error response
 
 ## Supabase
 
-- **Singleton**: `import { supabase } from '@/lib/server/supabase'`
+- **API docs site**: `import { supabase } from '@/lib/server/supabase'` (anon key)
+- **Scripts**: `createSupabaseClient(env)` from `scripts/lib/supabase.ts` (service role key)
+- **RLS**: Select policies for anon; write operations through RPC functions or service role
+- **Storage bucket**: `couplet-images` for OG images (public reads)
+- **View counting**: RPC `increment_couplet_view(p_slug)` with SECURITY DEFINER
 - Select specific columns (no `SELECT *`)
-- Use Row Level Security (RLS)
-- Never expose service role key
+- `!inner` join only when filtering (avoids excluding unassigned rows)
 
 ## Validation (Zod)
 
@@ -231,16 +341,60 @@ type QueryParams = z.infer<typeof QuerySchema>;
 
 ```typescript
 import { ApiError } from "@/lib/server/utils";
-
 throw new ApiError("Not found", 404);
 ```
+
+**Graceful error handling (Supabase fetch):**
+
+All DB fetch functions in `web/src/lib/server/couplets.ts` handle errors gracefully:
+
+- Return empty arrays / `null` instead of throwing
+- Log errors with `console.error`
+
+## Image Script Conventions
+
+All image scripts (`images-generate.ts`, `images-optimize.ts`, `images-upload.ts`) follow these patterns:
+
+- **Shebang**: `#!/usr/bin/env bun`
+- **Spinners**: `ora` library for progress feedback
+- **Error handling**: `main().catch()` with `process.exit(1)`
+- **Path resolution**: `import.meta.dirname` + `resolve()`
+- **CLI args**: `images-generate.ts` accepts `--all` or a single slug
+
+**Paths:**
+
+```
+scripts/output/images/original/{slug}.jpg    # Generated originals
+scripts/output/images/optimized/{slug}.webp  # Sharp-compressed WebP
+```
+
+## Template Dev Server
+
+- **Script**: `template-serve.ts` — watches `templates/quote-card.hbs`, compiles to `templates/index.html`, serves via Browsersync
+- **Port**: 2580 (serves the entire `templates/` directory including `backgrounds/`)
+- **Background image URL**: `http://localhost:2580/backgrounds/sample-bg.jpg`
+- **Prerequisite**: Run `bun run couplets:template:serve` before running `couplets:images` for background image rendering
+
+## Puppeteer Config
+
+- **File**: `api/puppeteer.config.mjs` — auto-discovered by Puppeteer at runtime
+- **Config**: Enables Chrome and Firefox downloads for `node-html-to-image`
+- **Chrome auto-detection**: `images-generate.ts` checks `PUPPETEER_EXECUTABLE_PATH` env var, then local `.cache/puppeteer/`, then global `~/.cache/puppeteer/`
+
+## View Tracking
+
+- **Cookie**: `kabirhub_views` (1-day, httpOnly)
+- **Structure**: `{ h: hash(ip+ua), v: [slug1, slug2] }`
+- **API**: `POST /api/couplets/view` with `{ slug }` body
+- **Component**: `<ViewTracker slug={post.slug} />` — client component, fires on mount
+- **RPC**: `increment_couplet_view(p_slug)` — atomically updates `posts.view_count`
 
 ## Coding Conventions
 
 ### Server/Client Boundary
 
 - `src/lib/server/` — Server-only (database, env, server utils). **NEVER import in client components.**
-- `src/lib/utils/` — Client-safe (seo, schema, classnames).
+- `src/lib/utils/` — Client-safe (seo, schema, classnames, og-image).
 
 ### Comments
 
@@ -268,10 +422,7 @@ Explain **why**, not what. Capitalize first letter. Place on own line (avoid end
 
 ```ts
 // Cache category results for quick lookups during post sync.
-// Transliterate before slugging so accented characters produce stable ASCII output.
 ```
-
-**Skip for**: Obvious code that explains itself, TODOs without context.
 
 ### Naming Conventions
 
@@ -368,10 +519,35 @@ Explain **why**, not what. Capitalize first letter. Place on own line (avoid end
 - **Post count**: Inline number next to each tag name
 - **Empty tags**: `text-muted-foreground pointer-events-none`
 
+## PostCard (`web/src/components/features/archive/PostCard.tsx`)
+
+- OG image fetched from Supabase Storage via `<CoupletImage slug={post.slug} text={post.text_hi} />`
+- Doha heading links to single page
+- Author + tags metadata row
+- Optional meaning block (Hindi + English)
+- Read More + Share action buttons
+
+## CoupletImage (`web/src/components/features/archive/CoupletImage.tsx`)
+
+- Client component
+- Gets OG image URL from `getOgImageUrl(slug)` in `web/src/lib/utils/og-image.ts`
+- Uses `next/image` with `onError` — hides silently on 404
+- Returns empty fragment when no image (no placeholder)
+- Wraps in link to `/couplet/{slug}`
+- Container: `aspect-[120/63]`
+
+## ArchiveListing
+
+- WordPress-loop-inspired pattern
+- Injects spiritual messages (`KABIR_MESSAGES`) after every 2 posts
+- Sort dropdown + `ResultCount` toolbar
+- `ContentNone` empty state
+- Pagination below posts
+- Optional sidebar
+
 ## Constants (`web/src/constants/`)
 
 - `categories.ts` — 20 predefined categories with slug + name + `getCategoryBySlug()` helper
-- `tags.ts` — 10 predefined tags with slug + name + `getTagBySlug()` helper
 - `navigation.ts` — `NavLink` interface supports optional `children: NavLink[]` for submenus
 
 ## Supabase Queries (`web/src/lib/server/couplets.ts`)
@@ -379,3 +555,12 @@ Explain **why**, not what. Capitalize first letter. Place on own line (avoid end
 - **Category filter**: Use `!inner` on the join only when filtering: `category:categories!inner(name, slug)`, filter with `.eq('category.slug', slug)`
 - **Tag filter**: Use `!inner` on the join only when filtering: `tags:post_tags!inner(tag:tags!inner(id, name, slug))`, filter with `.eq('tags.tag.slug', slug)`
 - Without a filter, use standard LEFT JOINs (no `!inner`) to avoid excluding unassigned posts
+- All functions return gracefully (empty arrays / null) on error instead of throwing
+
+## OG Image URL (`web/src/lib/utils/og-image.ts`)
+
+```typescript
+getOgImageUrl(slug: string): string | null
+```
+
+Returns `{SUPABASE_URL}/storage/v1/object/public/couplet-images/{slug}.webp` or `null` if env var missing.
