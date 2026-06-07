@@ -1,8 +1,35 @@
 import type { JSX } from 'react';
 
+import type { Metadata } from 'next';
+
+import { getCategoryBySlug } from '@/constants/categories';
 import { parseSortParams, validatePageParam } from '@/lib/server/page-utils';
+import { buildMetadata } from '@/lib/utils/meta';
 
 import { CategoryArchiveContent } from '../../_components/CategoryArchiveContent';
+
+/**
+ * Generate metadata for paginated category pages.
+ *
+ * @param {{ params: Promise<{ slug: string; page: string }> }} props - Route params
+ *
+ * @returns {Promise<Metadata>} The metadata object.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; page: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const category = getCategoryBySlug(slug);
+  const name = category?.name ?? slug;
+
+  return buildMetadata({
+    title: `${name} Couplets`,
+    description: `Browse Kabir's dohas in the ${name} category — spiritual wisdom and life lessons.`,
+    path: `category/${slug}`,
+  });
+}
 
 /**
  * Props for the paginated category page.
