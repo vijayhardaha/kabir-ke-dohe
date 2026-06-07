@@ -1,5 +1,9 @@
 import type { JSX } from 'react';
 
+import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { JsonLd } from '@vijayhardaha/schema-builder/react';
+import type { Metadata } from 'next';
+
 import { ArchiveListing } from '@/components/features/ArchiveListing';
 import { Container } from '@/components/layout/Container';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -7,6 +11,32 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
 import { getCouplets } from '@/lib/server/couplets';
 import { handlePageRedirect, parseSortParams } from '@/lib/server/page-utils';
+import { buildMetadata } from '@/lib/utils/meta';
+import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
+import { siteUrl } from '@/lib/utils/seo';
+
+const FEATURED_DESCRIPTION =
+  "A handpicked collection of Kabir's most profound and impactful dohas — spiritual wisdom and life lessons in Hindi and English.";
+
+export const metadata: Metadata = buildMetadata({
+  title: 'Featured Couplets',
+  description: FEATURED_DESCRIPTION,
+  path: 'featured-couplets',
+});
+
+const rootUrl = siteUrl();
+const featuredListSchema = [
+  ...globalSchema(),
+  webPageSchema(
+    { rootUrl, path: 'featured-couplets' },
+    {
+      name: 'Featured Couplets — Kabir Ke Dohe',
+      description:
+        "A handpicked collection of Kabir's most profound and impactful dohas — spiritual wisdom and life lessons in Hindi and English.",
+      keywords: [...BASE_KEYWORDS, 'featured couplets', 'handpicked dohas', 'best Kabir dohe'].join(', '),
+    }
+  ),
+];
 
 /**
  * Props for the featured couplets page.
@@ -40,22 +70,25 @@ export default async function FeaturedCoupletsPage({ searchParams }: FeaturedCou
   });
 
   return (
-    <PageLayout>
-      <Container>
-        <PageHeader
-          title="चुनिंदा दोहे (Featured Couplets)"
-          description="कबीर के सबसे गहन और प्रभावशाली दोहों का विशेष संग्रह — आध्यात्मिक ज्ञान और जीवन की सीख, हिंदी और अंग्रेज़ी में (A handpicked collection of Kabir's most profound and impactful dohas — spiritual wisdom and life lessons in Hindi and English)"
-        />
-        <ArchiveListing
-          posts={posts}
-          pagination={pagination}
-          baseUrl="/featured-couplets"
-          currentSortBy={sortBy}
-          currentSortOrder={sortOrder}
-          showSidebar
-          sidebar={<ArchiveSidebar />}
-        />
-      </Container>
-    </PageLayout>
+    <>
+      <JsonLd data={featuredListSchema} />
+      <PageLayout>
+        <Container>
+          <PageHeader
+            title="चुनिंदा दोहे (Featured Couplets)"
+            description="कबीर के सबसे गहन और प्रभावशाली दोहों का विशेष संग्रह — आध्यात्मिक ज्ञान और जीवन की सीख, हिंदी और अंग्रेज़ी में (A handpicked collection of Kabir's most profound and impactful dohas — spiritual wisdom and life lessons in Hindi and English)"
+          />
+          <ArchiveListing
+            posts={posts}
+            pagination={pagination}
+            baseUrl="/featured-couplets"
+            currentSortBy={sortBy}
+            currentSortOrder={sortOrder}
+            showSidebar
+            sidebar={<ArchiveSidebar />}
+          />
+        </Container>
+      </PageLayout>
+    </>
   );
 }
