@@ -1,5 +1,9 @@
 import type { JSX } from 'react';
 
+import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { JsonLd } from '@vijayhardaha/schema-builder/react';
+import type { Metadata } from 'next';
+
 import { ArchiveListing } from '@/components/features/ArchiveListing';
 import { Container } from '@/components/layout/Container';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -7,6 +11,32 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
 import { getCouplets } from '@/lib/server/couplets';
 import { handlePageRedirect, parseSortParams } from '@/lib/server/page-utils';
+import { buildMetadata } from '@/lib/utils/meta';
+import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
+import { siteUrl } from '@/lib/utils/seo';
+
+const POPULAR_DESCRIPTION =
+  'The most loved and cherished dohas of Sant Kabir that have touched millions of hearts, with Hindi and English meanings.';
+
+export const metadata: Metadata = buildMetadata({
+  title: 'Popular Couplets',
+  description: POPULAR_DESCRIPTION,
+  path: 'popular-couplets',
+});
+
+const rootUrl = siteUrl();
+const popularListSchema = [
+  ...globalSchema(),
+  webPageSchema(
+    { rootUrl, path: 'popular-couplets' },
+    {
+      name: 'Popular Couplets — Kabir Ke Dohe',
+      description:
+        'The most loved and cherished dohas of Sant Kabir that have touched millions of hearts, with Hindi and English meanings.',
+      keywords: [...BASE_KEYWORDS, 'popular couplets', 'most loved dohas', 'famous Kabir dohe'].join(', '),
+    }
+  ),
+];
 
 /**
  * Props for the popular couplets page.
@@ -40,22 +70,25 @@ export default async function PopularCoupletsPage({ searchParams }: PopularCoupl
   });
 
   return (
-    <PageLayout>
-      <Container>
-        <PageHeader
-          title="लोकप्रिय दोहे (Popular Couplets)"
-          description="सबसे अधिक पसंद किए जाने वाले कबीर के दोहे — जिन्होंने लाखों दिलों को छुआ है, हिंदी और अंग्रेज़ी अर्थ के साथ (The most loved and cherished dohas of Sant Kabir that have touched millions of hearts, with Hindi and English meanings)"
-        />
-        <ArchiveListing
-          posts={posts}
-          pagination={pagination}
-          baseUrl="/popular-couplets"
-          currentSortBy={sortBy}
-          currentSortOrder={sortOrder}
-          showSidebar
-          sidebar={<ArchiveSidebar />}
-        />
-      </Container>
-    </PageLayout>
+    <>
+      <JsonLd data={popularListSchema} />
+      <PageLayout>
+        <Container>
+          <PageHeader
+            title="लोकप्रिय दोहे (Popular Couplets)"
+            description="सबसे अधिक पसंद किए जाने वाले कबीर के दोहे — जिन्होंने लाखों दिलों को छुआ है, हिंदी और अंग्रेज़ी अर्थ के साथ (The most loved and cherished dohas of Sant Kabir that have touched millions of hearts, with Hindi and English meanings)"
+          />
+          <ArchiveListing
+            posts={posts}
+            pagination={pagination}
+            baseUrl="/popular-couplets"
+            currentSortBy={sortBy}
+            currentSortOrder={sortOrder}
+            showSidebar
+            sidebar={<ArchiveSidebar />}
+          />
+        </Container>
+      </PageLayout>
+    </>
   );
 }
