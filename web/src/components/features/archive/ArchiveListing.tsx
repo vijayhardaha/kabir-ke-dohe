@@ -5,10 +5,10 @@ import { useCallback, type JSX } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Pagination } from '@/components/ui/Pagination';
+import { KABIR_MESSAGES } from '@/constants/kabirMessages';
 
 import { ContentNone } from './ContentNone';
 import { InjectedMessage } from './InjectedMessage';
-import { KABIR_MESSAGES } from './kabirMessages';
 import { PostCard } from './PostCard';
 import { ResultCount } from './ResultCount';
 import { getSortValue } from './SortControls';
