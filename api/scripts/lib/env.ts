@@ -40,7 +40,7 @@ function getEnvFilePath(): string {
  */
 export function loadScriptEnv(): ScriptEnv {
   const envFilePath = getEnvFilePath();
-  dotenv.config({ path: envFilePath });
+  dotenv.config({ path: envFilePath, override: true });
 
   const parsed = scriptEnvSchema.safeParse(process.env);
 
