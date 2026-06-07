@@ -59,9 +59,9 @@
 
   /* ---- Font families ---- */
   /* Jost handles Latin; Noto Sans Devanagari automatically renders Hindi glyphs. */
-  --font-sans: var(--font-body), var(--font-noto-sans), sans-serif;
-  --font-heading: var(--font-anton), var(--font-noto-sans), sans-serif;
-  --font-hindi: var(--font-noto-sans), sans-serif;
+  --font-sans: var(--font-sans-var), var(--font-hindi-var), sans-serif;
+  --font-heading: var(--font-heading-var), var(--font-hindi-var), sans-serif;
+  --font-hindi-vari: var(--font-hindi-var), sans-serif;
 }
 
 @layer base {
