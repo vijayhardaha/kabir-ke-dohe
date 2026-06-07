@@ -1,4 +1,4 @@
-import { Crimson_Pro, Jost, Noto_Sans_Devanagari } from 'next/font/google';
+import { Crimson_Pro, Jost, Hind } from 'next/font/google';
 
 /**
  * Primary sans-serif font for body text.
@@ -7,7 +7,7 @@ const sansFont = Jost({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
-  variable: '--font-body',
+  variable: '--font-sans-var',
   display: 'swap',
   preload: true,
 });
@@ -19,7 +19,7 @@ const headingFont = Crimson_Pro({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800', '900'],
   style: ['normal', 'italic'],
-  variable: '--font-anton',
+  variable: '--font-heading-var',
   display: 'swap',
   preload: true,
 });
@@ -27,11 +27,11 @@ const headingFont = Crimson_Pro({
 /**
  * Hindi text support, acts as fallback for Devanagari glyphs.
  */
-const devanagariFont = Noto_Sans_Devanagari({
+const devanagariFont = Hind({
   subsets: ['devanagari'],
   weight: ['400', '500', '600', '700'],
   style: ['normal'],
-  variable: '--font-noto-sans',
+  variable: '--font-hindi-var',
   display: 'swap',
   preload: true,
 });
