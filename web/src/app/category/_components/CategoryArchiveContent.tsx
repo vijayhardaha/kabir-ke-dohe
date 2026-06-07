@@ -1,5 +1,7 @@
 import type { JSX } from 'react';
 
+import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import { notFound } from 'next/navigation';
 
 import { ArchiveListing } from '@/components/features/ArchiveListing';
@@ -10,6 +12,8 @@ import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
 import { getCategoryBySlug } from '@/constants/categories';
 import { fetchCategoryBySlug, getCouplets } from '@/lib/server/couplets';
 import type { GetCoupletsOptions } from '@/lib/server/couplets';
+import { globalSchema } from '@/lib/utils/schema';
+import { siteUrl } from '@/lib/utils/seo';
 
 /**
  * Props for the CategoryArchiveContent component.
@@ -45,6 +49,12 @@ export async function CategoryArchiveContent({ slug, page, sort }: CategoryArchi
     notFound();
   }
 
+  const rootUrl = siteUrl();
+  const categorySchema = [
+    ...globalSchema(),
+    webPageSchema({ rootUrl, path: `category/${slug}` }, { name: `${category.name} — Kabir Ke Dohe` }),
+  ];
+
   const { posts, pagination } = await getCouplets({
     page,
     perPage: 10,
@@ -54,20 +64,23 @@ export async function CategoryArchiveContent({ slug, page, sort }: CategoryArchi
   });
 
   return (
-    <PageLayout>
-      <Container>
-        <PageHeader title={category.name} description={category.description ?? undefined} />
-        <ArchiveListing
-          posts={posts}
-          pagination={pagination}
-          baseUrl={`/category/${slug}`}
-          emptyMessage={`No couplets found in ${category.name}.`}
-          currentSortBy={sort.sortBy}
-          currentSortOrder={sort.sortOrder}
-          showSidebar
-          sidebar={<ArchiveSidebar />}
-        />
-      </Container>
-    </PageLayout>
+    <>
+      <JsonLd data={categorySchema} />
+      <PageLayout>
+        <Container>
+          <PageHeader title={category.name} description={category.description ?? undefined} />
+          <ArchiveListing
+            posts={posts}
+            pagination={pagination}
+            baseUrl={`/category/${slug}`}
+            emptyMessage={`No couplets found in ${category.name}.`}
+            currentSortBy={sort.sortBy}
+            currentSortOrder={sort.sortOrder}
+            showSidebar
+            sidebar={<ArchiveSidebar />}
+          />
+        </Container>
+      </PageLayout>
+    </>
   );
 }
