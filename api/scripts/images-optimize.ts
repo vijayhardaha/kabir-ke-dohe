@@ -17,6 +17,18 @@ import ora from 'ora';
 import sharp from 'sharp';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const __filename = fileURLToPath(import.meta.url);
+
+/**
+ * Optimize a single image buffer to WebP.
+ *
+ * @param {Buffer} input - Input image buffer (JPEG/PNG/etc).
+ *
+ * @returns {Promise<Buffer>} WebP-encoded buffer.
+ */
+export async function optimizeImage(input: Buffer): Promise<Buffer> {
+  return sharp(input).webp({ quality: 85 }).toBuffer();
+}
 
 async function main(): Promise<void> {
   /* ── 1. Read original images ── */
@@ -51,7 +63,7 @@ async function main(): Promise<void> {
     const outputPath = resolve(destDir, webpName);
 
     const buffer = await readFile(inputPath);
-    const optimized = await sharp(buffer).webp({ quality: 85 }).toBuffer();
+    const optimized = await optimizeImage(buffer);
 
     await writeFile(outputPath, optimized);
 
@@ -65,7 +77,9 @@ async function main(): Promise<void> {
   spinner.succeed(`${files.length} WebP images written to output/images/optimized/`);
 }
 
-main().catch((error: Error) => {
-  console.error('Error:', error.message);
-  process.exit(1);
-});
+if (process.argv[1] && resolve(process.argv[1]) === __filename) {
+  main().catch((error: Error) => {
+    console.error('Error:', error.message);
+    process.exit(1);
+  });
+}
