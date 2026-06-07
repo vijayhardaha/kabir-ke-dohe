@@ -1,8 +1,35 @@
 import type { JSX } from 'react';
 
+import type { Metadata } from 'next';
+
+import { getTagBySlug } from '@/lib/server/couplets';
 import { parseSortParams, validatePageParam } from '@/lib/server/page-utils';
+import { buildMetadata } from '@/lib/utils/meta';
 
 import { TagArchiveContent } from '../../_components/TagArchiveContent';
+
+/**
+ * Generate metadata for paginated tag pages.
+ *
+ * @param {{ params: Promise<{ slug: string; page: string }> }} props - Route params
+ *
+ * @returns {Promise<Metadata>} The metadata object.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; page: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const tag = await getTagBySlug(slug);
+  const name = tag?.name ?? slug;
+
+  return buildMetadata({
+    title: `${name} — Tag`,
+    description: `Browse Kabir's dohas tagged with "${name}" — spiritual wisdom and life lessons.`,
+    path: `tag/${slug}`,
+  });
+}
 
 /**
  * Props for the paginated tag page.
