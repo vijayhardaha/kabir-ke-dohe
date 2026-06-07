@@ -43,3 +43,4 @@ static/
 *.min.css
 *.min.js
 *.min.map
+api/scripts/templates
