@@ -1,5 +1,9 @@
 import type { JSX } from 'react';
 
+import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { JsonLd } from '@vijayhardaha/schema-builder/react';
+import type { Metadata } from 'next';
+
 import { ArchiveListing } from '@/components/features/ArchiveListing';
 import { Container } from '@/components/layout/Container';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -7,6 +11,32 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
 import { getCouplets } from '@/lib/server/couplets';
 import { handlePageRedirect, parseSortParams } from '@/lib/server/page-utils';
+import { buildMetadata } from '@/lib/utils/meta';
+import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
+import { siteUrl } from '@/lib/utils/seo';
+
+const ARCHIVE_DESCRIPTION =
+  "Explore the complete collection of Sant Kabir Das's dohas — spiritual wisdom, life truths, and inspiration with Hindi and English meanings.";
+
+export const metadata: Metadata = buildMetadata({
+  title: "Kabir's Couplets",
+  description: ARCHIVE_DESCRIPTION,
+  path: 'couplets',
+});
+
+const rootUrl = siteUrl();
+const coupletsListSchema = [
+  ...globalSchema(),
+  webPageSchema(
+    { rootUrl, path: 'couplets' },
+    {
+      name: "Kabir's Couplets — Kabir Ke Dohe",
+      description:
+        "Explore the complete collection of Sant Kabir Das's dohas — spiritual wisdom, life truths, and inspiration with Hindi and English meanings.",
+      keywords: [...BASE_KEYWORDS, 'all couplets', 'Kabir dohe collection', 'complete dohas'].join(', '),
+    }
+  ),
+];
 
 /**
  * Props for the couplets archive page.
@@ -39,22 +69,25 @@ export default async function ArchivePage({ searchParams }: ArchivePageProps): P
   });
 
   return (
-    <PageLayout>
-      <Container>
-        <PageHeader
-          title="कबीर के दोहे (Kabir's Couplets)"
-          description="कबीर के दोहों का संपूर्ण संग्रह — आध्यात्मिक ज्ञान, जीवन के सच और प्रेरणा से भरे Kabir ke dohe, हिंदी और अंग्रेज़ी अर्थ के साथ (Explore the complete collection of Sant Kabir Das's dohas — spiritual wisdom, life truths, and inspiration with Hindi and English meanings)"
-        />
-        <ArchiveListing
-          posts={posts}
-          pagination={pagination}
-          baseUrl="/couplets"
-          currentSortBy={sortBy}
-          currentSortOrder={sortOrder}
-          showSidebar
-          sidebar={<ArchiveSidebar />}
-        />
-      </Container>
-    </PageLayout>
+    <>
+      <JsonLd data={coupletsListSchema} />
+      <PageLayout>
+        <Container>
+          <PageHeader
+            title="कबीर के दोहे (Kabir's Couplets)"
+            description="कबीर के दोहों का संपूर्ण संग्रह — आध्यात्मिक ज्ञान, जीवन के सच और प्रेरणा से भरे Kabir ke dohe, हिंदी और अंग्रेज़ी अर्थ के साथ (Explore the complete collection of Sant Kabir Das's dohas — spiritual wisdom, life truths, and inspiration with Hindi and English meanings)"
+          />
+          <ArchiveListing
+            posts={posts}
+            pagination={pagination}
+            baseUrl="/couplets"
+            currentSortBy={sortBy}
+            currentSortOrder={sortOrder}
+            showSidebar
+            sidebar={<ArchiveSidebar />}
+          />
+        </Container>
+      </PageLayout>
+    </>
   );
 }
