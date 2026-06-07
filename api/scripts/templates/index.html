@@ -1,0 +1,157 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        font-family: "Poppins", sans-serif;
+        background: #e8e8e8;
+      }
+
+      .banner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        background:
+          linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+          url(http://localhost:2580/backgrounds/sample-bg.jpg) center / cover no-repeat;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+
+            .quote-card {
+              position: relative;
+              background: #ffffff;
+              box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.18),
+                0 4px 16px rgba(0, 0, 0, 0.1);
+              width: 58%;
+              padding: 40px 48px 44px 52px;
+            }
+
+            .quote-card__svg-mark {
+              position: absolute;
+              display: flex;
+              align-items: flex-start;
+              line-height: 1;
+              user-select: none;
+              pointer-events: none;
+            }
+
+            .quote-card__svg-mark svg {
+              width: 72px;
+              height: 72px;
+              display: block;
+              flex-shrink: 0;
+            }
+
+            .quote-card__svg-mark--open {
+              top: -10%;
+              left: -12%;
+            }
+
+            .quote-card__svg-mark--close {
+              bottom: -12%;
+              right: -8%;
+              transform: rotate(180deg);
+            }
+
+            .quote-card__deco-line {
+              position: absolute;
+              background: #2e2e2e;
+            }
+
+            .quote-card__deco-line--top-right {
+              top: 0;
+              right: 0;
+              width: 22%;
+              height: 1.5px;
+              transform: translateY(-1px);
+            }
+
+            .quote-card__deco-line--bl-1 {
+              bottom: 0;
+              left: 0;
+              width: 11%;
+              height: 1.5px;
+              transform: translateY(1px);
+            }
+
+            .quote-card__deco-line--bl-2 {
+              bottom: 0;
+              left: 13%;
+              width: 5%;
+              height: 1.5px;
+              transform: translateY(1px);
+            }
+
+            .quote-card__deco-line--body {
+              display: block;
+              width: 32px;
+              height: 2px;
+              margin-top: 28px;
+              background: #2e2e2e;
+            }
+
+            .quote-card__label {
+              font-family: "Poppins", sans-serif;
+              font-size: 22px;
+              font-weight: 700;
+              letter-spacing: 0.08em;
+              text-transform: uppercase;
+              color: #2e2e2e;
+              margin-bottom: 20px;
+            }
+
+            .quote-card__body {
+              font-size: 18px;
+              font-weight: 500;
+              line-height: 1.9;
+              color: #2e2e2e;
+              max-width: 90%;
+              white-space: pre-line;
+            }
+    </style>
+  </head>
+  <body>
+    <div class="banner">
+      <div class="quote-card">
+        <span class="quote-card__svg-mark quote-card__svg-mark--open">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1f1f1f">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z" />
+          </svg>
+        </span>
+
+        <span class="quote-card__svg-mark quote-card__svg-mark--close">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1f1f1f">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z" />
+          </svg>
+        </span>
+
+        <span class="quote-card__deco-line quote-card__deco-line--top-right"></span>
+        <span class="quote-card__deco-line quote-card__deco-line--bl-1"></span>
+        <span class="quote-card__deco-line quote-card__deco-line--bl-2"></span>
+
+        <h2 class="quote-card__label">Kabir Ke Dohe</h2>
+
+        <p class="quote-card__body">बलिहारी गुरु आपनो, घड़ी-घड़ी सौ-सौ बार। मानुष से देवत किया, करत न लागी बार।।</p>
+
+        <span class="quote-card__deco-line quote-card__deco-line--body"></span>
+      </div>
+    </div>
+  </body>
+</html>
