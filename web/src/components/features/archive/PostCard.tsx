@@ -3,6 +3,7 @@
 import type { JSX } from 'react';
 
 import { ArrowRight, Share2 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { Button, ButtonLink } from '@/components/ui/Button';
@@ -36,6 +37,19 @@ export function PostCard({ post }: { post: Post }): JSX.Element {
 
   return (
     <article className="bg-card flex flex-col gap-4 p-6 md:p-8">
+      {/* ---- Image ---- */}
+      <div className="relative aspect-[120/63] w-full overflow-hidden">
+        <Link href={`/couplet/${post.slug}`}>
+          <Image
+            src="/preview.png"
+            alt={`Preview for ${post.text_hi.slice(0, 60)}`}
+            fill
+            className="object-cover"
+            sizes="(max-width: 375px) 300px, (max-width: 450px) 350px, (max-width: 560px) 480px, (max-width: 768px) 650px, (max-width: 1020px) 570px, 850px"
+          />
+        </Link>
+      </div>
+
       {/* ---- Doha heading ---- */}
       <h2 className="text-foreground text-xl leading-snug tracking-normal whitespace-pre-line md:text-3xl lg:text-4xl">
         <Link href={`/couplet/${post.slug}`} className="text-secondary hover:text-primary hover:underline">
