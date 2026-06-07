@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { ViewTracker } from '@/components/features/ViewTracker';
 import { Container } from '@/components/layout/Container';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { getCoupletBySlug, getAdjacentCouplets, getRelatedCouplets } from '@/lib/server/couplets';
@@ -241,6 +242,7 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
   return (
     <>
       <JsonLd data={coupletSchema} />
+      <ViewTracker slug={post.slug} />
 
       <div className="bg-primary h-24"></div>
 
@@ -261,11 +263,11 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
 
                 <div className="relative mb-6 aspect-[120/63] w-full overflow-hidden">
                   <Image
-                    src={`/api/image/${post.slug}.png`}
+                    src="/preview.png"
                     alt={`OG image for ${post.text_hi.slice(0, 60)}`}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 896px"
+                    sizes="(max-width: 375px) 300px, (max-width: 450px) 350px, (max-width: 560px) 480px, (max-width: 768px) 620px, 850px"
                   />
                 </div>
 
