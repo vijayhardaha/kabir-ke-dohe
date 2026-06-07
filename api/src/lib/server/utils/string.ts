@@ -43,7 +43,7 @@ export function sanitizeTitle(string: string): string {
  * @returns {string} The string in sentence case format.
  *
  * @example
- * toSentenceCase("HELLO WORLD"); // "Hello world"
+ * toSentenceCase("HELLO WORLD"); // "Hello World"
  * @example
  * toSentenceCase("heLLo"); // "Hello"
  */
