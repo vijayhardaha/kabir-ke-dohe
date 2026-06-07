@@ -18,6 +18,7 @@ import { fileURLToPath } from 'node:url';
 import ora from 'ora';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const __filename = fileURLToPath(import.meta.url);
 
 async function main(): Promise<void> {
   /* ── 1. Parse CLI args ── */
@@ -197,7 +198,9 @@ export async function findChromePath(): Promise<string | null> {
   return null;
 }
 
-main().catch((error: Error) => {
-  console.error('Error:', error.message);
-  process.exit(1);
-});
+if (process.argv[1] && resolve(process.argv[1]) === __filename) {
+  main().catch((error: Error) => {
+    console.error('Error:', error.message);
+    process.exit(1);
+  });
+}
