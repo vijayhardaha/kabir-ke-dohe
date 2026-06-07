@@ -5,12 +5,12 @@ import type { Metadata } from 'next';
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { ScrollToTop } from '@/components/layout/ScrollToTop';
+import { SITE_METADATA } from '@/constants/seo';
 import { fontClassNames } from '@/lib/utils/fonts';
-import { siteMetadata } from '@/lib/utils/seo';
 
 import './globals.css';
 
-export const metadata: Metadata = siteMetadata;
+export const metadata: Metadata = SITE_METADATA;
 
 /**
  * Root layout — applies font variables to <html> via fontClassNames.
