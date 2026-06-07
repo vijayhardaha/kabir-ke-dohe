@@ -8,6 +8,8 @@
     "start": "next start",
     "build": "next build && next-sitemap",
     "couplets:fetch": "bun run scripts/couplets-fetch.ts",
+    "tags:generate": "bun run scripts/tags-generate.ts",
+    "tags:generate:prod": "NODE_ENV=production bun run scripts/tags-generate.ts",
     "couplets:fetch:prod": "NODE_ENV=production bun run scripts/couplets-fetch.ts",
     "couplets:upload": "bun run scripts/couplets-upload.ts",
     "couplets:upload:prod": "NODE_ENV=production bun run scripts/couplets-upload.ts",
