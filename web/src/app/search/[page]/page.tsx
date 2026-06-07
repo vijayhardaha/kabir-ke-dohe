@@ -1,5 +1,7 @@
 import type { JSX } from 'react';
 
+import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 
 import { ArchiveListing } from '@/components/features/ArchiveListing';
@@ -8,11 +10,29 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { getCouplets } from '@/lib/server/couplets';
 import { parseSortParams, validatePageParam } from '@/lib/server/page-utils';
+import { buildMetadata } from '@/lib/utils/meta';
+import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
+import { siteUrl } from '@/lib/utils/seo';
+
+const rootUrl = siteUrl();
+const searchPaginatedSchema = [
+  ...globalSchema(),
+  webPageSchema(
+    { rootUrl, path: 'search' },
+    {
+      name: 'Search — Kabir Ke Dohe',
+      keywords: [...BASE_KEYWORDS, 'search couplets', 'find dohas', 'paginated'].join(', '),
+    }
+  ),
+];
 
 /**
  * Prevent search engines from indexing paginated search pages.
  */
-export const metadata: Metadata = { robots: { index: false, follow: false } };
+export const metadata: Metadata = {
+  ...buildMetadata({ title: 'Search', description: 'Find couplets by keyword, theme, or meaning.', path: 'search' }),
+  robots: { index: false, follow: false },
+};
 
 /**
  * Props for the paginated search page.
@@ -53,19 +73,22 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
   const title = query ? `Search results for "${query}" — Page ${page}` : `Search — Page ${page}`;
 
   return (
-    <PageLayout>
-      <Container>
-        <PageHeader title={title} description="Find couplets by keyword, theme, or meaning" />
+    <>
+      <JsonLd data={searchPaginatedSchema} />
+      <PageLayout>
+        <Container>
+          <PageHeader title={title} description="Find couplets by keyword, theme, or meaning" />
 
-        <ArchiveListing
-          posts={posts}
-          pagination={pagination}
-          baseUrl="/search"
-          currentSortBy={sortBy}
-          currentSortOrder={sortOrder}
-          hideSort={false}
-        />
-      </Container>
-    </PageLayout>
+          <ArchiveListing
+            posts={posts}
+            pagination={pagination}
+            baseUrl="/search"
+            currentSortBy={sortBy}
+            currentSortOrder={sortOrder}
+            hideSort={false}
+          />
+        </Container>
+      </PageLayout>
+    </>
   );
 }
