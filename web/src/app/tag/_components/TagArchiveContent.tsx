@@ -1,5 +1,7 @@
 import type { JSX } from 'react';
 
+import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import { notFound } from 'next/navigation';
 
 import { ArchiveListing } from '@/components/features/ArchiveListing';
@@ -9,6 +11,8 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
 import { getTagBySlug, getCouplets } from '@/lib/server/couplets';
 import type { GetCoupletsOptions } from '@/lib/server/couplets';
+import { globalSchema } from '@/lib/utils/schema';
+import { siteUrl } from '@/lib/utils/seo';
 
 /**
  * Props for the TagArchiveContent component.
@@ -41,6 +45,12 @@ export async function TagArchiveContent({ slug, page, sort }: TagArchiveContentP
 
   const tagName = tag.name;
 
+  const rootUrl = siteUrl();
+  const tagSchema = [
+    ...globalSchema(),
+    webPageSchema({ rootUrl, path: `tag/${slug}` }, { name: `${tagName} — Kabir Ke Dohe` }),
+  ];
+
   const { posts, pagination } = await getCouplets({
     page,
     perPage: 10,
@@ -50,20 +60,23 @@ export async function TagArchiveContent({ slug, page, sort }: TagArchiveContentP
   });
 
   return (
-    <PageLayout>
-      <Container>
-        <PageHeader title={tagName} description={`Couplets tagged with "${tagName}"`} />
-        <ArchiveListing
-          posts={posts}
-          pagination={pagination}
-          baseUrl={`/tag/${slug}`}
-          emptyMessage={`No couplets found with the tag "${tagName}".`}
-          currentSortBy={sort.sortBy}
-          currentSortOrder={sort.sortOrder}
-          showSidebar
-          sidebar={<ArchiveSidebar />}
-        />
-      </Container>
-    </PageLayout>
+    <>
+      <JsonLd data={tagSchema} />
+      <PageLayout>
+        <Container>
+          <PageHeader title={tagName} description={`Couplets tagged with "${tagName}"`} />
+          <ArchiveListing
+            posts={posts}
+            pagination={pagination}
+            baseUrl={`/tag/${slug}`}
+            emptyMessage={`No couplets found with the tag "${tagName}".`}
+            currentSortBy={sort.sortBy}
+            currentSortOrder={sort.sortOrder}
+            showSidebar
+            sidebar={<ArchiveSidebar />}
+          />
+        </Container>
+      </PageLayout>
+    </>
   );
 }
