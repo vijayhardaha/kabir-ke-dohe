@@ -131,7 +131,8 @@ export async function getCouplets(options: GetCoupletsOptions = {}): Promise<Cou
   const { data, error, count } = await query.range(from, to);
 
   if (error) {
-    throw new Error(`Failed to fetch couplets: ${error.message}`);
+    console.error(`Failed to fetch couplets: ${error.message}`);
+    return { posts: [], pagination: { page, perPage, total: 0, totalPages: 0 } };
   }
 
   const posts = ((data ?? []) as unknown as SupabasePost[]).map(normalizePost);
@@ -182,19 +183,19 @@ export async function getRelatedCouplets(
   };
 
   /**
-   * Processes a supabase query response — throws on error, otherwise collects results.
+   * Processes a Supabase query response — logs errors gracefully,
+   * otherwise collects results.
    *
    * @param {Array<{ slug: string; text_hi: string; tags: Array<{ tag: TagRef }> }> | null} data - Raw query rows with nested tag shape, or null.
    * @param {unknown} error - Supabase error object, null on success.
-   *
-   * @throws {Error} When the Supabase query fails.
    */
   const processQuery = (
     data: Array<{ slug: string; text_hi: string; tags: Array<{ tag: TagRef }> }> | null,
     error: unknown
   ): void => {
     if (error) {
-      throw new Error(`Failed to fetch related couplets: ${(error as { message: string }).message}`);
+      console.error(`Failed to fetch related couplets: ${(error as { message: string }).message}`);
+      return;
     }
     collectResults(data);
   };
@@ -258,7 +259,8 @@ async function fetchAdjacentCouplet(direction: 'prev' | 'next', postOrder: numbe
     .limit(1);
 
   if (error) {
-    throw new Error(`Failed to fetch ${direction} couplet: ${error.message}`);
+    console.error(`Failed to fetch ${direction} couplet: ${error.message}`);
+    return null;
   }
 
   return (data?.[0] as CoupletRef | undefined) ?? null;
@@ -302,7 +304,8 @@ export async function getCoupletBySlug(slug: string): Promise<Post | null> {
 
   if (error) {
     if (error.code === 'PGRST116') return null;
-    throw new Error(`Failed to fetch couplet: ${error.message}`);
+    console.error(`Failed to fetch couplet: ${error.message}`);
+    return null;
   }
 
   return normalizePost(data as unknown as SupabasePost);
@@ -323,7 +326,8 @@ export async function getCategories(): Promise<(Category & { post_count: number 
     .order('name', { ascending: true });
 
   if (error) {
-    throw new Error(`Failed to fetch categories: ${error.message}`);
+    console.error(`Failed to fetch categories: ${error.message}`);
+    return [];
   }
 
   return ((data ?? []) as unknown as SupabaseCategory[]).map((cat) => ({
@@ -422,7 +426,8 @@ async function fetchAllTagsWithCounts(): Promise<(Tag & { post_count: number })[
     .order('name', { ascending: true });
 
   if (error) {
-    throw new Error(`Failed to fetch tags: ${error.message}`);
+    console.error(`Failed to fetch tags: ${error.message}`);
+    return [];
   }
 
   return normalizeTagCounts((data ?? []) as Array<Tag & { post_tags: Array<{ post: { post_status: string } }> }>);
@@ -456,7 +461,8 @@ async function fetchBySlug<T>(table: string, slug: string, entityName: string): 
 
   if (error) {
     if (error.code === 'PGRST116') return null;
-    throw new Error(`Failed to fetch ${entityName}: ${error.message}`);
+    console.error(`Failed to fetch ${entityName}: ${error.message}`);
+    return null;
   }
 
   return data as unknown as T;
@@ -521,7 +527,8 @@ export async function getPopularCoupletsForWidget(limit: number = 6): Promise<Po
     .limit(limit);
 
   if (error) {
-    throw new Error(`Failed to fetch popular couplets for widget: ${error.message}`);
+    console.error(`Failed to fetch popular couplets for widget: ${error.message}`);
+    return [];
   }
 
   return ((data ?? []) as unknown as SupabasePost[]).map(normalizePost);
