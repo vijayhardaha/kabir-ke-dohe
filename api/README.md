@@ -116,15 +116,15 @@ scripts/
 
 ### Script Reference
 
-| Script                | Purpose                                                        |
-| --------------------- | -------------------------------------------------------------- |
-| `couplets-fetch.ts`   | Fetch slug + text_hi from Supabase → JSON map                  |
-| `couplets-upload.ts`  | Sync Google Sheets data → Supabase (categories, tags, posts)   |
-| `indexnow.ts`         | IndexNow URL submission                                        |
-| `images-generate.ts`  | Generate OG images via `node-html-to-image` + Puppeteer        |
-| `images-optimize.ts`  | Compress JPEG originals to WebP via `sharp`                    |
-| `images-upload.ts`    | Upload WebP images to Supabase Storage `couplet-images` bucket |
-| `template-serve.ts`   | Dev server (Browsersync :2580), watches .hbs, live-reload      |
+| Script               | Purpose                                                        |
+| -------------------- | -------------------------------------------------------------- |
+| `couplets-fetch.ts`  | Fetch slug + text_hi from Supabase → JSON map                  |
+| `couplets-upload.ts` | Sync Google Sheets data → Supabase (categories, tags, posts)   |
+| `indexnow.ts`        | IndexNow URL submission                                        |
+| `images-generate.ts` | Generate OG images via `node-html-to-image` + Puppeteer        |
+| `images-optimize.ts` | Compress JPEG originals to WebP via `sharp`                    |
+| `images-upload.ts`   | Upload WebP images to Supabase Storage `couplet-images` bucket |
+| `template-serve.ts`  | Dev server (Browsersync :2580), watches .hbs, live-reload      |
 
 All image scripts use `ora` spinners for progress feedback.
 
