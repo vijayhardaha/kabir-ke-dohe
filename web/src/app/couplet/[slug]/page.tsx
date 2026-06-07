@@ -1,6 +1,9 @@
 import type { JSX } from 'react';
 import { Fragment } from 'react';
 
+import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
+import { JsonLd } from '@vijayhardaha/schema-builder/react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -8,7 +11,35 @@ import { Container } from '@/components/layout/Container';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { getCoupletBySlug, getAdjacentCouplets, getRelatedCouplets } from '@/lib/server/couplets';
 import { formatDoha } from '@/lib/utils/doha';
-import { getPermaLink } from '@/lib/utils/seo';
+import { buildMetadata } from '@/lib/utils/meta';
+import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
+import { getPermaLink, siteUrl } from '@/lib/utils/seo';
+
+/**
+ * Generate metadata for the couplet detail page.
+ *
+ * @param {{ params: Promise<{ slug: string }> }} props - Route params
+ *
+ * @returns {Promise<Metadata>} The metadata object.
+ */
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getCoupletBySlug(slug);
+
+  if (!post) {
+    return buildMetadata({
+      title: 'Couplet Not Found',
+      description: 'The requested couplet could not be found.',
+      path: `couplet/${slug}`,
+    });
+  }
+
+  return buildMetadata({
+    title: `${post.text_hi.slice(0, 60)}`,
+    description: `${post.text_hi} — ${post.text_en}`.slice(0, 300),
+    path: `couplet/${slug}`,
+  });
+}
 
 /**
  * A single content section within a couplet detail page.
@@ -156,6 +187,30 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
   );
   const postUrl = getPermaLink(`/couplet/${post.slug}`);
 
+  const brandKeywords = [...BASE_KEYWORDS, post.category?.name ?? '', ...post.tags.map((t) => t.name)].filter(Boolean);
+  const rootUrl = siteUrl();
+  const coupletPath = `couplet/${post.slug}`;
+
+  const coupletSchema = [
+    ...globalSchema(),
+    webPageSchema(
+      { rootUrl, path: coupletPath },
+      {
+        name: `${post.text_hi.slice(0, 60)} — Kabir Ke Dohe`,
+        description: `${post.text_hi} — ${post.text_en}`.slice(0, 300),
+        keywords: [...new Set(brandKeywords)].join(', '),
+      }
+    ),
+    breadcrumbSchema({
+      rootUrl,
+      items: [
+        { name: 'Home', path: '' },
+        { name: 'Couplets', path: 'couplets' },
+        { name: post.text_hi.slice(0, 40), path: coupletPath },
+      ],
+    }),
+  ];
+
   const sections: SectionData[] = [
     { title: 'अर्थ (Meaning)', contentHi: post.meaning_hi, contentEn: post.meaning_en },
     { title: 'व्याख्या (Interpretation)', contentHi: post.interpretation_hi, contentEn: post.interpretation_en },
@@ -184,7 +239,10 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
 
   return (
     <>
+      <JsonLd data={coupletSchema} />
+
       <div className="bg-primary h-24"></div>
+
       <PageLayout>
         <Container>
           <article className="-mt-30 bg-white p-6 shadow-xl md:p-12 md:py-16">
@@ -341,15 +399,15 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
                           href={`/couplet/${couplet.slug}`}
                           className="bg-muted text-foreground hover:bg-muted/80 group px-5 py-4 no-underline transition-colors"
                         >
-                          <p className="group-hover:text-primary text-sm leading-snug font-bold transition-colors">
+                          <p className="group-hover:text-primary mb-2 text-base leading-snug font-bold transition-colors">
                             {formatDoha(couplet.text_hi)}
                           </p>
                           {couplet.tags.length > 0 && (
                             <div className="mt-2 flex flex-wrap gap-1.5">
-                              {couplet.tags.map((tag) => (
+                              {couplet.tags.slice(0, 3).map((tag) => (
                                 <span
                                   key={tag.slug}
-                                  className="bg-secondary text-secondary-foreground inline-block px-1.5 py-0.5 text-[10px] leading-tight font-medium tracking-wide uppercase"
+                                  className="bg-secondary/65 text-secondary-foreground inline-block px-1.5 py-0.5 text-[10px] leading-tight font-medium tracking-wide uppercase"
                                 >
                                   {tag.name}
                                 </span>
