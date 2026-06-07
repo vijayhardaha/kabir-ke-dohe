@@ -16,7 +16,7 @@ import { FooterLinkColumn } from './FooterLinkColumn';
  */
 export function Footer(): JSX.Element {
   return (
-    <footer className="bg-secondary text-secondary-foreground mt-16">
+    <footer className="bg-secondary text-secondary-foreground">
       <Container className="py-12">
         <div className="grid gap-8 md:grid-cols-12">
           {/* Brand column */}
@@ -40,9 +40,10 @@ export function Footer(): JSX.Element {
       <div className="border-t border-white/10">
         <Container className="py-4">
           <p className="text-secondary-foreground/50 text-left text-xs leading-relaxed">
-            <strong>Disclaimer:</strong> The Kabir Dohe API provides dohe of Sant Kabir Das for educational and
-            informational use. While we strive for accuracy, we do not guarantee completeness or correctness. Users are
-            responsible for their use of the content. The verses are not owned by us, only the API service is.
+            <strong>Disclaimer:</strong> Kabir Dohe Hub provides dohe of Sant Kabir Das for educational and
+            informational use through its platforms — Kabir Ke Dohe, Kabir Dohe API, and Kabir Dohe Images. While we
+            strive for accuracy, we do not guarantee completeness or correctness. Users are responsible for their use of
+            the content. The verses are not owned by us, only the services are.
           </p>
         </Container>
       </div>
