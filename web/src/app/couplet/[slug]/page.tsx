@@ -4,10 +4,10 @@ import { Fragment } from 'react';
 import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { CoupletImage } from '@/components/features/archive/CoupletImage';
 import { ViewTracker } from '@/components/features/ViewTracker';
 import { Container } from '@/components/layout/Container';
 import { PageLayout } from '@/components/layout/PageLayout';
@@ -261,15 +261,7 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
                   </Link>
                 )}
 
-                <div className="relative mb-6 aspect-[120/63] w-full overflow-hidden">
-                  <Image
-                    src="/preview.png"
-                    alt={`OG image for ${post.text_hi.slice(0, 60)}`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 375px) 300px, (max-width: 450px) 350px, (max-width: 560px) 480px, (max-width: 768px) 620px, 850px"
-                  />
-                </div>
+                <CoupletImage slug={post.slug} text={post.text_hi} />
 
                 <h1 className="text-foreground mb-2 text-2xl leading-tight md:text-3xl lg:text-4xl xl:text-5xl">
                   {formatDoha(post.text_hi)}
