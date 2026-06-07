@@ -17,7 +17,14 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
 
   // ---- Images ----
-  images: { remotePatterns: [{ protocol: 'https', hostname: '*.supabase.co' }], formats: ['image/avif', 'image/webp'] },
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: '*.supabase.co' },
+      { protocol: 'http', hostname: '127.0.0.1', port: '54321' },
+      { protocol: 'http', hostname: 'localhost', port: '54321' },
+    ],
+    formats: ['image/avif', 'image/webp'],
+  },
 };
 
 export default nextConfig;
