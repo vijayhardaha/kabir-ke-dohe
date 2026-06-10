@@ -5,6 +5,7 @@
  * generated test images (no file fixtures needed).
  */
 
+// @ts-ignore - sharp .mts resolution workaround
 import sharp from 'sharp';
 import { describe, it, expect } from 'vitest';
 

@@ -9,29 +9,16 @@
     "images-tool"
   ],
   "scripts": {
+    "dev": "bun run --filter '*' dev",
+    "build": "bun run --filter '*' build",
+    "lint": "bun run --filter '*' lint",
+    "lint:fix": "bun run --filter '*' lint:fix",
     "format": "prettier --write --log-level error .",
-    "format:check": "prettier --check --log-level error .",
-    "prepare": "husky",
-    "dev": "bun run dev:api && bun run dev:web",
-    "dev:api": "bun run --filter='@kabir-hub/api' dev",
-    "dev:web": "bun run --filter='@kabir-hub/web' dev",
-    "dev:images": "bun run --filter='@kabir-hub/images-tool' dev",
-    "build": "bun run build:api && bun run build:web",
-    "build:api": "bun run --filter='@kabir-hub/api' build",
-    "build:web": "bun run --filter='@kabir-hub/web' build",
-    "build:images": "bun run --filter='@kabir-hub/images-tool' build",
-    "lint": "bun run lint:api && bun run lint:web",
-    "lint:api": "bun run --filter='@kabir-hub/api' lint",
-    "lint:web": "bun run --filter='@kabir-hub/web' lint",
-    "lint:images": "bun run --filter='@kabir-hub/images-tool' lint",
-    "lint:fix": "bun run lint:fix:api && bun run lint:fix:web",
-    "lint:fix:api": "bun run --filter='@kabir-hub/api' lint:fix",
-    "lint:fix:web": "bun run --filter='@kabir-hub/web' lint:fix",
-    "lint:fix:images": "bun run --filter='@kabir-hub/images-tool' lint:fix",
-    "tsc": "bun run tsc:api && bun run tsc:web",
-    "tsc:api": "bun run --filter='@kabir-hub/api' tsc",
-    "tsc:web": "bun run --filter='@kabir-hub/web' tsc",
-    "tsc:images": "bun run --filter='@kabir-hub/images-tool' tsc"
+    "format:check": "prettier --check .",
+    "tsc": "bun run --filter '*' tsc",
+    "test": "bun run --filter '*' test",
+    "test:coverage": "bun run --filter '*' test:coverage",
+    "prepare": "husky"
   },
   "keywords": [
     "Kabir",
@@ -57,9 +44,9 @@
     "@commitlint/types": "^21.0.1",
     "@eslint/compat": "^2.1.0",
     "@prettier/plugin-xml": "^3.4.2",
-    "@vijayhardaha/dev-config": "^2.1.0",
+    "@vijayhardaha/dev-config": "^2.1.1",
     "eslint": "^10.4.1",
-    "eslint-config-next": "^16.2.7",
+    "eslint-config-next": "^16.2.9",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import-x": "^4.16.2",
     "eslint-plugin-jsdoc": "^63.0.2",
@@ -68,10 +55,10 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.6.0",
     "husky": "^9.1.7",
-    "prettier": "^3.8.3",
+    "prettier": "^3.8.4",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.60.1"
+    "typescript-eslint": "^8.61.0"
   },
   "trustedDependencies": [
     "unrs-resolver"

@@ -14,7 +14,8 @@ import { resolve, extname, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import ora from 'ora';
-import sharp from 'sharp';
+// @ts-ignore - sharp .mts resolution workaround
+import * as sharp from 'sharp';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const __filename = fileURLToPath(import.meta.url);
