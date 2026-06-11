@@ -2,7 +2,7 @@
 
 import type { JSX } from 'react';
 
-import { ChevronDown } from 'lucide-react';
+import { RiArrowDropDownLine } from 'react-icons/ri';
 
 import { MAIN_MENU } from '@/constants/navigation';
 
@@ -44,8 +44,8 @@ export function DesktopNav({ pathname }: DesktopNavProps): JSX.Element {
                 inactive="text-primary-foreground hover:text-primary-foreground hover:bg-black/15"
               >
                 {hasChildren && (
-                  <ChevronDown
-                    size={14}
+                  <RiArrowDropDownLine
+                    size={20}
                     className="transition-transform duration-200 group-hover:rotate-180"
                     aria-hidden="true"
                   />

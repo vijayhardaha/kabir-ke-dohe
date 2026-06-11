@@ -2,7 +2,7 @@
 
 import type { JSX } from 'react';
 
-import { X } from 'lucide-react';
+import { RiCloseLine } from 'react-icons/ri';
 
 /**
  * Props for the SidebarCloseButton component.
@@ -28,7 +28,7 @@ export function SidebarCloseButton({ onClose }: SidebarCloseButtonProps): JSX.El
       className="text-primary-foreground flex h-10 w-10 cursor-pointer items-center justify-center transition-colors duration-200 hover:bg-black/15"
       aria-label="Close menu"
     >
-      <X size={22} />
+      <RiCloseLine size={22} />
     </button>
   );
 }

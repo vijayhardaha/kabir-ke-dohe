@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type JSX } from 'react';
 
-import { ArrowUpFromDot } from 'lucide-react';
+import { RiArrowUpLine } from 'react-icons/ri';
 
 import { cn } from '@/lib/utils/cn';
 
@@ -43,7 +43,7 @@ export function ScrollToTop(): JSX.Element {
         visible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
       )}
     >
-      <ArrowUpFromDot size={20} />
+      <RiArrowUpLine size={20} />
     </button>
   );
 }

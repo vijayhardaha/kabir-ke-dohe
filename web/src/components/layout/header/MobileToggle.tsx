@@ -2,7 +2,7 @@
 
 import type { JSX } from 'react';
 
-import { TextAlignEnd } from 'lucide-react';
+import { RiMenu3Line } from 'react-icons/ri';
 
 /**
  * Props for the MobileToggle component.
@@ -31,7 +31,7 @@ export function MobileToggle({ open, onToggle }: MobileToggleProps): JSX.Element
       className="text-primary-foreground flex h-9 w-9 cursor-pointer items-center justify-center transition-colors duration-200 hover:bg-black/15 md:hidden"
       aria-label={open ? 'Close menu' : 'Open menu'}
     >
-      <TextAlignEnd size={22} />
+      <RiMenu3Line size={22} />
     </button>
   );
 }

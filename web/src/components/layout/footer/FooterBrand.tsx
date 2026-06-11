@@ -3,14 +3,14 @@ import type { JSX } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { type IconType } from 'react-icons';
-import { FaFacebook, FaInstagram } from 'react-icons/fa';
+import { RiFacebookFill, RiInstagramLine } from 'react-icons/ri';
 
 /**
  * Social media platform configuration.
  */
 const socialLinks: Array<{ href: string; label: string; icon: IconType }> = [
-  { href: 'https://www.facebook.com/kabirkedohe.official', label: 'Facebook', icon: FaFacebook },
-  { href: 'https://www.instagram.com/kabirkedohe.official', label: 'Instagram', icon: FaInstagram },
+  { href: 'https://www.facebook.com/kabirkedohe.official', label: 'Facebook', icon: RiFacebookFill },
+  { href: 'https://www.instagram.com/kabirkedohe.official', label: 'Instagram', icon: RiInstagramLine },
 ];
 
 /**

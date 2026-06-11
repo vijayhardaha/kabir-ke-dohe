@@ -2,7 +2,7 @@
 
 import { useState, type JSX } from 'react';
 
-import { ChevronDown } from 'lucide-react';
+import { RiArrowDropDownLine } from 'react-icons/ri';
 
 import { cn } from '@/lib/utils/cn';
 
@@ -64,7 +64,10 @@ export function MobileNavItem({ link, pathname, onItemClick }: MobileNavItemProp
             aria-label={submenuOpen ? `Collapse ${link.label} submenu` : `Expand ${link.label} submenu`}
             aria-expanded={submenuOpen}
           >
-            <ChevronDown size={14} className={cn('transition-transform duration-200', submenuOpen && 'rotate-180')} />
+            <RiArrowDropDownLine
+              size={20}
+              className={cn('transition-transform duration-200', submenuOpen && 'rotate-180')}
+            />
           </button>
         )}
       </div>
