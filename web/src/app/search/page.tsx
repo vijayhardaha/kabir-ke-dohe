@@ -2,8 +2,8 @@ import type { JSX } from 'react';
 
 import { webPageSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
-import { Search } from 'lucide-react';
 import type { Metadata } from 'next';
+import { RiSearch2Line } from 'react-icons/ri';
 
 import { ArchiveListing } from '@/components/features/ArchiveListing';
 import { Container } from '@/components/layout/Container';
@@ -126,7 +126,7 @@ function SearchForm({ initialQuery }: { initialQuery: string }): JSX.Element {
           className="bg-primary text-primary-foreground hover:bg-primary/90 flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center transition-colors duration-200"
           aria-label="Submit search"
         >
-          <Search size={20} />
+          <RiSearch2Line size={20} />
         </button>
       </div>
     </form>

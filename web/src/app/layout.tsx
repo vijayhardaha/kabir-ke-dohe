@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: ReactNode }): JSX.E
         {/* Skip to content link — visible on focus for keyboard users */}
         <a
           href="#main-content"
-          className="bg-primary text-primary-foreground fixed top-0 left-0 z-[100] -translate-y-full px-4 py-2 text-sm font-semibold no-underline transition-transform duration-200 focus:translate-y-0"
+          className="bg-primary text-primary-foreground fixed top-0 left-0 z-100 -translate-y-full px-4 py-2 text-sm font-semibold no-underline transition-transform duration-200 focus:translate-y-0"
         >
           Skip to content
         </a>

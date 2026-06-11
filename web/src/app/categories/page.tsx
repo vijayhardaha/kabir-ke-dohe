@@ -2,8 +2,8 @@ import type { JSX } from 'react';
 
 import { webPageSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
-import { ArrowRight } from 'lucide-react';
 import type { Metadata } from 'next';
+import { RiArrowRightLine } from 'react-icons/ri';
 
 import { Container } from '@/components/layout/Container';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -133,7 +133,7 @@ function CategoryCard({ category }: CategoryCardProps): JSX.Element {
           className="gap-1.5"
         >
           Browse
-          <ArrowRight className="size-3.5" aria-hidden="true" />
+          <RiArrowRightLine className="size-3.5" aria-hidden="true" />
         </ButtonLink>
       </div>
     </article>
