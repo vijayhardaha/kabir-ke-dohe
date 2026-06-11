@@ -10,6 +10,7 @@ const sansFont = Google_Sans({
   variable: '--font-sans-var',
   display: 'swap',
   preload: true,
+  adjustFontFallback: false,
 });
 
 /**
