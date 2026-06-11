@@ -1,9 +1,9 @@
-import { Crimson_Pro, Jost, Hind } from 'next/font/google';
+import { Instrument_Serif, Google_Sans, Hind } from 'next/font/google';
 
 /**
  * Primary sans-serif font for body text.
  */
-const sansFont = Jost({
+const sansFont = Google_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
@@ -15,9 +15,9 @@ const sansFont = Jost({
 /**
  * Display font for headings.
  */
-const headingFont = Crimson_Pro({
+const headingFont = Instrument_Serif({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
+  weight: ['400'],
   style: ['normal', 'italic'],
   variable: '--font-heading-var',
   display: 'swap',
