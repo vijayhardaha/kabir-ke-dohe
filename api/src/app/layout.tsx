@@ -2,27 +2,11 @@ import type { JSX, ReactNode } from 'react';
 
 import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
-import { Saira, JetBrains_Mono } from 'next/font/google';
 
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import { GOOGLE_ANALYTICS_ID, SITE_METADATA } from '@/constants/seo';
-
-const sansFont = Saira({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-sans',
-  display: 'swap',
-  preload: true,
-});
-
-const monoFont = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400'],
-  variable: '--font-mono',
-  display: 'swap',
-  preload: true,
-});
+import { fontClassNames } from '@/lib/utils/fonts';
 
 import './globals.css';
 
@@ -44,7 +28,7 @@ const RootLayout = ({ children }: { children: ReactNode }): JSX.Element => {
       <head>
         <GoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} />
       </head>
-      <body className={`${sansFont.variable} ${monoFont.variable}`}>
+      <body className={fontClassNames}>
         <div className="flex min-h-screen flex-col">
           <Header />
           <main className="flex-1 py-12">{children}</main>
