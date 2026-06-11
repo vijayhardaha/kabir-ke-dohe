@@ -1,7 +1,7 @@
 import { type JSX } from 'react';
 
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import { RiArrowLeftSLine, RiArrowRightSLine } from 'react-icons/ri';
 
 import { cn } from '@/lib/utils/cn';
 
@@ -127,11 +127,11 @@ export function Pagination({ page, totalPages, baseUrl, searchParams = {} }: Pag
       <nav aria-label="Pagination" className="flex items-center gap-1">
         {page > 1 ? (
           <Link href={buildUrl(page - 1)} className={iconClasses} aria-label="Previous page">
-            <ChevronLeft size={16} />
+            <RiArrowLeftSLine size={16} />
           </Link>
         ) : (
           <span className={disabledIconClasses}>
-            <ChevronLeft size={16} />
+            <RiArrowLeftSLine size={16} />
           </span>
         )}
 
@@ -155,11 +155,11 @@ export function Pagination({ page, totalPages, baseUrl, searchParams = {} }: Pag
 
         {page < totalPages ? (
           <Link href={buildUrl(page + 1)} className={iconClasses} aria-label="Next page">
-            <ChevronRight size={16} />
+            <RiArrowRightSLine size={16} />
           </Link>
         ) : (
           <span className={disabledIconClasses}>
-            <ChevronRight size={16} />
+            <RiArrowRightSLine size={16} />
           </span>
         )}
       </nav>

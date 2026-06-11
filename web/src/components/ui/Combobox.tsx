@@ -2,6 +2,8 @@
 
 import { type JSX, useEffect, useRef, useState } from 'react';
 
+import { RiArrowDropDownLine } from 'react-icons/ri';
+
 import { cn } from '@/lib/utils/cn';
 
 /**
@@ -99,20 +101,12 @@ export function Combobox({ options, value, onChangeAction, label, className }: C
         )}
       >
         <span className="truncate">{selected ? selected.label : ''}</span>
-
-        {/* Chevron icon */}
-        <svg
-          className={cn(
-            'text-muted-foreground size-4 shrink-0 transition-transform duration-200',
-            open && 'rotate-180'
-          )}
-          stroke="currentColor"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={2}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
+        {/* Chevron icon */}{' '}
+        <RiArrowDropDownLine
+          size={22}
+          className={cn('text-muted-foreground shrink-0 transition-transform duration-200', open && 'rotate-180')}
+          aria-hidden="true"
+        />
       </button>
 
       {/* ---- Floating label ---- */}

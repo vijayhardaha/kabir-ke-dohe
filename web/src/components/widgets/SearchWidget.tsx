@@ -2,8 +2,8 @@
 
 import { useCallback, useRef, type JSX, type SubmitEvent } from 'react';
 
-import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { RiSearch2Line } from 'react-icons/ri';
 
 import { Widget, WidgetContent } from './Widget';
 
@@ -52,7 +52,7 @@ export function SearchWidget(): JSX.Element {
               className="bg-primary text-primary-foreground hover:bg-primary/90 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center transition-colors duration-200"
               aria-label="Submit search"
             >
-              <Search size={18} />
+              <RiSearch2Line size={18} />
             </button>
           </div>
         </form>
