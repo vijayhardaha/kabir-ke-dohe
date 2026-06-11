@@ -4,6 +4,7 @@ import type { JSX } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
+import { RiDoubleQuotesL } from 'react-icons/ri';
 
 import { formatDoha } from '@/lib/utils/doha';
 
@@ -96,7 +97,7 @@ export default function HeroCarousel({ slides }: HeroCarouselProps): JSX.Element
 
   if (totalSlides === 0) {
     return (
-      <div className="flex h-full min-h-[300px] items-center justify-center rounded-xl bg-white/10 p-6">
+      <div className="flex h-full min-h-75 items-center justify-center rounded-xl bg-white/10 p-6">
         <p className="text-primary-foreground/60 text-sm">No couplets available</p>
       </div>
     );
@@ -115,14 +116,7 @@ export default function HeroCarousel({ slides }: HeroCarouselProps): JSX.Element
           }`}
         >
           {/* Decorative quote icon — positioned at the top-right edge */}
-          <svg
-            className="absolute -top-6 left-8 h-10 w-10 text-white"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-          </svg>
+          <RiDoubleQuotesL size={40} className="absolute -top-6 left-8 text-white" aria-hidden="true" />
 
           {/* Hindi text */}
           <p className="mb-3 text-2xl font-bold text-white">{formatDoha(slide.text_hi)}</p>
