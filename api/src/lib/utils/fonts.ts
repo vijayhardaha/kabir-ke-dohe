@@ -1,17 +1,26 @@
-import { JetBrains_Mono } from 'next/font/google';
-import localFont from 'next/font/local';
+import { Google_Sans, Instrument_Serif, Google_Sans_Code } from 'next/font/google';
 
 /**
- * Primary sans-serif font for body text — Zodiak (self-hosted).
+ * Primary sans-serif font for body text.
  */
-const sansFont = localFont({
-  src: [
-    { path: '../../../public/fonts/Zodiak-Regular.woff2', weight: '400', style: 'normal' },
-    { path: '../../../public/fonts/Zodiak-Italic.woff2', weight: '400', style: 'italic' },
-    { path: '../../../public/fonts/Zodiak-Bold.woff2', weight: '700', style: 'normal' },
-    { path: '../../../public/fonts/Zodiak-BoldItalic.woff2', weight: '700', style: 'italic' },
-  ],
-  variable: '--font-sans',
+const sansFont = Google_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-sans-var',
+  display: 'swap',
+  preload: true,
+  adjustFontFallback: false,
+});
+
+/**
+ * Display font for headings.
+ */
+const headingFont = Instrument_Serif({
+  subsets: ['latin'],
+  weight: ['400'],
+  style: ['normal', 'italic'],
+  variable: '--font-heading-var',
   display: 'swap',
   preload: true,
 });
@@ -19,12 +28,13 @@ const sansFont = localFont({
 /**
  * Monospace font for code blocks and inline code.
  */
-const monoFont = JetBrains_Mono({
+const monoFont = Google_Sans_Code({
   subsets: ['latin'],
   weight: ['400'],
-  variable: '--font-mono',
+  variable: '--font-mono-var',
   display: 'swap',
   preload: true,
+  adjustFontFallback: false,
 });
 
 /**
@@ -32,4 +42,4 @@ const monoFont = JetBrains_Mono({
  *
  * @type {string}
  */
-export const fontClassNames: string = `${sansFont.variable} ${monoFont.variable}`;
+export const fontClassNames: string = `${sansFont.variable} ${headingFont.variable} ${monoFont.variable}`;
