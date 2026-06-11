@@ -20,6 +20,11 @@
 !src
 !public
 !package.json
+!bun.lock
+!bun.lockb
+!package-lock.json
+!pnpm-lock.yaml
+!yarn.lock
 
 # ----------------------------------------------------------------------
 # Build Toolchain
@@ -36,6 +41,7 @@
 # ----------------------------------------------------------------------
 # Project configuration used during deployment.
 !.vercel
+!vercel.json
 
 # ----------------------------------------------------------------------
 # Test Artifacts — Global (Any Depth)
