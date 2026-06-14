@@ -31,6 +31,18 @@ import { createSupabaseClient } from './lib/supabase';
 
 const BATCH_SIZE = 400;
 
+// Module-level spinner reference so the Ctrl+C handler can access it
+let spinner: ReturnType<typeof ora> | null = null;
+
+// Listen for raw Ctrl+C on stdin — works even when ora puts stdin in raw mode
+// (which suppresses the SIGINT signal in favour of sending the raw byte).
+process.stdin.on('data', (data: Buffer) => {
+  if (data.length === 1 && data[0] === 3) {
+    spinner?.stop();
+    process.exit(0);
+  }
+});
+
 /**
  * Main sync function that orchestrates the data synchronization process.
  * Pulls data from Google Sheets and syncs it to the Supabase database.
@@ -38,7 +50,7 @@ const BATCH_SIZE = 400;
  */
 async function main() {
   // Initialize spinner for user feedback
-  const spinner = ora('Loading environment...').start();
+  spinner = ora('Loading environment...').start();
 
   let env: ScriptEnv;
 
@@ -253,7 +265,10 @@ async function main() {
       }
 
       spinner.text = `Syncing posts: ${Math.min(i + BATCH_SIZE, posts.length)}/${posts.length} (${mappingsCount} mappings)`;
-      await new Promise((resolve) => setTimeout(resolve, 10000));
+      // Delay between batches to avoid rate limiting (skip in production to speed up syncs)
+      if (env.NODE_ENV === 'production') {
+        await new Promise((resolve) => setTimeout(resolve, 10000));
+      }
     }
 
     spinner.succeed('Synced ' + posts.length + ' posts with ' + mappingsCount + ' post-tag mappings');
