@@ -1,5 +1,7 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 
+const DELETE_CHUNK_SIZE = 100;
+
 /**
  * Represents a post record from the database.
  *
@@ -78,6 +80,8 @@ export interface DbTag {
 export interface DbCategory {
   name: string;
   slug: string;
+  description?: string;
+  meta_description?: string;
 }
 
 /**
@@ -163,11 +167,14 @@ export async function upsertTags(
 export async function upsertCategories(
   supabase: SupabaseClient,
   categories: DbCategory[]
-): Promise<{ data: { id: string; slug: string }[]; count: number | null }> {
+): Promise<{
+  data: { id: string; slug: string; description?: string; meta_description?: string }[];
+  count: number | null;
+}> {
   const { data, error, count } = await supabase
     .from('categories')
     .upsert(categories, { onConflict: 'slug', count: 'exact' })
-    .select('id, slug');
+    .select('id, slug, description, meta_description');
 
   if (error) {
     throw new Error('Failed to upsert categories: ' + error.message);
@@ -203,4 +210,103 @@ export async function upsertPostTags(
   }
 
   return { data, count };
+}
+
+/**
+ * Clears all post-tag mappings for a given set of post identifiers.
+ *
+ * Fetches the post IDs for the given identifiers, then deletes all associated
+ * rows from the post_tags junction table. This is run before re-upserting
+ * post-tag mappings to ensure stale associations are removed.
+ *
+ * @param {SupabaseClient} supabase - The Supabase client instance.
+ * @param {string[]} identifiers - The post identifiers whose mappings should be cleared.
+ * @param {number} [chunkSize] - Chunk size for batched deletes.
+ *
+ * @returns {Promise<number>} The number of deleted mappings.
+ *
+ * @throws {Error} Throws when any delete operation fails.
+ */
+export async function clearPostTagsForPosts(
+  supabase: SupabaseClient,
+  identifiers: string[],
+  chunkSize: number = DELETE_CHUNK_SIZE
+): Promise<number> {
+  let deletedCount = 0;
+
+  for (let i = 0; i < identifiers.length; i += chunkSize) {
+    const batch = identifiers.slice(i, i + chunkSize);
+
+    // Fetch post IDs for this batch of identifiers
+
+    const { data: posts } = await supabase.from('posts').select('id').in('identifier', batch);
+
+    if (!posts || posts.length === 0) continue;
+
+    const postIds = posts.map((p: { id: string }) => p.id);
+
+    for (let j = 0; j < postIds.length; j += chunkSize) {
+      const idBatch = postIds.slice(j, j + chunkSize);
+
+      const { error, count } = await supabase.from('post_tags').delete({ count: 'exact' }).in('post_id', idBatch);
+
+      if (error) {
+        throw new Error(`Failed to clear post-tag mappings: ${error.message}`);
+      }
+
+      deletedCount += count ?? 0;
+    }
+  }
+
+  return deletedCount;
+}
+
+/**
+ * Deletes stale records from a table that are NOT in the provided set of values to keep.
+ *
+ * Fetches all existing values for the given key column, computes the diff
+ * against the incoming values, and deletes stale records in chunks to avoid
+ * PostgREST URL length limits (16KB).
+ *
+ * @param {SupabaseClient} supabase - The Supabase client instance.
+ * @param {string} table - The table name.
+ * @param {string} keyColumn - The key column to filter on (e.g. 'slug', 'identifier').
+ * @param {string[]} valuesToKeep - The incoming values that should be retained.
+ * @param {number} [chunkSize] - Chunk size for batched deletes.
+ *
+ * @returns {Promise<number>} The number of deleted records.
+ *
+ * @throws {Error} Throws when any delete operation fails.
+ */
+export async function deleteStaleRecords(
+  supabase: SupabaseClient,
+  table: 'categories' | 'tags' | 'posts',
+  keyColumn: 'slug' | 'identifier',
+  valuesToKeep: string[],
+  chunkSize: number = DELETE_CHUNK_SIZE
+): Promise<number> {
+  const { data: existing } = await supabase.from(table).select(keyColumn);
+
+  if (!existing || existing.length === 0) return 0;
+
+  const existingValues = existing.map((r: Record<string, string>) => r[keyColumn]);
+  const staleValues = existingValues.filter((v) => !valuesToKeep.includes(v));
+
+  if (staleValues.length === 0) return 0;
+
+  let deletedCount = 0;
+
+  for (let i = 0; i < staleValues.length; i += chunkSize) {
+    const batch = staleValues.slice(i, i + chunkSize);
+
+    const { error, count } = await supabase.from(table).delete({ count: 'exact' }).in(keyColumn, batch);
+
+    if (error) {
+      throw new Error(`Failed to delete stale ${table} records: ${error.message}`);
+    }
+
+    deletedCount += count ?? 0;
+  }
+
+  return deletedCount;
 }
