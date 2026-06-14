@@ -12,11 +12,14 @@
 
 import ora from 'ora';
 
+import { CATEGORY_DESCRIPTIONS } from './data/category-descriptions';
 import {
   upsertCategories,
   upsertPosts,
   upsertTags,
   upsertPostTags,
+  deleteStaleRecords,
+  clearPostTagsForPosts,
   type DbCategory,
   type DbPost,
   type DbTag,
@@ -77,6 +80,47 @@ async function main() {
     );
   } catch (error) {
     spinner.fail('Failed to pull sheet data: ' + (error as Error).message);
+    process.exit(1);
+  }
+
+  // Collect incoming slugs/identifiers for stale record cleanup
+  const incomingCategorySlugs = categories.map((c) => c.slug);
+  const incomingTagSlugs = tags.map((t) => t.slug);
+  const incomingPostIdentifiers = posts.map((p) => p.identifier);
+
+  // Delete stale records that exist in the database but are NOT in the incoming data.
+  // Dependencies: posts → post_tags (CASCADE), tags → post_tags (CASCADE), categories → posts (SET NULL).
+  // Order: delete posts first (cleans post_tags via cascade), then tags, then categories.
+
+  // Merge category descriptions from the data file before upserting.
+  // Build slug -> description map from CATEGORY_DESCRIPTIONS keys using slugifyText.
+  const descBySlug = new Map<string, string>();
+  for (const [name, desc] of Object.entries(CATEGORY_DESCRIPTIONS)) {
+    descBySlug.set(slugifyText(name), desc);
+  }
+  for (const category of categories) {
+    const desc = descBySlug.get(category.slug);
+    if (desc) {
+      category.description = desc;
+      category.meta_description = desc;
+    }
+  }
+
+  spinner.start('Removing stale records from database...');
+  try {
+    const staleCategories = await deleteStaleRecords(supabase, 'categories', 'slug', incomingCategorySlugs);
+    const staleTags = await deleteStaleRecords(supabase, 'tags', 'slug', incomingTagSlugs);
+    const stalePosts = await deleteStaleRecords(supabase, 'posts', 'identifier', incomingPostIdentifiers);
+    const totalStale = staleCategories + staleTags + stalePosts;
+    if (totalStale > 0) {
+      spinner.succeed(
+        `Removed ${staleCategories} stale categories, ${staleTags} stale tags, ${stalePosts} stale posts`
+      );
+    } else {
+      spinner.succeed('No stale records found');
+    }
+  } catch (error) {
+    spinner.fail('Failed to remove stale records: ' + (error as Error).message);
     process.exit(1);
   }
 
@@ -156,6 +200,14 @@ async function main() {
   let mappingsCount = 0;
 
   try {
+    // Clear all existing post-tag mappings for incoming posts so stale associations
+    // are removed before re-upserting. This handles tag reassignments gracefully.
+    spinner.text = 'Clearing existing post-tag mappings...';
+    const clearedMappings = await clearPostTagsForPosts(supabase, incomingPostIdentifiers);
+    if (clearedMappings > 0) {
+      spinner.text = `Cleared ${clearedMappings} existing post-tag mappings`;
+    }
+
     for (let i = 0; i < posts.length; i += BATCH_SIZE) {
       const batch = posts.slice(i, i + BATCH_SIZE);
       const rawBatch = rawPosts.slice(i, i + BATCH_SIZE);
