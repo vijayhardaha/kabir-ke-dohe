@@ -31,7 +31,6 @@ export const CATEGORIES: CategoryConstant[] = [
   { slug: 'lust', name: 'काम (Lust)' },
   { slug: 'attachment', name: 'मोह (Attachment)' },
   { slug: 'pride', name: 'अभिमान (Pride)' },
-  { slug: 'jealousy', name: 'ईर्ष्या (Jealousy)' },
   { slug: 'fear', name: 'भय (Fear)' },
   { slug: 'karma', name: 'कर्म (Karma)' },
   { slug: 'reincarnation', name: 'पुनर्जन्म (Reincarnation)' },
