@@ -22,7 +22,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   return buildMetadata({
     title: `${name} — Tag`,
-    description: `Browse Kabir's dohas tagged with "${name}" — spiritual wisdom and life lessons.`,
+    description:
+      tag?.meta_description ?? `Browse Kabir's dohas tagged with "${name}" — spiritual wisdom and life lessons.`,
     path: `tag/${slug}`,
   });
 }
