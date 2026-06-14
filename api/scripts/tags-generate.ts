@@ -29,6 +29,12 @@ async function main(): Promise<void> {
   /* ── 1. Fetch tags with post count ── */
   const spinner = ora('Fetching tags from database…').start();
 
+  // Handle Ctrl+C gracefully — stop the spinner before exiting
+  process.on('SIGINT', () => {
+    spinner.stop();
+    process.exit(0);
+  });
+
   const { data, error } = await supabase
     .from('tags')
     .select('name, post_tags!inner(post:posts!inner(post_status))')

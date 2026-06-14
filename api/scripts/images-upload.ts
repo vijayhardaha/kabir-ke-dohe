@@ -43,6 +43,12 @@ async function main(): Promise<void> {
   /* ── 3. Read optimized images from images/optimized/ ── */
   const spinner = ora('Scanning optimized images…').start();
 
+  // Handle Ctrl+C gracefully — stop the spinner before exiting
+  process.on('SIGINT', () => {
+    spinner.stop();
+    process.exit(0);
+  });
+
   const srcDir = resolve(__dirname, 'output', 'images', 'optimized');
 
   let files: string[];

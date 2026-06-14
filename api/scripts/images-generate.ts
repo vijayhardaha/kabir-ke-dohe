@@ -37,6 +37,12 @@ async function main(): Promise<void> {
   /* ── 2. Read couplets data ── */
   const spinner = ora('Reading couplets data…').start();
 
+  // Handle Ctrl+C gracefully — stop the spinner before exiting
+  process.on('SIGINT', () => {
+    spinner.stop();
+    process.exit(0);
+  });
+
   const dataPath = resolve(__dirname, 'output', 'data', 'couplets.json');
   const raw = await readFile(dataPath, 'utf-8');
   const couplets = JSON.parse(raw) as Record<string, string>;
