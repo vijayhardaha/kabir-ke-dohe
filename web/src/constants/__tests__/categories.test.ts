@@ -9,8 +9,8 @@ import { describe, it, expect } from 'vitest';
 import { CATEGORIES, getCategoryBySlug } from '../categories';
 
 describe('CATEGORIES', () => {
-  it('has 20 predefined categories', () => {
-    expect(CATEGORIES.length).toBe(20);
+  it('has 27 predefined categories', () => {
+    expect(CATEGORIES.length).toBe(27);
   });
 
   it('each category has a slug and name', () => {
@@ -29,10 +29,10 @@ describe('CATEGORIES', () => {
 
   it('contains expected categories', () => {
     const slugs = CATEGORIES.map((c) => c.slug);
-    expect(slugs).toContain('divine-grace');
-    expect(slugs).toContain('ego-dissolution');
-    expect(slugs).toContain('ultimate-reality');
-    expect(slugs).toContain('final-liberation');
+    expect(slugs).toContain('nirguna-brahman');
+    expect(slugs).toContain('bhakti');
+    expect(slugs).toContain('the-ego');
+    expect(slugs).toContain('liberation');
   });
 
   it('uses kebab-case for slugs', () => {
@@ -44,9 +44,9 @@ describe('CATEGORIES', () => {
 
 describe('getCategoryBySlug', () => {
   it('returns the matching category for a known slug', () => {
-    const result = getCategoryBySlug('divine-grace');
+    const result = getCategoryBySlug('bhakti');
     expect(result).toBeDefined();
-    expect(result?.name).toBe('Divine Grace');
+    expect(result?.name).toBe('भक्ति (Bhakti)');
   });
 
   it('returns undefined for an unknown slug', () => {
@@ -55,7 +55,7 @@ describe('getCategoryBySlug', () => {
   });
 
   it('is case-sensitive (lowercase only)', () => {
-    const result = getCategoryBySlug('Divine-Grace');
+    const result = getCategoryBySlug('Bhakti');
     expect(result).toBeUndefined();
   });
 });
