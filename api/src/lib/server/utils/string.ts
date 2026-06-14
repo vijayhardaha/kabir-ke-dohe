@@ -36,6 +36,25 @@ export function sanitizeTitle(string: string): string {
 }
 
 /**
+ * Capitalizes the first letter in a word, preserving leading non-letter characters (e.g. parentheses).
+ *
+ * @param {string} word - The word to capitalize.
+ *
+ * @returns {string} The word with its first alphabetic character uppercased.
+ *
+ * @example
+ * capitalizeWord("(the"); // "(The"
+ * @example
+ * capitalizeWord("hello"); // "Hello"
+ */
+function capitalizeWord(word: string): string {
+  const match = word.match(/[a-zA-Z]/);
+  if (!match) return word;
+  const idx = match.index!;
+  return word.slice(0, idx) + word[idx].toUpperCase() + word.slice(idx + 1);
+}
+
+/**
  * Converts a string to sentence case (first letter uppercase, rest lowercase).
  *
  * @param {string} str - The string to convert to sentence case.
@@ -46,6 +65,8 @@ export function sanitizeTitle(string: string): string {
  * toSentenceCase("HELLO WORLD"); // "Hello World"
  * @example
  * toSentenceCase("heLLo"); // "Hello"
+ * @example
+ * toSentenceCase("जागृति (the Wake-up Call)"); // "जागृति (The Wake-up Call)"
  */
 export function toSentenceCase(str: string): string {
   if (!str) return str;
@@ -57,11 +78,17 @@ export function toSentenceCase(str: string): string {
     .toLowerCase()
     .split(/\s+/)
     .map((word, index) => {
-      if (index > 0 && lowercaseWords.has(word)) {
+      // Strip leading/trailing non-letters for lowercase word matching (e.g. "(the" → "the").
+      const strippedWord = word.replace(/^[^a-zA-Z]+|[^a-zA-Z]+$/g, '');
+      const startsWithLetter = /^[a-zA-Z]/.test(word);
+
+      // Only apply lowercase-word rule when the word starts with a letter
+      // (skip for parenthetical prefixes like "(the").
+      if (index > 0 && startsWithLetter && strippedWord && lowercaseWords.has(strippedWord)) {
         return word;
       }
 
-      return word.charAt(0).toUpperCase() + word.slice(1);
+      return capitalizeWord(word);
     })
     .join(' ');
 }
