@@ -278,6 +278,7 @@ async function main() {
   }
 
   ora('Sync completed successfully!').succeed();
+  process.exit(0);
 }
 
 // Execute the main function and handle any uncaught errors
