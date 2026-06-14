@@ -20,6 +20,18 @@ import ora from 'ora';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+// Module-level spinner reference so the Ctrl+C handler can access it
+let spinner: ReturnType<typeof ora> | null = null;
+
+// Listen for raw Ctrl+C on stdin — works even when ora puts stdin in raw mode
+// (which suppresses the SIGINT signal in favour of sending the raw byte).
+process.stdin.on('data', (data: Buffer) => {
+  if (data.length === 1 && data[0] === 3) {
+    spinner?.stop();
+    process.exit(0);
+  }
+});
+
 async function main(): Promise<void> {
   /* ── 1. Load environment variables ── */
   const nodeEnv = process.env.NODE_ENV || 'development';
@@ -41,13 +53,7 @@ async function main(): Promise<void> {
   const supabase = createClient(supabaseUrl, serviceRoleKey);
 
   /* ── 3. Read optimized images from images/optimized/ ── */
-  const spinner = ora('Scanning optimized images…').start();
-
-  // Handle Ctrl+C gracefully — stop the spinner before exiting
-  process.on('SIGINT', () => {
-    spinner.stop();
-    process.exit(0);
-  });
+  spinner = ora('Scanning optimized images…').start();
 
   const srcDir = resolve(__dirname, 'output', 'images', 'optimized');
 
@@ -94,6 +100,7 @@ async function main(): Promise<void> {
   } else {
     spinner.succeed(`${success} images uploaded to bucket '${BUCKET}'.`);
   }
+  process.exit(0);
 }
 
 main().catch((error: Error) => {

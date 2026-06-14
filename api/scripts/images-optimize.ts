@@ -19,6 +19,18 @@ import sharp from 'sharp';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const __filename = fileURLToPath(import.meta.url);
 
+// Module-level spinner reference so the Ctrl+C handler can access it
+let spinner: ReturnType<typeof ora> | null = null;
+
+// Listen for raw Ctrl+C on stdin — works even when ora puts stdin in raw mode
+// (which suppresses the SIGINT signal in favour of sending the raw byte).
+process.stdin.on('data', (data: Buffer) => {
+  if (data.length === 1 && data[0] === 3) {
+    spinner?.stop();
+    process.exit(0);
+  }
+});
+
 /**
  * Optimize a single image buffer to WebP.
  *
@@ -32,13 +44,7 @@ export async function optimizeImage(input: Buffer): Promise<Buffer> {
 
 async function main(): Promise<void> {
   /* ── 1. Read original images ── */
-  const spinner = ora('Scanning original images…').start();
-
-  // Handle Ctrl+C gracefully — stop the spinner before exiting
-  process.on('SIGINT', () => {
-    spinner.stop();
-    process.exit(0);
-  });
+  spinner = ora('Scanning original images…').start();
 
   const srcDir = resolve(__dirname, 'output', 'images', 'original');
 
@@ -81,6 +87,7 @@ async function main(): Promise<void> {
   }
 
   spinner.succeed(`${files.length} WebP images written to output/images/optimized/`);
+  process.exit(1);
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === __filename) {

@@ -19,6 +19,18 @@ import ora from 'ora';
 import { loadScriptEnv } from './lib/env';
 import { createSupabaseClient } from './lib/supabase';
 
+// Module-level spinner reference so the Ctrl+C handler can access it
+let spinner: ReturnType<typeof ora> | null = null;
+
+// Listen for raw Ctrl+C on stdin — works even when ora puts stdin in raw mode
+// (which suppresses the SIGINT signal in favour of sending the raw byte).
+process.stdin.on('data', (data: Buffer) => {
+  if (data.length === 1 && data[0] === 3) {
+    spinner?.stop();
+    process.exit(0);
+  }
+});
+
 /**
  * Main function that fetches tags with post counts and writes them to a file.
  */
@@ -27,13 +39,7 @@ async function main(): Promise<void> {
   const supabase = createSupabaseClient(env);
 
   /* ── 1. Fetch tags with post count ── */
-  const spinner = ora('Fetching tags from database…').start();
-
-  // Handle Ctrl+C gracefully — stop the spinner before exiting
-  process.on('SIGINT', () => {
-    spinner.stop();
-    process.exit(0);
-  });
+  spinner = ora('Fetching tags from database…').start();
 
   const { data, error } = await supabase
     .from('tags')
@@ -50,7 +56,7 @@ async function main(): Promise<void> {
   spinner.succeed(`Fetched ${tags.length} tags`);
 
   /* ── 2. Build content ── */
-  const savingSpinner = ora('Writing tags file…').start();
+  spinner = ora('Writing tags file…').start();
 
   const lines = tags.map((tag) => `${String(tag.name)}: ${Array.isArray(tag.post_tags) ? tag.post_tags.length : 0}`);
   const content = lines.join('\n');
@@ -62,7 +68,8 @@ async function main(): Promise<void> {
   await fs.mkdir(outputDir, { recursive: true });
   await fs.writeFile(outputPath, content + '\n', 'utf-8');
 
-  savingSpinner.succeed(`Wrote ${tags.length} tags to ${outputPath}`);
+  spinner.succeed(`Wrote ${tags.length} tags to ${outputPath}`);
+  process.exit(0);
 }
 
 main().catch((error) => {

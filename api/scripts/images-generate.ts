@@ -20,6 +20,18 @@ import ora from 'ora';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const __filename = fileURLToPath(import.meta.url);
 
+// Module-level spinner reference so the Ctrl+C handler can access it
+let spinner: ReturnType<typeof ora> | null = null;
+
+// Listen for raw Ctrl+C on stdin — works even when ora puts stdin in raw mode
+// (which suppresses the SIGINT signal in favour of sending the raw byte).
+process.stdin.on('data', (data: Buffer) => {
+  if (data.length === 1 && data[0] === 3) {
+    spinner?.stop();
+    process.exit(0);
+  }
+});
+
 async function main(): Promise<void> {
   /* ── 1. Parse CLI args ── */
   const args = process.argv.slice(2);
@@ -35,13 +47,7 @@ async function main(): Promise<void> {
   }
 
   /* ── 2. Read couplets data ── */
-  const spinner = ora('Reading couplets data…').start();
-
-  // Handle Ctrl+C gracefully — stop the spinner before exiting
-  process.on('SIGINT', () => {
-    spinner.stop();
-    process.exit(0);
-  });
+  spinner = ora('Reading couplets data…').start();
 
   const dataPath = resolve(__dirname, 'output', 'data', 'couplets.json');
   const raw = await readFile(dataPath, 'utf-8');
@@ -109,6 +115,7 @@ async function main(): Promise<void> {
   }
 
   spinner.succeed(`${filtered.length} image(s) generated in output/images/original/`);
+  process.exit(0);
 }
 
 /**
