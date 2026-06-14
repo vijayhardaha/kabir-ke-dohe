@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 
 import type { Metadata } from 'next';
 
-import { getCategoryBySlug } from '@/constants/categories';
+import { fetchCategoryBySlug } from '@/lib/server/couplets';
 import { handlePageRedirect, parseSortParams } from '@/lib/server/page-utils';
 import { buildMetadata } from '@/lib/utils/meta';
 
@@ -17,12 +17,13 @@ import { CategoryArchiveContent } from '../_components/CategoryArchiveContent';
  */
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const category = getCategoryBySlug(slug);
+  const category = await fetchCategoryBySlug(slug);
   const name = category?.name ?? slug;
 
   return buildMetadata({
     title: `${name} Couplets`,
-    description: `Browse Kabir's dohas in the ${name} category — spiritual wisdom and life lessons.`,
+    description:
+      category?.meta_description ?? `Browse Kabir's dohas in the ${name} category — spiritual wisdom and life lessons.`,
     path: `category/${slug}`,
   });
 }

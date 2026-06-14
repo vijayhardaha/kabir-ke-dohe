@@ -9,7 +9,6 @@ import { Container } from '@/components/layout/Container';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
-import { getCategoryBySlug } from '@/constants/categories';
 import { fetchCategoryBySlug, getCouplets } from '@/lib/server/couplets';
 import type { GetCoupletsOptions } from '@/lib/server/couplets';
 import { globalSchema } from '@/lib/utils/schema';
@@ -31,18 +30,14 @@ interface CategoryArchiveContentProps {
 
 /**
  * Shared category archive content used by both the base and paginated routes.
- * Validates the slug, fetches the category and couplets, and renders the full page layout.
+ * Validates the slug against the database, fetches the category and couplets, and renders the full page layout.
  *
  * @param {CategoryArchiveContentProps} props - Component props.
  *
  * @returns {Promise<JSX.Element>} The category archive page content.
  */
 export async function CategoryArchiveContent({ slug, page, sort }: CategoryArchiveContentProps): Promise<JSX.Element> {
-  // Validate slug against predefined categories first
-  if (!getCategoryBySlug(slug)) {
-    notFound();
-  }
-
+  // Validate slug against the database
   const category = await fetchCategoryBySlug(slug);
 
   if (!category) {
