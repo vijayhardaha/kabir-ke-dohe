@@ -156,4 +156,34 @@ describe('toSentenceCase', () => {
     // Assert the expected outcome for this scenario.
     expect(toSentenceCase('Focus ON Life')).toBe('Focus on Life');
   });
+
+  // Define a focused test case for one behavior.
+  it('should capitalize word after leading parenthesis', () => {
+    // Assert the expected outcome for this scenario.
+    expect(toSentenceCase('(the Wake-up Call)')).toBe('(The Wake-up Call)');
+  });
+
+  // Define a focused test case for one behavior.
+  it('should handle Hindi + English with parenthetical', () => {
+    // Assert the expected outcome for this scenario.
+    expect(toSentenceCase('जागृति (the Wake-up Call)')).toBe('जागृति (The Wake-up Call)');
+  });
+
+  // Define a focused test case for one behavior.
+  it('should handle standalone Hindi words', () => {
+    // Assert the expected outcome for this scenario.
+    expect(toSentenceCase('संतोष (contentment)')).toBe('संतोष (Contentment)');
+  });
+
+  // Define a focused test case for one behavior.
+  it('should handle hyphenated parenthetical', () => {
+    // Assert the expected outcome for this scenario.
+    expect(toSentenceCase('पंडित-मुल्ला विरोध (anti-clericalism)')).toBe('पंडित-मुल्ला विरोध (Anti-clericalism)');
+  });
+
+  // Define a focused test case for one behavior.
+  it('should handle multi-word parentheses', () => {
+    // Assert the expected outcome for this scenario.
+    expect(toSentenceCase('सहज योग (sahaja Yoga)')).toBe('सहज योग (Sahaja Yoga)');
+  });
 });
