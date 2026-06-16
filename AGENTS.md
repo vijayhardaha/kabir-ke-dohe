@@ -28,6 +28,18 @@
 - **VS Code** — `.vscode/settings.json` (root)
 - **Husky** — `.husky/` (root)
 
+## API Routes by Project
+
+### `api/` Package (Documentation + Public API)
+
+- `GET /api/route.ts` — Root API endpoint
+- `GET /api/couplets/route.ts` — Fetch all couplets (supports filtering, sorting, pagination)
+- `GET /api/couplets/search/route.ts` — Full-text search across couplets
+
+### `web/` Package (Web App)
+
+- `POST /api/couplets/view/route.ts` — Track unique couplet views (increments `posts.view_count` via RPC)
+
 ### Tech Stack (`api/`)
 
 - **Type**: Next.js 16 API (App Router)
