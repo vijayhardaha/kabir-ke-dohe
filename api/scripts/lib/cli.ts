@@ -56,7 +56,7 @@ export function handleScriptError(spinner: ReturnType<typeof ora>, message: stri
  * @template T - Type of the data being fetched.
  *
  * @param {(from: number, size: number) => Promise<T[]>} fetcher - Async function that fetches a page of data.
- * @param {number} [pageSize=1000] - Number of items per page.
+ * @param {number} [pageSize] - Number of items per page.
  *
  * @returns {Promise<T[]>} All fetched items from all pages.
  *

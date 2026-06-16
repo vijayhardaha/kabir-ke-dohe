@@ -13,11 +13,11 @@
 
 import ora from 'ora';
 
+import type { Spinner } from './lib/cli';
 import { loadScriptEnv } from './lib/env';
 import { writeTextFile } from './lib/storage';
 import { createSupabaseClient } from './lib/supabase';
 import { TagResponseSchema, type TagResponse } from './lib/types';
-import type { Spinner } from './lib/cli';
 
 // Module-level spinner reference so the Ctrl+C handler can access it
 let spinner: Spinner = null;

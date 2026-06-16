@@ -1,4 +1,4 @@
-import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, writeFile } from 'node:fs/promises';
 import { dirname, extname } from 'node:path';
 
 /**
@@ -29,22 +29,6 @@ export async function readFilesWithExtension(dirPath: string, extension: string)
 }
 
 /**
- * Reads and parses a JSON file.
- *
- * @template T - Type of the parsed JSON content.
- *
- * @param {string} filePath - Path to the JSON file.
- *
- * @returns {Promise<T>} Parsed JSON data.
- *
- * @throws {Error} If the file cannot be read or parsed.
- */
-async function readJsonFile<T>(filePath: string): Promise<T> {
-  const content = await readFile(filePath, 'utf-8');
-  return JSON.parse(content);
-}
-
-/**
  * Writes data to a JSON file with formatting.
  *
  * @param {string} filePath - Path to the output JSON file.
@@ -55,19 +39,6 @@ async function readJsonFile<T>(filePath: string): Promise<T> {
 export async function writeJsonFile(filePath: string, data: unknown): Promise<void> {
   await ensureDir(dirname(filePath));
   await writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
-}
-
-/**
- * Reads a text file.
- *
- * @param {string} filePath - Path to the text file.
- *
- * @returns {Promise<string>} File content as string.
- *
- * @throws {Error} If the file cannot be read.
- */
-async function readTextFile(filePath: string): Promise<string> {
-  return readFile(filePath, 'utf-8');
 }
 
 /**

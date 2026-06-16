@@ -15,10 +15,10 @@ import { fileURLToPath } from 'node:url';
 
 import ora from 'ora';
 
+import type { Spinner } from './lib/cli';
 import { loadScriptEnv } from './lib/env';
 import { readFilesWithExtension } from './lib/storage';
 import { createSupabaseClient } from './lib/supabase';
-import type { Spinner } from './lib/cli';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
