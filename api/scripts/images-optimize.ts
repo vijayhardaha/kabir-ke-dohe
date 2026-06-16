@@ -39,7 +39,7 @@ process.stdin.on('data', (data: Buffer) => {
  * @returns {Promise<Buffer>} WebP-encoded buffer.
  */
 export async function optimizeImage(input: Buffer): Promise<Buffer> {
-  return sharp(input).webp({ quality: 85 }).toBuffer();
+  return sharp(input).resize(1200, 630).webp({ quality: 100 }).toBuffer();
 }
 
 async function main(): Promise<void> {
@@ -87,7 +87,7 @@ async function main(): Promise<void> {
   }
 
   spinner.succeed(`${files.length} WebP images written to output/images/optimized/`);
-  process.exit(1);
+  process.exit(0);
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === __filename) {
