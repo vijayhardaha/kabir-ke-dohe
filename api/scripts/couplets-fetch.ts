@@ -46,27 +46,48 @@ async function main(): Promise<void> {
   const supabase = createSupabaseClient(env);
 
   console.log('[fetch-couplets] Fetching couplets from database...');
-  const { data, error } = await supabase
-    .from('posts')
-    .select('slug, text_hi, meaning_hi, post_number')
-    .eq('post_status', 'publish')
-    .order('post_order', { ascending: true });
 
-  if (error) {
-    console.error('[fetch-couplets] Failed to fetch couplets:', error.message);
-    process.exit(1);
+  const PAGE_SIZE = 1000;
+  const allRows: CoupletRow[] = [];
+  let from = 0;
+  let page = 1;
+
+  while (true) {
+    console.log(`[fetch-couplets] Fetching page ${page} (range: ${from}-${from + PAGE_SIZE - 1})...`);
+
+    const { data, error } = await supabase
+      .from('posts')
+      .select('slug, text_hi, meaning_hi, post_number')
+      .eq('post_status', 'publish')
+      .order('post_order', { ascending: true })
+      .range(from, from + PAGE_SIZE - 1);
+
+    if (error) {
+      console.error('[fetch-couplets] Failed to fetch couplets:', error.message);
+      process.exit(1);
+    }
+
+    const rows = data as CoupletRow[];
+
+    if (rows.length === 0) break;
+
+    allRows.push(...rows);
+
+    // Stop if fewer rows than requested page size (last page)
+    if (rows.length < PAGE_SIZE) break;
+
+    from += PAGE_SIZE;
+    page++;
   }
 
-  const rows = data as CoupletRow[] | null;
-
-  if (!rows || rows.length === 0) {
+  if (allRows.length === 0) {
     console.error('[fetch-couplets] No couplets found in the database.');
     process.exit(1);
   }
 
   // Build map: slug → { text, meaning, post_number }
   const coupletsMap: Record<string, CoupletEntry> = {};
-  for (const row of rows) {
+  for (const row of allRows) {
     coupletsMap[row.slug] = { text: row.text_hi, meaning: row.meaning_hi ?? null, post_number: row.post_number };
   }
 
@@ -77,7 +98,7 @@ async function main(): Promise<void> {
   await fs.mkdir(outputDir, { recursive: true });
   await fs.writeFile(outputPath, JSON.stringify(coupletsMap, null, 2), 'utf-8');
 
-  console.log(`[fetch-couplets] Successfully wrote ${rows.length} couplets to ${outputPath}`);
+  console.log(`[fetch-couplets] Successfully wrote ${allRows.length} couplets across ${page} page(s) to ${outputPath}`);
 }
 
 main().catch((error) => {
