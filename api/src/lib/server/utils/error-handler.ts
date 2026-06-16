@@ -88,7 +88,7 @@ function failure(message: string, status: number = 500): NextResponse {
  */
 function handleError(error: Error): NextResponse {
   // Capture diagnostic fields while avoiding stack traces in production logs.
-  console.error('❌ Error:', {
+  console.error('Error:', {
     name: error.name,
     message: error.message,
     //stack: process.env.NODE_ENV === 'production' ? undefined : error.stack,

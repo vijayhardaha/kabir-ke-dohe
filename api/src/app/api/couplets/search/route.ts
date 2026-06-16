@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { supabase } from '@/lib/server/supabase';
-import { createGetHandler } from '@/lib/server/utils';
+import { createGetHandler, parseQueryParams } from '@/lib/server/utils';
 
 /**
  * Default parameter values for the search API.
@@ -23,31 +23,13 @@ const SearchQuerySchema = z.object({
 type SearchQueryParams = z.infer<typeof SearchQuerySchema>;
 
 /**
- * Parses and validates query parameters from URL search params.
- *
- * @param {URLSearchParams} searchParams - The URL search parameters.
- *
- * @returns {SearchQueryParams} The validated search query parameters.
- */
-function parseQueryParams(searchParams: URLSearchParams): SearchQueryParams {
-  const params: Record<string, unknown> = {};
-
-  searchParams.forEach((value, key) => {
-    params[key] = value;
-  });
-
-  return SearchQuerySchema.parse({ ...DEFAULT_PARAMS, ...params });
-}
-
-/**
  * Searches couplets by text in search_text column.
- * Returns only the text_hi field for each matching result.
  *
  * @param {SearchQueryParams} params - The search query parameters.
  *
  * @returns {Promise<{ posts: string[] }>} Array of matching text_hi strings.
  */
-async function searchCouplets(params: SearchQueryParams): Promise<{ posts: string[] }> {
+async function handleRequest(params: SearchQueryParams): Promise<{ posts: string[] }> {
   const searchTerm = params.search_query?.trim() || '';
   const offset = (params.page - 1) * params.per_page;
 
@@ -68,17 +50,6 @@ async function searchCouplets(params: SearchQueryParams): Promise<{ posts: strin
   return { posts };
 }
 
-/**
- * Handles the search API request and returns formatted response.
- *
- * @param {SearchQueryParams} params - The search query parameters.
- *
- * @returns {Promise<{ posts: string[] }>} The search results.
- */
-async function handleRequest(params: SearchQueryParams): Promise<{ posts: string[] }> {
-  return searchCouplets(params);
-}
-
 /** Edge runtime configuration for the search route. */
 export const runtime = 'edge';
 
@@ -86,4 +57,7 @@ export const runtime = 'edge';
  * GET route handler for the search API.
  * Searches couplets by text in text_hi and text_en columns.
  */
-export const GET = createGetHandler(parseQueryParams, handleRequest);
+export const GET = createGetHandler(
+  (searchParams) => parseQueryParams(searchParams, DEFAULT_PARAMS, SearchQuerySchema) as SearchQueryParams,
+  handleRequest
+);

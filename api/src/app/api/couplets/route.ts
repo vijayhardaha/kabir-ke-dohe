@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { supabase } from '@/lib/server/supabase';
-import { sanitizeTitle, createGetHandler } from '@/lib/server/utils';
+import { sanitizeTitle, createGetHandler, parseQueryParams } from '@/lib/server/utils';
 
 /**
  * Default parameter values for the API.
@@ -25,11 +25,11 @@ const DEFAULT_PARAMS = {
  */
 const QuerySchema = z.object({
   search_query: z.string().optional().default(DEFAULT_PARAMS.search_query),
-  search_content: z.boolean().optional().default(DEFAULT_PARAMS.search_content),
+  search_content: z.coerce.boolean().optional().default(DEFAULT_PARAMS.search_content),
   tags: z.string().optional().default(DEFAULT_PARAMS.tags),
   category: z.string().optional().default(DEFAULT_PARAMS.category),
-  is_popular: z.boolean().optional().default(DEFAULT_PARAMS.is_popular),
-  is_featured: z.boolean().optional().default(DEFAULT_PARAMS.is_featured),
+  is_popular: z.coerce.boolean().optional().default(DEFAULT_PARAMS.is_popular),
+  is_featured: z.coerce.boolean().optional().default(DEFAULT_PARAMS.is_featured),
   sort_by: z
     .string()
     .optional()
@@ -44,9 +44,9 @@ const QuerySchema = z.object({
     .refine((val) => ['asc', 'desc'].includes(val), {
       message: "Invalid sort_order value. Allowed values: 'asc', 'desc'",
     }),
-  page: z.number().int().positive().optional().default(DEFAULT_PARAMS.page),
-  per_page: z.number().int().positive().optional().default(DEFAULT_PARAMS.per_page),
-  pagination: z.boolean().optional().default(DEFAULT_PARAMS.pagination),
+  page: z.coerce.number().int().positive().optional().default(DEFAULT_PARAMS.page),
+  per_page: z.coerce.number().int().positive().max(100).optional().default(DEFAULT_PARAMS.per_page),
+  pagination: z.coerce.boolean().optional().default(DEFAULT_PARAMS.pagination),
 });
 
 /**
@@ -80,52 +80,6 @@ interface Post {
   tags: Array<{ slug: string; name: string }>;
   created_at: string;
   updated_at: string;
-}
-
-/**
- * Parses a string value to boolean for query parameters.
- *
- * @param {string | null | undefined} value - The value to parse.
- *
- * @returns {boolean} The parsed boolean value.
- */
-function parseBoolean(value: string | null | undefined): boolean {
-  return value === 'true' || value === '1' || value === 'yes';
-}
-
-/**
- * Parses a string value to number for query parameters.
- *
- * @param {string | null | undefined} value - The value to parse.
- *
- * @returns {number | undefined} The parsed number or undefined if invalid.
- */
-function parseNumber(value: string | null | undefined): number | undefined {
-  const num = Number(value);
-  return isNaN(num) ? undefined : num;
-}
-
-/**
- * Validates and parses query parameters from URL search params.
- *
- * @param {URLSearchParams} searchParams - The URL search parameters.
- *
- * @returns {QueryParams} The validated and parsed query parameters.
- */
-function parseQueryParams(searchParams: URLSearchParams): QueryParams {
-  const params: Record<string, unknown> = {};
-
-  searchParams.forEach((value, key) => {
-    if (['is_popular', 'is_featured', 'pagination', 'search_content'].includes(key)) {
-      params[key] = parseBoolean(value);
-    } else if (key === 'page' || key === 'per_page') {
-      params[key] = parseNumber(value);
-    } else {
-      params[key] = value;
-    }
-  });
-
-  return QuerySchema.parse({ ...DEFAULT_PARAMS, ...params });
 }
 
 /**
@@ -206,6 +160,8 @@ async function fetchPosts(params: QueryParams): Promise<{ posts: Post[]; total: 
     pagination: params.pagination !== false,
   };
 
+  // RPC: `get_couplets_for_api(filters jsonb)` — defined in supabase/migrations/
+  // Returns paginated posts with total_count, category, and tags relationships
   const { data, error } = await supabase.rpc('get_couplets_for_api', { filters });
 
   if (error) {
@@ -248,4 +204,8 @@ async function handleRequest(
 export const runtime = 'edge';
 
 /** GET route handler for the posts API. */
-export const GET = createGetHandler(parseQueryParams, handleRequest, 'Failed to fetch posts');
+export const GET = createGetHandler(
+  (searchParams) => parseQueryParams(searchParams, DEFAULT_PARAMS, QuerySchema) as QueryParams,
+  handleRequest,
+  'Failed to fetch posts'
+);
