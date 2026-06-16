@@ -431,9 +431,9 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
                           href={`/couplet/${couplet.slug}`}
                           className="bg-muted text-foreground hover:bg-muted/80 group px-5 py-4 no-underline transition-colors"
                         >
-                          <p className="group-hover:text-primary mb-2 text-base leading-snug font-bold transition-colors">
+                          <h3 className="group-hover:text-primary mb-2 text-base leading-snug font-bold transition-colors">
                             {formatDoha(couplet.text_hi)}
-                          </p>
+                          </h3>
                           {couplet.tags.length > 0 && (
                             <div className="mt-2 flex flex-wrap gap-1.5">
                               {couplet.tags.slice(0, 3).map((tag) => (
