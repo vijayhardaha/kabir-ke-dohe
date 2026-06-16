@@ -271,9 +271,11 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
                   </Link>
                 )}
 
-                <CoupletImage slug={post.slug} text={post.text_hi} />
+                <div className="mb-6">
+                  <CoupletImage slug={post.slug} text={post.text_hi} />
+                </div>
 
-                <h1 className="text-foreground mb-2 text-2xl leading-tight md:text-3xl lg:text-4xl xl:text-5xl">
+                <h1 className="text-foreground mb-4 text-2xl leading-normal md:text-3xl lg:text-4xl xl:text-5xl">
                   {formatDoha(post.text_hi)}
                 </h1>
 
