@@ -43,12 +43,15 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const isAll = args.includes('--all');
   const slug = isAll ? null : args[0];
+  const offsetIndex = args.indexOf('--offset');
+  const offset = isAll && offsetIndex !== -1 ? parseInt(args[offsetIndex + 1], 10) || 0 : 0;
 
   if (!isAll && !slug) {
-    console.error('Usage: bun run couplets:images [--all | <slug>]');
+    console.error('Usage: bun run couplets:images [--all [--offset N] | <slug>]');
     console.error();
-    console.error('  --all     Generate images for every couplet in output/data/couplets.json');
-    console.error('  <slug>    Generate image for a single couplet (e.g. balihari-guru-...)');
+    console.error('  --all               Generate images for every couplet in output/data/couplets.json');
+    console.error('  --offset N          Skip first N couplets (only with --all)');
+    console.error('  <slug>              Generate image for a single couplet (e.g. balihari-guru-...)');
     process.exit(1);
   }
 
@@ -58,7 +61,7 @@ async function main(): Promise<void> {
   const dataPath = resolve(__dirname, 'output', 'data', 'couplets.json');
   const raw = await readFile(dataPath, 'utf-8');
   const couplets = JSON.parse(raw) as Record<string, CoupletEntry>;
-  const entries = Object.entries(couplets);
+  let entries = Object.entries(couplets);
 
   if (entries.length === 0) {
     spinner.fail("No couplets found in output/data/couplets.json. Run 'couplets:fetch' first.");
@@ -66,10 +69,16 @@ async function main(): Promise<void> {
   }
 
   /* ── 3. Filter entries ── */
-  const filtered = isAll ? entries : entries.filter(([s]) => s === slug);
+  let filtered = isAll ? entries : entries.filter(([s]) => s === slug);
+
+  // Apply offset: skip first N records
+  if (isAll && offset > 0) {
+    filtered = filtered.slice(offset);
+    spinner.text = `Skipped first ${offset} couplets, processing ${filtered.length} remaining`;
+  }
 
   if (filtered.length === 0) {
-    spinner.fail(`No couplet found with slug "${slug}".`);
+    spinner.fail(isAll ? `No couplets remaining after offset ${offset}.` : `No couplet found with slug "${slug}".`);
     process.exit(1);
   }
 
