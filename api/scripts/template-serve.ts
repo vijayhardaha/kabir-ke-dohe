@@ -53,7 +53,7 @@ const COLOR_PALETTES: Record<string, ColorPalette> = {
 };
 
 /** Sample color palette for visual preview (color-3: dark red). */
-const SAMPLE_PALETTE = COLOR_PALETTES['color-8'];
+const SAMPLE_PALETTE = COLOR_PALETTES['color-9'];
 
 /**
  * Generates 5 progressive shades from a base hex color by blending with white.
@@ -146,10 +146,10 @@ function generateVariants(hex: string): { heading: string; description: string }
     }
   }
 
-  return { heading: hslToHex(h * 360, s * 100, 96), description: hslToHex(h * 360, s * 100, 88) };
+  return { heading: hslToHex(h * 360, s * 100, 96), description: hslToHex(h * 360, s * 100, 90) };
 }
 
-const WEBSITE_URL = 'kabhidohehub.vercel.app';
+const WEBSITE_URL = 'kabirdohehub.vercel.app';
 
 /**
  * Compiles the Handlebars template into a standalone HTML file.

@@ -130,7 +130,7 @@ function generateSvgShades(hexColor: string): string[] {
   return [blend(0.6), blend(0.4), blend(0.25), blend(0.1), hexColor];
 }
 
-const WEBSITE_URL = 'kabhidohehub.vercel.app';
+const WEBSITE_URL = 'kabirdohehub.vercel.app';
 
 /**
  * Returns a color palette based on the post number using modulo arithmetic.
