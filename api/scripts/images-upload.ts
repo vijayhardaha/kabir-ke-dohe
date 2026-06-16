@@ -1,27 +1,29 @@
 #!/usr/bin/env bun
 /**
- * Uploads optimized couplet images from images/optimized/ to Supabase Storage.
+ * Uploads optimized couplet images to Supabase Storage.
  *
- * Reads all WebP files from output/images/optimized/, uploads each to the `couplet-images`
- * bucket with the slug as the file name (e.g. `balihari-guru-....webp`).
+ * Reads all WebP files from output/images/optimized/ and uploads each to the
+ * `couplet-images` bucket with the slug as the file name (e.g. `balihari-guru-....webp`).
  *
  * Usage:
  *   bun run couplets:images:upload            # dev (uses .env.local)
  *   bun run couplets:images:upload:prod       # production (uses .env.production)
  */
 
-import { readdir, readFile } from 'node:fs/promises';
-import { resolve, extname, dirname } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { createClient } from '@supabase/supabase-js';
-import dotenv from 'dotenv';
 import ora from 'ora';
+
+import { loadScriptEnv } from './lib/env';
+import { readFilesWithExtension } from './lib/storage';
+import { createSupabaseClient } from './lib/supabase';
+import type { Spinner } from './lib/cli';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Module-level spinner reference so the Ctrl+C handler can access it
-let spinner: ReturnType<typeof ora> | null = null;
+let spinner: Spinner = null;
 
 // Listen for raw Ctrl+C on stdin — works even when ora puts stdin in raw mode
 // (which suppresses the SIGINT signal in favour of sending the raw byte).
@@ -32,42 +34,38 @@ process.stdin.on('data', (data: Buffer) => {
   }
 });
 
+/**
+ * Main function for uploading images to Supabase Storage.
+ *
+ * @returns {Promise<void>}
+ */
 async function main(): Promise<void> {
   /* ── 1. Load environment variables ── */
-  const nodeEnv = process.env.NODE_ENV || 'development';
-  const envFile = resolve(process.cwd(), nodeEnv === 'production' ? '.env.production' : '.env.local');
+  spinner = ora('Loading environment...').start();
 
-  dotenv.config({ path: envFile, override: true });
-
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  if (!supabaseUrl || !serviceRoleKey) {
-    console.error(
-      'Missing Supabase environment variables. Ensure NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set.'
-    );
+  let env;
+  try {
+    env = loadScriptEnv();
+    spinner.succeed('Environment loaded (' + env.NODE_ENV + ' mode)');
+  } catch (error) {
+    spinner.fail('Failed to load environment: ' + (error as Error).message);
     process.exit(1);
   }
 
-  /* ── 2. Create Supabase client (service role for storage write access) ── */
-  const supabase = createClient(supabaseUrl, serviceRoleKey);
+  /* ── 2. Create Supabase client ── */
+  spinner.start('Creating Supabase client...');
+  const supabase = createSupabaseClient(env);
+  spinner.succeed('Supabase client created');
 
-  /* ── 3. Read optimized images from images/optimized/ ── */
-  spinner = ora('Scanning optimized images…').start();
+  /* ── 3. Read optimized images ── */
+  spinner.start('Scanning optimized images...');
 
   const srcDir = resolve(__dirname, 'output', 'images', 'optimized');
-
-  let files: string[];
-  try {
-    files = (await readdir(srcDir)).filter((f) => extname(f).toLowerCase() === '.webp').sort();
-  } catch {
-    spinner.fail("No output/images/optimized/ directory found. Run 'couplets:images:optimize' first.");
-    process.exit(1);
-  }
+  const files = await readFilesWithExtension(srcDir, '.webp');
 
   if (files.length === 0) {
     spinner.fail("No WebP files found in output/images/optimized/. Run 'couplets:images:optimize' first.");
-    return;
+    process.exit(1);
   }
 
   /* ── 4. Upload each image ── */
@@ -75,11 +73,12 @@ async function main(): Promise<void> {
   let success = 0;
   let failed = 0;
 
-  spinner.text = `Uploading ${files.length} WebP images to bucket '${BUCKET}'…`;
+  spinner.start(`Uploading ${files.length} WebP images...`);
 
   for (let i = 0; i < files.length; i++) {
     const fileName = files[i];
     const filePath = resolve(srcDir, fileName);
+    const { readFile } = await import('node:fs/promises');
     const fileBuffer = await readFile(filePath);
 
     const { error } = await supabase.storage
@@ -87,12 +86,12 @@ async function main(): Promise<void> {
       .upload(fileName, fileBuffer, { contentType: 'image/webp', upsert: true });
 
     if (error) {
-      spinner.text = `✗ ${fileName} — ${error.message}`;
       failed++;
     } else {
-      spinner.text = `${i + 1}/${files.length}  ✓ ${fileName}`;
       success++;
     }
+
+    spinner.text = `Uploading... (${success + failed}/${files.length})`;
   }
 
   if (failed > 0) {

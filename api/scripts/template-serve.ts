@@ -21,6 +21,8 @@ import browserSync from 'browser-sync';
 import { watch } from 'chokidar';
 import juice from 'juice';
 
+import { COLOR_PALETTES, generateVariants, generateSvgShades } from './lib/colors';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const TEMPLATES_DIR = resolve(__dirname, 'templates');
 const HBS_PATH = resolve(TEMPLATES_DIR, 'quote-card.hbs');
@@ -34,120 +36,8 @@ const SAMPLE_TEXT = `बलिहारी गुरु आपनो, घड़�
 /** Sample meaning for visual preview. */
 const SAMPLE_MEANING = `कबीर दास जी कहते हैं कि मैं अपने गुरु पर बार-बार न्योछावर होता हूँ, क्योंकि उन्होंने मुझे मनुष्य की सीमित चेतना से उठाकर देवत्व की उच्च अवस्था तक पहुँचा दिया है, और इस महान आध्यात्मिक रूपांतरण में उन्होंने जरा भी समय नहीं लगाया।`;
 
-/* ── Color palette ── */
-interface ColorPalette {
-  background: string;
-}
-
-const COLOR_PALETTES: Record<string, ColorPalette> = {
-  'color-1': { background: '#4B0082' },
-  'color-2': { background: '#006064' },
-  'color-3': { background: '#8B0000' },
-  'color-4': { background: '#B8860B' },
-  'color-5': { background: '#2E8B57' },
-  'color-6': { background: '#C71585' },
-  'color-7': { background: '#483D8B' },
-  'color-8': { background: '#c96b17' },
-  'color-9': { background: '#1A5276' },
-  'color-10': { background: '#556B2F' },
-};
-
-/** Sample color palette for visual preview (color-3: dark red). */
+/** Sample color palette for visual preview (color-9: dark blue). */
 const SAMPLE_PALETTE = COLOR_PALETTES['color-9'];
-
-/**
- * Generates 5 progressive shades from a base hex color by blending with white.
- *
- * Uses blend factors 0.6, 0.4, 0.25, 0.1, and 0 to produce a smooth
- * visual progression from the lightest tint to the original base color.
- * The output is used to color each layer of the 5-path SVG background.
- *
- * @param {string} hexColor - Base hex color (e.g. "#4B0082").
- *
- * @returns {string[]} Array of 5 hex colors from lightest (index 0) to darkest (index 4, the base color).
- */
-function generateSvgShades(hexColor: string): string[] {
-  const r = parseInt(hexColor.slice(1, 3), 16);
-  const g = parseInt(hexColor.slice(3, 5), 16);
-  const b = parseInt(hexColor.slice(5, 7), 16);
-
-  const blend = (amount: number): string => {
-    const nr = Math.round(r + (255 - r) * amount);
-    const ng = Math.round(g + (255 - g) * amount);
-    const nb = Math.round(b + (255 - b) * amount);
-    return `#${nr.toString(16).padStart(2, '0')}${ng.toString(16).padStart(2, '0')}${nb.toString(16).padStart(2, '0')}`;
-  };
-
-  return [blend(0.6), blend(0.4), blend(0.25), blend(0.1), hexColor];
-}
-
-/**
- * Converts HSL values to a hex color string.
- *
- * @param {number} h - Hue (0–360).
- * @param {number} s - Saturation (0–100).
- * @param {number} l - Lightness (0–100).
- *
- * @returns {string} Hex color string (uppercase, e.g. "#FFDADA").
- */
-function hslToHex(h: number, s: number, l: number): string {
-  l /= 100;
-  const a = (s * Math.min(l, 1 - l)) / 100;
-  const f = (n: number): string => {
-    const k = (n + h / 30) % 12;
-    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-    return Math.round(255 * color)
-      .toString(16)
-      .padStart(2, '0');
-  };
-  return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
-}
-
-/**
- * Derives heading and description colors from a base hex background color.
- *
- * Converts the base color to HSL, then generates:
- * - heading: same hue + saturation, lightness boosted to 96% (near white)
- * - description: same hue + saturation, lightness boosted to 88% (soft tint)
- *
- * @param {string} hex - Base hex color (e.g. "#8B0000").
- *
- * @returns {{ heading: string; description: string }} Derived heading and description hex colors.
- */
-function generateVariants(hex: string): { heading: string; description: string } {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-
-  const rNorm = r / 255;
-  const gNorm = g / 255;
-  const bNorm = b / 255;
-
-  const max = Math.max(rNorm, gNorm, bNorm);
-  const min = Math.min(rNorm, gNorm, bNorm);
-
-  let h = 0;
-  let s = 0;
-  const l = (max + min) / 2;
-
-  if (max !== min) {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case rNorm:
-        h = ((gNorm - bNorm) / d + (gNorm < bNorm ? 6 : 0)) / 6;
-        break;
-      case gNorm:
-        h = ((bNorm - rNorm) / d + 2) / 6;
-        break;
-      case bNorm:
-        h = ((rNorm - gNorm) / d + 4) / 6;
-        break;
-    }
-  }
-
-  return { heading: hslToHex(h * 360, s * 100, 96), description: hslToHex(h * 360, s * 100, 90) };
-}
 
 const WEBSITE_URL = 'kabirdohehub.vercel.app';
 
@@ -156,6 +46,8 @@ const WEBSITE_URL = 'kabirdohehub.vercel.app';
  *
  * Reads card.css, replaces color variables with sample values, then uses
  * juice to inline all CSS into style attributes on the HTML elements.
+ *
+ * @returns {Promise<void>}
  */
 async function compile(): Promise<void> {
   const [template, cssRaw] = await Promise.all([readFile(HBS_PATH, 'utf-8'), readFile(CSS_PATH, 'utf-8')]);
@@ -164,12 +56,12 @@ async function compile(): Promise<void> {
   const variants = generateVariants(SAMPLE_PALETTE.background);
   const svgColors = generateSvgShades(SAMPLE_PALETTE.background);
 
-  // Resolve CSS color variables with generated variant colors.
+  // Resolve CSS color variables with generated variant colors
   const css = cssRaw
     .replaceAll('{{heading_color}}', variants.heading)
     .replaceAll('{{description_color}}', variants.description);
 
-  // Strip Handlebars helpers ({{#if ...}} / {{/if}}) and replace content + SVG vars
+  // Strip Handlebars helpers and replace content + SVG vars
   let html = template
     .replace(/\{\{#if\s+\w+\}\}/g, '')
     .replace(/\{\{\/if\}\}/g, '')
@@ -188,6 +80,11 @@ async function compile(): Promise<void> {
   await writeFile(HTML_PATH, html);
 }
 
+/**
+ * Main function that initializes the dev server and file watcher.
+ *
+ * @returns {Promise<void>}
+ */
 async function main(): Promise<void> {
   try {
     await compile();

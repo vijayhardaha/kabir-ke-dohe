@@ -6,18 +6,24 @@
  * as a map: slug → { text, meaning, post_number }.
  *
  * Usage:
- *   bun run fetch:couplets        - Run in development mode
- *   bun run fetch:couplets:prod   - Run in production mode
+ *   bun run couplets:fetch        - Run in development mode
+ *   bun run couplets:fetch:prod   - Run in production mode
  */
 
-import fs from 'fs/promises';
-import path from 'path';
-
+import { initSpinner, handleScriptError, fetchPaginated } from './lib/cli';
 import { loadScriptEnv } from './lib/env';
+import { writeJsonFile } from './lib/storage';
 import { createSupabaseClient } from './lib/supabase';
+import { CoupletEntrySchema } from './lib/types';
 
 /**
  * Represents a couplet entry fetched from the database.
+ *
+ * @interface CoupletRow
+ * @property {string} slug - URL-friendly slug.
+ * @property {string} text_hi - Hindi text.
+ * @property {string | null} meaning_hi - Hindi meaning.
+ * @property {number} post_number - Sequential post number.
  */
 interface CoupletRow {
   slug: string;
@@ -27,78 +33,57 @@ interface CoupletRow {
 }
 
 /**
- * Represents a couplet entry in the output JSON file.
- */
-interface CoupletEntry {
-  text: string;
-  meaning: string | null;
-  post_number: number;
-}
-
-/**
  * Main function that fetches couplets and writes them to a JSON file.
+ *
+ * @returns {Promise<void>}
  */
 async function main(): Promise<void> {
-  console.log('[fetch-couplets] Loading environment...');
+  const spinner = initSpinner('[fetch-couplets] Loading environment...');
+
   const env = loadScriptEnv();
+  spinner.succeed('[fetch-couplets] Environment loaded');
 
-  console.log('[fetch-couplets] Creating Supabase client...');
+  spinner.start('[fetch-couplets] Creating Supabase client...');
   const supabase = createSupabaseClient(env);
+  spinner.succeed('[fetch-couplets] Supabase client created');
 
-  console.log('[fetch-couplets] Fetching couplets from database...');
+  spinner.start('[fetch-couplets] Fetching couplets from database...');
 
-  const PAGE_SIZE = 1000;
-  const allRows: CoupletRow[] = [];
-  let from = 0;
-  let page = 1;
-
-  while (true) {
-    console.log(`[fetch-couplets] Fetching page ${page} (range: ${from}-${from + PAGE_SIZE - 1})...`);
-
+  const allRows = await fetchPaginated(async (from, pageSize) => {
     const { data, error } = await supabase
       .from('posts')
       .select('slug, text_hi, meaning_hi, post_number')
       .eq('post_status', 'publish')
       .order('post_order', { ascending: true })
-      .range(from, from + PAGE_SIZE - 1);
+      .range(from, from + pageSize - 1);
 
     if (error) {
-      console.error('[fetch-couplets] Failed to fetch couplets:', error.message);
-      process.exit(1);
+      handleScriptError(spinner, '[fetch-couplets] Failed to fetch couplets', error);
     }
 
-    const rows = data as CoupletRow[];
-
-    if (rows.length === 0) break;
-
-    allRows.push(...rows);
-
-    // Stop if fewer rows than requested page size (last page)
-    if (rows.length < PAGE_SIZE) break;
-
-    from += PAGE_SIZE;
-    page++;
-  }
+    return (data ?? []) as CoupletRow[];
+  }, 1000);
 
   if (allRows.length === 0) {
-    console.error('[fetch-couplets] No couplets found in the database.');
-    process.exit(1);
+    handleScriptError(spinner, '[fetch-couplets] No couplets found in the database');
   }
 
   // Build map: slug → { text, meaning, post_number }
-  const coupletsMap: Record<string, CoupletEntry> = {};
+  const coupletsMap: Record<string, any> = {};
   for (const row of allRows) {
-    coupletsMap[row.slug] = { text: row.text_hi, meaning: row.meaning_hi ?? null, post_number: row.post_number };
+    const entry = CoupletEntrySchema.parse({
+      text: row.text_hi,
+      meaning: row.meaning_hi,
+      post_number: row.post_number,
+    });
+    coupletsMap[row.slug] = entry;
   }
 
   // Write to file
-  const outputDir = path.resolve(import.meta.dirname, 'output', 'data');
-  const outputPath = path.join(outputDir, 'couplets.json');
+  const outputPath = new URL('output/data/couplets.json', import.meta.url);
+  await writeJsonFile(outputPath.pathname, coupletsMap);
 
-  await fs.mkdir(outputDir, { recursive: true });
-  await fs.writeFile(outputPath, JSON.stringify(coupletsMap, null, 2), 'utf-8');
-
-  console.log(`[fetch-couplets] Successfully wrote ${allRows.length} couplets across ${page} page(s) to ${outputPath}`);
+  spinner.succeed(`[fetch-couplets] Successfully wrote ${allRows.length} couplets to output/data/couplets.json`);
 }
 
 main().catch((error) => {

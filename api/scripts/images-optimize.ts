@@ -9,27 +9,14 @@
  *   bun run couplets:images:optimize
  */
 
-import { readdir, mkdir, readFile, writeFile } from 'node:fs/promises';
-import { resolve, extname, dirname, basename } from 'node:path';
+import { readFile, writeFile } from 'node:fs/promises';
+import { resolve, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import ora from 'ora';
 import sharp from 'sharp';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const __filename = fileURLToPath(import.meta.url);
-
-// Module-level spinner reference so the Ctrl+C handler can access it
-let spinner: ReturnType<typeof ora> | null = null;
-
-// Listen for raw Ctrl+C on stdin — works even when ora puts stdin in raw mode
-// (which suppresses the SIGINT signal in favour of sending the raw byte).
-process.stdin.on('data', (data: Buffer) => {
-  if (data.length === 1 && data[0] === 3) {
-    spinner?.stop();
-    process.exit(0);
-  }
-});
+import { initSpinner, handleScriptError } from './lib/cli';
+import { readFilesWithExtension, ensureDir } from './lib/storage';
 
 /**
  * Optimize a single image buffer to WebP.
@@ -42,30 +29,23 @@ export async function optimizeImage(input: Buffer): Promise<Buffer> {
   return sharp(input).resize(1200, 630).webp({ quality: 100 }).toBuffer();
 }
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 async function main(): Promise<void> {
-  /* ── 1. Read original images ── */
-  spinner = ora('Scanning original images…').start();
+  const spinner = initSpinner('Scanning original images...');
 
   const srcDir = resolve(__dirname, 'output', 'images', 'original');
-
-  let files: string[];
-  try {
-    files = (await readdir(srcDir)).filter((f) => extname(f).toLowerCase() === '.jpg').sort();
-  } catch {
-    spinner.fail("No output/images/original/ directory found. Run 'couplets:images' first.");
-    process.exit(1);
-  }
+  const files = await readFilesWithExtension(srcDir, '.jpg');
 
   if (files.length === 0) {
-    spinner.fail("No JPEG files found in output/images/original/. Run 'couplets:images' first.");
-    return;
+    handleScriptError(spinner, "No JPEG files found in output/images/original/. Run 'couplets:images' first.");
   }
 
   /* ── 2. Ensure optimized output directory ── */
   const destDir = resolve(__dirname, 'output', 'images', 'optimized');
-  await mkdir(destDir, { recursive: true });
+  await ensureDir(destDir);
 
-  spinner.text = `Optimizing ${files.length} images to WebP…`;
+  spinner.start(`Optimizing ${files.length} images to WebP...`);
 
   /* ── 3. Optimize each image ── */
   for (let i = 0; i < files.length; i++) {
@@ -79,11 +59,7 @@ async function main(): Promise<void> {
 
     await writeFile(outputPath, optimized);
 
-    const inKB = (buffer.length / 1024).toFixed(1);
-    const outKB = (optimized.length / 1024).toFixed(1);
-    const saved = ((1 - optimized.length / buffer.length) * 100).toFixed(0);
-
-    spinner.text = `${i + 1}/${files.length}  ${webpName}  (${inKB}KB → ${outKB}KB, -${saved}%)`;
+    spinner.text = `Optimizing... (${i + 1}/${files.length})`;
   }
 
   spinner.succeed(`${files.length} WebP images written to output/images/optimized/`);

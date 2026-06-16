@@ -11,16 +11,16 @@
  *   NODE_ENV=production bun run tags:generate
  */
 
-import fs from 'fs/promises';
-import path from 'path';
-
 import ora from 'ora';
 
 import { loadScriptEnv } from './lib/env';
+import { writeTextFile } from './lib/storage';
 import { createSupabaseClient } from './lib/supabase';
+import { TagResponseSchema, type TagResponse } from './lib/types';
+import type { Spinner } from './lib/cli';
 
 // Module-level spinner reference so the Ctrl+C handler can access it
-let spinner: ReturnType<typeof ora> | null = null;
+let spinner: Spinner = null;
 
 // Listen for raw Ctrl+C on stdin — works even when ora puts stdin in raw mode
 // (which suppresses the SIGINT signal in favour of sending the raw byte).
@@ -39,7 +39,7 @@ async function main(): Promise<void> {
   const supabase = createSupabaseClient(env);
 
   /* ── 1. Fetch tags with post count ── */
-  spinner = ora('Fetching tags from database…').start();
+  spinner = ora('Fetching tags from database...').start();
 
   const { data, error } = await supabase
     .from('tags')
@@ -52,23 +52,30 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const tags = (data ?? []) as Array<Record<string, unknown>>;
-  spinner.succeed(`Fetched ${tags.length} tags`);
+  const tags = (data ?? []) as any[];
+  const validated = tags
+    .map((tag) => {
+      try {
+        return TagResponseSchema.parse(tag);
+      } catch {
+        return null;
+      }
+    })
+    .filter((tag): tag is TagResponse => tag !== null);
+
+  spinner.succeed(`Fetched ${validated.length} tags`);
 
   /* ── 2. Build content ── */
-  spinner = ora('Writing tags file…').start();
+  spinner.start('Writing tags file...');
 
-  const lines = tags.map((tag) => `${String(tag.name)}: ${Array.isArray(tag.post_tags) ? tag.post_tags.length : 0}`);
+  const lines = validated.map((tag) => `${tag.name}: ${tag.post_tags.length}`);
   const content = lines.join('\n');
 
   /* ── 3. Write to file ── */
-  const outputDir = path.resolve(import.meta.dirname, 'output', 'data');
-  const outputPath = path.join(outputDir, 'tags.txt');
+  const outputPath = new URL('output/data/tags.txt', import.meta.url);
+  await writeTextFile(outputPath.pathname, content + '\n');
 
-  await fs.mkdir(outputDir, { recursive: true });
-  await fs.writeFile(outputPath, content + '\n', 'utf-8');
-
-  spinner.succeed(`Wrote ${tags.length} tags to ${outputPath}`);
+  spinner.succeed(`Wrote ${validated.length} tags to tags.txt`);
   process.exit(0);
 }
 
