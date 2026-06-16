@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, type JSX } from 'react';
+import { useCallback, useEffect, useState, type JSX } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -40,6 +40,21 @@ export function ArchiveListing({
   const searchParams = useSearchParams();
 
   const currentSortValue = getSortValue(currentSortBy, currentSortOrder, searchParams.get('is_popular'));
+
+  const [shuffledMessages, setShuffledMessages] = useState(KABIR_MESSAGES);
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      const shuffled = [...KABIR_MESSAGES];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      setShuffledMessages(shuffled);
+    }, 0);
+
+    return () => window.clearTimeout(timeout);
+  }, [posts]);
 
   /**
    * Handles sort dropdown changes by updating URL params and resetting to page 1.
@@ -100,11 +115,11 @@ export function ArchiveListing({
               // Only inject up to 4 messages and skip if no more posts remain
               if ((index + 1) % 2 === 0) {
                 const messageIndex = Math.floor((index + 1) / 2) - 1;
-                if (messageIndex < KABIR_MESSAGES.length && index + 1 < posts.length) {
+                if (messageIndex < shuffledMessages.length && index + 1 < posts.length) {
                   elements.push(
                     <InjectedMessage
                       key={`msg-${messageIndex}`}
-                      message={KABIR_MESSAGES[messageIndex]}
+                      message={shuffledMessages[messageIndex]}
                       colorIndex={messageIndex % 3}
                     />
                   );
