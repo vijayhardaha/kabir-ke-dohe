@@ -15,7 +15,6 @@ import { readFile, mkdir, readdir, stat } from 'node:fs/promises';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import juice from 'juice';
 import ora from 'ora';
 
 import { generateVariants, generateSvgShades, getPalette } from './lib/colors';
@@ -44,7 +43,20 @@ async function main(): Promise<void> {
   const isAll = args.includes('--all');
   const slug = isAll ? null : args[0];
   const offsetIndex = args.indexOf('--offset');
-  const offset = isAll && offsetIndex !== -1 ? parseInt(args[offsetIndex + 1], 10) || 0 : 0;
+  let offset = 0;
+
+  if (isAll && offsetIndex !== -1) {
+    const offsetStr = args[offsetIndex + 1];
+    if (!offsetStr || isNaN(Number(offsetStr))) {
+      console.error('Error: --offset value must be a valid number');
+      process.exit(1);
+    }
+    offset = parseInt(offsetStr, 10);
+    if (offset < 0) {
+      console.error('Error: --offset value must be non-negative');
+      process.exit(1);
+    }
+  }
 
   if (!isAll && !slug) {
     console.error('Usage: bun run couplets:images [--all [--offset N] | <slug>]');
@@ -53,6 +65,10 @@ async function main(): Promise<void> {
     console.error('  --offset N          Skip first N couplets (only with --all)');
     console.error('  <slug>              Generate image for a single couplet (e.g. balihari-guru-...)');
     process.exit(1);
+  }
+
+  if (isAll && offset > 0) {
+    console.log(`[images-generate] Using offset: ${offset}`);
   }
 
   /* ── 2. Read couplets data ── */
@@ -73,8 +89,10 @@ async function main(): Promise<void> {
 
   // Apply offset: skip first N records
   if (isAll && offset > 0) {
+    const before = filtered.length;
     filtered = filtered.slice(offset);
-    spinner.text = `Skipped first ${offset} couplets, processing ${filtered.length} remaining`;
+    spinner.succeed(`Skipped first ${offset} couplets (${before} → ${filtered.length} remaining)`);
+    spinner = ora(`Generating ${filtered.length} images...`).start();
   }
 
   if (filtered.length === 0) {
@@ -99,63 +117,85 @@ async function main(): Promise<void> {
     spinner.text = `Using Chrome: ${chromePath}`;
   }
 
-  /* ── 7. Import node-html-to-image ── */
-
-  const { default: generate }: { default: (...args: any[]) => any } = await import('node-html-to-image');
+  /* ── 7. Import Puppeteer ── */
+  const puppeteer = await import('puppeteer');
 
   spinner.text = 'Generating images…';
 
-  /* ── 8. Generate each image (sequential to avoid multiple Puppeteer instances) ── */
-  for (let i = 0; i < filtered.length; i++) {
-    const [s, entry] = filtered[i];
-    const output = resolve(outputDir, `${s}.jpg`);
+  /* ── 8. Batch process: 100 images at a time ── */
+  const BATCH_SIZE = 20;
+  let totalProcessed = 0;
 
-    // Insert line breaks at natural doha line endings (। + space → । + newline)
-    const textWithBreaks = entry.text.replace(/। /g, '।\n');
+  for (let batchStart = 0; batchStart < filtered.length; batchStart += BATCH_SIZE) {
+    const batchEnd = Math.min(batchStart + BATCH_SIZE, filtered.length);
+    const batch = filtered.slice(batchStart, batchEnd);
 
-    // Pick color palette based on post_number
-    const palette = getPalette(entry.post_number);
+    // Build HTML with all couplets in batch
+    const batchCards = batch
+      .map(([_, entry], idx) => {
+        const textWithBreaks = entry.text.replace(/। /g, '।\n');
+        const palette = getPalette(entry.post_number);
+        const variants = generateVariants(palette.background);
+        const svgColors = generateSvgShades(palette.background);
 
-    // Generate heading/description variants and SVG layer shades from the background
-    const variants = generateVariants(palette.background);
-    const svgColors = generateSvgShades(palette.background);
+        const resolvedCss = cssTemplate
+          .replaceAll('{{heading_color}}', variants.heading)
+          .replaceAll('{{description_color}}', variants.description);
 
-    // Resolve CSS color variables with generated variant colors.
-    const resolvedCss = cssTemplate
-      .replaceAll('{{heading_color}}', variants.heading)
-      .replaceAll('{{description_color}}', variants.description);
+        let cardHtml = template
+          .replaceAll('{{couplet_text}}', textWithBreaks)
+          .replaceAll('{{couplet_meaning}}', entry.meaning ?? '')
+          .replaceAll('{{website_url}}', WEBSITE_URL)
+          .replaceAll('{{svg_color_1}}', svgColors[0])
+          .replaceAll('{{svg_color_2}}', svgColors[1])
+          .replaceAll('{{svg_color_3}}', svgColors[2])
+          .replaceAll('{{svg_color_4}}', svgColors[3])
+          .replaceAll('{{svg_color_5}}', svgColors[4]);
 
-    // Inline the CSS into the HTML via juice
-    const inlinedHtml = (juice as (html: string, opts: { extraCss: string }) => string)(template, {
-      extraCss: resolvedCss,
+        // Wrap in div with unique ID for selector
+        return `<style>${resolvedCss}</style><div id="card-${idx}" style="width: 100%">${cardHtml}</div>`;
+      })
+      .join('');
+
+    const batchHtml = `<html><head><style>body { display: flex; flex-direction: column; gap: 20px; margin: 0; width: 100% }</style></head><body>${batchCards}</body></html>`;
+
+    // Launch browser once per batch
+    const browser = await puppeteer.default.launch({
+      executablePath: chromePath ?? undefined,
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 
-    await generate({
-      output,
-      html: inlinedHtml,
-      content: {
-        couplet_text: textWithBreaks,
-        couplet_meaning: entry.meaning ?? '',
-        website_url: WEBSITE_URL,
-        svg_color_1: svgColors[0],
-        svg_color_2: svgColors[1],
-        svg_color_3: svgColors[2],
-        svg_color_4: svgColors[3],
-        svg_color_5: svgColors[4],
-      },
-      type: 'jpeg',
-      quality: 100,
-      puppeteerArgs: {
-        executablePath: chromePath ?? undefined,
-        defaultViewport: { width: 1200, height: 630, deviceScaleFactor: 2 },
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      },
-    });
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1200, height: BATCH_SIZE * 700, deviceScaleFactor: 2 });
+    await page.setContent(batchHtml);
+    await page.waitForFunction(() => document.readyState === 'complete');
+    await page.waitForNetworkIdle();
 
-    spinner.text = `Generating images… (${i + 1}/${filtered.length})`;
+    // Screenshot each card sequentially in same session
+    for (let idx = 0; idx < batch.length; idx++) {
+      const [slug] = batch[idx];
+      const output = resolve(outputDir, `${slug}.jpg`);
+
+      try {
+        // Wait for the element to appear in the DOM
+        await page.waitForSelector(`#card-${idx}`);
+        const element = await page.$(`#card-${idx}`);
+        if (element) {
+          await element.screenshot({ path: output, type: 'jpeg', quality: 100 });
+        }
+      } catch (error) {
+        console.error(`Failed to generate ${slug}:`, (error as Error).message);
+      }
+
+      totalProcessed++;
+      spinner.text = `Generating images… (${totalProcessed}/${filtered.length})`;
+    }
+
+    await browser.close();
   }
 
-  spinner.succeed(`${filtered.length} image(s) generated in output/images/original/`);
+  spinner.succeed(`${totalProcessed} image(s) generated in output/images/original/`);
   process.exit(0);
 }
 
