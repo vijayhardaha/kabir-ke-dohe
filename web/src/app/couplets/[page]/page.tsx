@@ -1,49 +1,25 @@
 import type { JSX } from 'react';
 
-import { breadcrumbSchema } from '@vijayhardaha/schema-builder';
-import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 
-import { ArchiveListing } from '@/components/features/ArchiveListing';
-import { Container } from '@/components/layout/Container';
-import { PageHeader } from '@/components/layout/PageHeader';
-import { PageLayout } from '@/components/layout/PageLayout';
-import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
+import { ArchivePageLayout } from '@/app/couplets/_components/ArchivePageLayout';
+import { buildArchivePageSchema, COUPLETS_CONFIG } from '@/app/couplets/_utils/archive';
 import { getCouplets } from '@/lib/server/couplets';
 import { parseSortParams, validatePageParam } from '@/lib/server/page-utils';
 import { buildMetadata } from '@/lib/utils/meta';
-import { globalSchema, BASE_KEYWORDS, collectionPageSchema } from '@/lib/utils/schema';
-import { siteUrl } from '@/lib/utils/seo';
 
-const seoTitle = "Kabir's Couplets";
-const seoDescription =
-  "Explore the complete collection of Sant Kabir Das's dohas — spiritual wisdom, life truths, and inspiration with Hindi and English meanings.";
-const seoPath = 'couplets';
+/** SEO metadata for the page. */
+export const metadata: Metadata = buildMetadata({
+  title: COUPLETS_CONFIG.seoTitle,
+  description: COUPLETS_CONFIG.seoDescription,
+  path: COUPLETS_CONFIG.seoPath,
+});
 
-export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
-
-/**
- * Props for the paginated couplets archive page.
- *
- * @type {CoupletsPageProps}
- * @property {Promise<{ page: string }>} params - Route parameters containing the page number.
- * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters for sorting.
- */
 interface CoupletsPageProps {
   params: Promise<{ page: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-/**
- * Paginated archive page — handles `/couplets/2`, `/couplets/3`, etc.
- * Redirects to `/couplets` when page is 1 or invalid.
- *
- * @param {CoupletsPageProps} props - Component props.
- * @param {Promise<{ page: string }>} props.params - Route parameters containing the page number.
- * @param {Promise<Record<string, string | string[] | undefined>>} props.searchParams - URL search parameters for sorting.
- *
- * @returns {Promise<JSX.Element>} The paginated couplets archive page.
- */
 export default async function CoupletsPage({ params, searchParams }: CoupletsPageProps): Promise<JSX.Element> {
   const { page: pageStr } = await params;
   const sp = await searchParams;
@@ -57,55 +33,18 @@ export default async function CoupletsPage({ params, searchParams }: CoupletsPag
     sortOrder: sortOrder as 'asc' | 'desc',
   });
 
-  const rootUrl = siteUrl();
-
-  const itemListElement = posts.map((post, idx) => ({
-    '@type': 'ListItem',
-    position: (page - 1) * perPage + idx + 1,
-    url: `${rootUrl}/couplet/${post.slug}`,
-    name: post.text_hi.slice(0, 120),
-  }));
-
-  const pageSchema = [
-    ...globalSchema(),
-    collectionPageSchema(
-      { rootUrl, path: seoPath },
-      {
-        name: `${seoTitle} — Kabir Ke Dohe`,
-        description: seoDescription,
-        keywords: [...BASE_KEYWORDS, 'all couplets', 'Kabir dohe collection', 'paginated'].join(', '),
-        mainEntity: { '@type': 'ItemList', numberOfItems: pagination.total, itemListElement },
-      }
-    ),
-    breadcrumbSchema({
-      rootUrl,
-      items: [
-        { name: 'Home', path: '' },
-        { name: "Kabir's Couplets", path: 'couplets' },
-      ],
-    }),
-  ];
+  const pageSchema = buildArchivePageSchema(COUPLETS_CONFIG, { posts, pagination, page, perPage, extraKeywords: ['paginated'] });
 
   return (
-    <>
-      <JsonLd data={pageSchema} />
-      <PageLayout>
-        <Container>
-          <PageHeader
-            title="कबीर के दोहे (Kabir's Couplets)"
-            description="कबीर के दोहों का संपूर्ण संग्रह — आध्यात्मिक ज्ञान, जीवन के सच और प्रेरणा से भरे Kabir ke dohe, हिंदी और अंग्रेज़ी अर्थ के साथ (Explore the complete collection of Sant Kabir Das's dohas — spiritual wisdom, life truths, and inspiration with Hindi and English meanings)"
-          />
-          <ArchiveListing
-            posts={posts}
-            pagination={pagination}
-            baseUrl="/couplets"
-            currentSortBy={sortBy}
-            currentSortOrder={sortOrder}
-            showSidebar
-            sidebar={<ArchiveSidebar />}
-          />
-        </Container>
-      </PageLayout>
-    </>
+    <ArchivePageLayout
+      pageSchema={pageSchema}
+      pageTitle={COUPLETS_CONFIG.pageTitle}
+      pageDescription={COUPLETS_CONFIG.pageDescription}
+      posts={posts}
+      pagination={pagination}
+      baseUrl="/couplets"
+      currentSortBy={sortBy}
+      currentSortOrder={sortOrder}
+    />
   );
 }

@@ -94,7 +94,7 @@ export function ArchiveListing({
 
   const listingContent = (
     <div>
-      {/* Toolbar: sort + result count */}
+      {/* ── Toolbar: sort + result count ── */}
       {!hideSort && posts.length > 0 && (
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <ResultCount pagination={pagination} />
@@ -102,7 +102,7 @@ export function ArchiveListing({
         </div>
       )}
 
-      {/* Post listing / empty state (WordPress loop pattern) */}
+      {/* ── Post listing / empty state (WordPress loop pattern) ── */}
       {posts.length === 0 ? (
         <ContentNone message={emptyMessage} />
       ) : (
@@ -130,7 +130,7 @@ export function ArchiveListing({
             })}
           </div>
 
-          {/* Pagination */}
+          {/* ── Pagination ── */}
           <div className="mt-10">
             <Pagination
               page={pagination.page}

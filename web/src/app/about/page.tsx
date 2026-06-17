@@ -12,6 +12,8 @@ import { buildMetadata } from '@/lib/utils/meta';
 import { globalSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
+// ── Famous dohas ──────────────────────────────────────────────────────────
+
 /**
  * Famous dohas of Sant Kabir rendered on the about page.
  * Each entry is a tuple of [firstLine, secondLine].
@@ -42,11 +44,14 @@ const FAMOUS_DOHAS: Array<[string, string]> = [
 const SITE_DESCRIPTION =
   'Learn about the life, teachings, and legacy of Sant Kabir Das, the 15th-century mystic poet whose dohas continue to inspire millions with spiritual wisdom.';
 
+/** SEO metadata for the page. */
 export const metadata: Metadata = buildMetadata({
   title: 'About Sant Kabir Das',
   description: SITE_DESCRIPTION,
   path: 'about',
 });
+
+// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
 const rootUrl = siteUrl();
 const aboutSchema = [

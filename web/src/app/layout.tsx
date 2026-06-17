@@ -10,6 +10,9 @@ import { fontClassNames } from '@/lib/utils/fonts';
 
 import './globals.css';
 
+/**
+ * Global metadata for the application.
+ */
 export const metadata: Metadata = SITE_METADATA;
 
 /**
@@ -35,6 +38,7 @@ export default function RootLayout({ children }: { children: ReactNode }): JSX.E
         <div className="flex min-h-screen flex-col">
           <Header />
           <main id="main-content" className="flex-1" tabIndex={-1}>
+            {/* ═══════════════ PAGE CONTENT ═══════════════ */}
             {children}
           </main>
           <Footer />

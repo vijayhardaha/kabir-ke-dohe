@@ -11,11 +11,14 @@ import { buildMetadata } from '@/lib/utils/meta';
 import { globalSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
+/** SEO metadata for the page. */
 export const metadata: Metadata = buildMetadata({
   title: '404 - Page Not Found',
   description: 'The requested page could not be found.',
   path: '404',
 });
+
+// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
 const rootUrl = siteUrl();
 const notFoundSchema = [

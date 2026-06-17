@@ -134,6 +134,7 @@ export default function HeroCarousel({ slides }: HeroCarouselProps): JSX.Element
       </div>
 
       {/* Pagination dots */}
+      {/* ── Pagination dots ── */}
       {totalSlides > 1 && (
         <div className="mt-6 flex items-center justify-center gap-2.5">
           {slides.map((_, index) => (

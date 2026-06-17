@@ -11,42 +11,35 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { ButtonLink } from '@/components/ui/Button';
 import { CATEGORIES } from '@/constants/categories';
 import { getCategories } from '@/lib/server/couplets';
-import { buildMetadata } from '@/lib/utils/meta';
-import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
+import { buildMetadata, buildSeoTitle } from '@/lib/utils/meta';
+import { buildKeywords, globalSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
-const CATEGORIES_DESCRIPTION =
-  "Browse Kabir's dohas organised by theme — each category offers a unique lens on his spiritual and philosophical teachings.";
+// ── SEO ───────────────────────────────────────────────────────────────────
 
-export const metadata: Metadata = buildMetadata({
-  title: 'Categories',
-  description: CATEGORIES_DESCRIPTION,
-  path: 'categories',
-});
+const seoTitle = 'Categories';
+const seoDescription =
+  "Browse Kabir's dohas organised by theme — each category offers a unique lens on his spiritual and philosophical teachings.";
+const seoPath = 'categories';
+const seoKeywords = ['Kabir categories', 'doha themes', 'spiritual topics', 'Kabir teachings by category'];
+
+/** SEO metadata for the page. */
+export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
+
+// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
 const rootUrl = siteUrl();
-const categoriesSchema = [
+const pageSchema = [
   ...globalSchema(),
   webPageSchema(
-    { rootUrl, path: 'categories' },
-    {
-      name: 'Categories — Kabir Ke Dohe',
-      description:
-        "Browse Kabir's dohas organised by theme — each category offers a unique lens on his spiritual and philosophical teachings.",
-      keywords: [
-        ...BASE_KEYWORDS,
-        'Kabir categories',
-        'doha themes',
-        'spiritual topics',
-        'Kabir teachings by category',
-      ].join(', '),
-    }
+    { rootUrl, path: seoPath },
+    { name: buildSeoTitle(seoTitle, true), description: seoDescription, keywords: buildKeywords(seoKeywords) }
   ),
   breadcrumbSchema({
     rootUrl,
     items: [
       { name: 'Home', path: '' },
-      { name: 'Categories', path: 'categories' },
+      { name: 'Categories', path: seoPath },
     ],
   }),
 ];
@@ -71,7 +64,7 @@ export default async function CategoriesPage(): Promise<JSX.Element> {
 
   return (
     <>
-      <JsonLd data={categoriesSchema} />
+      <JsonLd data={pageSchema} />
       <PageLayout>
         <Container>
           <PageHeader
@@ -92,9 +85,7 @@ export default async function CategoriesPage(): Promise<JSX.Element> {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Category card sub-component
-// ---------------------------------------------------------------------------
+// ── Category card sub-component ──────────────────────────────────────────
 
 /**
  * Props for the {@link CategoryCard} component.

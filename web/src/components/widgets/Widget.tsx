@@ -6,6 +6,8 @@ import type { JSX, ReactNode } from 'react';
  * @type {WidgetProps}
  * @property {ReactNode} children - Content to render inside the bg-card wrapper.
  */
+// ── Container ─────────────────────────────────────────────────────────────
+
 interface WidgetProps {
   children: ReactNode;
 }
@@ -32,6 +34,8 @@ interface WidgetHeaderProps {
   children: ReactNode;
 }
 
+// ── Header ────────────────────────────────────────────────────────────────
+
 /**
  * Reusable widget header with a dashed bottom border.
  * Used across archive sidebar widgets for consistent heading styling.
@@ -57,6 +61,8 @@ export function WidgetHeader({ children }: WidgetHeaderProps): JSX.Element {
 interface WidgetContentProps {
   children: ReactNode;
 }
+
+// ── Content ───────────────────────────────────────────────────────────────
 
 /**
  * Reusable widget content wrapper with standard padding.

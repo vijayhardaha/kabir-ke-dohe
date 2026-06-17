@@ -8,32 +8,34 @@ import { Container } from '@/components/layout/Container';
 import { ContactSection, LegalSection } from '@/components/layout/LegalSection';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { buildMetadata } from '@/lib/utils/meta';
-import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
+import { buildMetadata, buildSeoTitle } from '@/lib/utils/meta';
+import { buildKeywords, globalSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
-export const metadata: Metadata = buildMetadata({
-  title: 'Privacy Policy',
-  description: 'Privacy policy for Kabir Ke Dohe — how we collect, use, and protect your information.',
-  path: 'privacy',
-});
+// ── SEO ───────────────────────────────────────────────────────────────────
+
+const seoTitle = 'Privacy Policy';
+const seoDescription = 'Privacy policy for Kabir Ke Dohe — how we collect, use, and protect your information.';
+const seoPath = 'privacy';
+const seoKeywords = ['privacy policy', 'data protection'];
+
+/** SEO metadata for the page. */
+export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
+
+// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
 const rootUrl = siteUrl();
-const privacySchema = [
+const pageSchema = [
   ...globalSchema(),
   webPageSchema(
-    { rootUrl, path: 'privacy' },
-    {
-      name: 'Privacy Policy — Kabir Ke Dohe',
-      description: 'Privacy policy for Kabir Ke Dohe — how we collect, use, and protect your information.',
-      keywords: [...BASE_KEYWORDS, 'privacy policy', 'data protection'].join(', '),
-    }
+    { rootUrl, path: seoPath },
+    { name: buildSeoTitle(seoTitle, true), description: seoDescription, keywords: buildKeywords(seoKeywords) }
   ),
   breadcrumbSchema({
     rootUrl,
     items: [
       { name: 'Home', path: '' },
-      { name: 'Privacy Policy', path: 'privacy' },
+      { name: 'Privacy Policy', path: seoPath },
     ],
   }),
 ];
@@ -46,7 +48,7 @@ const privacySchema = [
 export default function PrivacyPage(): JSX.Element {
   return (
     <>
-      <JsonLd data={privacySchema} />
+      <JsonLd data={pageSchema} />
       <PageLayout>
         <Container>
           <PageHeader title="Privacy Policy" description="Last updated: June 5, 2026" />

@@ -16,19 +16,19 @@ import { buildMetadata } from '@/lib/utils/meta';
 import { globalSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
-/**
- * Home page featuring hero section, featured, popular, and latest couplets.
- *
- * @returns {Promise<JSX.Element>} The homepage with curated couplet sections.
- */
+// ── Site description ──────────────────────────────────────────────────────
+
 const SITE_DESCRIPTION =
   "Explore the timeless wisdom of Sant Kabir through his dohas (couplets). Read, learn, and reflect on the spiritual teachings of one of India's most revered poets with Hindi and English translations.";
 
+/** SEO metadata for the page. */
 export const metadata: Metadata = buildMetadata({
   title: 'Kabir Ke Dohe - Wisdom of Sant Kabir',
   description: SITE_DESCRIPTION,
   path: '',
 });
+
+// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
 const rootUrl = siteUrl();
 const homeSchema = [
@@ -119,12 +119,13 @@ export default async function HomePage(): Promise<JSX.Element> {
     <>
       <JsonLd data={homeSchema} />
       <PageLayout className="pt-0">
-        {/* Hero Section */}
+
+        {/* ═══════════════ HERO SECTION ═══════════════ */}
         <section className="bg-primary relative overflow-hidden">
           <div className="from-primary/50 absolute inset-0 bg-linear-to-br to-transparent" />
           <Container className="relative py-12 md:py-20">
             <div className="flex flex-col items-center gap-20 lg:flex-row lg:items-center lg:gap-10">
-              {/* Left: Hero text */}
+              {/* ── Hero text ── */}
               <div className="max-w-xl text-center lg:flex-1 lg:text-left">
                 <h1 className="mb-4 text-4xl leading-tight font-bold text-white md:text-5xl lg:text-6xl">
                   Wisdom of Sant Kabir
@@ -143,7 +144,7 @@ export default async function HomePage(): Promise<JSX.Element> {
                 </div>
               </div>
 
-              {/* Right: Carousel */}
+              {/* ── Carousel ── */}
               <div className="flex w-full justify-center lg:w-auto lg:flex-1 lg:justify-end">
                 <HeroCarousel
                   slides={carouselCouplets.map((c) => ({ slug: c.slug, text_hi: c.text_hi, meaning_hi: c.meaning_hi }))}
@@ -153,7 +154,7 @@ export default async function HomePage(): Promise<JSX.Element> {
           </Container>
         </section>
 
-        {/* Featured Couplets */}
+        {/* ═══════════════ FEATURED COUPLETS ═══════════════ */}
         {featured.length > 0 && (
           <>
             <Container className="py-16">
@@ -191,7 +192,7 @@ export default async function HomePage(): Promise<JSX.Element> {
           </>
         )}
 
-        {/* Popular Couplets */}
+        {/* ═══════════════ POPULAR COUPLETS ═══════════════ */}
         {popular.length > 0 && (
           <>
             <section className="bg-muted">
@@ -231,7 +232,7 @@ export default async function HomePage(): Promise<JSX.Element> {
           </>
         )}
 
-        {/* Latest Couplets */}
+        {/* ═══════════════ LATEST COUPLETS ═══════════════ */}
         <Container className="py-16">
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>

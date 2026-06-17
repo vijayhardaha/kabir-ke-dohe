@@ -12,6 +12,8 @@ import { cn } from '@/lib/utils/cn';
  *
  * @type {ButtonVariant}
  */
+// ── Types ─────────────────────────────────────────────────────────────────
+
 type ButtonVariant =
   | 'primary'
   | 'secondary'

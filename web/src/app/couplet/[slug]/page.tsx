@@ -25,7 +25,7 @@ import { getCoupletBySlug, getAdjacentCouplets, getRelatedCouplets } from '@/lib
 import { formatDoha } from '@/lib/utils/doha';
 import { buildMetadata } from '@/lib/utils/meta';
 import { getOgImageUrl } from '@/lib/utils/og-image';
-import { globalSchema, BASE_KEYWORDS, blogPostingSchema } from '@/lib/utils/schema';
+import { buildKeywords, globalSchema, blogPostingSchema } from '@/lib/utils/schema';
 import { getPermaLink, siteUrl } from '@/lib/utils/seo';
 
 /**
@@ -54,6 +54,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   });
 }
 
+// ── Types ─────────────────────────────────────────────────────────────────
+
 /**
  * A single content section within a couplet detail page.
  *
@@ -67,6 +69,8 @@ interface SectionData {
   contentHi: string | null;
   contentEn: string | null;
 }
+
+// ── Share button ──────────────────────────────────────────────────────────
 
 /**
  * A social media share button rendered as an anchor link.
@@ -103,6 +107,8 @@ function ShareButton({ href, label, children }: { href: string; label: string; c
 interface SingleCoupletPageProps {
   params: Promise<{ slug: string }>;
 }
+
+// ── Render helpers ─────────────────────────────────────────────────────────
 
 /**
  * Set of section titles whose content should render as bullet points instead of prose.
@@ -200,7 +206,7 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
   );
   const postUrl = getPermaLink(`/couplet/${post.slug}`);
 
-  const brandKeywords = [...BASE_KEYWORDS, post.category?.name ?? '', ...post.tags.map((t) => t.name)].filter(Boolean);
+  const brandKeywords = buildKeywords([post.category?.name ?? '', ...post.tags.map((t) => t.name)]);
   const rootUrl = siteUrl();
   const coupletPath = `couplet/${post.slug}`;
 
@@ -211,7 +217,7 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
       {
         name: `${post.text_hi.slice(0, 60)} — Kabir Ke Dohe`,
         description: `${post.text_hi} — ${post.text_en}`.slice(0, 300),
-        keywords: [...new Set(brandKeywords)].join(', '),
+        keywords: brandKeywords,
       }
     ),
     blogPostingSchema(
@@ -219,7 +225,7 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
       {
         headline: post.text_hi.slice(0, 200),
         description: `${post.text_hi} — ${post.text_en}`.slice(0, 300),
-        image: getOgImageUrl(post.slug) ?? '',
+        image: getOgImageUrl(`couplet/${post.slug}`) ?? '',
         datePublished: post.created_at,
         dateModified: post.updated_at,
         author: { '@type': 'Person', name: 'Sant Kabir Das' },
@@ -272,7 +278,8 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
         <Container>
           <article className="-mt-30 bg-white p-6 shadow-xl md:p-12 md:py-16">
             <div className="mx-auto max-w-4xl">
-              {/* Header */}
+
+              {/* ═══════════════ HEADER ═══════════════ */}
               <header className="mb-8">
                 {post.category && (
                   <Link
@@ -328,7 +335,7 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
                 </div>
               </header>
 
-              {/* Content sections */}
+              {/* ═══════════════ CONTENT SECTIONS ═══════════════ */}
               <div className="prose-doha space-y-8">
                 {sections.map(
                   (section) =>
@@ -341,7 +348,7 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
                 )}
               </div>
 
-              {/* Share section */}
+              {/* ═══════════════ SHARE SECTION ═══════════════ */}
               <section className="border-border mt-12 border-t border-b py-8">
                 <h2 className="text-foreground mb-4 text-lg font-semibold">
                   इस प्रेरणादायक दोहे को अपने दोस्तों के साथ साझा करें (Share this inspiring couplet with your friends):
@@ -406,7 +413,7 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
                 </div>
               </section>
 
-              {/* Prev / Next navigation */}
+              {/* ═══════════════ PREV / NEXT NAVIGATION ═══════════════ */}
               <nav className="mt-12 flex flex-col gap-4 sm:flex-row sm:justify-between">
                 {adjacent.prev ? (
                   <Link

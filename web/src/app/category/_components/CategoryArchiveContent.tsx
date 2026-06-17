@@ -14,6 +14,8 @@ import type { GetCoupletsOptions } from '@/lib/server/couplets';
 import { globalSchema, collectionPageSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
+// ── Props ─────────────────────────────────────────────────────────────────
+
 /**
  * Props for the CategoryArchiveContent component.
  *
@@ -86,7 +88,10 @@ export async function CategoryArchiveContent({ slug, page, sort }: CategoryArchi
       <JsonLd data={categorySchema} />
       <PageLayout>
         <Container>
+          {/* ═══════════════ PAGE HEADER ═══════════════ */}
           <PageHeader title={category.name} description={category.description ?? undefined} />
+
+          {/* ═══════════════ COUPLET LISTING ═══════════════ */}
           <ArchiveListing
             posts={posts}
             pagination={pagination}

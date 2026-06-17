@@ -1,49 +1,25 @@
 import type { JSX } from 'react';
 
-import { breadcrumbSchema } from '@vijayhardaha/schema-builder';
-import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 
-import { ArchiveListing } from '@/components/features/ArchiveListing';
-import { Container } from '@/components/layout/Container';
-import { PageHeader } from '@/components/layout/PageHeader';
-import { PageLayout } from '@/components/layout/PageLayout';
-import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
+import { ArchivePageLayout } from '@/app/couplets/_components/ArchivePageLayout';
+import { buildArchivePageSchema, POPULAR_CONFIG } from '@/app/couplets/_utils/archive';
 import { getCouplets } from '@/lib/server/couplets';
 import { parseSortParams, validatePageParam } from '@/lib/server/page-utils';
 import { buildMetadata } from '@/lib/utils/meta';
-import { globalSchema, BASE_KEYWORDS, collectionPageSchema } from '@/lib/utils/schema';
-import { siteUrl } from '@/lib/utils/seo';
 
-const seoTitle = 'Popular Couplets';
-const seoDescription =
-  'The most loved and cherished dohas of Sant Kabir that have touched millions of hearts, with Hindi and English meanings.';
-const seoPath = 'popular-couplets';
+/** SEO metadata for the page. */
+export const metadata: Metadata = buildMetadata({
+  title: POPULAR_CONFIG.seoTitle,
+  description: POPULAR_CONFIG.seoDescription,
+  path: POPULAR_CONFIG.seoPath,
+});
 
-export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
-
-/**
- * Props for the paginated popular couplets page.
- *
- * @type {PopularCoupletsPageProps}
- * @property {Promise<{ page: string }>} params - Route parameters containing the page number.
- * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters for sorting.
- */
 interface PopularCoupletsPageProps {
   params: Promise<{ page: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-/**
- * Paginated popular couplets page — handles `/popular-couplets/2`, etc.
- * Redirects to `/popular-couplets` when page is 1 or invalid.
- *
- * @param {PopularCoupletsPageProps} props - Component props.
- * @param {Promise<{ page: string }>} props.params - Route parameters containing the page number.
- * @param {Promise<Record<string, string | string[] | undefined>>} props.searchParams - URL search parameters for sorting.
- *
- * @returns {Promise<JSX.Element>} The paginated popular couplets listing page.
- */
 export default async function PopularCoupletsPage({
   params,
   searchParams,
@@ -56,60 +32,23 @@ export default async function PopularCoupletsPage({
   const { posts, pagination } = await getCouplets({
     page,
     perPage,
-    isPopular: true,
+    ...POPULAR_CONFIG.filter,
     sortBy: sortBy as 'number' | 'text_en' | 'text_hi',
     sortOrder: sortOrder as 'asc' | 'desc',
   });
 
-  const rootUrl = siteUrl();
-
-  const itemListElement = posts.map((post, idx) => ({
-    '@type': 'ListItem',
-    position: (page - 1) * perPage + idx + 1,
-    url: `${rootUrl}/couplet/${post.slug}`,
-    name: post.text_hi.slice(0, 120),
-  }));
-
-  const pageSchema = [
-    ...globalSchema(),
-    collectionPageSchema(
-      { rootUrl, path: seoPath },
-      {
-        name: `${seoTitle} — Kabir Ke Dohe`,
-        description: seoDescription,
-        keywords: [...BASE_KEYWORDS, 'popular couplets', 'most loved dohas', 'paginated'].join(', '),
-        mainEntity: { '@type': 'ItemList', numberOfItems: pagination.total, itemListElement },
-      }
-    ),
-    breadcrumbSchema({
-      rootUrl,
-      items: [
-        { name: 'Home', path: '' },
-        { name: 'Popular Couplets', path: 'popular-couplets' },
-      ],
-    }),
-  ];
+  const pageSchema = buildArchivePageSchema(POPULAR_CONFIG, { posts, pagination, page, perPage, extraKeywords: ['paginated'] });
 
   return (
-    <>
-      <JsonLd data={pageSchema} />
-      <PageLayout>
-        <Container>
-          <PageHeader
-            title="लोकप्रिय दोहे (Popular Couplets)"
-            description="सबसे अधिक पसंद किए जाने वाले कबीर के दोहे — जिन्होंने लाखों दिलों को छुआ है, हिंदी और अंग्रेज़ी अर्थ के साथ (The most loved and cherished dohas of Sant Kabir that have touched millions of hearts, with Hindi and English meanings)"
-          />
-          <ArchiveListing
-            posts={posts}
-            pagination={pagination}
-            baseUrl="/popular-couplets"
-            currentSortBy={sortBy}
-            currentSortOrder={sortOrder}
-            showSidebar
-            sidebar={<ArchiveSidebar />}
-          />
-        </Container>
-      </PageLayout>
-    </>
+    <ArchivePageLayout
+      pageSchema={pageSchema}
+      pageTitle={POPULAR_CONFIG.pageTitle}
+      pageDescription={POPULAR_CONFIG.pageDescription}
+      posts={posts}
+      pagination={pagination}
+      baseUrl="/popular-couplets"
+      currentSortBy={sortBy}
+      currentSortOrder={sortOrder}
+    />
   );
 }

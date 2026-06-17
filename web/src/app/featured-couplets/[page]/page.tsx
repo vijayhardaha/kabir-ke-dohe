@@ -1,49 +1,25 @@
 import type { JSX } from 'react';
 
-import { breadcrumbSchema } from '@vijayhardaha/schema-builder';
-import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 
-import { ArchiveListing } from '@/components/features/ArchiveListing';
-import { Container } from '@/components/layout/Container';
-import { PageHeader } from '@/components/layout/PageHeader';
-import { PageLayout } from '@/components/layout/PageLayout';
-import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
+import { ArchivePageLayout } from '@/app/couplets/_components/ArchivePageLayout';
+import { buildArchivePageSchema, FEATURED_CONFIG } from '@/app/couplets/_utils/archive';
 import { getCouplets } from '@/lib/server/couplets';
 import { parseSortParams, validatePageParam } from '@/lib/server/page-utils';
 import { buildMetadata } from '@/lib/utils/meta';
-import { globalSchema, BASE_KEYWORDS, collectionPageSchema } from '@/lib/utils/schema';
-import { siteUrl } from '@/lib/utils/seo';
 
-const seoTitle = 'Featured Couplets';
-const seoDescription =
-  "A handpicked collection of Kabir's most profound and impactful dohas — spiritual wisdom and life lessons in Hindi and English.";
-const seoPath = 'featured-couplets';
+/** SEO metadata for the page. */
+export const metadata: Metadata = buildMetadata({
+  title: FEATURED_CONFIG.seoTitle,
+  description: FEATURED_CONFIG.seoDescription,
+  path: FEATURED_CONFIG.seoPath,
+});
 
-export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
-
-/**
- * Props for the paginated featured couplets page.
- *
- * @type {FeaturedCoupletsPageProps}
- * @property {Promise<{ page: string }>} params - Route parameters containing the page number.
- * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters for sorting.
- */
 interface FeaturedCoupletsPageProps {
   params: Promise<{ page: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-/**
- * Paginated featured couplets page — handles `/featured-couplets/2`, etc.
- * Redirects to `/featured-couplets` when page is 1 or invalid.
- *
- * @param {FeaturedCoupletsPageProps} props - Component props.
- * @param {Promise<{ page: string }>} props.params - Route parameters containing the page number.
- * @param {Promise<Record<string, string | string[] | undefined>>} props.searchParams - URL search parameters for sorting.
- *
- * @returns {Promise<JSX.Element>} The paginated featured couplets listing page.
- */
 export default async function FeaturedCoupletsPage({
   params,
   searchParams,
@@ -56,60 +32,23 @@ export default async function FeaturedCoupletsPage({
   const { posts, pagination } = await getCouplets({
     page,
     perPage,
-    isFeatured: true,
+    ...FEATURED_CONFIG.filter,
     sortBy: sortBy as 'number' | 'text_en' | 'text_hi',
     sortOrder: sortOrder as 'asc' | 'desc',
   });
 
-  const rootUrl = siteUrl();
-
-  const itemListElement = posts.map((post, idx) => ({
-    '@type': 'ListItem',
-    position: (page - 1) * perPage + idx + 1,
-    url: `${rootUrl}/couplet/${post.slug}`,
-    name: post.text_hi.slice(0, 120),
-  }));
-
-  const pageSchema = [
-    ...globalSchema(),
-    collectionPageSchema(
-      { rootUrl, path: seoPath },
-      {
-        name: `${seoTitle} — Kabir Ke Dohe`,
-        description: seoDescription,
-        keywords: [...BASE_KEYWORDS, 'featured couplets', 'handpicked dohas', 'paginated'].join(', '),
-        mainEntity: { '@type': 'ItemList', numberOfItems: pagination.total, itemListElement },
-      }
-    ),
-    breadcrumbSchema({
-      rootUrl,
-      items: [
-        { name: 'Home', path: '' },
-        { name: 'Featured Couplets', path: 'featured-couplets' },
-      ],
-    }),
-  ];
+  const pageSchema = buildArchivePageSchema(FEATURED_CONFIG, { posts, pagination, page, perPage, extraKeywords: ['paginated'] });
 
   return (
-    <>
-      <JsonLd data={pageSchema} />
-      <PageLayout>
-        <Container>
-          <PageHeader
-            title="चुनिंदा दोहे (Featured Couplets)"
-            description="कबीर के सबसे गहन और प्रभावशाली दोहों का विशेष संग्रह — आध्यात्मिक ज्ञान और जीवन की सीख, हिंदी और अंग्रेज़ी में (A handpicked collection of Kabir's most profound and impactful dohas — spiritual wisdom and life lessons in Hindi and English)"
-          />
-          <ArchiveListing
-            posts={posts}
-            pagination={pagination}
-            baseUrl="/featured-couplets"
-            currentSortBy={sortBy}
-            currentSortOrder={sortOrder}
-            showSidebar
-            sidebar={<ArchiveSidebar />}
-          />
-        </Container>
-      </PageLayout>
-    </>
+    <ArchivePageLayout
+      pageSchema={pageSchema}
+      pageTitle={FEATURED_CONFIG.pageTitle}
+      pageDescription={FEATURED_CONFIG.pageDescription}
+      posts={posts}
+      pagination={pagination}
+      baseUrl="/featured-couplets"
+      currentSortBy={sortBy}
+      currentSortOrder={sortOrder}
+    />
   );
 }

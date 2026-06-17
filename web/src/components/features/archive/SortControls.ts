@@ -1,5 +1,7 @@
 import type { SortOption } from './types';
 
+// ── Sort options ──────────────────────────────────────────────────────────
+
 /**
  * Available sort combinations for the archive listing.
  */
@@ -9,6 +11,8 @@ export const SORT_OPTIONS: SortOption[] = [
   { value: 'couplet_asc', label: 'Couplet (अ - ज्ञ)' },
   { value: 'couplet_desc', label: 'Couplet (ज्ञ - अ)' },
 ];
+
+// ── Helpers ───────────────────────────────────────────────────────────────
 
 /**
  * Maps URL sort params to the corresponding dropdown option value.

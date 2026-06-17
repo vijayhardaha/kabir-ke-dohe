@@ -8,6 +8,8 @@ import { buildMetadata } from '@/lib/utils/meta';
 
 import { TagArchiveContent } from '../_components/TagArchiveContent';
 
+// ── Metadata ──────────────────────────────────────────────────────────────
+
 /**
  * Generate metadata for the tag page.
  *

@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState, type JSX } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { getOgImageUrl } from '@/lib/utils/og-image';
+import { getFeaturedImageUrl } from '@/lib/utils/og-image';
 
 /**
  * Props for the CoupletImage component.
@@ -58,7 +58,7 @@ const IS_DEV = process.env.NODE_ENV === 'development';
  * @returns {JSX.Element} The image element wrapped in a link, or an empty fragment.
  */
 export function CoupletImage({ slug, text }: CoupletImageProps): JSX.Element {
-  const src = getOgImageUrl(slug);
+  const src = getFeaturedImageUrl(slug);
 
   // 'missing' when no src URL is available, 'loading' otherwise
   const [imageStatus, setImageStatus] = useState<ImageStatus>(src ? 'loading' : 'missing');

@@ -10,9 +10,19 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { getTags } from '@/lib/server/couplets';
 import { cn } from '@/lib/utils/cn';
-import { buildMetadata } from '@/lib/utils/meta';
-import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
+import { buildMetadata, buildSeoTitle } from '@/lib/utils/meta';
+import { buildKeywords, globalSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
+
+// ── SEO ───────────────────────────────────────────────────────────────────
+
+const seoTitle = 'Tags';
+const seoDescription =
+  "Browse Kabir's dohas by thematic tags — each tag gathers couplets around a shared spiritual thread.";
+const seoPath = 'tags';
+const seoKeywords = ['Kabir tags', 'doha topics', 'spiritual tags'];
+
+// ── Helpers ───────────────────────────────────────────────────────────────
 
 /**
  * Groups an array of tag-like items by the first letter of their name.
@@ -37,31 +47,21 @@ function groupByFirstLetter<T extends { name: string }>(items: T[]): Map<string,
   return groups;
 }
 
-// ---------------------------------------------------------------------------
-// Page component
-// ---------------------------------------------------------------------------
-
-export const metadata: Metadata = buildMetadata({
-  title: 'Tags',
-  description: "Browse Kabir's dohas by thematic tags — each tag gathers couplets around a shared spiritual thread.",
-  path: 'tags',
-});
+/** SEO metadata for the page. */
+export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
 
 const rootUrl = siteUrl();
-const tagsSchema = [
+const pageSchema = [
   ...globalSchema(),
   webPageSchema(
-    { rootUrl, path: 'tags' },
-    {
-      name: 'Tags — Kabir Ke Dohe',
-      keywords: [...BASE_KEYWORDS, 'Kabir tags', 'doha topics', 'spiritual tags'].join(', '),
-    }
+    { rootUrl, path: seoPath },
+    { name: buildSeoTitle(seoTitle, true), description: seoDescription, keywords: buildKeywords(seoKeywords) }
   ),
   breadcrumbSchema({
     rootUrl,
     items: [
       { name: 'Home', path: '' },
-      { name: 'Tags', path: 'tags' },
+      { name: 'Tags', path: seoPath },
     ],
   }),
 ];
@@ -84,7 +84,7 @@ export default async function TagsPage(): Promise<JSX.Element> {
 
   return (
     <>
-      <JsonLd data={tagsSchema} />
+      <JsonLd data={pageSchema} />
       <PageLayout>
         <Container>
           <PageHeader

@@ -14,6 +14,8 @@ import type { GetCoupletsOptions } from '@/lib/server/couplets';
 import { globalSchema, collectionPageSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
+// ── Props ─────────────────────────────────────────────────────────────────
+
 /**
  * Props for the TagArchiveContent component.
  *
@@ -87,7 +89,10 @@ export async function TagArchiveContent({ slug, page, sort }: TagArchiveContentP
       <JsonLd data={tagSchema} />
       <PageLayout>
         <Container>
+          {/* ═══════════════ PAGE HEADER ═══════════════ */}
           <PageHeader title={tagName} description={`Couplets tagged with "${tagName}"`} />
+
+          {/* ═══════════════ COUPLET LISTING ═══════════════ */}
           <ArchiveListing
             posts={posts}
             pagination={pagination}

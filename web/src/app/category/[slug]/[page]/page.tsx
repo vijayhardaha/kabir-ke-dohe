@@ -8,6 +8,8 @@ import { buildMetadata } from '@/lib/utils/meta';
 
 import { CategoryArchiveContent } from '../../_components/CategoryArchiveContent';
 
+// ── Metadata ──────────────────────────────────────────────────────────────
+
 /**
  * Generate metadata for paginated category pages.
  *

@@ -8,32 +8,34 @@ import { Container } from '@/components/layout/Container';
 import { ContactSection, LegalSection } from '@/components/layout/LegalSection';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { buildMetadata } from '@/lib/utils/meta';
-import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
+import { buildMetadata, buildSeoTitle } from '@/lib/utils/meta';
+import { buildKeywords, globalSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
-export const metadata: Metadata = buildMetadata({
-  title: 'Terms & Conditions',
-  description: 'Terms and conditions for using Kabir Ke Dohe — rules, disclaimers, and usage guidelines.',
-  path: 'terms',
-});
+// ── SEO ───────────────────────────────────────────────────────────────────
+
+const seoTitle = 'Terms & Conditions';
+const seoDescription = 'Terms and conditions for using Kabir Ke Dohe — rules, disclaimers, and usage guidelines.';
+const seoPath = 'terms';
+const seoKeywords = ['terms of service', 'terms and conditions'];
+
+/** SEO metadata for the page. */
+export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
+
+// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
 const rootUrl = siteUrl();
-const termsSchema = [
+const pageSchema = [
   ...globalSchema(),
   webPageSchema(
-    { rootUrl, path: 'terms' },
-    {
-      name: 'Terms & Conditions — Kabir Ke Dohe',
-      description: 'Terms and conditions for using Kabir Ke Dohe — rules, disclaimers, and usage guidelines.',
-      keywords: [...BASE_KEYWORDS, 'terms of service', 'terms and conditions'].join(', '),
-    }
+    { rootUrl, path: seoPath },
+    { name: buildSeoTitle(seoTitle, true), description: seoDescription, keywords: buildKeywords(seoKeywords) }
   ),
   breadcrumbSchema({
     rootUrl,
     items: [
       { name: 'Home', path: '' },
-      { name: 'Terms & Conditions', path: 'terms' },
+      { name: 'Terms & Conditions', path: seoPath },
     ],
   }),
 ];
@@ -46,7 +48,7 @@ const termsSchema = [
 export default function TermsPage(): JSX.Element {
   return (
     <>
-      <JsonLd data={termsSchema} />
+      <JsonLd data={pageSchema} />
       <PageLayout>
         <Container>
           <PageHeader title="Terms &amp; Conditions" description="Last updated: June 5, 2026" />

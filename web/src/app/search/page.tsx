@@ -1,60 +1,43 @@
 import type { JSX } from 'react';
 
 import { webPageSchema } from '@vijayhardaha/schema-builder';
-import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 import { RiSearch2Line } from 'react-icons/ri';
 
-import { ArchiveListing } from '@/components/features/ArchiveListing';
-import { Container } from '@/components/layout/Container';
-import { PageHeader } from '@/components/layout/PageHeader';
-import { PageLayout } from '@/components/layout/PageLayout';
+import { ArchivePageLayout } from '@/app/couplets/_components/ArchivePageLayout';
 import { getCouplets } from '@/lib/server/couplets';
 import { handlePageRedirect } from '@/lib/server/page-utils';
 import { buildMetadata } from '@/lib/utils/meta';
-import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
+import { buildKeywords, globalSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
+
+// ── SEO ───────────────────────────────────────────────────────────────────
+
+const seoPath = 'search';
+const seoKeywords = ['search couplets', 'find dohas', 'Kabir search'];
 
 const rootUrl = siteUrl();
 const searchSchema = [
   ...globalSchema(),
   webPageSchema(
-    { rootUrl, path: 'search' },
+    { rootUrl, path: seoPath },
     {
       name: 'Search — Kabir Ke Dohe',
-      keywords: [...BASE_KEYWORDS, 'search couplets', 'find dohas', 'Kabir search'].join(', '),
+      keywords: buildKeywords(seoKeywords),
     }
   ),
 ];
 
-/**
- * Prevent search engines from indexing the search results page
- * since it contains dynamic, user-generated query content.
- */
+/** SEO metadata for the page. */
 export const metadata: Metadata = {
-  ...buildMetadata({ title: 'Search', description: 'Find couplets by keyword, theme, or meaning.', path: 'search' }),
+  ...buildMetadata({ title: 'Search', description: 'Find couplets by keyword, theme, or meaning.', path: seoPath }),
   robots: { index: false, follow: false },
 };
-
-/**
- * Props for the search page.
- *
- * @type {SearchPageProps}
- * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters including `q` for search query.
- */
 
 interface SearchPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-/**
- * Search page that displays couplets matching the search query.
- * Uses ArchiveListing without the widgets sidebar.
- *
- * @param {SearchPageProps} props - Component props.
- *
- * @returns {Promise<JSX.Element>} The search results page.
- */
 export default async function SearchPage({ searchParams }: SearchPageProps): Promise<JSX.Element> {
   const params = await searchParams;
   handlePageRedirect(params, '/search');
@@ -64,7 +47,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps): Pro
   const sortOrder = typeof params.sort_order === 'string' ? params.sort_order : 'asc';
   const perPage = 10;
 
-  // For now, just show all couplets (search via URL params handled client-side)
   const { posts, pagination } = await getCouplets({
     page: 1,
     perPage,
@@ -76,35 +58,29 @@ export default async function SearchPage({ searchParams }: SearchPageProps): Pro
   const title = query ? `Search results for "${query}"` : 'Search';
 
   return (
-    <>
-      <JsonLd data={searchSchema} />
-      <PageLayout>
-        <Container>
-          <PageHeader title={title} description="Find couplets by keyword, theme, or meaning" />
-
-          {/* Search form before listing */}
-          <div className="mb-8">
-            <SearchForm initialQuery={query} />
-          </div>
-
-          <ArchiveListing
-            posts={posts}
-            pagination={pagination}
-            baseUrl="/search"
-            currentSortBy={sortBy}
-            currentSortOrder={sortOrder}
-            hideSort={false}
-          />
-        </Container>
-      </PageLayout>
-    </>
+    <ArchivePageLayout
+      pageSchema={searchSchema}
+      pageTitle={title}
+      pageDescription="Find couplets by keyword, theme, or meaning"
+      posts={posts}
+      pagination={pagination}
+      baseUrl="/search"
+      currentSortBy={sortBy}
+      currentSortOrder={sortOrder}
+      showSidebar={false}
+      searchForm={<SearchForm initialQuery={query} />}
+    />
   );
 }
 
+// ── Search form component ─────────────────────────────────────────────────
+
 /**
- * Client-side search form component that redirects to /search?q={query}.
+ * Search form with input and submit button.
+ * Submits to `/search?q={query}` via native form action.
  *
  * @param {{ initialQuery: string }} props - Component props.
+ * @param {string} props.initialQuery - Pre-filled search query from the URL.
  *
  * @returns {JSX.Element} Search form component.
  */

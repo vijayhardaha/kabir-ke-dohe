@@ -38,17 +38,17 @@ export function PostCard({ post }: { post: Post }): JSX.Element {
 
   return (
     <article className="bg-card flex flex-col gap-4 p-6 md:p-8">
-      {/* ---- OG Image ---- */}
+      {/* ── OG Image ── */}
       <CoupletImage slug={post.slug} text={post.text_hi} />
 
-      {/* ---- Doha heading ---- */}
+      {/* ── Doha heading ── */}
       <h2 className="text-foreground text-xl leading-snug tracking-normal whitespace-pre-line md:text-3xl lg:text-4xl">
         <Link href={`/couplet/${post.slug}`} className="text-secondary hover:text-primary hover:underline">
           {formatDoha(post.text_hi)}
         </Link>
       </h2>
 
-      {/* ---- Meta: author + tags ---- */}
+      {/* ── Meta: author + tags ── */}
       <div className="text-foreground flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium md:text-base">
         <span>
           By{' '}
@@ -78,7 +78,7 @@ export function PostCard({ post }: { post: Post }): JSX.Element {
         )}
       </div>
 
-      {/* ---- Meanings ---- */}
+      {/* ── Meanings ── */}
       {(post.meaning_hi || post.meaning_en) && (
         <div className="bg-muted flex flex-col p-4">
           {post.meaning_hi && (
@@ -94,7 +94,7 @@ export function PostCard({ post }: { post: Post }): JSX.Element {
         </div>
       )}
 
-      {/* ---- Actions ---- */}
+      {/* ── Actions ── */}
       <div className="flex flex-wrap items-center gap-3">
         <ButtonLink href={`/couplet/${post.slug}`} variant="primary" size="md">
           Read More
