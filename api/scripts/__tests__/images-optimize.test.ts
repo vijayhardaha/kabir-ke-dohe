@@ -29,9 +29,11 @@ describe('optimizeImage', () => {
     expect(header).toBe('RIFF');
   });
 
-  it('should reduce file size compared to the JPEG input', async () => {
+  it('should reduce file size for large input images', async () => {
+    // Create a large image (bigger than the 1200×630 resize target)
+    // so the resize + WebP conversion measurably reduces size.
     const testJpeg = await sharp({
-      create: { width: 400, height: 400, channels: 3, background: { r: 200, g: 200, b: 200 } },
+      create: { width: 2000, height: 2000, channels: 3, background: { r: 200, g: 200, b: 200 } },
     })
       .jpeg({ quality: 100 })
       .toBuffer();
@@ -41,7 +43,7 @@ describe('optimizeImage', () => {
     expect(result.length).toBeLessThan(testJpeg.length);
   });
 
-  it('should preserve image dimensions through conversion', async () => {
+  it('should convert to 1200×630 WebP (the OG image dimensions)', async () => {
     const testJpeg = await sharp({
       create: { width: 150, height: 75, channels: 3, background: { r: 0, g: 128, b: 255 } },
     })
@@ -51,8 +53,8 @@ describe('optimizeImage', () => {
     const result = await optimizeImage(testJpeg);
 
     const metadata = await sharp(result).metadata();
-    expect(metadata.width).toBe(150);
-    expect(metadata.height).toBe(75);
+    expect(metadata.width).toBe(1200);
+    expect(metadata.height).toBe(630);
     expect(metadata.format).toBe('webp');
   });
 
@@ -72,8 +74,8 @@ describe('optimizeImage', () => {
     expect(metadata.format).toBe('webp');
   });
 
-  it('should apply quality 85 compression', async () => {
-    // Create a high-frequency image (lots of detail) to better show compression
+  it('should encode with WebP quality 100 (lossless for OG images)', async () => {
+    // Create a high-frequency image (lots of detail) to better show encoding
     const width = 200;
     const height = 200;
     const channels = 4; // RGBA
@@ -93,10 +95,10 @@ describe('optimizeImage', () => {
 
     const result = await optimizeImage(testImage);
 
-    // Verify it came out as WebP with expected dimensions
     const metadata = await sharp(result).metadata();
     expect(metadata.format).toBe('webp');
-    expect(metadata.width).toBe(width);
-    expect(metadata.height).toBe(height);
+    // The function resizes to 1200×630 regardless of input size
+    expect(metadata.width).toBe(1200);
+    expect(metadata.height).toBe(630);
   });
 });
