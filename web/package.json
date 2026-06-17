@@ -6,12 +6,13 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build && next-sitemap",
-    "tsc": "tsc --noEmit",
+    "generate:paths": "bun run --env-file=.env.production scripts/generate-paths.ts",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
+    "tsc": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "generate:paths": "bun run --env-file=.env.production scripts/generate-paths.ts"
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",

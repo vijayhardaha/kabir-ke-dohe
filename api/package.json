@@ -5,7 +5,6 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "start": "next start",
     "build": "next build && next-sitemap",
     "couplets:fetch": "bun run scripts/couplets-fetch.ts",
     "tags:generate": "bun run scripts/tags-generate.ts",
@@ -18,13 +17,12 @@
     "couplets:images:optimize": "bun run scripts/images-optimize.ts",
     "couplets:images:upload": "bun run scripts/images-upload.ts",
     "couplets:images:upload:prod": "NODE_ENV=production bun run scripts/images-upload.ts",
-    "indexnow": "bun run scripts/indexnow.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "tsc": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@next/third-parties": "^16.2.9",
