@@ -15,13 +15,14 @@
  * siteUrl() // -> 'http://localhost:3000'
  */
 export function siteUrl(): string {
-  const url =
-    process.env.NEXT_PUBLIC_SITE_URL
-    || process.env.VERCEL_PROJECT_PRODUCTION_URL
-    || process.env.VERCEL_BRANCH_URL
-    || process.env.VERCEL_URL
-    || `http://localhost:${process.env.PORT || 3000}`;
+  const candidates = [
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+    process.env.VERCEL_BRANCH_URL,
+    process.env.VERCEL_URL,
+    process.env.NEXT_PUBLIC_SITE_URL,
+  ];
 
+  const url = candidates.find(Boolean) ?? `http://localhost:${process.env.PORT || 3000}`;
   const cleaned = url.trim().replace(/\/+$/, '');
 
   return /^https?:\/\//i.test(cleaned) ? cleaned : `https://${cleaned}`;
@@ -44,7 +45,7 @@ export function siteUrl(): string {
  * cleanPath("")           // ""
  * cleanPath("/")          // ""
  */
-function cleanPath(path: string = ''): string {
+export function cleanPath(path: string = ''): string {
   return path.trim().replace(/^\/+/, '').replace(/\/+$/, '');
 }
 

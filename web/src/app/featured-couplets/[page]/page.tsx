@@ -15,24 +15,21 @@ import { buildMetadata } from '@/lib/utils/meta';
 import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
-const FEATURED_DESCRIPTION =
+const seoTitle = 'Featured Couplets';
+const seoDescription =
   "A handpicked collection of Kabir's most profound and impactful dohas — spiritual wisdom and life lessons in Hindi and English.";
+const seoPath = 'featured-couplets';
 
-export const metadata: Metadata = buildMetadata({
-  title: 'Featured Couplets',
-  description: FEATURED_DESCRIPTION,
-  path: 'featured-couplets',
-});
+export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
 
 const rootUrl = siteUrl();
-const featuredPaginatedSchema = [
+const pageSchema = [
   ...globalSchema(),
   webPageSchema(
-    { rootUrl, path: 'featured-couplets' },
+    { rootUrl, path: seoPath },
     {
-      name: 'Featured Couplets — Kabir Ke Dohe',
-      description:
-        "A handpicked collection of Kabir's most profound and impactful dohas — spiritual wisdom and life lessons in Hindi and English.",
+      name: `${seoTitle} — Kabir Ke Dohe`,
+      description: seoDescription,
       keywords: [...BASE_KEYWORDS, 'featured couplets', 'handpicked dohas', 'paginated'].join(', '),
     }
   ),
@@ -79,7 +76,7 @@ export default async function FeaturedCoupletsPage({
 
   return (
     <>
-      <JsonLd data={featuredPaginatedSchema} />
+      <JsonLd data={pageSchema} />
       <PageLayout>
         <Container>
           <PageHeader

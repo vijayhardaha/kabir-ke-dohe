@@ -1,3 +1,5 @@
+import { cleanPath } from './seo';
+
 /**
  * Generates the public Supabase Storage URL for a couplet's OG image.
  *
@@ -23,5 +25,7 @@ export function getOgImageUrl(slug: string): string | null {
     return null;
   }
 
-  return `${supabaseUrl}/storage/v1/object/public/couplet-images/${slug}.webp`;
+  const cleanSlug = cleanPath(cleanPath(slug).replace(/^couplet\//, ''));
+
+  return `${supabaseUrl}/storage/v1/object/public/couplet-images/${cleanSlug}.webp`;
 }

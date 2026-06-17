@@ -15,24 +15,21 @@ import { buildMetadata } from '@/lib/utils/meta';
 import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
-const ARCHIVE_DESCRIPTION =
+const seoTitle = "Kabir's Couplets";
+const seoDescription =
   "Explore the complete collection of Sant Kabir Das's dohas — spiritual wisdom, life truths, and inspiration with Hindi and English meanings.";
+const seoPath = 'couplets';
 
-export const metadata: Metadata = buildMetadata({
-  title: "Kabir's Couplets",
-  description: ARCHIVE_DESCRIPTION,
-  path: 'couplets',
-});
+export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
 
 const rootUrl = siteUrl();
-const coupletsListSchema = [
+const pageSchema = [
   ...globalSchema(),
   webPageSchema(
-    { rootUrl, path: 'couplets' },
+    { rootUrl, path: seoPath },
     {
-      name: "Kabir's Couplets — Kabir Ke Dohe",
-      description:
-        "Explore the complete collection of Sant Kabir Das's dohas — spiritual wisdom, life truths, and inspiration with Hindi and English meanings.",
+      name: `${seoTitle} — Kabir Ke Dohe`,
+      description: seoDescription,
       keywords: [...BASE_KEYWORDS, 'all couplets', 'Kabir dohe collection', 'complete dohas'].join(', '),
     }
   ),
@@ -70,7 +67,7 @@ export default async function ArchivePage({ searchParams }: ArchivePageProps): P
 
   return (
     <>
-      <JsonLd data={coupletsListSchema} />
+      <JsonLd data={pageSchema} />
       <PageLayout>
         <Container>
           <PageHeader

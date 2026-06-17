@@ -15,24 +15,21 @@ import { buildMetadata } from '@/lib/utils/meta';
 import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
-const POPULAR_DESCRIPTION =
+const seoTitle = 'Popular Couplets';
+const seoDescription =
   'The most loved and cherished dohas of Sant Kabir that have touched millions of hearts, with Hindi and English meanings.';
+const seoPath = 'popular-couplets';
 
-export const metadata: Metadata = buildMetadata({
-  title: 'Popular Couplets',
-  description: POPULAR_DESCRIPTION,
-  path: 'popular-couplets',
-});
+export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
 
 const rootUrl = siteUrl();
-const popularListSchema = [
+const pageSchema = [
   ...globalSchema(),
   webPageSchema(
-    { rootUrl, path: 'popular-couplets' },
+    { rootUrl, path: seoPath },
     {
-      name: 'Popular Couplets — Kabir Ke Dohe',
-      description:
-        'The most loved and cherished dohas of Sant Kabir that have touched millions of hearts, with Hindi and English meanings.',
+      name: `${seoTitle} — Kabir Ke Dohe`,
+      description: seoDescription,
       keywords: [...BASE_KEYWORDS, 'popular couplets', 'most loved dohas', 'famous Kabir dohe'].join(', '),
     }
   ),
@@ -71,7 +68,7 @@ export default async function PopularCoupletsPage({ searchParams }: PopularCoupl
 
   return (
     <>
-      <JsonLd data={popularListSchema} />
+      <JsonLd data={pageSchema} />
       <PageLayout>
         <Container>
           <PageHeader
