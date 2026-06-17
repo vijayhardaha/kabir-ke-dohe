@@ -89,7 +89,7 @@ const mergeDeep = (target: Record<string, unknown>, source: Record<string, unkno
  * @example
  * buildSeoTitle('About', true) // -> 'About | Tools by Vijay Hardaha'
  */
-const buildSeoTitle = (title: string = '', postfix: boolean): string => {
+export const buildSeoTitle = (title: string = '', postfix: boolean): string => {
   if (!title) return SITE_CONFIG.title;
   if (!postfix) return title;
   return [title, '—', SITE_CONFIG.name].join(' ');
@@ -114,8 +114,8 @@ export const buildMetadata = ({ title = '', description = '', path = '', postfix
   const titleAndDescription = { title: buildSeoTitle(title, postfix), description: description || '' };
 
   let images = {};
-  if (path.startsWith('couplet/') || path.startsWith('/couplet/')) {
-    const ogImage = getOgImageUrl(path || '/');
+  const ogImage = getOgImageUrl(path || '/');
+  if (ogImage) {
     const ogImageMeta = {
       url: ogImage,
       secureUrl: ogImage,

@@ -17,6 +17,26 @@ export const BASE_KEYWORDS = [
 ];
 
 /**
+ * Build a deduplicated, filtered keywords string from BASE_KEYWORDS and
+ * page-specific extra keywords.
+ *
+ * Empty/falsy entries are filtered out. Duplicates (including those already
+ * present in BASE_KEYWORDS) are removed. Returns a comma-separated string
+ * suitable for schema `keywords` fields.
+ *
+ * @param {string[]} extra - Page-specific keywords to append.
+ *
+ * @returns {string} A comma-separated keywords string.
+ *
+ * @example
+ * buildKeywords(['popular couplets', 'famous Kabir dohe'])
+ * // → "Kabir Das, Sant Kabir, …, popular couplets, famous Kabir dohe"
+ */
+export function buildKeywords(extra: string[]): string {
+  return [...new Set([...BASE_KEYWORDS, ...extra.filter(Boolean)])].join(', ');
+}
+
+/**
  * Build the global Schema.org entities that appear on every page.
  *
  * Includes Person, Organization, and WebSite entities.
