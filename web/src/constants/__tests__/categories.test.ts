@@ -9,8 +9,8 @@ import { describe, it, expect } from 'vitest';
 import { CATEGORIES, getCategoryBySlug } from '../categories';
 
 describe('CATEGORIES', () => {
-  it('has 27 predefined categories', () => {
-    expect(CATEGORIES.length).toBe(27);
+  it('has 26 predefined categories', () => {
+    expect(CATEGORIES.length).toBe(26);
   });
 
   it('each category has a slug and name', () => {
