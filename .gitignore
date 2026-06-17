@@ -248,8 +248,8 @@ tmp/
 # Seo & Generated Data
 # ----------------------------------------------------------------------
 # Auto-generated files that don't need version control.
-/public/robots.txt
-/public/sitemap*
+public/sitemap*
+robots.txt
 *sitemap*.xml
 
 # ----------------------------------------------------------------------
