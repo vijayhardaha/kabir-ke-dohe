@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 
-import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import { notFound } from 'next/navigation';
 
@@ -11,7 +11,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
 import { fetchCategoryBySlug, getCouplets } from '@/lib/server/couplets';
 import type { GetCoupletsOptions } from '@/lib/server/couplets';
-import { globalSchema } from '@/lib/utils/schema';
+import { globalSchema, collectionPageSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
 /**
@@ -45,10 +45,6 @@ export async function CategoryArchiveContent({ slug, page, sort }: CategoryArchi
   }
 
   const rootUrl = siteUrl();
-  const categorySchema = [
-    ...globalSchema(),
-    webPageSchema({ rootUrl, path: `category/${slug}` }, { name: `${category.name} — Kabir Ke Dohe` }),
-  ];
 
   const { posts, pagination } = await getCouplets({
     page,
@@ -57,6 +53,33 @@ export async function CategoryArchiveContent({ slug, page, sort }: CategoryArchi
     sortBy: sort.sortBy as GetCoupletsOptions['sortBy'],
     sortOrder: sort.sortOrder as GetCoupletsOptions['sortOrder'],
   });
+
+  const itemListElement = posts.map((post, idx) => ({
+    '@type': 'ListItem',
+    position: (page - 1) * 10 + idx + 1,
+    url: `${rootUrl}/couplet/${post.slug}`,
+    name: post.text_hi.slice(0, 120),
+  }));
+
+  const categorySchema = [
+    ...globalSchema(),
+    collectionPageSchema(
+      { rootUrl, path: `category/${slug}` },
+      {
+        name: `${category.name} — Kabir Ke Dohe`,
+        description: category.description ?? `${category.name} couplets from Kabir's teachings.`,
+        mainEntity: { '@type': 'ItemList', numberOfItems: pagination.total, itemListElement },
+      }
+    ),
+    breadcrumbSchema({
+      rootUrl,
+      items: [
+        { name: 'Home', path: '' },
+        { name: 'Categories', path: 'categories' },
+        { name: category.name, path: `category/${slug}` },
+      ],
+    }),
+  ];
 
   return (
     <>

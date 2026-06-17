@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 
-import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 
@@ -12,7 +12,7 @@ import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
 import { getCouplets } from '@/lib/server/couplets';
 import { parseSortParams, validatePageParam } from '@/lib/server/page-utils';
 import { buildMetadata } from '@/lib/utils/meta';
-import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
+import { globalSchema, BASE_KEYWORDS, collectionPageSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
 const seoTitle = 'Popular Couplets';
@@ -21,19 +21,6 @@ const seoDescription =
 const seoPath = 'popular-couplets';
 
 export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
-
-const rootUrl = siteUrl();
-const pageSchema = [
-  ...globalSchema(),
-  webPageSchema(
-    { rootUrl, path: seoPath },
-    {
-      name: `${seoTitle} — Kabir Ke Dohe`,
-      description: seoDescription,
-      keywords: [...BASE_KEYWORDS, 'popular couplets', 'most loved dohas', 'paginated'].join(', '),
-    }
-  ),
-];
 
 /**
  * Props for the paginated popular couplets page.
@@ -73,6 +60,35 @@ export default async function PopularCoupletsPage({
     sortBy: sortBy as 'number' | 'text_en' | 'text_hi',
     sortOrder: sortOrder as 'asc' | 'desc',
   });
+
+  const rootUrl = siteUrl();
+
+  const itemListElement = posts.map((post, idx) => ({
+    '@type': 'ListItem',
+    position: (page - 1) * perPage + idx + 1,
+    url: `${rootUrl}/couplet/${post.slug}`,
+    name: post.text_hi.slice(0, 120),
+  }));
+
+  const pageSchema = [
+    ...globalSchema(),
+    collectionPageSchema(
+      { rootUrl, path: seoPath },
+      {
+        name: `${seoTitle} — Kabir Ke Dohe`,
+        description: seoDescription,
+        keywords: [...BASE_KEYWORDS, 'popular couplets', 'most loved dohas', 'paginated'].join(', '),
+        mainEntity: { '@type': 'ItemList', numberOfItems: pagination.total, itemListElement },
+      }
+    ),
+    breadcrumbSchema({
+      rootUrl,
+      items: [
+        { name: 'Home', path: '' },
+        { name: 'Popular Couplets', path: 'popular-couplets' },
+      ],
+    }),
+  ];
 
   return (
     <>

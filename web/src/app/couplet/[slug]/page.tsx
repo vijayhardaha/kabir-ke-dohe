@@ -24,7 +24,8 @@ import { Tooltip } from '@/components/ui/Tooltip';
 import { getCoupletBySlug, getAdjacentCouplets, getRelatedCouplets } from '@/lib/server/couplets';
 import { formatDoha } from '@/lib/utils/doha';
 import { buildMetadata } from '@/lib/utils/meta';
-import { globalSchema, BASE_KEYWORDS } from '@/lib/utils/schema';
+import { getOgImageUrl } from '@/lib/utils/og-image';
+import { globalSchema, BASE_KEYWORDS, blogPostingSchema } from '@/lib/utils/schema';
 import { getPermaLink, siteUrl } from '@/lib/utils/seo';
 
 /**
@@ -211,6 +212,17 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
         name: `${post.text_hi.slice(0, 60)} — Kabir Ke Dohe`,
         description: `${post.text_hi} — ${post.text_en}`.slice(0, 300),
         keywords: [...new Set(brandKeywords)].join(', '),
+      }
+    ),
+    blogPostingSchema(
+      { rootUrl, path: coupletPath },
+      {
+        headline: post.text_hi.slice(0, 200),
+        description: `${post.text_hi} — ${post.text_en}`.slice(0, 300),
+        image: getOgImageUrl(post.slug) ?? '',
+        datePublished: post.created_at,
+        dateModified: post.updated_at,
+        author: { '@type': 'Person', name: 'Sant Kabir Das' },
       }
     ),
     breadcrumbSchema({

@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 
-import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import { notFound } from 'next/navigation';
 
@@ -11,7 +11,7 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
 import { getTagBySlug, getCouplets } from '@/lib/server/couplets';
 import type { GetCoupletsOptions } from '@/lib/server/couplets';
-import { globalSchema } from '@/lib/utils/schema';
+import { globalSchema, collectionPageSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
 /**
@@ -46,10 +46,6 @@ export async function TagArchiveContent({ slug, page, sort }: TagArchiveContentP
   const tagName = tag.name;
 
   const rootUrl = siteUrl();
-  const tagSchema = [
-    ...globalSchema(),
-    webPageSchema({ rootUrl, path: `tag/${slug}` }, { name: `${tagName} — Kabir Ke Dohe` }),
-  ];
 
   const { posts, pagination } = await getCouplets({
     page,
@@ -58,6 +54,33 @@ export async function TagArchiveContent({ slug, page, sort }: TagArchiveContentP
     sortBy: sort.sortBy as GetCoupletsOptions['sortBy'],
     sortOrder: sort.sortOrder as GetCoupletsOptions['sortOrder'],
   });
+
+  const itemListElement = posts.map((post, idx) => ({
+    '@type': 'ListItem',
+    position: (page - 1) * 10 + idx + 1,
+    url: `${rootUrl}/couplet/${post.slug}`,
+    name: post.text_hi.slice(0, 120),
+  }));
+
+  const tagSchema = [
+    ...globalSchema(),
+    collectionPageSchema(
+      { rootUrl, path: `tag/${slug}` },
+      {
+        name: `${tagName} — Kabir Ke Dohe`,
+        description: `Couplets tagged with "${tagName}" from Kabir's teachings.`,
+        mainEntity: { '@type': 'ItemList', numberOfItems: pagination.total, itemListElement },
+      }
+    ),
+    breadcrumbSchema({
+      rootUrl,
+      items: [
+        { name: 'Home', path: '' },
+        { name: 'Tags', path: 'tags' },
+        { name: tagName, path: `tag/${slug}` },
+      ],
+    }),
+  ];
 
   return (
     <>
