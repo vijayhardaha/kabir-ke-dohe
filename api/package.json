@@ -31,7 +31,6 @@
     "@supabase/supabase-js": "^2.108.2",
     "@vijayhardaha/schema-builder": "^1.1.1",
     "clsx": "^2.1.1",
-    "dotenv": "^17.4.2",
     "juice": "^12.1.1",
     "latinize": "^2.0.0",
     "next": "^16.2.9",

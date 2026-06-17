@@ -1,53 +1,39 @@
-import path from 'path';
-
-import dotenv from 'dotenv';
-import { z } from 'zod';
-
 /**
- * Zod schema for validating environment variables required by the sync script.
- */
-const scriptEnvSchema = z.object({
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-
-  SUPABASE_URL: z.url(),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
-
-  GOOGLE_SERVICE_ACCOUNT_BASE64: z.string().min(1),
-  GOOGLE_SHEET_ID: z.string().min(1),
-});
-
-/**
- * Type representing the validated environment variables for the sync script.
- */
-export type ScriptEnv = z.infer<typeof scriptEnvSchema>;
-
-/**
- * Determines the appropriate environment file path based on NODE_ENV.
+ * Script environment variables required for database, storage, and sheet operations.
  *
- * @returns {string} Absolute path to the environment file.
+ * Bun injects env vars from the file specified via `--env-file`:
+ *   bun --env-file=.env.local run scripts/couplets-upload.ts
+ *   bun --env-file=.env.production run scripts/couplets-upload.ts
+ *
+ * Make sure all required keys are defined in the referenced .env file.
  */
-function getEnvFilePath(): string {
-  const nodeEnv = process.env.NODE_ENV || 'development';
-  return path.resolve(process.cwd(), nodeEnv === 'production' ? '.env.production' : '.env.local');
+export interface ScriptEnv {
+  NODE_ENV: string;
+  SUPABASE_URL: string;
+  SUPABASE_SERVICE_ROLE_KEY: string;
+  GOOGLE_SERVICE_ACCOUNT_BASE64: string;
+  GOOGLE_SHEET_ID: string;
 }
 
 /**
- * Loads environment variables from the appropriate .env file and validates them.
+ * Reads environment variables from process.env.
  *
- * @returns {ScriptEnv} Validated environment variables.
+ * Bun's `--env-file` flag injects the variables before the script runs,
+ * so no explicit dotenv call is needed. Consumers are responsible for
+ * checking missing values.
  *
- * @throws {Error} If environment variables are invalid.
+ * @returns {ScriptEnv} Environment variables read from process.env.
+ *
+ * @example
+ * const env = loadScriptEnv();
+ * const supabase = createSupabaseClient(env);
  */
 export function loadScriptEnv(): ScriptEnv {
-  const envFilePath = getEnvFilePath();
-  dotenv.config({ path: envFilePath, override: true });
-
-  const parsed = scriptEnvSchema.safeParse(process.env);
-
-  if (!parsed.success) {
-    const validationError = z.treeifyError(parsed.error);
-    throw new Error('Invalid environment variables: ' + JSON.stringify(validationError));
-  }
-
-  return parsed.data;
+  return {
+    NODE_ENV: (process.env.NODE_ENV as string) || 'development',
+    SUPABASE_URL: process.env.SUPABASE_URL as string,
+    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY as string,
+    GOOGLE_SERVICE_ACCOUNT_BASE64: process.env.GOOGLE_SERVICE_ACCOUNT_BASE64 as string,
+    GOOGLE_SHEET_ID: process.env.GOOGLE_SHEET_ID as string,
+  };
 }
