@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 
-import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 import { RiArrowRightLine, RiDoubleQuotesL } from 'react-icons/ri';
@@ -31,7 +31,17 @@ export const metadata: Metadata = buildMetadata({
 });
 
 const rootUrl = siteUrl();
-const homeSchema = [...globalSchema(), webPageSchema({ rootUrl, path: '' })];
+const homeSchema = [
+  ...globalSchema(),
+  webPageSchema({ rootUrl, path: '' }),
+  breadcrumbSchema({
+    rootUrl,
+    items: [
+      { name: 'Home', path: '' },
+      { name: 'Wisdom of Sant Kabir', path: '' },
+    ],
+  }),
+];
 
 /**
  * Pick a random message from KABIR_MESSAGES.
