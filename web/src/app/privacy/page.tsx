@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 
-import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 
@@ -29,6 +29,13 @@ const privacySchema = [
       keywords: [...BASE_KEYWORDS, 'privacy policy', 'data protection'].join(', '),
     }
   ),
+  breadcrumbSchema({
+    rootUrl,
+    items: [
+      { name: 'Home', path: '' },
+      { name: 'Privacy Policy', path: 'privacy' },
+    ],
+  }),
 ];
 
 /**

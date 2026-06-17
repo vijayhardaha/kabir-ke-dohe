@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 
-import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 import { RiArrowRightLine } from 'react-icons/ri';
@@ -42,6 +42,13 @@ const categoriesSchema = [
       ].join(', '),
     }
   ),
+  breadcrumbSchema({
+    rootUrl,
+    items: [
+      { name: 'Home', path: '' },
+      { name: 'Categories', path: 'categories' },
+    ],
+  }),
 ];
 
 /**

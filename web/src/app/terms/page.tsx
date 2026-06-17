@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 
-import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 
@@ -29,6 +29,13 @@ const termsSchema = [
       keywords: [...BASE_KEYWORDS, 'terms of service', 'terms and conditions'].join(', '),
     }
   ),
+  breadcrumbSchema({
+    rootUrl,
+    items: [
+      { name: 'Home', path: '' },
+      { name: 'Terms & Conditions', path: 'terms' },
+    ],
+  }),
 ];
 
 /**

@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 
-import { aboutPageSchema } from '@vijayhardaha/schema-builder';
+import { aboutPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
@@ -52,6 +52,13 @@ const rootUrl = siteUrl();
 const aboutSchema = [
   ...globalSchema(),
   aboutPageSchema({ rootUrl, path: 'about' }, { name: 'About Sant Kabir Das — Kabir Ke Dohe' }),
+  breadcrumbSchema({
+    rootUrl,
+    items: [
+      { name: 'Home', path: '' },
+      { name: 'About Sant Kabir Das', path: 'about' },
+    ],
+  }),
 ];
 
 /**

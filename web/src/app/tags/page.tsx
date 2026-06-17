@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 
-import { webPageSchema } from '@vijayhardaha/schema-builder';
+import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -57,6 +57,13 @@ const tagsSchema = [
       keywords: [...BASE_KEYWORDS, 'Kabir tags', 'doha topics', 'spiritual tags'].join(', '),
     }
   ),
+  breadcrumbSchema({
+    rootUrl,
+    items: [
+      { name: 'Home', path: '' },
+      { name: 'Tags', path: 'tags' },
+    ],
+  }),
 ];
 
 /**
