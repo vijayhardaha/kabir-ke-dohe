@@ -84,6 +84,7 @@ async function main(): Promise<void> {
   await writeJsonFile(outputPath.pathname, coupletsMap);
 
   spinner.succeed(`[fetch-couplets] Successfully wrote ${allRows.length} couplets to dist/data/couplets.json`);
+  process.exit(0);
 }
 
 main().catch((error) => {
