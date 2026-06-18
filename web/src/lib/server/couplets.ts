@@ -1,6 +1,6 @@
 import 'server-only';
 
-import type { Category, CoupletRef, Tag, TagRef, Post, CoupletsResponse } from '@/types';
+import type { Category, CoupletRef, SortBy, SortOrder, Tag, TagRef, Post, CoupletsResponse } from '@/types';
 
 import { getSupabase } from './supabase';
 
@@ -53,8 +53,8 @@ interface SupabaseCategory {
  * @property {boolean} [isFeatured] - Filter to featured posts only.
  * @property {boolean} [isPopular] - Filter to popular posts only.
  * @property {string} [searchQuery] - Search keyword to filter by search_text column.
- * @property {'number' | 'text_en' | 'text_hi'} [sortBy='number'] - Sort field.
- * @property {'asc' | 'desc'} [sortOrder='asc'] - Sort direction.
+ * @property {SortBy} [sortBy='number'] - Sort field.
+ * @property {SortOrder} [sortOrder='asc'] - Sort direction.
  */
 export interface GetCoupletsOptions {
   page?: number;
@@ -64,8 +64,8 @@ export interface GetCoupletsOptions {
   isFeatured?: boolean;
   isPopular?: boolean;
   searchQuery?: string;
-  sortBy?: 'number' | 'text_en' | 'text_hi';
-  sortOrder?: 'asc' | 'desc';
+  sortBy?: SortBy;
+  sortOrder?: SortOrder;
 }
 
 /**

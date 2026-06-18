@@ -1,5 +1,7 @@
 import { redirect } from 'next/navigation';
 
+import type { SortBy, SortOrder } from '@/types';
+
 /**
  * Builds a query string from search params, excluding the `page` key.
  * Shared helper for page-redirect and pagination logic.
@@ -46,16 +48,16 @@ export function handlePageRedirect(searchParams: Record<string, string | string[
  *
  * @param {Record<string, string | string[] | undefined>} searchParams - URL search params.
  *
- * @returns {{ sortBy: string; sortOrder: string; perPage: number }} Parsed sort values.
+ * @returns {{ sortBy: SortBy; sortOrder: SortOrder; perPage: number }} Parsed sort values.
  */
 export function parseSortParams(searchParams: Record<string, string | string[] | undefined>): {
-  sortBy: string;
-  sortOrder: string;
+  sortBy: SortBy;
+  sortOrder: SortOrder;
   perPage: number;
 } {
   return {
-    sortBy: typeof searchParams.sort_by === 'string' ? searchParams.sort_by : 'number',
-    sortOrder: typeof searchParams.sort_order === 'string' ? searchParams.sort_order : 'asc',
+    sortBy: (typeof searchParams.sort_by === 'string' ? searchParams.sort_by : 'number') as SortBy,
+    sortOrder: (typeof searchParams.sort_order === 'string' ? searchParams.sort_order : 'asc') as SortOrder,
     perPage: 10,
   };
 }
