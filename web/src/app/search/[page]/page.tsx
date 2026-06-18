@@ -18,13 +18,7 @@ const seoKeywords = ['search couplets', 'find dohas', 'paginated'];
 const rootUrl = siteUrl();
 const searchSchema = [
   ...globalSchema(),
-  webPageSchema(
-    { rootUrl, path: seoPath },
-    {
-      name: 'Search — Kabir Ke Dohe',
-      keywords: buildKeywords(seoKeywords),
-    }
-  ),
+  webPageSchema({ rootUrl, path: seoPath }, { name: 'Search — Kabir Ke Dohe', keywords: buildKeywords(seoKeywords) }),
 ];
 
 /** SEO metadata for the page. */
@@ -38,6 +32,15 @@ interface SearchPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
+/**
+ * Paginated search page — handles `/search/2`, `/search/3`, etc.
+ *
+ * @param {SearchPageProps} props - Component props.
+ * @param {Promise<{ page: string }>} props.params - Route parameters containing the page number.
+ * @param {Promise<Record<string, string | string[] | undefined>>} props.searchParams - URL search parameters.
+ *
+ * @returns {Promise<JSX.Element>} The paginated search results page.
+ */
 export default async function SearchPage({ params, searchParams }: SearchPageProps): Promise<JSX.Element> {
   const { page: pageStr } = await params;
   const sp = await searchParams;
@@ -46,13 +49,7 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
   const query = typeof sp.q === 'string' ? sp.q.trim() : '';
   const { sortBy, sortOrder, perPage } = parseSortParams(sp);
 
-  const { posts, pagination } = await getCouplets({
-    page,
-    perPage,
-    searchQuery: query,
-    sortBy: sortBy as 'number' | 'text_en' | 'text_hi',
-    sortOrder: sortOrder as 'asc' | 'desc',
-  });
+  const { posts, pagination } = await getCouplets({ page, perPage, searchQuery: query, sortBy, sortOrder });
 
   const title = query ? `Search results for "${query}" — Page ${page}` : `Search — Page ${page}`;
 

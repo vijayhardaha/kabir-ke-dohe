@@ -3,10 +3,11 @@ import type { JSX } from 'react';
 import type { Metadata } from 'next';
 
 import { ArchivePageLayout } from '@/app/couplets/_components/ArchivePageLayout';
-import { buildArchivePageSchema, COUPLETS_CONFIG } from '@/app/couplets/_utils/archive';
+import { COUPLETS_CONFIG } from '@/app/couplets/_utils/archive';
 import { getCouplets } from '@/lib/server/couplets';
 import { handlePageRedirect, parseSortParams } from '@/lib/server/page-utils';
 import { buildMetadata } from '@/lib/utils/meta';
+import { buildArchivePageSchema } from '@/lib/utils/schema';
 
 /** SEO metadata for the page. */
 export const metadata: Metadata = buildMetadata({
@@ -19,17 +20,20 @@ interface ArchivePageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
+/**
+ * All couplets archive page — paginated listing of published couplets.
+ *
+ * @param {ArchivePageProps} props - Component props.
+ * @param {Promise<Record<string, string | string[] | undefined>>} props.searchParams - URL search parameters.
+ *
+ * @returns {Promise<JSX.Element>} The archive page.
+ */
 export default async function ArchivePage({ searchParams }: ArchivePageProps): Promise<JSX.Element> {
   const params = await searchParams;
   handlePageRedirect(params, '/couplets');
   const { sortBy, sortOrder, perPage } = parseSortParams(params);
 
-  const { posts, pagination } = await getCouplets({
-    page: 1,
-    perPage,
-    sortBy: sortBy as 'number' | 'text_en' | 'text_hi',
-    sortOrder: sortOrder as 'asc' | 'desc',
-  });
+  const { posts, pagination } = await getCouplets({ page: 1, perPage, sortBy, sortOrder });
 
   const pageSchema = buildArchivePageSchema(COUPLETS_CONFIG, { posts, pagination, page: 1, perPage });
 

@@ -3,10 +3,11 @@ import type { JSX } from 'react';
 import type { Metadata } from 'next';
 
 import { ArchivePageLayout } from '@/app/couplets/_components/ArchivePageLayout';
-import { buildArchivePageSchema, POPULAR_CONFIG } from '@/app/couplets/_utils/archive';
+import { POPULAR_CONFIG } from '@/app/couplets/_utils/archive';
 import { getCouplets } from '@/lib/server/couplets';
 import { parseSortParams, validatePageParam } from '@/lib/server/page-utils';
 import { buildMetadata } from '@/lib/utils/meta';
+import { buildArchivePageSchema } from '@/lib/utils/schema';
 
 /** SEO metadata for the page. */
 export const metadata: Metadata = buildMetadata({
@@ -20,6 +21,15 @@ interface PopularCoupletsPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
+/**
+ * Paginated popular couplets page — handles `/popular-couplets/2`, etc.
+ *
+ * @param {PopularCoupletsPageProps} props - Component props.
+ * @param {Promise<{ page: string }>} props.params - Route parameters containing the page number.
+ * @param {Promise<Record<string, string | string[] | undefined>>} props.searchParams - URL search parameters.
+ *
+ * @returns {Promise<JSX.Element>} The paginated popular couplets page.
+ */
 export default async function PopularCoupletsPage({
   params,
   searchParams,
@@ -29,15 +39,15 @@ export default async function PopularCoupletsPage({
   const page = validatePageParam(pageStr, '/popular-couplets', sp);
   const { sortBy, sortOrder, perPage } = parseSortParams(sp);
 
-  const { posts, pagination } = await getCouplets({
+  const { posts, pagination } = await getCouplets({ page, perPage, ...POPULAR_CONFIG.filter, sortBy, sortOrder });
+
+  const pageSchema = buildArchivePageSchema(POPULAR_CONFIG, {
+    posts,
+    pagination,
     page,
     perPage,
-    ...POPULAR_CONFIG.filter,
-    sortBy: sortBy as 'number' | 'text_en' | 'text_hi',
-    sortOrder: sortOrder as 'asc' | 'desc',
+    extraKeywords: ['paginated'],
   });
-
-  const pageSchema = buildArchivePageSchema(POPULAR_CONFIG, { posts, pagination, page, perPage, extraKeywords: ['paginated'] });
 
   return (
     <ArchivePageLayout

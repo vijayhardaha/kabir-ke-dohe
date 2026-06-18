@@ -10,6 +10,7 @@ import { handlePageRedirect } from '@/lib/server/page-utils';
 import { buildMetadata } from '@/lib/utils/meta';
 import { buildKeywords, globalSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
+import type { SortBy, SortOrder } from '@/types';
 
 // ── SEO ───────────────────────────────────────────────────────────────────
 
@@ -19,13 +20,7 @@ const seoKeywords = ['search couplets', 'find dohas', 'Kabir search'];
 const rootUrl = siteUrl();
 const searchSchema = [
   ...globalSchema(),
-  webPageSchema(
-    { rootUrl, path: seoPath },
-    {
-      name: 'Search — Kabir Ke Dohe',
-      keywords: buildKeywords(seoKeywords),
-    }
-  ),
+  webPageSchema({ rootUrl, path: seoPath }, { name: 'Search — Kabir Ke Dohe', keywords: buildKeywords(seoKeywords) }),
 ];
 
 /** SEO metadata for the page. */
@@ -38,22 +33,24 @@ interface SearchPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
+/**
+ * Search page — displays full-text search results with a search form.
+ *
+ * @param {SearchPageProps} props - Component props.
+ * @param {Promise<Record<string, string | string[] | undefined>>} props.searchParams - URL search parameters.
+ *
+ * @returns {Promise<JSX.Element>} The search results page.
+ */
 export default async function SearchPage({ searchParams }: SearchPageProps): Promise<JSX.Element> {
   const params = await searchParams;
   handlePageRedirect(params, '/search');
 
   const query = typeof params.q === 'string' ? params.q.trim() : '';
-  const sortBy = typeof params.sort_by === 'string' ? params.sort_by : 'number';
-  const sortOrder = typeof params.sort_order === 'string' ? params.sort_order : 'asc';
+  const sortBy: SortBy = typeof params.sort_by === 'string' ? (params.sort_by as SortBy) : 'number';
+  const sortOrder: SortOrder = typeof params.sort_order === 'string' ? (params.sort_order as SortOrder) : 'asc';
   const perPage = 10;
 
-  const { posts, pagination } = await getCouplets({
-    page: 1,
-    perPage,
-    searchQuery: query,
-    sortBy: sortBy as 'number' | 'text_en' | 'text_hi',
-    sortOrder: sortOrder as 'asc' | 'desc',
-  });
+  const { posts, pagination } = await getCouplets({ page: 1, perPage, searchQuery: query, sortBy, sortOrder });
 
   const title = query ? `Search results for "${query}"` : 'Search';
 

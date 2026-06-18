@@ -3,10 +3,11 @@ import type { JSX } from 'react';
 import type { Metadata } from 'next';
 
 import { ArchivePageLayout } from '@/app/couplets/_components/ArchivePageLayout';
-import { buildArchivePageSchema, POPULAR_CONFIG } from '@/app/couplets/_utils/archive';
+import { POPULAR_CONFIG } from '@/app/couplets/_utils/archive';
 import { getCouplets } from '@/lib/server/couplets';
 import { handlePageRedirect, parseSortParams } from '@/lib/server/page-utils';
 import { buildMetadata } from '@/lib/utils/meta';
+import { buildArchivePageSchema } from '@/lib/utils/schema';
 
 /** SEO metadata for the page. */
 export const metadata: Metadata = buildMetadata({
@@ -19,20 +20,20 @@ interface PopularCoupletsPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function PopularCoupletsPage({
-  searchParams,
-}: PopularCoupletsPageProps): Promise<JSX.Element> {
+/**
+ * Popular couplets archive page — paginated listing filtered by popularity.
+ *
+ * @param {PopularCoupletsPageProps} props - Component props.
+ * @param {Promise<Record<string, string | string[] | undefined>>} props.searchParams - URL search parameters.
+ *
+ * @returns {Promise<JSX.Element>} The popular couplets page.
+ */
+export default async function PopularCoupletsPage({ searchParams }: PopularCoupletsPageProps): Promise<JSX.Element> {
   const params = await searchParams;
   handlePageRedirect(params, '/popular-couplets');
   const { sortBy, sortOrder, perPage } = parseSortParams(params);
 
-  const { posts, pagination } = await getCouplets({
-    page: 1,
-    perPage,
-    ...POPULAR_CONFIG.filter,
-    sortBy: sortBy as 'number' | 'text_en' | 'text_hi',
-    sortOrder: sortOrder as 'asc' | 'desc',
-  });
+  const { posts, pagination } = await getCouplets({ page: 1, perPage, ...POPULAR_CONFIG.filter, sortBy, sortOrder });
 
   const pageSchema = buildArchivePageSchema(POPULAR_CONFIG, { posts, pagination, page: 1, perPage });
 
