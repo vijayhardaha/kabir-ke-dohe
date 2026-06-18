@@ -63,6 +63,7 @@ Reads data from Google Sheets, validates with Zod, and upserts into Supabase.
 Performs stale record cleanup before inserting.
 
 **Pipeline order:**
+
 1. Load env → create Supabase client
 2. Read Google Sheet → validate with `SheetSchema`
 3. Delete stale categories, tags, posts
@@ -107,7 +108,7 @@ Uploads WebP files from `dist/images/optimized/` to the `couplet-images`
 Supabase Storage bucket with `upsert: true`.
 
 - **Env:** `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`
-- **Mode:** `NODE_ENV` determines `.env.local` (dev) or `.env.production` (prod)
+- **Mode:** `NODE_ENV` determines `.env.development` (dev) or `.env.production` (prod)
 
 ### `tags-generate.ts`
 
@@ -196,14 +197,14 @@ generation and sentence-case normalization.
 
 All scripts use `import.meta.url` / `__dirname`-relative path resolution:
 
-| Script                 | Resolution Base             | Resolves To                     |
-| ---------------------- | --------------------------- | ------------------------------- |
-| `couplets-fetch.ts`    | `new URL('../../dist/...')` | `tools/dist/data/couplets.json` |
-| `couplets-upload.ts`   | `../constants/...`          | `tools/src/constants/...`       |
-| `images-generate.ts`   | `resolve(__dirname, '..', '..', 'dist/...')` | `tools/dist/images/original/` |
-| `images-optimize.ts`   | `resolve(__dirname, '..', '..', 'dist/...')` | `tools/dist/images/optimized/` |
-| `images-upload.ts`     | `resolve(__dirname, '..', '..', 'dist/...')` | `tools/dist/images/optimized/` |
-| `template-serve.ts`    | `resolve(__dirname, '..', '..', 'templates/')` | `tools/templates/` |
+| Script               | Resolution Base                                | Resolves To                     |
+| -------------------- | ---------------------------------------------- | ------------------------------- |
+| `couplets-fetch.ts`  | `new URL('../../dist/...')`                    | `tools/dist/data/couplets.json` |
+| `couplets-upload.ts` | `../constants/...`                             | `tools/src/constants/...`       |
+| `images-generate.ts` | `resolve(__dirname, '..', '..', 'dist/...')`   | `tools/dist/images/original/`   |
+| `images-optimize.ts` | `resolve(__dirname, '..', '..', 'dist/...')`   | `tools/dist/images/optimized/`  |
+| `images-upload.ts`   | `resolve(__dirname, '..', '..', 'dist/...')`   | `tools/dist/images/optimized/`  |
+| `template-serve.ts`  | `resolve(__dirname, '..', '..', 'templates/')` | `tools/templates/`              |
 
 ## Image Script Conventions
 
@@ -222,15 +223,15 @@ All image scripts follow these patterns:
 - **Config**: `vitest.config.ts` — `globals: true`, includes `src/**/*.test.ts`
 - **Test files**: Located next to source in `src/lib/__tests__/` and `src/__tests__/`
 
-| Test File                    | What It Tests                                        |
-| ---------------------------- | ---------------------------------------------------- |
-| `lib/__tests__/db.test.ts`   | Upsert functions (posts, tags, categories, mappings) |
-| `lib/__tests__/env.test.ts`  | `loadScriptEnv()` environment reading                |
-| `lib/__tests__/gsheet.test.ts` | Sheet authentication and validation errors         |
-| `lib/__tests__/slug.test.ts` | `slugifyText()` edge cases                           |
-| `lib/__tests__/supabase.test.ts` | Supabase client creation (placeholder)           |
-| `src/__tests__/images-generate.test.ts` | `findChromeInCache` function             |
-| `src/__tests__/images-optimize.test.ts` | `optimizeImage()` function                |
+| Test File                               | What It Tests                                        |
+| --------------------------------------- | ---------------------------------------------------- |
+| `lib/__tests__/db.test.ts`              | Upsert functions (posts, tags, categories, mappings) |
+| `lib/__tests__/env.test.ts`             | `loadScriptEnv()` environment reading                |
+| `lib/__tests__/gsheet.test.ts`          | Sheet authentication and validation errors           |
+| `lib/__tests__/slug.test.ts`            | `slugifyText()` edge cases                           |
+| `lib/__tests__/supabase.test.ts`        | Supabase client creation (placeholder)               |
+| `src/__tests__/images-generate.test.ts` | `findChromeInCache` function                         |
+| `src/__tests__/images-optimize.test.ts` | `optimizeImage()` function                           |
 
 ## Conventions
 

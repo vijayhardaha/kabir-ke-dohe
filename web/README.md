@@ -228,7 +228,7 @@ bun run test
 bun run test:watch
 ```
 
-## Environment Variables (`.env.local`)
+## Environment Variables (`.env.development`)
 
 | Variable                                       | Description          |
 | ---------------------------------------------- | -------------------- |

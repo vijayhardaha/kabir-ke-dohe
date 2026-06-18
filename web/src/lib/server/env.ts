@@ -1,6 +1,6 @@
 /**
  * Lazily loads environment variables on first access.
- * Next.js handles .env.local automatically — no explicit dotenv call needed.
+ * Next.js handles .env.development automatically — no explicit dotenv call needed.
  */
 
 let envCache: { supabaseUrl: string; supabaseKey: string } | null = null;

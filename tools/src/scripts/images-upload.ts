@@ -6,7 +6,7 @@
  * `couplet-images` bucket with the slug as the file name (e.g. `balihari-guru-....webp`).
  *
  * Usage:
- *   bun run couplets:images:upload            # dev (uses .env.local)
+ *   bun run couplets:images:upload            # dev (uses .env.development)
  *   bun run couplets:images:upload:prod       # production (uses .env.production)
  */
 

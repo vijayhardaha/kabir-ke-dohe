@@ -268,7 +268,7 @@ bun run test:watch       # Tests in watch mode
 
 **`env.ts`**
 
-- `loadScriptEnv()` — Loads `.env.local` or `.env.production` via dotenv + Zod validation. Requires `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `GOOGLE_SERVICE_ACCOUNT_BASE64`, `GOOGLE_SHEET_ID`.
+- `loadScriptEnv()` — Loads `.env.development` or `.env.production` via dotenv + Zod validation. Requires `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `GOOGLE_SERVICE_ACCOUNT_BASE64`, `GOOGLE_SHEET_ID`.
 
 **`supabase.ts`**
 

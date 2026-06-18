@@ -2,7 +2,7 @@
  * Script environment variables required for database, storage, and sheet operations.
  *
  * Bun injects env vars from the file specified via `--env-file`:
- *   bun --env-file=.env.local run tools/couplets-upload.ts
+ *   bun --env-file=.env.development run tools/couplets-upload.ts
  *   bun --env-file=.env.production run tools/couplets-upload.ts
  *
  * Make sure all required keys are defined in the referenced .env file.

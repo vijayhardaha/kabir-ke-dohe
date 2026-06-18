@@ -5,17 +5,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "couplets:fetch": "bun run src/scripts/couplets-fetch.ts",
-    "couplets:fetch:prod": "NODE_ENV=production bun run src/scripts/couplets-fetch.ts",
-    "couplets:upload": "bun run src/scripts/couplets-upload.ts",
-    "couplets:upload:prod": "NODE_ENV=production bun run src/scripts/couplets-upload.ts",
+    "couplets:fetch": "bun --env-file=.env.development run src/scripts/couplets-fetch.ts",
+    "couplets:fetch:prod": "NODE_ENV=production bun --env-file=.env.production run src/scripts/couplets-fetch.ts",
+    "couplets:upload": "bun --env-file=.env.development run src/scripts/couplets-upload.ts",
+    "couplets:upload:prod": "NODE_ENV=production bun --env-file=.env.production run src/scripts/couplets-upload.ts",
     "couplets:template:serve": "bun run src/scripts/template-serve.ts",
     "couplets:images": "bun run src/scripts/images-generate.ts",
     "couplets:images:optimize": "bun run src/scripts/images-optimize.ts",
-    "couplets:images:upload": "bun run src/scripts/images-upload.ts",
-    "couplets:images:upload:prod": "NODE_ENV=production bun run src/scripts/images-upload.ts",
-    "tags:generate": "bun run src/scripts/tags-generate.ts",
-    "tags:generate:prod": "NODE_ENV=production bun run src/scripts/tags-generate.ts",
+    "couplets:images:upload": "bun --env-file=.env.development run src/scripts/images-upload.ts",
+    "couplets:images:upload:prod": "NODE_ENV=production bun --env-file=.env.production run src/scripts/images-upload.ts",
+    "tags:generate": "bun --env-file=.env.development run src/scripts/tags-generate.ts",
+    "tags:generate:prod": "NODE_ENV=production bun --env-file=.env.production run src/scripts/tags-generate.ts",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "tsc": "tsc --noEmit",
@@ -38,6 +38,7 @@
   "devDependencies": {
     "@types/node": "25.9.3",
     "@vijayhardaha/dev-config": "^2.1.1",
+    "@vitest/coverage-v8": "^4.1.9",
     "typescript": "^6.0.3",
     "vitest": "^4.1.9"
   }

@@ -24,8 +24,8 @@
 bun install
 
 # Set up environment
-cp .env.example .env.local
-# Edit .env.local with your Supabase and Google Sheets credentials
+cp .env.example .env.development
+# Edit .env.development with your Supabase and Google Sheets credentials
 
 # Fetch couplet data
 bun run --filter @kabir-dohe-hub/tools couplets:fetch
@@ -38,58 +38,58 @@ bun run --filter @kabir-dohe-hub/tools couplets:upload
 
 ### Couplet Data
 
-| Command                                      | Description                                            |
-| -------------------------------------------- | ------------------------------------------------------ |
-| `couplets:fetch`                             | Fetch published couplets from Supabase → JSON          |
-| `couplets:fetch:prod`                        | Same, using `.env.production`                          |
-| `couplets:upload`                            | Sync Google Sheets data → Supabase                     |
-| `couplets:upload:prod`                       | Same, production mode                                   |
+| Command                | Description                                   |
+| ---------------------- | --------------------------------------------- |
+| `couplets:fetch`       | Fetch published couplets from Supabase → JSON |
+| `couplets:fetch:prod`  | Same, using `.env.production`                 |
+| `couplets:upload`      | Sync Google Sheets data → Supabase            |
+| `couplets:upload:prod` | Same, production mode                         |
 
 ### OG Image Pipeline
 
-| Command                                      | Description                                            |
-| -------------------------------------------- | ------------------------------------------------------ |
-| `couplets:images --all`                      | Generate JPEG images for all couplets                  |
-| `couplets:images <slug>`                     | Generate JPEG for a single couplet                     |
-| `couplets:images:optimize`                   | Compress JPEG → WebP (sharp, quality 100)              |
-| `couplets:images:upload`                     | Upload WebP to Supabase Storage                        |
-| `couplets:images:upload:prod`                | Upload to production bucket                            |
+| Command                       | Description                               |
+| ----------------------------- | ----------------------------------------- |
+| `couplets:images --all`       | Generate JPEG images for all couplets     |
+| `couplets:images <slug>`      | Generate JPEG for a single couplet        |
+| `couplets:images:optimize`    | Compress JPEG → WebP (sharp, quality 100) |
+| `couplets:images:upload`      | Upload WebP to Supabase Storage           |
+| `couplets:images:upload:prod` | Upload to production bucket               |
 
 ### Tags
 
-| Command                                      | Description                                            |
-| -------------------------------------------- | ------------------------------------------------------ |
-| `tags:generate`                              | Fetch tags with published post counts → TXT            |
-| `tags:generate:prod`                         | Same, production mode                                   |
+| Command              | Description                                 |
+| -------------------- | ------------------------------------------- |
+| `tags:generate`      | Fetch tags with published post counts → TXT |
+| `tags:generate:prod` | Same, production mode                       |
 
 ### Template Dev Server
 
-| Command                                      | Description                                            |
-| -------------------------------------------- | ------------------------------------------------------ |
-| `couplets:template:serve`                    | Start Browsersync on :2580, live-reload on .hbs edits  |
+| Command                   | Description                                           |
+| ------------------------- | ----------------------------------------------------- |
+| `couplets:template:serve` | Start Browsersync on :2580, live-reload on .hbs edits |
 
 ### Development
 
-| Command                                      | Description                                            |
-| -------------------------------------------- | ------------------------------------------------------ |
-| `tsc`                                        | TypeScript type check                                  |
-| `lint`                                       | Lint source files                                      |
-| `lint:fix`                                   | Auto-fix lint issues                                   |
-| `test`                                       | Run tests                                              |
-| `test:watch`                                 | Tests in watch mode                                    |
-| `test:coverage`                              | Run tests with coverage                                |
+| Command         | Description             |
+| --------------- | ----------------------- |
+| `tsc`           | TypeScript type check   |
+| `lint`          | Lint source files       |
+| `lint:fix`      | Auto-fix lint issues    |
+| `test`          | Run tests               |
+| `test:watch`    | Tests in watch mode     |
+| `test:coverage` | Run tests with coverage |
 
 ## Environment Variables
 
-Create `.env.local` (or `.env.production` for production) in the `tools/` directory:
+Create `.env.development` (or `.env.production` for production) in the `tools/` directory:
 
-| Variable                        | Description                    |
-| ------------------------------- | ------------------------------ |
-| `SUPABASE_URL`                  | Supabase project URL           |
+| Variable                        | Description                     |
+| ------------------------------- | ------------------------------- |
+| `SUPABASE_URL`                  | Supabase project URL            |
 | `SUPABASE_SERVICE_ROLE_KEY`     | Service role key (write access) |
-| `GOOGLE_SERVICE_ACCOUNT_BASE64` | Base64-encoded service account |
-| `GOOGLE_SHEET_ID`               | Google Sheet ID                |
-| `NODE_ENV`                      | `development` or `production`  |
+| `GOOGLE_SERVICE_ACCOUNT_BASE64` | Base64-encoded service account  |
+| `GOOGLE_SHEET_ID`               | Google Sheet ID                 |
+| `NODE_ENV`                      | `development` or `production`   |
 
 Variables are loaded via Bun's `--env-file` flag (handled automatically by
 the package scripts).
@@ -173,6 +173,7 @@ image uses a color palette derived from the post number, with CSS custom
 properties for heading and description colors.
 
 **Options:**
+
 - `--all` — Generate for all couplets
 - `--offset N` — Skip first N couplets (use with `--all`)
 - `<slug>` — Generate for a single couplet
@@ -206,14 +207,14 @@ the browser preview at 1200×630.
 
 ## Tech Stack
 
-| Layer             | Technology             |
-| ----------------- | ---------------------- |
-| Runtime           | Bun                    |
-| Language          | TypeScript (strict)    |
-| Database          | Supabase (PostgreSQL)  |
-| Validation        | Zod                    |
-| Image Gen         | Puppeteer + sharp      |
-| Template Engine   | Handlebars + juice     |
-| Testing           | Vitest                 |
-| CLI Feedback      | ora                    |
-| Google Sheets     | google-spreadsheet     |
+| Layer           | Technology            |
+| --------------- | --------------------- |
+| Runtime         | Bun                   |
+| Language        | TypeScript (strict)   |
+| Database        | Supabase (PostgreSQL) |
+| Validation      | Zod                   |
+| Image Gen       | Puppeteer + sharp     |
+| Template Engine | Handlebars + juice    |
+| Testing         | Vitest                |
+| CLI Feedback    | ora                   |
+| Google Sheets   | google-spreadsheet    |

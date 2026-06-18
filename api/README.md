@@ -161,7 +161,7 @@ supabase db push
 
 ## Environment Variables
 
-### Tools (`.env.local` / `.env.production`)
+### Tools (`.env.development` / `.env.production`)
 
 These are used by the `@kabir-dohe-hub/tools` package. Place the file in the `tools/` directory or pass via `--env-file`:
 
@@ -173,7 +173,7 @@ These are used by the `@kabir-dohe-hub/tools` package. Place the file in the `to
 | `GOOGLE_SHEET_ID`               | Google Sheet ID                |
 | `NODE_ENV`                      | `development` or `production`  |
 
-### API Server (`.env.local`)
+### API Server (`.env.development`)
 
 | Variable                                       | Description          |
 | ---------------------------------------------- | -------------------- |
