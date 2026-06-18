@@ -122,10 +122,10 @@ export default async function HomePage(): Promise<JSX.Element> {
         {/* ═══════════════ HERO SECTION ═══════════════ */}
         <section className="bg-primary relative overflow-hidden">
           <div className="from-primary/50 absolute inset-0 bg-linear-to-br to-transparent" />
-          <Container className="relative py-12 md:py-20">
-            <div className="flex flex-col items-center gap-20 lg:flex-row lg:items-center lg:gap-10">
+          <Container className="relative pt-20 lg:pt-6">
+            <div className="flex flex-col items-center gap-0 lg:flex-row lg:items-stretch lg:gap-10">
               {/* ── Hero text ── */}
-              <div className="max-w-xl text-center lg:flex-1 lg:text-left">
+              <div className="flex flex-col justify-center pb-0 text-center lg:flex-1 lg:pb-20 lg:text-left">
                 <h1 className="mb-4 text-4xl leading-tight font-bold text-white md:text-5xl lg:text-6xl">
                   Wisdom of Sant Kabir
                 </h1>
@@ -143,9 +143,17 @@ export default async function HomePage(): Promise<JSX.Element> {
                 </div>
               </div>
 
-              {/* ── Carousel ── */}
-              <div className="flex w-full justify-center lg:w-auto lg:flex-1 lg:justify-end">
-                <Image src="cherry-tree-pana.svg" width={500} height={500} alt="demo" />
+              {/* ── Hero illustration (touches container bottom) ── */}
+              <div className="flex w-full justify-center lg:w-auto lg:flex-1">
+                <Image
+                  src="/hero-illustration.svg"
+                  width={500}
+                  height={500}
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 500px"
+                  className="relative -bottom-0.5 h-auto w-full"
+                  alt="Decorative cherry tree illustration representing the growth of wisdom through Kabir's teachings"
+                />
               </div>
             </div>
           </Container>
