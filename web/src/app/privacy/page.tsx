@@ -1,6 +1,5 @@
 import type { JSX } from 'react';
 
-import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 
@@ -8,37 +7,28 @@ import { Container } from '@/components/layout/Container';
 import { ContactSection, LegalSection } from '@/components/layout/LegalSection';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { buildMetadata, buildSeoTitle } from '@/lib/utils/meta';
-import { buildKeywords, globalSchema } from '@/lib/utils/schema';
-import { siteUrl } from '@/lib/utils/seo';
+import { buildMetadata } from '@/lib/utils/meta';
+import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
 // ── SEO ───────────────────────────────────────────────────────────────────
 
-const seoTitle = 'Privacy Policy';
-const seoDescription = 'Privacy policy for Kabir Ke Dohe — how we collect, use, and protect your information.';
-const seoPath = 'privacy';
-const seoKeywords = ['privacy policy', 'data protection'];
+const pageConfig: PageConfig = {
+  seoTitle: 'Privacy Policy',
+  seoDescription: 'Privacy policy for Kabir Ke Dohe — how we collect, use, and protect your information.',
+  seoPath: 'privacy',
+  seoKeywords: ['privacy policy', 'data protection'],
+};
 
 /** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
+export const metadata: Metadata = buildMetadata({
+  title: pageConfig.seoTitle,
+  description: pageConfig.seoDescription,
+  path: pageConfig.seoPath,
+});
 
 // ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
-const rootUrl = siteUrl();
-const pageSchema = [
-  ...globalSchema(),
-  webPageSchema(
-    { rootUrl, path: seoPath },
-    { name: buildSeoTitle(seoTitle, true), description: seoDescription, keywords: buildKeywords(seoKeywords) }
-  ),
-  breadcrumbSchema({
-    rootUrl,
-    items: [
-      { name: 'Home', path: '' },
-      { name: 'Privacy Policy', path: seoPath },
-    ],
-  }),
-];
+const pageSchema = buildPageSchema(pageConfig);
 
 /**
  * Privacy policy page explaining data collection, usage, and user rights.

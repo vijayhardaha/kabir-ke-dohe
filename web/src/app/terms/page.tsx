@@ -1,6 +1,5 @@
 import type { JSX } from 'react';
 
-import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 
@@ -8,37 +7,28 @@ import { Container } from '@/components/layout/Container';
 import { ContactSection, LegalSection } from '@/components/layout/LegalSection';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { buildMetadata, buildSeoTitle } from '@/lib/utils/meta';
-import { buildKeywords, globalSchema } from '@/lib/utils/schema';
-import { siteUrl } from '@/lib/utils/seo';
+import { buildMetadata } from '@/lib/utils/meta';
+import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
 // ── SEO ───────────────────────────────────────────────────────────────────
 
-const seoTitle = 'Terms & Conditions';
-const seoDescription = 'Terms and conditions for using Kabir Ke Dohe — rules, disclaimers, and usage guidelines.';
-const seoPath = 'terms';
-const seoKeywords = ['terms of service', 'terms and conditions'];
+const pageConfig: PageConfig = {
+  seoTitle: 'Terms & Conditions',
+  seoDescription: 'Terms and conditions for using Kabir Ke Dohe — rules, disclaimers, and usage guidelines.',
+  seoPath: 'terms',
+  seoKeywords: ['terms of service', 'terms and conditions'],
+};
 
 /** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
+export const metadata: Metadata = buildMetadata({
+  title: pageConfig.seoTitle,
+  description: pageConfig.seoDescription,
+  path: pageConfig.seoPath,
+});
 
 // ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
-const rootUrl = siteUrl();
-const pageSchema = [
-  ...globalSchema(),
-  webPageSchema(
-    { rootUrl, path: seoPath },
-    { name: buildSeoTitle(seoTitle, true), description: seoDescription, keywords: buildKeywords(seoKeywords) }
-  ),
-  breadcrumbSchema({
-    rootUrl,
-    items: [
-      { name: 'Home', path: '' },
-      { name: 'Terms & Conditions', path: seoPath },
-    ],
-  }),
-];
+const pageSchema = buildPageSchema(pageConfig);
 
 /**
  * Terms and conditions page outlining rules, disclaimers, and usage guidelines.

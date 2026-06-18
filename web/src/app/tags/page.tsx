@@ -1,6 +1,5 @@
 import type { JSX } from 'react';
 
-import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -10,17 +9,28 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { getTags } from '@/lib/server/couplets';
 import { cn } from '@/lib/utils/cn';
-import { buildMetadata, buildSeoTitle } from '@/lib/utils/meta';
-import { buildKeywords, globalSchema } from '@/lib/utils/schema';
-import { siteUrl } from '@/lib/utils/seo';
+import { buildMetadata } from '@/lib/utils/meta';
+import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
 // ── SEO ───────────────────────────────────────────────────────────────────
 
-const seoTitle = 'Tags';
-const seoDescription =
-  "Browse Kabir's dohas by thematic tags — each tag gathers couplets around a shared spiritual thread.";
-const seoPath = 'tags';
-const seoKeywords = ['Kabir tags', 'doha topics', 'spiritual tags'];
+const pageConfig: PageConfig = {
+  seoTitle: 'Tags',
+  seoDescription: "Browse Kabir's dohas by thematic tags — each tag gathers couplets around a shared spiritual thread.",
+  seoPath: 'tags',
+  seoKeywords: ['Kabir tags', 'doha topics', 'spiritual tags'],
+};
+
+/** SEO metadata for the page. */
+export const metadata: Metadata = buildMetadata({
+  title: pageConfig.seoTitle,
+  description: pageConfig.seoDescription,
+  path: pageConfig.seoPath,
+});
+
+// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
+
+const pageSchema = buildPageSchema(pageConfig);
 
 // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -46,25 +56,6 @@ function groupByFirstLetter<T extends { name: string }>(items: T[]): Map<string,
 
   return groups;
 }
-
-/** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
-
-const rootUrl = siteUrl();
-const pageSchema = [
-  ...globalSchema(),
-  webPageSchema(
-    { rootUrl, path: seoPath },
-    { name: buildSeoTitle(seoTitle, true), description: seoDescription, keywords: buildKeywords(seoKeywords) }
-  ),
-  breadcrumbSchema({
-    rootUrl,
-    items: [
-      { name: 'Home', path: '' },
-      { name: 'Tags', path: seoPath },
-    ],
-  }),
-];
 
 /**
  * Tags overview page that displays all tags grouped alphabetically
@@ -92,7 +83,7 @@ export default async function TagsPage(): Promise<JSX.Element> {
             description="कबीर के दोहों को विषय आधार पर खोजें — हर टैग एक साझा आध्यात्मिक सूत्र के आसपास दोहों को संग्रहित करता है (Browse Kabir&rsquo;s dohas by thematic tags &mdash; each tag gathers couplets around a shared spiritual thread)"
           />
 
-          {/* A–Z jump nav */}
+          {/* ═══════════════ A–Z JUMP NAV ═══════════════ */}
           <nav aria-label="Alphabetical filter" className="mb-10 flex flex-wrap gap-2">
             {letters.map((letter) => (
               <a
@@ -108,15 +99,18 @@ export default async function TagsPage(): Promise<JSX.Element> {
             ))}
           </nav>
 
-          {/* Alphabetical groups in a 1‑column grid */}
+          {/* ═══════════════ ALPHABETICAL GROUPS ═══════════════ */}
           <div className="grid grid-cols-1 gap-6">
             {letters.map((letter) => {
               const tags = groups.get(letter)!;
               return (
                 <section key={letter} id={`tag-group-${letter}`} className="bg-card relative mt-5 p-5 pt-12">
+                  {/* ── Letter heading badge ── */}
                   <h2 className="bg-primary text-primary-foreground absolute -top-7 z-10 mb-4 flex h-14 w-14 items-center justify-center text-2xl font-bold">
                     {letter}
                   </h2>
+
+                  {/* ── Tag chips ── */}
                   <div className="flex flex-wrap gap-2">
                     {tags.map((tag) => (
                       <Link

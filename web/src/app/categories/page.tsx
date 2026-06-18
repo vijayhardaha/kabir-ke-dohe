@@ -1,6 +1,5 @@
 import type { JSX } from 'react';
 
-import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 import { RiArrowRightLine } from 'react-icons/ri';
@@ -11,38 +10,29 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { ButtonLink } from '@/components/ui/Button';
 import { CATEGORIES } from '@/constants/categories';
 import { getCategories } from '@/lib/server/couplets';
-import { buildMetadata, buildSeoTitle } from '@/lib/utils/meta';
-import { buildKeywords, globalSchema } from '@/lib/utils/schema';
-import { siteUrl } from '@/lib/utils/seo';
+import { buildMetadata } from '@/lib/utils/meta';
+import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
 // ── SEO ───────────────────────────────────────────────────────────────────
 
-const seoTitle = 'Categories';
-const seoDescription =
-  "Browse Kabir's dohas organised by theme — each category offers a unique lens on his spiritual and philosophical teachings.";
-const seoPath = 'categories';
-const seoKeywords = ['Kabir categories', 'doha themes', 'spiritual topics', 'Kabir teachings by category'];
+const pageConfig: PageConfig = {
+  seoTitle: 'Categories',
+  seoDescription:
+    "Browse Kabir's dohas organised by theme — each category offers a unique lens on his spiritual and philosophical teachings.",
+  seoPath: 'categories',
+  seoKeywords: ['Kabir categories', 'doha themes', 'spiritual topics', 'Kabir teachings by category'],
+};
 
 /** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({ title: seoTitle, description: seoDescription, path: seoPath });
+export const metadata: Metadata = buildMetadata({
+  title: pageConfig.seoTitle,
+  description: pageConfig.seoDescription,
+  path: pageConfig.seoPath,
+});
 
 // ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
-const rootUrl = siteUrl();
-const pageSchema = [
-  ...globalSchema(),
-  webPageSchema(
-    { rootUrl, path: seoPath },
-    { name: buildSeoTitle(seoTitle, true), description: seoDescription, keywords: buildKeywords(seoKeywords) }
-  ),
-  breadcrumbSchema({
-    rootUrl,
-    items: [
-      { name: 'Home', path: '' },
-      { name: 'Categories', path: seoPath },
-    ],
-  }),
-];
+const pageSchema = buildPageSchema(pageConfig);
 
 /**
  * Categories overview page that displays all predefined categories
@@ -118,7 +108,7 @@ function CategoryCard({ category }: CategoryCardProps): JSX.Element {
         )}
       </div>
 
-      {/* Footer */}
+      {/* ── Footer ── */}
       <div className="mt-5 flex items-center justify-between gap-3">
         <span className="text-muted-foreground text-xs font-medium">
           {category.post_count} {category.post_count === 1 ? 'couplet' : 'couplets'}

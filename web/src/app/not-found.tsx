@@ -1,6 +1,5 @@
 import type { JSX } from 'react';
 
-import { webPageSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 
@@ -8,26 +7,27 @@ import { Container } from '@/components/layout/Container';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { ButtonLink } from '@/components/ui/Button';
 import { buildMetadata } from '@/lib/utils/meta';
-import { globalSchema } from '@/lib/utils/schema';
-import { siteUrl } from '@/lib/utils/seo';
+import { type PageConfig, buildPageSchema } from '@/lib/utils/schema';
+
+// ── SEO ───────────────────────────────────────────────────────────────────
+
+const pageConfig: PageConfig = {
+  seoTitle: '404 - Page Not Found',
+  seoDescription: 'The requested page could not be found.',
+  seoPath: '404',
+  seoKeywords: ['404', 'not found', 'page missing'],
+};
 
 /** SEO metadata for the page. */
 export const metadata: Metadata = buildMetadata({
-  title: '404 - Page Not Found',
-  description: 'The requested page could not be found.',
-  path: '404',
+  title: pageConfig.seoTitle,
+  description: pageConfig.seoDescription,
+  path: pageConfig.seoPath,
 });
 
 // ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
-const rootUrl = siteUrl();
-const notFoundSchema = [
-  ...globalSchema(),
-  webPageSchema(
-    { rootUrl, path: '404' },
-    { name: 'Page Not Found — Kabir Ke Dohe', description: 'The requested page could not be found.' }
-  ),
-];
+const pageSchema = buildPageSchema(pageConfig);
 
 /**
  * Custom 404 page displayed when a route does not match any known page.
@@ -37,7 +37,8 @@ const notFoundSchema = [
 export default function NotFound(): JSX.Element {
   return (
     <>
-      <JsonLd data={notFoundSchema} />
+      <JsonLd data={pageSchema} />
+
       <PageLayout>
         <Container className="flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
           <p className="text-primary text-8xl font-bold">404</p>

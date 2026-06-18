@@ -9,8 +9,28 @@ import { Container } from '@/components/layout/Container';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { buildMetadata } from '@/lib/utils/meta';
+import { type PageConfig } from '@/lib/utils/schema';
 import { globalSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
+
+// ── SEO ───────────────────────────────────────────────────────────────────
+
+const SITE_DESCRIPTION =
+  'Learn about the life, teachings, and legacy of Sant Kabir Das, the 15th-century mystic poet whose dohas continue to inspire millions with spiritual wisdom.';
+
+const pageConfig: PageConfig = {
+  seoTitle: 'About Sant Kabir Das',
+  seoDescription: SITE_DESCRIPTION,
+  seoPath: 'about',
+  seoKeywords: ['about Kabir', 'Sant Kabir biography', 'Kabir life story', 'Kabir Das history'],
+};
+
+/** SEO metadata for the page. */
+export const metadata: Metadata = buildMetadata({
+  title: pageConfig.seoTitle,
+  description: pageConfig.seoDescription,
+  path: pageConfig.seoPath,
+});
 
 // ── Famous dohas ──────────────────────────────────────────────────────────
 
@@ -41,27 +61,17 @@ const FAMOUS_DOHAS: Array<[string, string]> = [
   ['हाड़ जले ज्यो लाकड़ी, केस जले ज्यों घास।', 'सब जग जलता देख के, भए कबीर उदास।।'],
 ];
 
-const SITE_DESCRIPTION =
-  'Learn about the life, teachings, and legacy of Sant Kabir Das, the 15th-century mystic poet whose dohas continue to inspire millions with spiritual wisdom.';
-
-/** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({
-  title: 'About Sant Kabir Das',
-  description: SITE_DESCRIPTION,
-  path: 'about',
-});
-
 // ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
 const rootUrl = siteUrl();
 const aboutSchema = [
   ...globalSchema(),
-  aboutPageSchema({ rootUrl, path: 'about' }, { name: 'About Sant Kabir Das — Kabir Ke Dohe' }),
+  aboutPageSchema({ rootUrl, path: pageConfig.seoPath }, { name: `${pageConfig.seoTitle} — Kabir Ke Dohe` }),
   breadcrumbSchema({
     rootUrl,
     items: [
       { name: 'Home', path: '' },
-      { name: 'About Sant Kabir Das', path: 'about' },
+      { name: pageConfig.seoTitle, path: pageConfig.seoPath },
     ],
   }),
 ];
@@ -134,9 +144,9 @@ export default function AboutPage(): JSX.Element {
                 <a href="https://en.wikipedia.org/wiki/Varanasi" target="_blank" rel="noopener noreferrer">
                   Varanasi
                 </a>
-                , one of the holiest cities in India, around 1440 CE. Though his exact birth details remain a mystery,
-                it is widely believed that he was born into a Muslim family of weavers. Kabir was adopted and raised by
-                a poor Muslim couple, Neeru and Neema, who found him floating on a lotus in the{' '}
+                , one of the holist cities in India, around 1440 CE. Though his exact birth details remain a mystery, it
+                is widely believed that he was born into a Muslim family of weavers. Kabir was adopted and raised by a
+                poor Muslim couple, Neeru and Neema, who found him floating on a lotus in the{' '}
                 <a href="https://en.wikipedia.org/wiki/Lahartara" target="_blank" rel="noopener noreferrer">
                   Lahartara lake
                 </a>
