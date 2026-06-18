@@ -3,10 +3,9 @@ import type { JSX } from 'react';
 import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
-import { RiArrowRightLine, RiDoubleQuotesL } from 'react-icons/ri';
 import Image from 'next/image';
+import { RiArrowRightLine, RiDoubleQuotesL } from 'react-icons/ri';
 
-import HeroCarousel from '@/components/features/HeroCarousel';
 import QuoteCard from '@/components/features/QuoteCard';
 import { Container } from '@/components/layout/Container';
 import { PageLayout } from '@/components/layout/PageLayout';
@@ -106,11 +105,10 @@ function WisdomQuote({
  * @returns {Promise<JSX.Element>} The homepage JSX.
  */
 export default async function HomePage(): Promise<JSX.Element> {
-  const [featured, popular, latest, carouselCouplets] = await Promise.all([
+  const [featured, popular, latest] = await Promise.all([
     getFeaturedCouplets(4).catch(() => []),
     getPopularCouplets(4).catch(() => []),
     getLatestCouplets(6).catch(() => []),
-    getFeaturedCouplets(5).catch(() => []),
   ]);
 
   const quote1 = getRandomMessage();
