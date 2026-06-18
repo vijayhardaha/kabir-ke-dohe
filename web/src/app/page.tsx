@@ -4,13 +4,14 @@ import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 import { RiArrowRightLine, RiDoubleQuotesL } from 'react-icons/ri';
+import Image from 'next/image';
 
 import HeroCarousel from '@/components/features/HeroCarousel';
 import QuoteCard from '@/components/features/QuoteCard';
 import { Container } from '@/components/layout/Container';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { ButtonLink } from '@/components/ui/Button';
-import { KABIR_MESSAGES } from '@/constants/kabirMessages';
+import { KABIR_QUOTES } from '@/constants/kabir-quotes';
 import { getFeaturedCouplets, getPopularCouplets, getLatestCouplets } from '@/lib/server/couplets';
 import { buildMetadata } from '@/lib/utils/meta';
 import { globalSchema } from '@/lib/utils/schema';
@@ -44,7 +45,7 @@ const homeSchema = [
 ];
 
 /**
- * Pick a random message from KABIR_MESSAGES.
+ * Pick a random message from KABIR_QUOTES.
  *
  * @param {string} [exclude] - Optional message to avoid (prevents duplicates).
  *
@@ -53,7 +54,7 @@ const homeSchema = [
 function getRandomMessage(exclude?: string): string {
   let message: string;
   do {
-    message = KABIR_MESSAGES[Math.floor(Math.random() * KABIR_MESSAGES.length)]!;
+    message = KABIR_QUOTES[Math.floor(Math.random() * KABIR_QUOTES.length)]!;
   } while (exclude && message === exclude);
   return message;
 }
@@ -118,8 +119,8 @@ export default async function HomePage(): Promise<JSX.Element> {
   return (
     <>
       <JsonLd data={homeSchema} />
-      <PageLayout className="pt-0">
 
+      <PageLayout className="pt-0">
         {/* ═══════════════ HERO SECTION ═══════════════ */}
         <section className="bg-primary relative overflow-hidden">
           <div className="from-primary/50 absolute inset-0 bg-linear-to-br to-transparent" />
@@ -146,9 +147,7 @@ export default async function HomePage(): Promise<JSX.Element> {
 
               {/* ── Carousel ── */}
               <div className="flex w-full justify-center lg:w-auto lg:flex-1 lg:justify-end">
-                <HeroCarousel
-                  slides={carouselCouplets.map((c) => ({ slug: c.slug, text_hi: c.text_hi, meaning_hi: c.meaning_hi }))}
-                />
+                <Image src="cherry-tree-pana.svg" width={500} height={500} alt="demo" />
               </div>
             </div>
           </Container>
