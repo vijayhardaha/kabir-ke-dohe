@@ -141,6 +141,20 @@ export interface TagRef {
 export type CoupletRef = Pick<Post, 'slug' | 'text_hi'>;
 
 /**
+ * Available sort field values for couplet archive listings.
+ *
+ * @type {SortBy}
+ */
+export type SortBy = 'number' | 'text_en' | 'text_hi';
+
+/**
+ * Available sort direction values for couplet archive listings.
+ *
+ * @type {SortOrder}
+ */
+export type SortOrder = 'asc' | 'desc';
+
+/**
  * Pagination metadata for list responses.
  *
  * @type {PaginationMeta}
