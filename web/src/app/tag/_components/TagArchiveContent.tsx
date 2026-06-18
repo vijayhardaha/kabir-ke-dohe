@@ -10,9 +10,9 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
 import { getTagBySlug, getCouplets } from '@/lib/server/couplets';
-import type { GetCoupletsOptions } from '@/lib/server/couplets';
 import { globalSchema, collectionPageSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
+import type { SortBy, SortOrder } from '@/types';
 
 // ── Props ─────────────────────────────────────────────────────────────────
 
@@ -22,12 +22,12 @@ import { siteUrl } from '@/lib/utils/seo';
  * @type {TagArchiveContentProps}
  * @property {string} slug - Tag slug.
  * @property {number} page - Current page number.
- * @property {{ sortBy: string; sortOrder: string }} sort - Sort parameters.
+ * @property {{ sortBy: SortBy; sortOrder: SortOrder }} sort - Sort parameters.
  */
 interface TagArchiveContentProps {
   slug: string;
   page: number;
-  sort: { sortBy: string; sortOrder: string };
+  sort: { sortBy: SortBy; sortOrder: SortOrder };
 }
 
 /**
@@ -46,15 +46,14 @@ export async function TagArchiveContent({ slug, page, sort }: TagArchiveContentP
   }
 
   const tagName = tag.name;
-
   const rootUrl = siteUrl();
 
   const { posts, pagination } = await getCouplets({
     page,
     perPage: 10,
     tag: slug,
-    sortBy: sort.sortBy as GetCoupletsOptions['sortBy'],
-    sortOrder: sort.sortOrder as GetCoupletsOptions['sortOrder'],
+    sortBy: sort.sortBy,
+    sortOrder: sort.sortOrder,
   });
 
   const itemListElement = posts.map((post, idx) => ({
