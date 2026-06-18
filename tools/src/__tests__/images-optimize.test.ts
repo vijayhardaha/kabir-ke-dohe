@@ -5,11 +5,10 @@
  * generated test images (no file fixtures needed).
  */
 
-// @ts-ignore - sharp .mts resolution workaround
 import sharp from 'sharp';
 import { describe, it, expect } from 'vitest';
 
-import { optimizeImage } from '../images-optimize';
+import { optimizeImage } from '../scripts/images-optimize';
 
 describe('optimizeImage', () => {
   it('should convert a JPEG buffer to WebP format', async () => {

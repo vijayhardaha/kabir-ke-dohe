@@ -1,0 +1,28 @@
+// =======================================================================
+// Typescript Configuration
+// =======================================================================
+// Purpose: Static type-checking and module resolution strategy for CLI
+//          tools, ensuring predictable behavior and strong typing across
+//          scripts, lib utilities, and test files.
+// Docs:    https://www.typescriptlang.org/tsconfig
+// =======================================================================
+
+{
+  "extends": "@vijayhardaha/dev-config/tsconfig",
+  "compilerOptions": {
+    // ----------------------------------------------------------------------
+    // Module resolution & target
+    // ----------------------------------------------------------------------
+    "moduleResolution": "bundler",
+    "module": "esnext",
+    "target": "esnext",
+    "types": ["node"]
+  },
+
+  // ---- Includes ----
+  // Files to include in the project type-checking scope
+  "include": ["*.config.mjs", "*.config.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.mjs"],
+
+  // ---- Excludes ----
+  "exclude": ["node_modules", "dist", "build", "coverage"]
+}

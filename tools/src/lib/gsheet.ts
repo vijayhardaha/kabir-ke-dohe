@@ -2,11 +2,10 @@ import { JWT } from 'google-auth-library';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { z } from 'zod';
 
-import { toSentenceCase } from '@/lib/server/utils';
-
 import type { DbCategory, DbPost, DbTag } from './db';
 import type { ScriptEnv } from './env';
 import { slugifyText } from './slug';
+import { toSentenceCase } from './string';
 
 /**
  * Zod schema for validating a single row from the Google Sheet.

@@ -17,7 +17,7 @@ vi.mock('google-spreadsheet', () => ({
     })),
 }));
 
-vi.mock('@/lib/server/utils', () => ({ toSentenceCase: vi.fn((str: string) => str) }));
+vi.mock('../string', () => ({ toSentenceCase: vi.fn((str: string) => str) }));
 
 import type { ScriptEnv } from '../env';
 import { sheetToJson } from '../gsheet';

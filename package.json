@@ -6,7 +6,8 @@
   "workspaces": [
     "api",
     "web",
-    "images-tool"
+    "images-tool",
+    "tools"
   ],
   "scripts": {
     "dev": "bun run --filter '*' dev",

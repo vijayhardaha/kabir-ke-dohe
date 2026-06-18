@@ -2,8 +2,8 @@
 /**
  * Optimizes original couplet images with sharp and outputs WebP versions.
  *
- * Reads all JPEG files from output/images/original/, compresses them with sharp
- * (WebP, quality 85), and writes to output/images/optimized/.
+ * Reads all JPEG files from dist/images/original/, compresses them with sharp
+ * (WebP, quality 85), and writes to dist/images/optimized/.
  *
  * Usage:
  *   bun run couplets:images:optimize
@@ -15,8 +15,8 @@ import { fileURLToPath } from 'node:url';
 
 import sharp from 'sharp';
 
-import { initSpinner, handleScriptError } from './lib/cli';
-import { readFilesWithExtension, ensureDir } from './lib/storage';
+import { initSpinner, handleScriptError } from '../lib/cli';
+import { readFilesWithExtension, ensureDir } from '../lib/storage';
 
 /**
  * Optimize a single image buffer to WebP.
@@ -34,15 +34,15 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 async function main(): Promise<void> {
   const spinner = initSpinner('Scanning original images...');
 
-  const srcDir = resolve(__dirname, 'output', 'images', 'original');
+  const srcDir = resolve(__dirname, '..', '..', 'dist', 'images', 'original');
   const files = await readFilesWithExtension(srcDir, '.jpg');
 
   if (files.length === 0) {
-    handleScriptError(spinner, "No JPEG files found in output/images/original/. Run 'couplets:images' first.");
+    handleScriptError(spinner, "No JPEG files found in dist/images/original/. Run 'couplets:images' first.");
   }
 
   /* ── 2. Ensure optimized output directory ── */
-  const destDir = resolve(__dirname, 'output', 'images', 'optimized');
+  const destDir = resolve(__dirname, '..', '..', 'dist', 'images', 'optimized');
   await ensureDir(destDir);
 
   spinner.start(`Optimizing ${files.length} images to WebP...`);
@@ -62,7 +62,7 @@ async function main(): Promise<void> {
     spinner.text = `Optimizing... (${i + 1}/${files.length})`;
   }
 
-  spinner.succeed(`${files.length} WebP images written to output/images/optimized/`);
+  spinner.succeed(`${files.length} WebP images written to dist/images/optimized/`);
   process.exit(0);
 }
 

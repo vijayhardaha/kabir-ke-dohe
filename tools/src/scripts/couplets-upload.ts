@@ -12,7 +12,7 @@
 
 import ora from 'ora';
 
-import { CATEGORY_DESCRIPTIONS } from './data/category-descriptions';
+import { CATEGORY_DESCRIPTIONS } from '../constants/category-descriptions';
 import {
   upsertCategories,
   upsertPosts,
@@ -23,11 +23,11 @@ import {
   type DbCategory,
   type DbPost,
   type DbTag,
-} from './lib/db';
-import { loadScriptEnv, type ScriptEnv } from './lib/env';
-import { sheetToJson } from './lib/gsheet';
-import { slugifyText } from './lib/slug';
-import { createSupabaseClient } from './lib/supabase';
+} from '../lib/db';
+import { loadScriptEnv, type ScriptEnv } from '../lib/env';
+import { sheetToJson } from '../lib/gsheet';
+import { slugifyText } from '../lib/slug';
+import { createSupabaseClient } from '../lib/supabase';
 
 const BATCH_SIZE = 400;
 

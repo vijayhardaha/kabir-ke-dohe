@@ -49,7 +49,7 @@ body {
   font-size: 30px;
   font-weight: 300;
   text-transform: uppercase;
-  color: {{heading_color}};
+  color: var(--heading-color);
   margin-bottom: 8px;
   line-height: 1;
 }
@@ -57,7 +57,7 @@ body {
 .divider {
   width: 60px;
   height: 2px;
-  background-color: {{description_color}};
+  background-color: var(--description-color);
   margin-bottom: 32px;
 }
 
@@ -65,7 +65,7 @@ body {
   font-size: 52px;
   font-weight: 700;
   line-height: 1.4;
-  color: {{heading_color}};
+  color: var(--heading-color);
   white-space: pre-line;
   margin-bottom: 20px;
 }
@@ -74,7 +74,7 @@ body {
   font-size: 24px;
   font-weight: 400;
   line-height: 1.7;
-  color: {{description_color}};
+  color: var(--description-color);
   white-space: pre-line;
 }
 
@@ -85,7 +85,7 @@ body {
 .bottom-divider {
   width: 100%;
   height: 1.5px;
-  background-color: {{description_color}};
+  background-color: var(--description-color);
   margin-bottom: 12px;
 }
 
@@ -97,7 +97,7 @@ body {
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.04em;
-  color: {{description_color}};
+  color: var(--description-color);
 }
 
 .footer__socials {

@@ -12,7 +12,7 @@ import { join } from 'node:path';
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-import { findChromeInCache } from '../images-generate';
+import { findChromeInCache } from '../scripts/images-generate';
 
 describe('findChromeInCache', () => {
   let tmpDir: string;

@@ -3,7 +3,7 @@
  * Generates OG-style images for couplets from data/couplets.json.
  *
  * Reads slug → text_hi pairs, renders each through the quote-card Handlebars
- * template, and outputs 1200×630 JPEG images to output/images/original/.
+ * template, and outputs 1200×630 JPEG images to dist/images/original/.
  *
  * Usage:
  *   bun run couplets:images --all               generate images for all couplets
@@ -17,8 +17,8 @@ import { fileURLToPath } from 'node:url';
 
 import ora from 'ora';
 
-import { generateVariants, generateSvgShades, getPalette } from './lib/colors';
-import type { CoupletEntry } from './lib/types';
+import { generateVariants, generateSvgShades, getPalette } from '../lib/colors';
+import type { CoupletEntry } from '../types';
 
 const WEBSITE_URL = 'kabirdohehub.vercel.app';
 
@@ -61,7 +61,7 @@ async function main(): Promise<void> {
   if (!isAll && !slug) {
     console.error('Usage: bun run couplets:images [--all [--offset N] | <slug>]');
     console.error();
-    console.error('  --all               Generate images for every couplet in output/data/couplets.json');
+    console.error('  --all               Generate images for every couplet in dist/data/couplets.json');
     console.error('  --offset N          Skip first N couplets (only with --all)');
     console.error('  <slug>              Generate image for a single couplet (e.g. balihari-guru-...)');
     process.exit(1);
@@ -74,13 +74,13 @@ async function main(): Promise<void> {
   /* ── 2. Read couplets data ── */
   spinner = ora('Reading couplets data…').start();
 
-  const dataPath = resolve(__dirname, 'output', 'data', 'couplets.json');
+  const dataPath = resolve(__dirname, '..', '..', 'dist', 'data', 'couplets.json');
   const raw = await readFile(dataPath, 'utf-8');
   const couplets = JSON.parse(raw) as Record<string, CoupletEntry>;
-  let entries = Object.entries(couplets);
+  const entries = Object.entries(couplets);
 
   if (entries.length === 0) {
-    spinner.fail("No couplets found in output/data/couplets.json. Run 'couplets:fetch' first.");
+    spinner.fail("No couplets found in dist/data/couplets.json. Run 'couplets:fetch' first.");
     return;
   }
 
@@ -101,14 +101,14 @@ async function main(): Promise<void> {
   }
 
   /* ── 4. Read template & CSS ── */
-  const templatePath = resolve(__dirname, 'templates/quote-card.hbs');
+  const templatePath = resolve(__dirname, '..', '..', 'templates/quote-card.hbs');
   const template = await readFile(templatePath, 'utf-8');
 
-  const cssPath = resolve(__dirname, 'templates/card.css');
+  const cssPath = resolve(__dirname, '..', '..', 'templates/card.css');
   const cssTemplate = await readFile(cssPath, 'utf-8');
 
   /* ── 5. Ensure original output directory ── */
-  const outputDir = resolve(__dirname, 'output', 'images', 'original');
+  const outputDir = resolve(__dirname, '..', '..', 'dist', 'images', 'original');
   await mkdir(outputDir, { recursive: true });
 
   /* ── 6. Detect Chrome path ── */
@@ -138,11 +138,7 @@ async function main(): Promise<void> {
         const variants = generateVariants(palette.background);
         const svgColors = generateSvgShades(palette.background);
 
-        const resolvedCss = cssTemplate
-          .replaceAll('{{heading_color}}', variants.heading)
-          .replaceAll('{{description_color}}', variants.description);
-
-        let cardHtml = template
+        const cardHtml = template
           .replaceAll('{{couplet_text}}', textWithBreaks)
           .replaceAll('{{couplet_meaning}}', entry.meaning ?? '')
           .replaceAll('{{website_url}}', WEBSITE_URL)
@@ -152,8 +148,8 @@ async function main(): Promise<void> {
           .replaceAll('{{svg_color_4}}', svgColors[3])
           .replaceAll('{{svg_color_5}}', svgColors[4]);
 
-        // Wrap in div with unique ID for selector
-        return `<style>${resolvedCss}</style><div id="card-${idx}" style="width: 100%">${cardHtml}</div>`;
+        // Wrap in div with unique ID for selector and CSS variable injection
+        return `<style>${cssTemplate}</style><div id="card-${idx}" style="width: 100%; --heading-color: ${variants.heading}; --description-color: ${variants.description}">${cardHtml}</div>`;
       })
       .join('');
 
@@ -195,7 +191,7 @@ async function main(): Promise<void> {
     await browser.close();
   }
 
-  spinner.succeed(`${totalProcessed} image(s) generated in output/images/original/`);
+  spinner.succeed(`${totalProcessed} image(s) generated in dist/images/original/`);
   process.exit(0);
 }
 
@@ -266,7 +262,7 @@ export async function findChromeInCache(cacheDir: string): Promise<string | null
  *
  * Checks in order:
  *  1. PUPPETEER_EXECUTABLE_PATH environment variable
- *  2. Local cache at   api/.cache/puppeteer/chrome/  (project-local install)
+ *  2. Local cache at   tools/.cache/puppeteer/chrome/  (project-local install)
  *  3. Global cache at  ~/.cache/puppeteer/chrome/     (system-wide install)
  *
  * @returns {Promise<string | null>} The path to the Chrome executable, or null if not found.
@@ -279,7 +275,7 @@ export async function findChromePath(): Promise<string | null> {
   }
 
   // 2. Local cache (project-local puppeteer config)
-  const localCache = resolve(__dirname, '.cache', 'puppeteer', 'chrome');
+  const localCache = resolve(__dirname, '..', '..', '.cache', 'puppeteer', 'chrome');
   const local = await findChromeInCache(localCache);
   if (local) return local;
 

@@ -3,7 +3,7 @@
  * Tags Generate Script
  *
  * Fetches all tag names with their published post counts from the Supabase
- * database and writes them to `api/scripts/output/data/tags.txt` in a
+ * database and writes them to `dist/data/tags.txt` in a
  * `name: count` format, sorted alphabetically.
  *
  * Usage:
@@ -13,11 +13,11 @@
 
 import ora from 'ora';
 
-import type { Spinner } from './lib/cli';
-import { loadScriptEnv } from './lib/env';
-import { writeTextFile } from './lib/storage';
-import { createSupabaseClient } from './lib/supabase';
-import { TagResponseSchema, type TagResponse } from './lib/types';
+import type { Spinner } from '../lib/cli';
+import { loadScriptEnv } from '../lib/env';
+import { writeTextFile } from '../lib/storage';
+import { createSupabaseClient } from '../lib/supabase';
+import { TagResponseSchema, type TagResponse } from '../types';
 
 // Module-level spinner reference so the Ctrl+C handler can access it
 let spinner: Spinner = null;
@@ -52,7 +52,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const tags = (data ?? []) as any[];
+  const tags = (data ?? []) as Record<string, unknown>[];
   const validated = tags
     .map((tag) => {
       try {
@@ -72,7 +72,7 @@ async function main(): Promise<void> {
   const content = lines.join('\n');
 
   /* ── 3. Write to file ── */
-  const outputPath = new URL('output/data/tags.txt', import.meta.url);
+  const outputPath = new URL('../../dist/data/tags.txt', import.meta.url);
   await writeTextFile(outputPath.pathname, content + '\n');
 
   spinner.succeed(`Wrote ${validated.length} tags to tags.txt`);

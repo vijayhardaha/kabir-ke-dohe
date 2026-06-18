@@ -2,7 +2,7 @@
 /**
  * Uploads optimized couplet images to Supabase Storage.
  *
- * Reads all WebP files from output/images/optimized/ and uploads each to the
+ * Reads all WebP files from dist/images/optimized/ and uploads each to the
  * `couplet-images` bucket with the slug as the file name (e.g. `balihari-guru-....webp`).
  *
  * Usage:
@@ -15,10 +15,10 @@ import { fileURLToPath } from 'node:url';
 
 import ora from 'ora';
 
-import type { Spinner } from './lib/cli';
-import { loadScriptEnv } from './lib/env';
-import { readFilesWithExtension } from './lib/storage';
-import { createSupabaseClient } from './lib/supabase';
+import type { Spinner } from '../lib/cli';
+import { loadScriptEnv } from '../lib/env';
+import { readFilesWithExtension } from '../lib/storage';
+import { createSupabaseClient } from '../lib/supabase';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -60,11 +60,11 @@ async function main(): Promise<void> {
   /* ── 3. Read optimized images ── */
   spinner.start('Scanning optimized images...');
 
-  const srcDir = resolve(__dirname, 'output', 'images', 'optimized');
+  const srcDir = resolve(__dirname, '..', '..', 'dist', 'images', 'optimized');
   const files = await readFilesWithExtension(srcDir, '.webp');
 
   if (files.length === 0) {
-    spinner.fail("No WebP files found in output/images/optimized/. Run 'couplets:images:optimize' first.");
+    spinner.fail("No WebP files found in dist/images/optimized/. Run 'couplets:images:optimize' first.");
     process.exit(1);
   }
 

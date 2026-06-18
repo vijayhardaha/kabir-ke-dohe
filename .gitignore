@@ -51,7 +51,6 @@ next-env.d.ts
 # Bundler output
 build/
 dist/
-api/scripts/output/
 
 # ----------------------------------------------------------------------
 # Cache Directories

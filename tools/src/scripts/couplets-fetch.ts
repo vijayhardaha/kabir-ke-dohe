@@ -2,7 +2,7 @@
  * Fetch Couplets Script
  *
  * Fetches published couplets (slug, text_hi, meaning_hi, and post_number) from
- * the Supabase database and writes them to `api/scripts/output/data/couplets.json`
+ * the Supabase database and writes them to `dist/data/couplets.json`
  * as a map: slug → { text, meaning, post_number }.
  *
  * Usage:
@@ -10,11 +10,11 @@
  *   bun run couplets:fetch:prod   - Run in production mode
  */
 
-import { initSpinner, handleScriptError, fetchPaginated } from './lib/cli';
-import { loadScriptEnv } from './lib/env';
-import { writeJsonFile } from './lib/storage';
-import { createSupabaseClient } from './lib/supabase';
-import { CoupletEntrySchema } from './lib/types';
+import { initSpinner, handleScriptError, fetchPaginated } from '../lib/cli';
+import { loadScriptEnv } from '../lib/env';
+import { writeJsonFile } from '../lib/storage';
+import { createSupabaseClient } from '../lib/supabase';
+import { CoupletEntrySchema, type CoupletEntry } from '../types';
 
 /**
  * Represents a couplet entry fetched from the database.
@@ -69,7 +69,7 @@ async function main(): Promise<void> {
   }
 
   // Build map: slug → { text, meaning, post_number }
-  const coupletsMap: Record<string, any> = {};
+  const coupletsMap: Record<string, CoupletEntry> = {};
   for (const row of allRows) {
     const entry = CoupletEntrySchema.parse({
       text: row.text_hi,
@@ -80,10 +80,10 @@ async function main(): Promise<void> {
   }
 
   // Write to file
-  const outputPath = new URL('output/data/couplets.json', import.meta.url);
+  const outputPath = new URL('../../dist/data/couplets.json', import.meta.url);
   await writeJsonFile(outputPath.pathname, coupletsMap);
 
-  spinner.succeed(`[fetch-couplets] Successfully wrote ${allRows.length} couplets to output/data/couplets.json`);
+  spinner.succeed(`[fetch-couplets] Successfully wrote ${allRows.length} couplets to dist/data/couplets.json`);
 }
 
 main().catch((error) => {

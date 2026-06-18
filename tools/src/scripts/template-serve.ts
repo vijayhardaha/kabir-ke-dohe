@@ -21,10 +21,10 @@ import browserSync from 'browser-sync';
 import { watch } from 'chokidar';
 import juice from 'juice';
 
-import { COLOR_PALETTES, generateVariants, generateSvgShades } from './lib/colors';
+import { COLOR_PALETTES, generateVariants, generateSvgShades } from '../lib/colors';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const TEMPLATES_DIR = resolve(__dirname, 'templates');
+const TEMPLATES_DIR = resolve(__dirname, '..', '..', 'templates');
 const HBS_PATH = resolve(TEMPLATES_DIR, 'quote-card.hbs');
 const CSS_PATH = resolve(TEMPLATES_DIR, 'card.css');
 const HTML_PATH = resolve(TEMPLATES_DIR, 'index.html');
@@ -56,11 +56,6 @@ async function compile(): Promise<void> {
   const variants = generateVariants(SAMPLE_PALETTE.background);
   const svgColors = generateSvgShades(SAMPLE_PALETTE.background);
 
-  // Resolve CSS color variables with generated variant colors
-  const css = cssRaw
-    .replaceAll('{{heading_color}}', variants.heading)
-    .replaceAll('{{description_color}}', variants.description);
-
   // Strip Handlebars helpers and replace content + SVG vars
   let html = template
     .replace(/\{\{#if\s+\w+\}\}/g, '')
@@ -74,8 +69,12 @@ async function compile(): Promise<void> {
     .replace('{{svg_color_4}}', svgColors[3])
     .replace('{{svg_color_5}}', svgColors[4]);
 
+  // Wrap in a container with CSS variables injected via inline style
+  // so card.css can reference them with var(--heading-color) and var(--description-color).
+  html = `<div style="--heading-color: ${variants.heading}; --description-color: ${variants.description}">${html}</div>`;
+
   // Inline the CSS into the HTML
-  html = (juice as (html: string, opts: { extraCss: string }) => string)(html, { extraCss: css });
+  html = (juice as (html: string, opts: { extraCss: string }) => string)(html, { extraCss: cssRaw });
 
   await writeFile(HTML_PATH, html);
 }
