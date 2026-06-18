@@ -1,32 +1,26 @@
 import type { JSX } from 'react';
-import { Fragment } from 'react';
 
 import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import {
-  RiWhatsappFill,
-  RiTwitterXFill,
-  RiBlueskyFill,
-  RiFacebookFill,
-  RiTelegramFill,
-  RiLinkedinFill,
-  RiMailLine,
-} from 'react-icons/ri';
 
 import { CoupletImage } from '@/components/features/archive/CoupletImage';
 import { ViewTracker } from '@/components/features/ViewTracker';
 import { Container } from '@/components/layout/Container';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { Tooltip } from '@/components/ui/Tooltip';
 import { getCoupletBySlug, getAdjacentCouplets, getRelatedCouplets } from '@/lib/server/couplets';
 import { formatDoha } from '@/lib/utils/doha';
 import { buildMetadata } from '@/lib/utils/meta';
 import { getOgImageUrl } from '@/lib/utils/og-image';
 import { buildKeywords, globalSchema, blogPostingSchema } from '@/lib/utils/schema';
 import { getPermaLink, siteUrl } from '@/lib/utils/seo';
+
+import { CoupletNavigation } from './_components/CoupletNavigation';
+import { RelatedCouplets } from './_components/RelatedCouplets';
+import { ShareSection } from './_components/ShareSection';
+import { type SectionData, renderSectionContent } from './_utils/section';
 
 /**
  * Generate metadata for the couplet detail page.
@@ -57,48 +51,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 // ── Types ─────────────────────────────────────────────────────────────────
 
 /**
- * A single content section within a couplet detail page.
- *
- * @type {SectionData}
- * @property {string} title - Section heading text (e.g. "Meaning", "Core Message").
- * @property {string | null} contentHi - Hindi content of the section, or null if unavailable.
- * @property {string | null} contentEn - English content of the section, or null if unavailable.
- */
-interface SectionData {
-  title: string;
-  contentHi: string | null;
-  contentEn: string | null;
-}
-
-// ── Share button ──────────────────────────────────────────────────────────
-
-/**
- * A social media share button rendered as an anchor link.
- *
- * @param {{ href: string; label: string; children: JSX.Element }} props - Button props.
- * @param {string} props.href - The share URL to open.
- * @param {string} props.label - Accessible label for the button.
- * @param {JSX.Element} props.children - SVG path elements for the icon.
- *
- * @returns {JSX.Element} A styled share button link.
- */
-function ShareButton({ href, label, children }: { href: string; label: string; children: JSX.Element }): JSX.Element {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground inline-flex size-10 items-center justify-center transition-colors"
-      aria-label={label}
-    >
-      <span className="flex items-center justify-center" aria-hidden="true">
-        {children}
-      </span>
-    </a>
-  );
-}
-
-/**
  * Props for the single couplet detail page.
  *
  * @type {SingleCoupletPageProps}
@@ -108,78 +60,7 @@ interface SingleCoupletPageProps {
   params: Promise<{ slug: string }>;
 }
 
-// ── Render helpers ─────────────────────────────────────────────────────────
-
-/**
- * Set of section titles whose content should render as bullet points instead of prose.
- */
-const BULLET_SECTIONS: ReadonlySet<string> = new Set([
-  'मूल संदेश (Core Message)',
-  'अभ्यास मार्गदर्शन (Practice Guidance)',
-  'चिंतन प्रश्न (Reflection Questions)',
-]);
-
-/**
- * Renders section content as bullet points, splitting by line breaks.
- *
- * @param {string} content - Text content to split on newlines and render as list items.
- * @param {string} className - Tailwind classes to apply to the unordered list element.
- *
- * @returns {JSX.Element} Unordered list with non-empty lines rendered as list items.
- */
-function renderBulletItems(content: string, className: string): JSX.Element {
-  const items = content.split('\n').filter((line) => line.trim().length > 0);
-
-  return (
-    <ul className={`${className} list-disc space-y-2 pl-6`}>
-      {items.map((item, i) => (
-        <li key={i}>{item}</li>
-      ))}
-    </ul>
-  );
-}
-
-/**
- * Renders prose content, converting newlines to `<br>` tags.
- *
- * @param {string} content - Text content whose newlines should become line breaks.
- * @param {string} className - Tailwind classes to apply to the paragraph element.
- *
- * @returns {JSX.Element} Paragraph element with newlines replaced by `<br />` tags.
- */
-function renderProseContent(content: string, className: string): JSX.Element {
-  return (
-    <p className={className}>
-      {content.split('\n').map((line, i) => (
-        <Fragment key={i}>
-          {i > 0 && <br />}
-          {line}
-        </Fragment>
-      ))}
-    </p>
-  );
-}
-
-/**
- * Routes section content to the appropriate renderer based on section title.
- *
- * @param {SectionData} section - Section data to render.
- *
- * @returns {JSX.Element} Rendered section content in bullet or prose format.
- */
-function renderSectionContent(section: SectionData): JSX.Element {
-  const isBullet = BULLET_SECTIONS.has(section.title);
-  const proseBase = 'text-base leading-relaxed font-medium';
-  const render = isBullet ? renderBulletItems : renderProseContent;
-
-  return (
-    <div className="space-y-4">
-      {section.contentHi && render(section.contentHi, proseBase)}
-      {section.contentHi && section.contentEn && <hr className="border-border" />}
-      {section.contentEn && render(section.contentEn, proseBase)}
-    </div>
-  );
-}
+// ── Page component ─────────────────────────────────────────────────────────
 
 /**
  * Single couplet detail page showing full text, translations, and analysis sections.
@@ -209,22 +90,20 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
   const brandKeywords = buildKeywords([post.category?.name ?? '', ...post.tags.map((t) => t.name)]);
   const rootUrl = siteUrl();
   const coupletPath = `couplet/${post.slug}`;
+  const seoTitle = `${post.text_hi.slice(0, 60)} — Kabir Ke Dohe`;
+  const seoDescription = `${post.text_hi} — ${post.text_en}`.slice(0, 300);
 
   const coupletSchema = [
     ...globalSchema(),
     webPageSchema(
       { rootUrl, path: coupletPath },
-      {
-        name: `${post.text_hi.slice(0, 60)} — Kabir Ke Dohe`,
-        description: `${post.text_hi} — ${post.text_en}`.slice(0, 300),
-        keywords: brandKeywords,
-      }
+      { name: seoTitle, description: seoDescription, keywords: brandKeywords }
     ),
     blogPostingSchema(
       { rootUrl, path: coupletPath },
       {
         headline: post.text_hi.slice(0, 200),
-        description: `${post.text_hi} — ${post.text_en}`.slice(0, 300),
+        description: seoDescription,
         image: getOgImageUrl(`couplet/${post.slug}`) ?? '',
         datePublished: post.created_at,
         dateModified: post.updated_at,
@@ -278,7 +157,6 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
         <Container>
           <article className="-mt-30 bg-white p-6 shadow-xl md:p-12 md:py-16">
             <div className="mx-auto max-w-4xl">
-
               {/* ═══════════════ HEADER ═══════════════ */}
               <header className="mb-8">
                 {post.category && (
@@ -349,130 +227,13 @@ export default async function SingleCoupletPage({ params }: SingleCoupletPagePro
               </div>
 
               {/* ═══════════════ SHARE SECTION ═══════════════ */}
-              <section className="border-border mt-12 border-t border-b py-8">
-                <h2 className="text-foreground mb-4 text-lg font-semibold">
-                  इस प्रेरणादायक दोहे को अपने दोस्तों के साथ साझा करें (Share this inspiring couplet with your friends):
-                </h2>
-                <div className="flex flex-wrap gap-3">
-                  <Tooltip content="WhatsApp">
-                    <ShareButton
-                      href={`https://wa.me/?text=${encodeURIComponent(`${post.text_hi} ${postUrl}`)}`}
-                      label="Share on WhatsApp"
-                    >
-                      <RiWhatsappFill size={20} />
-                    </ShareButton>
-                  </Tooltip>
-                  <Tooltip content="X (Twitter)">
-                    <ShareButton
-                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.text_hi)}&url=${encodeURIComponent(postUrl)}`}
-                      label="Share on X"
-                    >
-                      <RiTwitterXFill size={20} />
-                    </ShareButton>
-                  </Tooltip>
-                  <Tooltip content="Bluesky">
-                    <ShareButton
-                      href={`https://bsky.app/intent/compose?text=${encodeURIComponent(`${post.text_hi} ${postUrl}`)}`}
-                      label="Share on Bluesky"
-                    >
-                      <RiBlueskyFill size={20} />
-                    </ShareButton>
-                  </Tooltip>
-                  <Tooltip content="Facebook">
-                    <ShareButton
-                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`}
-                      label="Share on Facebook"
-                    >
-                      <RiFacebookFill size={20} />
-                    </ShareButton>
-                  </Tooltip>
-                  <Tooltip content="Telegram">
-                    <ShareButton
-                      href={`https://t.me/share/url?url=${encodeURIComponent(postUrl)}&text=${encodeURIComponent(post.text_hi)}`}
-                      label="Share on Telegram"
-                    >
-                      <RiTelegramFill size={20} />
-                    </ShareButton>
-                  </Tooltip>
-                  <Tooltip content="LinkedIn">
-                    <ShareButton
-                      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`}
-                      label="Share on LinkedIn"
-                    >
-                      <RiLinkedinFill size={20} />
-                    </ShareButton>
-                  </Tooltip>
-                  <Tooltip content="Email">
-                    <ShareButton
-                      href={`mailto:?subject=${encodeURIComponent(post.text_hi)}&body=${encodeURIComponent(`${post.text_hi} - ${postUrl}`)}`}
-                      label="Share via Email"
-                    >
-                      <RiMailLine size={20} />
-                    </ShareButton>
-                  </Tooltip>
-                </div>
-              </section>
+              <ShareSection textHi={post.text_hi} postUrl={postUrl} />
 
               {/* ═══════════════ PREV / NEXT NAVIGATION ═══════════════ */}
-              <nav className="mt-12 flex flex-col gap-4 sm:flex-row sm:justify-between">
-                {adjacent.prev ? (
-                  <Link
-                    href={`/couplet/${adjacent.prev.slug}`}
-                    className="bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground flex flex-1 flex-col px-5 py-4 no-underline transition-colors"
-                  >
-                    <span className="text-xs font-bold tracking-wide uppercase">&larr; Previous</span>
-                    <span className="mt-1 text-sm leading-snug font-medium">{formatDoha(adjacent.prev.text_hi)}</span>
-                  </Link>
-                ) : (
-                  <div className="flex-1" />
-                )}
-                {adjacent.next ? (
-                  <Link
-                    href={`/couplet/${adjacent.next.slug}`}
-                    className="bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground flex flex-1 flex-col px-5 py-4 text-right no-underline transition-colors"
-                  >
-                    <span className="text-xs font-bold tracking-wide uppercase">Next &rarr;</span>
-                    <span className="mt-1 text-sm leading-snug font-medium">{formatDoha(adjacent.next.text_hi)}</span>
-                  </Link>
-                ) : (
-                  <div className="flex-1" />
-                )}
-              </nav>
+              <CoupletNavigation adjacent={adjacent} />
 
-              {related.length > 0 && (
-                <>
-                  <hr className="border-border my-12" />
-
-                  <section>
-                    <h2 className="text-foreground mb-6 text-2xl font-bold">संबंधित दोहे (Related Couplets)</h2>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      {related.map((couplet) => (
-                        <Link
-                          key={couplet.slug}
-                          href={`/couplet/${couplet.slug}`}
-                          className="bg-muted text-foreground hover:bg-muted/80 group px-5 py-4 no-underline transition-colors"
-                        >
-                          <h3 className="group-hover:text-primary mb-2 text-base leading-snug font-bold transition-colors">
-                            {formatDoha(couplet.text_hi)}
-                          </h3>
-                          {couplet.tags.length > 0 && (
-                            <div className="mt-2 flex flex-wrap gap-1.5">
-                              {couplet.tags.slice(0, 3).map((tag) => (
-                                <span
-                                  key={tag.slug}
-                                  className="bg-secondary/65 text-secondary-foreground inline-block px-1.5 py-0.5 text-[10px] leading-tight font-medium tracking-wide uppercase"
-                                >
-                                  {tag.name}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-                        </Link>
-                      ))}
-                    </div>
-                  </section>
-                </>
-              )}
+              {/* ═══════════════ RELATED COUPLETS ═══════════════ */}
+              <RelatedCouplets couplets={related} />
             </div>
           </article>
         </Container>
