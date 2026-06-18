@@ -2,7 +2,6 @@
   "name": "@kabir-dohe-hub/web",
   "version": "1.0.0",
   "description": "Kabir Dohe Web — Web application for Kabir's couplets",
-  "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build && next-sitemap",
@@ -13,6 +12,25 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "Kabir",
+    "dohe",
+    "web"
+  ],
+  "author": {
+    "name": "Vijay Hardaha",
+    "url": "https://github.com/vijayhardaha"
+  },
+  "license": "MIT",
+  "homepage": "https://kabirdohehub.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vijayhardaha/kabir-dohe-api.git",
+    "directory": "web"
+  },
+  "bugs": {
+    "url": "https://github.com/vijayhardaha/kabir-dohe-api/issues"
   },
   "dependencies": {
     "@next/third-parties": "^16.2.9",

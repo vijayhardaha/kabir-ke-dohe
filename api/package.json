@@ -2,7 +2,6 @@
   "name": "@kabir-dohe-hub/api",
   "version": "1.0.0",
   "description": "Kabir Dohe API — REST API for Kabir's couplets",
-  "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build && next-sitemap",
@@ -12,6 +11,25 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "Kabir",
+    "dohe",
+    "api"
+  ],
+  "author": {
+    "name": "Vijay Hardaha",
+    "url": "https://github.com/vijayhardaha"
+  },
+  "license": "MIT",
+  "homepage": "https://kabirdoheapi.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vijayhardaha/kabir-dohe-api.git",
+    "directory": "api"
+  },
+  "bugs": {
+    "url": "https://github.com/vijayhardaha/kabir-dohe-api/issues"
   },
   "dependencies": {
     "@next/third-parties": "^16.2.9",

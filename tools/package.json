@@ -2,7 +2,6 @@
   "name": "@kabir-dohe-hub/tools",
   "version": "1.0.0",
   "description": "Kabir Dohe Tools — CLI tools for data sync, image generation, and maintenance",
-  "private": true,
   "type": "module",
   "scripts": {
     "couplets:fetch": "bun --env-file=.env.development run src/scripts/couplets-fetch.ts",
@@ -22,6 +21,25 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "Kabir",
+    "dohe",
+    "tools"
+  ],
+  "author": {
+    "name": "Vijay Hardaha",
+    "url": "https://github.com/vijayhardaha"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/vijayhardaha/kabir-dohe-api/tree/master/tools",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vijayhardaha/kabir-dohe-api.git",
+    "directory": "tools"
+  },
+  "bugs": {
+    "url": "https://github.com/vijayhardaha/kabir-dohe-api/issues"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",

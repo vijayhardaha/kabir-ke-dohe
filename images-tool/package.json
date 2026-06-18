@@ -2,7 +2,6 @@
   "name": "@kabir-dohe-hub/images-tool",
   "version": "1.0.0",
   "description": "Kabir Dohe Images — Image generation tool for Kabir's couplets",
-  "private": true,
   "scripts": {
     "dev": "echo 'No dev script yet'",
     "build": "echo 'No build script yet'",
@@ -10,6 +9,25 @@
     "lint:fix": "echo 'No lint config yet'",
     "test": "echo 'No tests yet'",
     "tsc": "echo 'No TypeScript config yet'"
+  },
+  "keywords": [
+    "Kabir",
+    "dohe",
+    "images"
+  ],
+  "author": {
+    "name": "Vijay Hardaha",
+    "url": "https://github.com/vijayhardaha"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/vijayhardaha/kabir-dohe-api/tree/master/images-tool",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vijayhardaha/kabir-dohe-api.git",
+    "directory": "images-tool"
+  },
+  "bugs": {
+    "url": "https://github.com/vijayhardaha/kabir-dohe-api/issues"
   },
   "dependencies": {},
   "devDependencies": {}
