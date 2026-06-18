@@ -94,15 +94,19 @@ const seoImage = {
  */
 export const SITE_METADATA: Metadata = {
   ...titleAndDescription,
+  metadataBase: new URL(SITE_CONFIG.url),
+  alternates: { canonical: new URL(SITE_CONFIG.url) },
   keywords: SEO_KEYWORDS,
   applicationName: SITE_CONFIG.name,
-  metadataBase: new URL(SITE_CONFIG.url),
+  generator: 'Next.js 14 | Vercel Deployment',
+  referrer: 'origin-when-cross-origin',
   authors: [{ name: SITE_CONFIG.creator.name, url: SITE_CONFIG.creator.urls.gravatar }],
   creator: SITE_CONFIG.creator.name,
   publisher: SITE_CONFIG.organization.name,
   robots: { index: true, follow: true },
   category: SITE_CONFIG.category,
   classification: SITE_CONFIG.classification,
+  verification: { google: GOOGLE_SITE_VERIFICATION },
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
@@ -111,7 +115,6 @@ export const SITE_METADATA: Metadata = {
     ],
     apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
   },
-  verification: { google: GOOGLE_SITE_VERIFICATION },
   openGraph: {
     ...titleAndDescription,
     images: seoImage,
@@ -126,4 +129,5 @@ export const SITE_METADATA: Metadata = {
     images: seoImage,
     creator: SITE_CONFIG.creator.handles[0],
   },
+  other: { lang: 'en' },
 };
