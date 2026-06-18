@@ -1,5 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
+export const runtime = 'edge';
+
 import { getSupabase } from '@/lib/server/supabase';
 
 /**
