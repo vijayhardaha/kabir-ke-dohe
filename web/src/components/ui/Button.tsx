@@ -7,13 +7,13 @@ import Link from 'next/link';
 
 import { cn } from '@/lib/utils/cn';
 
+// ── Types ─────────────────────────────────────────────────────────────────
+
 /**
  * Available visual variants for the Button component.
  *
  * @type {ButtonVariant}
  */
-// ── Types ─────────────────────────────────────────────────────────────────
-
 type ButtonVariant =
   | 'primary'
   | 'secondary'
