@@ -1,16 +1,16 @@
 # AGENTS.md
 
-> **This file serves as the authoritative reference for AI agents working on the `kabir-hub` codebase.**
+> **This file serves as the authoritative reference for AI agents working on the `kabir-dohe-hub` codebase.**
 
 ## Project Overview
 
-**kabir-hub** is a monorepo containing three packages related to Kabir Das's dohas (couplets):
+**kabir-dohe-hub** is a monorepo containing three packages related to Kabir Das's dohas (couplets):
 
 | Package                  | Path           | Description                                               |
 | ------------------------ | -------------- | --------------------------------------------------------- |
-| `@kabir-hub/api`         | `api/`         | RESTful API + documentation frontend for Kabir's couplets |
-| `@kabir-hub/web`         | `web/`         | Web application for reading and learning Kabir's couplets |
-| `@kabir-hub/images-tool` | `images-tool/` | Image generation tool for visual quotes (placeholder)     |
+| `@kabir-dohe-hub/api`         | `api/`         | RESTful API + documentation frontend for Kabir's couplets |
+| `@kabir-dohe-hub/web`         | `web/`         | Web application for reading and learning Kabir's couplets |
+| `@kabir-dohe-hub/images-tool` | `images-tool/` | Image generation tool for visual quotes (placeholder)     |
 
 ### What This Project Provides
 
@@ -395,7 +395,7 @@ scripts/output/images/optimized/{slug}.webp  # Sharp-compressed WebP
 
 ## View Tracking
 
-- **Cookie**: `kabirhub_views` (1-day, httpOnly)
+- **Cookie**: `kabirdohehub_views` (1-day, httpOnly)
 - **Structure**: `{ h: hash(ip+ua), v: [slug1, slug2] }`
 - **API**: `POST /api/couplets/view` with `{ slug }` body
 - **Component**: `<ViewTracker slug={post.slug} />` — client component, fires on mount

@@ -1,4 +1,4 @@
-# Kabir Hub
+# Kabir Dohe Hub
 
 > Monorepo for the Kabir Dohe ecosystem — API, web app, and image generation tool.
 
@@ -8,9 +8,9 @@ Access 2500+ of Kabir Das's timeless couplets (dohas) with Hindi text, translite
 
 | Package                  | Path           | Description                                               |
 | ------------------------ | -------------- | --------------------------------------------------------- |
-| `@kabir-hub/api`         | `api/`         | RESTful API + documentation site for Kabir's couplets     |
-| `@kabir-hub/web`         | `web/`         | Web application for reading and learning Kabir's couplets |
-| `@kabir-hub/images-tool` | `images-tool/` | Image generation tool for visual quotes (placeholder)     |
+| `@kabir-dohe-hub/api`         | `api/`         | RESTful API + documentation site for Kabir's couplets     |
+| `@kabir-dohe-hub/web`         | `web/`         | Web application for reading and learning Kabir's couplets |
+| `@kabir-dohe-hub/images-tool` | `images-tool/` | Image generation tool for visual quotes (placeholder)     |
 
 ## Ecosystem
 
@@ -87,7 +87,7 @@ See [api/README.md](api/README.md) for detailed documentation.
 ## Project Structure
 
 ```
-kabir-hub/
+kabir-dohe-hub/
 ├── api/                  # Next.js API + documentation site
 │   ├── src/              # App Router pages, API routes, components
 │   ├── scripts/          # CLI scripts (data sync, image generation)
@@ -104,7 +104,7 @@ kabir-hub/
 
 The web app tracks unique couplet views using a cookie-based system:
 
-- Cookie `kabirhub_views` stores `{ h: hash(ip+ua), v: [slug1, slug2, ...] }`
+- Cookie `kabirdohehub_views` stores `{ h: hash(ip+ua), v: [slug1, slug2, ...] }`
 - Hash prevents storing raw IP/User-Agent PII
 - Same visitor viewing the same couplet within 24h is not double-counted
 - RPC function `increment_couplet_view()` atomically updates `view_count`

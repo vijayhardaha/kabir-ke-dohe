@@ -1,7 +1,7 @@
 {
-  "name": "kabir-hub",
+  "name": "kabir-dohe-hub",
   "version": "1.0.0",
-  "description": "Kabir Hub — Monorepo for Kabir Dohe API, Web, and Images Tool",
+  "description": "Kabir Dohe Hub — Monorepo for Kabir Dohe API, Web, and Images Tool",
   "private": true,
   "workspaces": [
     "api",

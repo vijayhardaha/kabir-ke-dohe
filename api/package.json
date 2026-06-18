@@ -1,5 +1,5 @@
 {
-  "name": "@kabir-hub/api",
+  "name": "@kabir-dohe-hub/api",
   "version": "1.0.0",
   "description": "Kabir Dohe API — REST API for Kabir's couplets",
   "private": true,

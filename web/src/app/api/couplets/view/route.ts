@@ -7,7 +7,7 @@ import { getSupabase } from '@/lib/server/supabase';
 /**
  * Cookie name for storing viewed couplets and identity hash.
  */
-const COOKIE_NAME = 'kabirhub_views';
+const COOKIE_NAME = 'kabirdohehub_views';
 
 /**
  * Cookie expiry in seconds (1 day).

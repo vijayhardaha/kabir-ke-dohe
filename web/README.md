@@ -176,7 +176,7 @@ Uses `next/image` with `onError` for graceful degradation.
 
 Unique view counting via a cookie-based system:
 
-- **Cookie**: `kabirhub_views` — 1-day expiry, `httpOnly`
+- **Cookie**: `kabirdohehub_views` — 1-day expiry, `httpOnly`
 - **Structure**: `{ h: "hash(ip+ua)", v: ["slug1", "slug2", ...] }`
 - **Hash**: Simple non-crypto hash of `ip|user-agent` — no raw PII stored
 - **Flow**:
