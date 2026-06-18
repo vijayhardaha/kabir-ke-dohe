@@ -1,14 +1,15 @@
 import type { JSX, ReactNode } from 'react';
 
+import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { ScrollToTop } from '@/components/layout/ScrollToTop';
-import { SITE_METADATA } from '@/constants/seo';
+import { VercelAnalytics } from '@/components/shared/VercelAnalytics';
+import { GOOGLE_ANALYTICS_ID, SITE_METADATA } from '@/constants/seo';
 import { fontClassNames } from '@/lib/utils/fonts';
-
-import './globals.css';
+import '@/styles/globals.css';
 
 /**
  * Global metadata for the application.
@@ -36,15 +37,25 @@ export default function RootLayout({ children }: { children: ReactNode }): JSX.E
         </a>
 
         <div className="flex min-h-screen flex-col">
+          {/* ═══════════════ HEADER ═══════════════ */}
           <Header />
           <main id="main-content" className="flex-1" tabIndex={-1}>
             {/* ═══════════════ PAGE CONTENT ═══════════════ */}
             {children}
           </main>
+          {/* ═══════════════ FOOTER ═══════════════ */}
           <Footer />
         </div>
 
+        {/* ═══════════════ SCROLL TO TOP ═══════════════ */}
         <ScrollToTop />
+
+        {process.env.NODE_ENV === 'production' && (
+          <>
+            <GoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} />
+            <VercelAnalytics />
+          </>
+        )}
       </body>
     </html>
   );
