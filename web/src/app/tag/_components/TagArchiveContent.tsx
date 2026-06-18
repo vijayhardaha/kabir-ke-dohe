@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 
-import { breadcrumbSchema } from '@vijayhardaha/schema-builder';
+import { breadcrumbSchema, collectionPageSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import { notFound } from 'next/navigation';
 
@@ -10,7 +10,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
 import { getTagBySlug, getCouplets } from '@/lib/server/couplets';
-import { globalSchema, collectionPageSchema } from '@/lib/utils/schema';
+import { globalSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 import type { SortBy, SortOrder } from '@/types';
 

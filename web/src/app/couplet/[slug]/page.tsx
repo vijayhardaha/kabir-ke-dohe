@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 
-import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
+import { webPageSchema, breadcrumbSchema, blogPostingSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -14,7 +14,7 @@ import { getCoupletBySlug, getAdjacentCouplets, getRelatedCouplets } from '@/lib
 import { formatDoha } from '@/lib/utils/doha';
 import { buildMetadata } from '@/lib/utils/meta';
 import { getOgImageUrl } from '@/lib/utils/og-image';
-import { buildKeywords, globalSchema, blogPostingSchema } from '@/lib/utils/schema';
+import { buildKeywords, globalSchema } from '@/lib/utils/schema';
 import { getPermaLink, siteUrl } from '@/lib/utils/seo';
 
 import { CoupletNavigation } from './_components/CoupletNavigation';
