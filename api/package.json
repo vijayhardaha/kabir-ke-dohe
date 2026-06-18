@@ -27,7 +27,7 @@
   "dependencies": {
     "@next/third-parties": "^16.2.9",
     "@supabase/supabase-js": "^2.108.2",
-    "@vijayhardaha/schema-builder": "^1.1.1",
+    "@vijayhardaha/schema-builder": "^1.2.0",
     "clsx": "^2.1.1",
     "juice": "^12.1.1",
     "latinize": "^2.0.0",
