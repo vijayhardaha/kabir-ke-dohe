@@ -4,13 +4,14 @@
 
 ## Project Overview
 
-**kabir-dohe-hub** is a monorepo containing three packages related to Kabir Das's dohas (couplets):
+**kabir-dohe-hub** is a monorepo containing four packages related to Kabir Das's dohas (couplets):
 
-| Package                  | Path           | Description                                               |
-| ------------------------ | -------------- | --------------------------------------------------------- |
-| `@kabir-dohe-hub/api`         | `api/`         | RESTful API + documentation frontend for Kabir's couplets |
-| `@kabir-dohe-hub/web`         | `web/`         | Web application for reading and learning Kabir's couplets |
-| `@kabir-dohe-hub/images-tool` | `images-tool/` | Image generation tool for visual quotes (placeholder)     |
+| Package                       | Path           | Description                                                |
+| ----------------------------- | -------------- | ---------------------------------------------------------- |
+| `@kabir-dohe-hub/api`         | `api/`         | RESTful API + documentation frontend for Kabir's couplets  |
+| `@kabir-dohe-hub/web`         | `web/`         | Web application for reading and learning Kabir's couplets  |
+| `@kabir-dohe-hub/images-tool` | `images-tool/` | Image generation tool for visual quotes (placeholder)      |
+| `@kabir-dohe-hub/tools`       | `tools/`       | CLI tools for data sync, image generation, and maintenance |
 
 ### What This Project Provides
 
@@ -112,30 +113,6 @@ api/
 │   │
 │   └── proxy.ts               # Proxy configuration
 │
-├── scripts/                   # CLI scripts
-│   ├── lib/                   # Shared script utilities
-│   │   ├── env.ts             # Script env loader (dotenv + Zod)
-│   │   ├── supabase.ts        # Supabase client (service role)
-│   │   ├── db.ts              # Database upsert helpers
-│   │   ├── gsheet.ts          # Google Sheets reader
-│   │   └── slug.ts            # Slugify utility
-│   ├── couplets-fetch.ts      # Fetch slug+text_hi from Supabase → JSON
-│   ├── couplets-upload.ts     # Upload Google Sheets data → Supabase
-│   ├── indexnow.ts            # IndexNow URL submission
-│   ├── images-generate.ts     # Generate OG images via Puppeteer
-│   ├── images-optimize.ts     # Compress JPEG → WebP via sharp
-│   ├── images-upload.ts       # Upload WebP to Supabase Storage
-│   ├── template-serve.ts      # Dev server for template (Browsersync :2580)
-│   ├── output/
-│   │   ├── data/
-│   │   │   └── couplets.json  # Slug → text_hi map
-│   │   └── images/
-│   │       ├── original/      # Generated JPEG originals (1200×630)
-│   │       └── optimized/     # Sharp-compressed WebP (quality 85)
-│   └── templates/
-│       ├── quote-card.hbs     # OG image HTML template
-│       └── backgrounds/
-│           └── sample-bg.jpg  # Background image for template
 ├── supabase/                  # Supabase migrations & config
 ├── docs/                      # Contribution docs
 ├── public/                    # Static assets
@@ -206,25 +183,24 @@ bun run format           # Format files with Prettier
 bun run format:check     # Check formatting
 ```
 
-### API Data Pipeline (from `api/`)
+### Tools Package (from `tools/`)
 
 ```bash
 # Couplet data
-bun run couplets:fetch              # Fetch slug+text_hi from Supabase → output/data/couplets.json
-bun run couplets:fetch              # Fetch from Supabase
-bun run couplets:fetch:prod         # Production mode
-bun run couplets:upload             # Sync Google Sheets → Supabase
-bun run couplets:upload:prod        # Production mode
+bun run --filter @kabir-dohe-hub/tools couplets:fetch              # Fetch slug+text_hi from Supabase → dist/data/couplets.json
+bun run --filter @kabir-dohe-hub/tools couplets:fetch:prod         # Production mode
+bun run --filter @kabir-dohe-hub/tools couplets:upload             # Sync Google Sheets → Supabase
+bun run --filter @kabir-dohe-hub/tools couplets:upload:prod        # Production mode
 
 # OG image pipeline
-bun run couplets:images --all       # Generate JPEG for all couplets
-bun run couplets:images <slug>      # Generate for a single slug
-bun run couplets:images:optimize    # Compress JPEG → WebP (sharp, q85)
-bun run couplets:images:upload      # Upload WebP to Supabase Storage
-bun run couplets:images:upload:prod # Upload to production bucket
+bun run --filter @kabir-dohe-hub/tools couplets:images --all       # Generate JPEG for all couplets
+bun run --filter @kabir-dohe-hub/tools couplets:images <slug>      # Generate for a single slug
+bun run --filter @kabir-dohe-hub/tools couplets:images:optimize    # Compress JPEG → WebP (sharp, q85)
+bun run --filter @kabir-dohe-hub/tools couplets:images:upload      # Upload WebP to Supabase Storage
+bun run --filter @kabir-dohe-hub/tools couplets:images:upload:prod # Upload to production bucket
 
 # Template dev server
-bun run couplets:template:serve     # Start Browsersync on :2580, watch .hbs
+bun run --filter @kabir-dohe-hub/tools couplets:template:serve     # Start Browsersync on :2580, watch .hbs
 ```
 
 ### Web Package
@@ -288,7 +264,7 @@ bun run test:watch       # Tests in watch mode
 
 - `ApiError` — Custom error class with `statusCode` and `isOperational`
 
-## Script Utils (`api/scripts/lib/`)
+## Tools Utils (`tools/src/lib/`)
 
 **`env.ts`**
 
@@ -296,7 +272,7 @@ bun run test:watch       # Tests in watch mode
 
 **`supabase.ts`**
 
-- `createSupabaseClient(env)` — Creates Supabase client with service role key (for write access in scripts).
+- `createSupabaseClient(env)` — Creates Supabase client with service role key (for write access in tools).
 
 **`db.ts`**
 
@@ -318,7 +294,7 @@ return failure("Error", 400); // Error response
 ## Supabase
 
 - **API docs site**: `import { supabase } from '@/lib/server/supabase'` (anon key)
-- **Scripts**: `createSupabaseClient(env)` from `scripts/lib/supabase.ts` (service role key)
+- **Scripts**: `createSupabaseClient(env)` from `@kabir-dohe-hub/tools` (service role key)
 - **RLS**: Select policies for anon; write operations through RPC functions or service role
 - **Storage bucket**: `couplet-images` for OG images (public reads)
 - **View counting**: RPC `increment_couplet_view(p_slug)` with SECURITY DEFINER
@@ -376,8 +352,8 @@ All image scripts (`images-generate.ts`, `images-optimize.ts`, `images-upload.ts
 **Paths:**
 
 ```
-scripts/output/images/original/{slug}.jpg    # Generated originals
-scripts/output/images/optimized/{slug}.webp  # Sharp-compressed WebP
+tools/dist/images/original/{slug}.jpg    # Generated originals
+tools/dist/images/optimized/{slug}.webp  # Sharp-compressed WebP
 ```
 
 ## Template Dev Server
@@ -389,9 +365,7 @@ scripts/output/images/optimized/{slug}.webp  # Sharp-compressed WebP
 
 ## Puppeteer Config
 
-- **File**: `api/puppeteer.config.mjs` — auto-discovered by Puppeteer at runtime
-- **Config**: Enables Chrome and Firefox downloads for `node-html-to-image`
-- **Chrome auto-detection**: `images-generate.ts` checks `PUPPETEER_EXECUTABLE_PATH` env var, then local `.cache/puppeteer/`, then global `~/.cache/puppeteer/`
+- **Auto-detection**: `images-generate.ts` checks `PUPPETEER_EXECUTABLE_PATH` env var, then local `tools/.cache/puppeteer/`, then global `~/.cache/puppeteer/`
 
 ## View Tracking
 

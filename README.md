@@ -6,11 +6,12 @@ Access 2500+ of Kabir Das's timeless couplets (dohas) with Hindi text, translite
 
 ## Packages
 
-| Package                  | Path           | Description                                               |
-| ------------------------ | -------------- | --------------------------------------------------------- |
-| `@kabir-dohe-hub/api`         | `api/`         | RESTful API + documentation site for Kabir's couplets     |
-| `@kabir-dohe-hub/web`         | `web/`         | Web application for reading and learning Kabir's couplets |
-| `@kabir-dohe-hub/images-tool` | `images-tool/` | Image generation tool for visual quotes (placeholder)     |
+| Package                       | Path           | Description                                                |
+| ----------------------------- | -------------- | ---------------------------------------------------------- |
+| `@kabir-dohe-hub/api`         | `api/`         | RESTful API + documentation site for Kabir's couplets      |
+| `@kabir-dohe-hub/web`         | `web/`         | Web application for reading and learning Kabir's couplets  |
+| `@kabir-dohe-hub/images-tool` | `images-tool/` | Image generation tool for visual quotes (placeholder)      |
+| `@kabir-dohe-hub/tools`       | `tools/`       | CLI tools for data sync, image generation, and maintenance |
 
 ## Ecosystem
 
@@ -60,29 +61,27 @@ bun run format       # Format files with Prettier
 bun run format:check # Check formatting
 ```
 
-## Data Pipeline (api/)
+## Data Pipeline (tools/)
 
-The `api/` package includes several CLI scripts for managing couplet data and images:
+The `tools/` package includes CLI tools for managing couplet data and images:
 
 ```bash
 # Couplet data
-bun run couplets:fetch              # Fetch slugs & texts from Supabase → output/data/couplets.json
-bun run couplets:fetch:prod         # Same, but using .env.production
-bun run couplets:upload             # Upload couplets from Google Sheets to Supabase
-bun run couplets:upload:prod        # Same, production mode
+bun run --filter @kabir-dohe-hub/tools couplets:fetch              # Fetch slugs & texts from Supabase → dist/data/couplets.json
+bun run --filter @kabir-dohe-hub/tools couplets:fetch:prod         # Same, but using .env.production
+bun run --filter @kabir-dohe-hub/tools couplets:upload             # Upload couplets from Google Sheets to Supabase
+bun run --filter @kabir-dohe-hub/tools couplets:upload:prod        # Same, production mode
 
 # OG image generation
-bun run couplets:images --all       # Generate JPEG images for all couplets
-bun run couplets:images <slug>      # Generate image for a single slug
-bun run couplets:images:optimize    # Optimize JPEGs → WebP via sharp
-bun run couplets:images:upload      # Upload optimized WebP to Supabase Storage
-bun run couplets:images:upload:prod # Upload to production bucket
+bun run --filter @kabir-dohe-hub/tools couplets:images --all       # Generate JPEG images for all couplets
+bun run --filter @kabir-dohe-hub/tools couplets:images <slug>      # Generate image for a single slug
+bun run --filter @kabir-dohe-hub/tools couplets:images:optimize    # Optimize JPEGs → WebP via sharp
+bun run --filter @kabir-dohe-hub/tools couplets:images:upload      # Upload optimized WebP to Supabase Storage
+bun run --filter @kabir-dohe-hub/tools couplets:images:upload:prod # Upload to production bucket
 
 # Template development
-bun run couplets:template:serve     # Dev server on :2580, live-reloads on .hbs edits
+bun run --filter @kabir-dohe-hub/tools couplets:template:serve     # Dev server on :2580, live-reloads on .hbs edits
 ```
-
-See [api/README.md](api/README.md) for detailed documentation.
 
 ## Project Structure
 
@@ -90,11 +89,17 @@ See [api/README.md](api/README.md) for detailed documentation.
 kabir-dohe-hub/
 ├── api/                  # Next.js API + documentation site
 │   ├── src/              # App Router pages, API routes, components
-│   ├── scripts/          # CLI scripts (data sync, image generation)
 │   ├── supabase/         # Migrations & config
 │   └── public/           # Static assets
 ├── web/                  # Next.js web application
 │   └── src/              # App Router pages, components, utilities
+├── tools/                # CLI tools for data sync, image generation, templates
+│   ├── src/              # Script source code
+│   │   ├── scripts/      # Main scripts (fetch, upload, images, tags, template)
+│   │   └── lib/          # Shared utilities
+│   ├── data/             # Static data files
+│   ├── templates/        # Handlebars templates and CSS
+│   └── dist/             # Generated output (images, data files)
 ├── images-tool/          # Image generation tool (placeholder)
 ├── .husky/               # Git hooks
 └── package.json          # Root workspace config
@@ -112,7 +117,7 @@ The web app tracks unique couplet views using a cookie-based system:
 ## Supabase
 
 - **Anon key** used for public reads (web app, API docs)
-- **Service role key** used for scripts (data sync, image uploads)
+- **Service role key** used for tools (data sync, image uploads)
 - Storage bucket `couplet-images` stores optimized WebP OG images
 
 ## Contributing
