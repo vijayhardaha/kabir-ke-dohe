@@ -2,12 +2,12 @@
   "name": "kabir-dohe-hub",
   "version": "1.0.0",
   "description": "Kabir Dohe Hub — Monorepo for Kabir Dohe API, Web, and Images Tool",
-  "private": true,
   "workspaces": [
     "api",
     "web",
     "images-tool",
-    "tools"
+    "tools",
+    "collections"
   ],
   "scripts": {
     "dev": "bun run --filter '*' dev",
@@ -26,6 +26,10 @@
     "dohe",
     "monorepo"
   ],
+  "author": {
+    "name": "Vijay Hardaha",
+    "url": "https://github.com/vijayhardaha"
+  },
   "license": "MIT",
   "homepage": "https://kabirdoheapi.vercel.app",
   "repository": {
@@ -34,10 +38,6 @@
   },
   "bugs": {
     "url": "https://github.com/vijayhardaha/kabir-dohe-api/issues"
-  },
-  "author": {
-    "name": "Vijay Hardaha",
-    "url": "https://github.com/vijayhardaha"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.0.2",

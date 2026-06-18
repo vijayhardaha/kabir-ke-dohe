@@ -1,0 +1,42 @@
+{
+  "name": "@kabir-dohe-hub/collections",
+  "version": "1.0.0",
+  "description": "Kabir Dohe Collections — Generate markdown collections of Kabir's couplets",
+  "type": "module",
+  "scripts": {
+    "prebuild": "cp ../tools/dist/data/couplets.json data/couplets.json",
+    "build": "bun run src/build-collections.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "tsc": "tsc --noEmit",
+    "test:coverage": "echo 'No coverage setup yet'"
+  },
+  "keywords": [
+    "Kabir",
+    "dohe",
+    "collections"
+  ],
+  "author": {
+    "name": "Vijay Hardaha",
+    "url": "https://github.com/vijayhardaha"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/vijayhardaha/kabir-dohe-api/tree/master/collections",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vijayhardaha/kabir-dohe-api.git",
+    "directory": "collections"
+  },
+  "bugs": {
+    "url": "https://github.com/vijayhardaha/kabir-dohe-api/issues"
+  },
+  "dependencies": {
+    "ora": "^9.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "25.9.3",
+    "@vijayhardaha/dev-config": "^2.1.1",
+    "prettier": "^3.8.4",
+    "typescript": "^6.0.3"
+  }
+}
