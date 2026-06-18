@@ -22,6 +22,8 @@ export function SearchWidget(): JSX.Element {
    *
    * @param {SubmitEvent<HTMLFormElement>} e - The form submit event.
    */
+  // ── Form submission handler ──
+
   const handleSubmit = useCallback(
     (e: SubmitEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -36,8 +38,10 @@ export function SearchWidget(): JSX.Element {
   return (
     <Widget>
       <WidgetContent>
+        {/* ── Search form ── */}
         <form onSubmit={handleSubmit} className="flex" role="search">
           <div className="flex w-full">
+            {/* ── Search input ── */}
             <input
               ref={inputRef}
               id="sidebar-search"
@@ -47,6 +51,7 @@ export function SearchWidget(): JSX.Element {
               className="text-foreground bg-card border-input focus:border-primary flex h-11 w-full border border-r-0 px-3 text-sm transition-colors duration-200 outline-none"
               aria-label="Search couplets"
             />
+            {/* ── Submit button ── */}
             <button
               type="submit"
               className="bg-primary text-primary-foreground hover:bg-primary/90 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center transition-colors duration-200"

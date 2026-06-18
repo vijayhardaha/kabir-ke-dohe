@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 
 import Link from 'next/link';
 
-import { WIDGET_CATEGORIES } from '@/constants/widgets';
+import { WIDGET_CATEGORIES } from '@/constants/categories';
 
 import { Widget, WidgetContent, WidgetHeader } from './Widget';
 

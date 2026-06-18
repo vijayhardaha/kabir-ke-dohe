@@ -18,9 +18,13 @@ export async function ArchiveSidebar(): Promise<JSX.Element> {
 
   return (
     <aside className="sticky top-10 flex flex-col gap-8">
+      {/* ── Search widget ── */}
       <SearchWidget />
+      {/* ── Categories widget ── */}
       <CategoriesWidget />
+      {/* ── Tag cloud widget ── */}
       <TagCloudWidget tags={tags} />
+      {/* ── Popular couplets widget ── */}
       <PopularCoupletsWidget couplets={popularCouplets} />
     </aside>
   );
