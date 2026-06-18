@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState, type JSX } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Pagination } from '@/components/ui/Pagination';
-import { KABIR_MESSAGES } from '@/constants/kabirMessages';
+import { KABIR_QUOTES } from '@/constants/kabir-quotes';
 
 import { ContentNone } from './ContentNone';
 import { InjectedMessage } from './InjectedMessage';
@@ -33,6 +33,7 @@ export function ArchiveListing({
   currentSortBy = 'number',
   currentSortOrder = 'asc',
   hideSort = false,
+  showQuotes = true,
   showSidebar = false,
   sidebar,
 }: ArchiveListingProps): JSX.Element {
@@ -41,16 +42,16 @@ export function ArchiveListing({
 
   const currentSortValue = getSortValue(currentSortBy, currentSortOrder, searchParams.get('is_popular'));
 
-  const [shuffledMessages, setShuffledMessages] = useState(KABIR_MESSAGES);
+  const [shuffledQuotes, setShuffledQuotes] = useState(KABIR_QUOTES);
 
   useEffect(() => {
     const timeout = window.setTimeout(() => {
-      const shuffled = [...KABIR_MESSAGES];
+      const shuffled = [...KABIR_QUOTES];
       for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
       }
-      setShuffledMessages(shuffled);
+      setShuffledQuotes(shuffled);
     }, 0);
 
     return () => window.clearTimeout(timeout);
@@ -87,6 +88,7 @@ export function ArchiveListing({
           params.delete('is_popular');
           break;
       }
+
       router.push(`${baseUrl}?${params.toString()}`);
     },
     [router, searchParams, baseUrl]
@@ -113,14 +115,14 @@ export function ArchiveListing({
 
               // Inject a spiritual message after every 2 posts (at indices 1, 3, 5, 7)
               // Only inject up to 4 messages and skip if no more posts remain
-              if ((index + 1) % 2 === 0) {
-                const messageIndex = Math.floor((index + 1) / 2) - 1;
-                if (messageIndex < shuffledMessages.length && index + 1 < posts.length) {
+              if (showQuotes && (index + 1) % 2 === 0) {
+                const quoteIndex = Math.floor((index + 1) / 2) - 1;
+                if (quoteIndex < shuffledQuotes.length && index + 1 < posts.length) {
                   elements.push(
                     <InjectedMessage
-                      key={`msg-${messageIndex}`}
-                      message={shuffledMessages[messageIndex]}
-                      colorIndex={messageIndex % 3}
+                      key={`msg-${quoteIndex}`}
+                      message={shuffledQuotes[quoteIndex]}
+                      colorIndex={quoteIndex % 3}
                     />
                   );
                 }

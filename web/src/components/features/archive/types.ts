@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import type { PaginationMeta, Post } from '@/types';
+import type { PaginationMeta, Post, SortBy, SortOrder } from '@/types';
 
 /**
  * A single sort option in the dropdown.
@@ -22,9 +22,10 @@ export interface SortOption {
  * @property {PaginationMeta} pagination - Pagination metadata
  * @property {string} baseUrl - Base URL for pagination and sort links
  * @property {string} [emptyMessage] - Message shown when no posts are found
- * @property {string} [currentSortBy] - Current sort-by field value
- * @property {string} [currentSortOrder] - Current sort order value
+ * @property {SortBy} [currentSortBy] - Current sort-by field value
+ * @property {SortOrder} [currentSortOrder] - Current sort order value
  * @property {boolean} [hideSort] - When true, hides the sort dropdown
+ * @property {boolean} [showQuotes=true] - When true, injects spiritual quote messages between posts
  * @property {boolean} [showSidebar] - When true, renders alongside a sidebar with widgets (md+)
  * @property {ReactNode} [sidebar] - Sidebar content to render alongside the listing
  */
@@ -33,9 +34,10 @@ export interface ArchiveListingProps {
   pagination: PaginationMeta;
   baseUrl: string;
   emptyMessage?: string;
-  currentSortBy?: string;
-  currentSortOrder?: string;
+  currentSortBy?: SortBy;
+  currentSortOrder?: SortOrder;
   hideSort?: boolean;
+  showQuotes?: boolean;
   showSidebar?: boolean;
   sidebar?: ReactNode;
 }

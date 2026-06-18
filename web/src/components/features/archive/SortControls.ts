@@ -1,3 +1,5 @@
+import type { SortBy, SortOrder } from '@/types';
+
 import type { SortOption } from './types';
 
 // ── Sort options ──────────────────────────────────────────────────────────
@@ -17,13 +19,13 @@ export const SORT_OPTIONS: SortOption[] = [
 /**
  * Maps URL sort params to the corresponding dropdown option value.
  *
- * @param {string} sortBy - Current sort_by query param.
- * @param {string} sortOrder - Current sort_order query param.
+ * @param {SortBy} sortBy - Current sort_by query param.
+ * @param {SortOrder} sortOrder - Current sort_order query param.
  * @param {string | null} isPopular - Whether is_popular=true is in the URL.
  *
  * @returns {string} The matching dropdown option value.
  */
-export function getSortValue(sortBy: string, sortOrder: string, isPopular: string | null): string {
+export function getSortValue(sortBy: SortBy, sortOrder: SortOrder, isPopular: string | null): string {
   if (isPopular === 'true') return 'popular';
   if (sortBy === 'text_hi' && sortOrder === 'asc') return 'couplet_asc';
   if (sortBy === 'text_hi' && sortOrder === 'desc') return 'couplet_desc';
