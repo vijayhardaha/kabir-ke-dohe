@@ -1,77 +1,4 @@
-import { breadcrumbSchema } from '@vijayhardaha/schema-builder';
-
-import type { Post, PaginationMeta } from '@/types';
-import { buildKeywords, collectionPageSchema, globalSchema } from '@/lib/utils/schema';
-import { siteUrl } from '@/lib/utils/seo';
-
-// ── Types ─────────────────────────────────────────────────────────────────
-
-/** Per-page configuration for an archive listing. */
-export interface ArchivePageConfig {
-  seoTitle: string;
-  seoDescription: string;
-  seoPath: string;
-  seoKeywords: string[];
-  /** Optional filter passed to getCouplets. */
-  filter?: { isPopular?: boolean; isFeatured?: boolean };
-  /** Label used in the breadcrumb. */
-  breadcrumbLabel: string;
-  /** Page header title (Hindi + English). */
-  pageTitle: string;
-  /** Page header description (Hindi + English). */
-  pageDescription: string;
-}
-
-// ── Schema builder ─────────────────────────────────────────────────────────
-
-/** Data required to build the archive page schema. */
-interface ArchiveSchemaData {
-  posts: Post[];
-  pagination: PaginationMeta;
-  page: number;
-  perPage: number;
-  /** Extra keywords appended for paginated pages (e.g. 'paginated'). */
-  extraKeywords?: string[];
-}
-
-/**
- * Build the full schema array (global + collectionPage + breadcrumb) for an
- * archive listing page.
- */
-export function buildArchivePageSchema(
-  config: ArchivePageConfig,
-  data: ArchiveSchemaData
-): Record<string, unknown>[] {
-  const rootUrl = siteUrl();
-  const { posts, pagination, page, perPage } = data;
-
-  const itemListElement = posts.map((post, idx) => ({
-    '@type': 'ListItem',
-    position: (page - 1) * perPage + idx + 1,
-    url: `${rootUrl}/couplet/${post.slug}`,
-    name: post.text_hi.slice(0, 120),
-  }));
-
-  return [
-    ...globalSchema(),
-    collectionPageSchema(
-      { rootUrl, path: config.seoPath },
-      {
-        name: `${config.seoTitle} — Kabir Ke Dohe`,
-        description: config.seoDescription,
-        keywords: buildKeywords([...config.seoKeywords, ...(data.extraKeywords ?? [])]),
-        mainEntity: { '@type': 'ItemList', numberOfItems: pagination.total, itemListElement },
-      }
-    ),
-    breadcrumbSchema({
-      rootUrl,
-      items: [
-        { name: 'Home', path: '' },
-        { name: config.breadcrumbLabel, path: config.seoPath },
-      ],
-    }),
-  ];
-}
+import { type ArchivePageConfig } from '@/lib/utils/schema';
 
 // ── Predefined configs ─────────────────────────────────────────────────────
 
@@ -118,7 +45,7 @@ export const POPULAR_CONFIG: ArchivePageConfig = {
  *
  * @type {ArchivePageConfig}
  */
-export const FEATURED_CONFIG: ArchivePageConfig = {
+export const PAGE_CONFIG: ArchivePageConfig = {
   seoTitle: 'Featured Couplets',
   seoDescription:
     "A handpicked collection of Kabir's most profound and impactful dohas — spiritual wisdom and life lessons in Hindi and English.",
