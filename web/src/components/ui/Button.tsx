@@ -15,13 +15,7 @@ import { cn } from '@/lib/utils/cn';
  * @type {ButtonVariant}
  */
 type ButtonVariant =
-  | 'primary'
-  | 'secondary'
-  | 'white'
-  | 'outline-primary'
-  | 'outline-secondary'
-  | 'outline-white'
-  | 'ghost';
+  'primary' | 'secondary' | 'white' | 'outline-primary' | 'outline-secondary' | 'outline-white' | 'ghost';
 
 /**
  * Available size presets for the Button component.
