@@ -15,7 +15,7 @@
     "lint": "bun run --filter '*' lint",
     "lint:fix": "bun run --filter '*' lint:fix",
     "format": "prettier --write --log-level error .",
-    "format:check": "prettier --check .",
+    "format:check": "prettier --check --log-level error .",
     "tsc": "bun run --filter '*' tsc",
     "test": "bun run --filter '*' test",
     "test:coverage": "bun run --filter '*' test:coverage",
