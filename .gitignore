@@ -62,9 +62,8 @@ go.work.sum
 next-env.d.ts
 
 # Bundler output
-/build/
-/dist/
-/tools/
+build/
+dist/
 
 # ----------------------------------------------------------------------
 # Cache Directories
