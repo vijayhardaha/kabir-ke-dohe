@@ -268,6 +268,11 @@ export async function clearPostTagsForPosts(
  * against the incoming values, and deletes stale records in chunks to avoid
  * PostgREST URL length limits (16KB).
  *
+ * For the `categories` table, this function first explicitly nullifies
+ * `category_id` references in the `posts` table before deleting. This avoids
+ * the `ON DELETE SET NULL` cascade operation which can hit Supabase's
+ * `statement_timeout` (30s) when thousands of posts reference a category.
+ *
  * @param {SupabaseClient} supabase - The Supabase client instance.
  * @param {string} table - The table name.
  * @param {string} keyColumn - The key column to filter on (e.g. 'slug', 'identifier').
@@ -294,6 +299,12 @@ export async function deleteStaleRecords(
 
   if (staleValues.length === 0) return 0;
 
+  // For categories, first nullify references in posts to avoid the slow
+  // ON DELETE SET NULL cascade that can hit Supabase's statement_timeout (30s).
+  if (table === 'categories') {
+    await nullifyCategoryPostReferences(supabase, staleValues, chunkSize, keyColumn);
+  }
+
   let deletedCount = 0;
 
   for (let i = 0; i < staleValues.length; i += chunkSize) {
@@ -309,4 +320,39 @@ export async function deleteStaleRecords(
   }
 
   return deletedCount;
+}
+
+/**
+ * Nullifies `category_id` on posts that reference stale categories.
+ *
+ * Before deleting stale categories, this function updates the posts table
+ * to set `category_id = NULL` for any post referencing a stale category.
+ * Each stale category is processed individually to keep every UPDATE
+ * statement small (a few dozen rows at most), avoiding Supabase's
+ * 30-second `statement_timeout`.
+ *
+ * @param {SupabaseClient} supabase - The Supabase client instance.
+ * @param {string[]} staleSlugs - The slugs of the stale categories to remove references for.
+ * @param {number} _chunkSize - Unused (kept for API compatibility with the caller).
+ * @param {string} keyColumn - The key column used to identify categories ('slug' or 'identifier').
+ *
+ * @throws {Error} Throws when any update operation fails.
+ */
+async function nullifyCategoryPostReferences(
+  supabase: SupabaseClient,
+  staleSlugs: string[],
+  _chunkSize: number,
+  keyColumn: string
+): Promise<void> {
+  for (const slug of staleSlugs) {
+    const { data: staleCats } = await supabase.from('categories').select('id').eq(keyColumn, slug);
+
+    if (!staleCats || staleCats.length === 0) continue;
+
+    const { error } = await supabase.from('posts').update({ category_id: null }).eq('category_id', staleCats[0].id);
+
+    if (error) {
+      throw new Error(`Failed to nullify category references in posts: ${error.message}`);
+    }
+  }
 }
