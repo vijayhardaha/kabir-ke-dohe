@@ -31,12 +31,12 @@
     "url": "https://github.com/vijayhardaha/kabir-dohe-api/issues"
   },
   "dependencies": {
-    "ora": "^9.4.0"
+    "ora": "^9.4.1"
   },
   "devDependencies": {
-    "@types/node": "25.9.3",
-    "@vijayhardaha/dev-config": "^2.1.1",
-    "prettier": "^3.8.4",
+    "@types/node": "26.1.1",
+    "@vijayhardaha/dev-config": "^2.2.0",
+    "prettier": "^3.9.5",
     "typescript": "^6.0.3"
   }
 }
