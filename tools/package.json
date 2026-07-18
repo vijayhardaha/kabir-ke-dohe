@@ -10,6 +10,7 @@
     "couplets:upload:prod": "NODE_ENV=production bun --env-file=.env.production run src/scripts/couplets-upload.ts",
     "couplets:template:serve": "bun run src/scripts/template-serve.ts",
     "couplets:images": "bun run src/scripts/images-generate.ts",
+    "couplets:images:square": "bun run src/scripts/images-generate-square.ts",
     "couplets:images:optimize": "bun run src/scripts/images-optimize.ts",
     "couplets:images:upload": "bun --env-file=.env.development run src/scripts/images-upload.ts",
     "couplets:images:upload:prod": "NODE_ENV=production bun --env-file=.env.production run src/scripts/images-upload.ts",
