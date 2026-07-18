@@ -45,16 +45,54 @@ function buildLlmstxt(data: SiteData): string {
   );
   lines.push('');
 
-  lines.push('## Key URLs');
+  lines.push('## Sitemaps');
+  lines.push('');
+  lines.push('[XML Sitemap](' + SITE_URL + '/sitemap_index.xml): Includes all crawlable and indexable pages.');
+  lines.push('');
+
+  lines.push('## Pages');
   lines.push('');
   lines.push('- ' + SITE_URL + '/ (Home)');
-  lines.push('- ' + SITE_URL + '/couplets (All couplets, ' + data.totalCount + ')');
-  lines.push('- ' + SITE_URL + '/popular-couplets (' + data.popularCount + ' popular)');
-  lines.push('- ' + SITE_URL + '/featured-couplets (' + data.featuredCount + ' featured)');
-  lines.push('- ' + SITE_URL + '/categories (' + data.categories.length + ' categories)');
-  lines.push('- ' + SITE_URL + '/tags (' + data.tags.length + ' tags)');
-  lines.push('- ' + SITE_URL + '/search (Full-text search)');
-  lines.push('- ' + SITE_URL + '/about (About Kabir)');
+  {
+    const pages = Math.ceil(data.totalCount / 10);
+    lines.push(
+      '- '
+        + SITE_URL
+        + '/couplets -- All couplets ('
+        + data.totalCount
+        + ' couplets, '
+        + pages
+        + (pages > 1 ? ' pages)' : ' page)')
+    );
+  }
+  {
+    const pages = Math.ceil(data.popularCount / 10);
+    lines.push(
+      '- '
+        + SITE_URL
+        + '/popular-couplets -- Popular couplets ('
+        + data.popularCount
+        + ' couplets, '
+        + pages
+        + (pages > 1 ? ' pages)' : ' page)')
+    );
+  }
+  {
+    const pages = Math.ceil(data.featuredCount / 10);
+    lines.push(
+      '- '
+        + SITE_URL
+        + '/featured-couplets -- Featured couplets ('
+        + data.featuredCount
+        + ' couplets, '
+        + pages
+        + (pages > 1 ? ' pages)' : ' page)')
+    );
+  }
+  lines.push('- ' + SITE_URL + '/categories -- Browse categories (' + data.categories.length + ')');
+  lines.push('- ' + SITE_URL + '/tags -- Browse tags (' + data.tags.length + ')');
+  lines.push('- ' + SITE_URL + '/search -- Full-text search');
+  lines.push('- ' + SITE_URL + '/about -- About Kabir Das');
   lines.push('- ' + SITE_URL + '/privacy');
   lines.push('- ' + SITE_URL + '/terms');
   lines.push('');
@@ -79,21 +117,21 @@ function buildLlmstxt(data: SiteData): string {
   lines.push('');
 
   lines.push('## Tags (' + data.tags.length + ')');
-  const grouped = new Map();
   for (const tag of data.tags) {
-    const letter = tag.name[0].toUpperCase();
-    if (!grouped.has(letter)) grouped.set(letter, []);
-    grouped.get(letter).push(tag);
-  }
-  for (const letter of [...grouped.keys()].sort()) {
-    const tags = grouped.get(letter);
-    const tagLinks = tags
-      .map(function (t: { name: string; post_count: number }) {
-        const pages = Math.ceil(t.post_count / 10);
-        return t.name + ' (' + t.post_count + ' couplets, ' + pages + (pages > 1 ? ' pages)' : ' page)');
-      })
-      .join('; ');
-    lines.push('- **' + letter + '**: ' + tagLinks);
+    const pages = Math.ceil(tag.post_count / 10);
+    lines.push(
+      '- '
+        + SITE_URL
+        + '/tag/'
+        + tag.slug
+        + ' -- '
+        + tag.name
+        + ' ('
+        + tag.post_count
+        + ' couplets, '
+        + pages
+        + (pages > 1 ? ' pages)' : ' page)')
+    );
   }
   lines.push('');
 
@@ -105,18 +143,12 @@ function buildLlmstxt(data: SiteData): string {
   lines.push('- **About Kabir** -- /about');
   lines.push('');
 
-  lines.push('## Sample Couplets');
-  for (const post of data.posts.slice(0, 5)) {
-    lines.push('### ' + post.text_hi);
-    lines.push('');
-    lines.push('- English: ' + post.text_en);
-    if (post.meaning_en) {
-      lines.push('- Meaning: ' + post.meaning_en.slice(0, 200));
-    }
-    if (post.category) {
-      lines.push('- Category: ' + post.category.name);
-    }
-    lines.push('- URL: ' + SITE_URL + '/couplet/' + post.slug);
+  lines.push('## Kabir Couplets (' + data.posts.length + ' couplets)');
+  lines.push('');
+  for (const post of data.posts) {
+    lines.push('- **' + post.text_hi + '**');
+    lines.push('  - English: ' + post.text_en);
+    lines.push('  - URL: ' + SITE_URL + '/couplet/' + post.slug);
     lines.push('');
   }
 
