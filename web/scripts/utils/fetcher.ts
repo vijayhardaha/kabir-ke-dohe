@@ -74,13 +74,15 @@ export async function fetchCategoriesWithCounts(supabase: SupabaseClient): Promi
     return [];
   }
 
-  return ((data ?? []) as unknown as Array<{
-    id: string;
-    slug: string;
-    name: string;
-    description: string | null;
-    posts: Array<unknown>;
-  }>).map((cat) => ({
+  return (
+    (data ?? []) as unknown as Array<{
+      id: string;
+      slug: string;
+      name: string;
+      description: string | null;
+      posts: Array<unknown>;
+    }>
+  ).map((cat) => ({
     id: cat.id,
     slug: cat.slug,
     name: cat.name,
@@ -108,17 +110,9 @@ export async function fetchTagsWithCounts(supabase: SupabaseClient): Promise<Tag
     return [];
   }
 
-  return ((data ?? []) as unknown as Array<{
-    id: string;
-    slug: string;
-    name: string;
-    post_tags: Array<unknown>;
-  }>).map((tag) => ({
-    id: tag.id,
-    slug: tag.slug,
-    name: tag.name,
-    post_count: tag.post_tags.length,
-  }));
+  return ((data ?? []) as unknown as Array<{ id: string; slug: string; name: string; post_tags: Array<unknown> }>).map(
+    (tag) => ({ id: tag.id, slug: tag.slug, name: tag.name, post_count: tag.post_tags.length })
+  );
 }
 
 /**
@@ -126,6 +120,8 @@ export async function fetchTagsWithCounts(supabase: SupabaseClient): Promise<Tag
  *
  * @param {SupabaseClient} supabase - The Supabase client instance.
  * @param {{ isPopular?: boolean; isFeatured?: boolean }} [filters] - Optional boolean filters.
+ * @param {boolean} [filters.isPopular] - When true, only counts popular posts.
+ * @param {boolean} [filters.isFeatured] - When true, only counts featured posts.
  *
  * @returns {Promise<number>} The matching post count, or zero on error.
  */
@@ -133,10 +129,7 @@ export async function getPublishedPostCount(
   supabase: SupabaseClient,
   filters?: { isPopular?: boolean; isFeatured?: boolean }
 ): Promise<number> {
-  let query = supabase
-    .from('posts')
-    .select('id', { count: 'exact', head: true })
-    .eq('post_status', 'publish');
+  let query = supabase.from('posts').select('id', { count: 'exact', head: true }).eq('post_status', 'publish');
 
   if (filters?.isPopular) {
     query = query.eq('is_popular', true);

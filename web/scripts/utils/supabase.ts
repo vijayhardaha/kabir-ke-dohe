@@ -45,7 +45,5 @@ export function getSupabaseKey(): string {
  * @returns {ReturnType<typeof createClient>} A new Supabase client instance.
  */
 export function createSupabaseClient(): ReturnType<typeof createClient> {
-  return createClient(getSupabaseUrl(), getSupabaseKey(), {
-    auth: { persistSession: false },
-  });
+  return createClient(getSupabaseUrl(), getSupabaseKey(), { auth: { persistSession: false } });
 }

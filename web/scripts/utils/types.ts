@@ -129,4 +129,3 @@ export interface TagWithPosts {
 export interface PostSlug {
   slug: string;
 }
-

@@ -21,13 +21,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
-import { createSupabaseClient } from './utils/supabase';
 import {
   fetchAllPublishedPosts,
   fetchCategoriesWithCounts,
   fetchTagsWithCounts,
   getPublishedPostCount,
 } from './utils/fetcher';
+import { createSupabaseClient } from './utils/supabase';
 import type { SiteData } from './utils/types';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
