@@ -6,7 +6,7 @@ This site hosts 2287 couplets organised into 54 categories and 93 tags. Each cou
 
 ## Sitemaps
 
-[XML Sitemap](https://kabirdohehub.vercel.app/sitemap_index.xml): Includes all crawlable and indexable pages.
+[XML Sitemap](https://kabirdohehub.vercel.app/sitemap.xml): Includes all crawlable and indexable pages.
 
 ## Pages
 
@@ -9339,5 +9339,5 @@ This site hosts 2287 couplets organised into 54 categories and 93 tags. Each cou
 
 ---
 
-Generated at: 2026-07-18T01:12:07.685Z
+Generated at: 2026-07-18T01:20:02.211Z
 Total couplets: 2287

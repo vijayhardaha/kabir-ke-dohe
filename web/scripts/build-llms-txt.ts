@@ -47,7 +47,7 @@ function buildLlmstxt(data: SiteData): string {
 
   lines.push('## Sitemaps');
   lines.push('');
-  lines.push('[XML Sitemap](' + SITE_URL + '/sitemap_index.xml): Includes all crawlable and indexable pages.');
+  lines.push('[XML Sitemap](' + SITE_URL + '/sitemap.xml): Includes all crawlable and indexable pages.');
   lines.push('');
 
   lines.push('## Pages');
