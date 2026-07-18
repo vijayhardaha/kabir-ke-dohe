@@ -246,7 +246,7 @@ export default async function HomePage(): Promise<JSX.Element> {
               </h2>
               <p className="text-muted-foreground mt-1">
                 हाल ही में जुड़े कबीर के प्रेरणादायक दोहे — Freshly added couplets to deepen your connection with
-                Kabir\u2019s eternal wisdom and teachings.
+                Kabir&apos;s eternal wisdom and teachings.
               </p>
             </div>
             <div>
