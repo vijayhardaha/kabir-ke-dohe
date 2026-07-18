@@ -254,6 +254,9 @@ syslog.log
 tmp/
 coverage.txt
 
+# Generated data cache (scripts/fetch-data.ts output)
+web/scripts/data.json
+
 # ----------------------------------------------------------------------
 # Ai Coding Tools
 # ----------------------------------------------------------------------
