@@ -13,25 +13,15 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { formatCoupletText } from '../lib/string';
 import type { CoupletEntry } from '../types';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /**
- * Splits couplet text into multiple lines for better readability.
- *
- * @param {string} text - The original couplet text with danda or commas.
- *
- * @returns {string} Text with newlines inserted after danda and commas.
- */
-function formatCoupletText(text: string): string {
-  return text.replace(/(।|,)\s+/g, '$1\n');
-}
-
-/**
  * Creates markdown content for a social media post.
  *
- * @param {CoupletEntry} entry - The couplet entry containing text and meaning.
+ * @param {CoupletEntry} entry - The couplet entry containing all data.
  *
  * @returns {string} Markdown content for the social media post.
  */
@@ -41,17 +31,19 @@ function buildSocialPost(entry: CoupletEntry): string {
 
   const sections: string[] = [];
   sections.push(coupletLines);
-  sections.push('➖➖➖');
-  sections.push('✨ अर्थ: ⤵');
+  sections.push('\n➖➖➖\n');
+  sections.push('✨ अर्थ: ⤵\n');
   sections.push(entry.meaning || '[यहां दोहे का अर्थ लिखें]');
-  sections.push('➖➖➖');
-  sections.push('🌾 वास्तविक जीवन उदाहरण: ⤵');
-  sections.push('[यहां दोहे के संदेश से जुड़ा एक वास्तविक जीवन का उदाहरण लिखें जो पाठकों को प्रेरित करे]');
-  sections.push('➖➖➖');
-  sections.push('🔥 संदेश: ⤵');
-  sections.push('📌 [यहां दोहे का मुख्य संदेश लिखें]');
-  sections.push('➖➖➖');
-  sections.push('— संत कबीरदास साहेब जी 🙏❤️💯');
+  sections.push('\n➖➖➖\n');
+  sections.push('🌾 वास्तविक जीवन उदाहरण: ⤵\n');
+  sections.push(
+    entry.practical_example || '[यहां दोहे के संदेश से जुड़ा एक वास्तविक जीवन का उदाहरण लिखें जो पाठकों को प्रेरित करे]'
+  );
+  sections.push('\n➖➖➖\n');
+  sections.push('🔥 संदेश: ⤵\n');
+  sections.push(entry.core_message || '[यहां दोहे का मुख्य संदेश लिखें]');
+  sections.push('\n➖➖➖\n');
+  sections.push('— संत कबीरदास साहेब जी');
   sections.push('');
   sections.push(tags.join(' '));
   sections.push('');

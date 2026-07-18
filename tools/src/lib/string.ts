@@ -18,6 +18,34 @@ function capitalizeWord(word: string): string {
 }
 
 /**
+ * Splits a Hindi doha (couplet) into 2 or 4 lines.
+ *
+ * When `fourLines` is false (default), splits at the first `। ` (danda + space)
+ * only, producing exactly 2 lines. When true, splits at every `। ` and `, `
+ * boundary, producing up to 4 lines.
+ *
+ * If no matching boundary is found the entire text is returned as-is.
+ *
+ * @param {string} text - The Hindi doha text (e.g. `text_hi`).
+ * @param {boolean} [fourLines=false] - When true, split at every danda and comma.
+ *
+ * @returns {string} Text split into 2 or 4 lines.
+ *
+ * @example
+ *   formatCoupletText('बलिहारी गुरु... बार। मानुष... देव...')
+ *   // → "बलिहारी ... बार।\nमानुष ... देव..."
+ *
+ *   formatCoupletText('भक्ति पंथ... कठिन है, रती... खोट। निराधार... है, अधर... चोट।।', true)
+ *   // → "भक्ति पंथ... कठिन है,\nरती... खोट।\nनिराधार... है,\nअधर... चोट।।"
+ */
+export function formatCoupletText(text: string, fourLines = false): string {
+  if (fourLines) {
+    return text.replace(/(।|,)\s+/g, '$1\n');
+  }
+  return text.replace(/^(.+?)। (.+)$/, '$1।\n$2');
+}
+
+/**
  * Converts a string to sentence case (first letter uppercase, rest lowercase).
  *
  * @param {string} str - The string to convert to sentence case.

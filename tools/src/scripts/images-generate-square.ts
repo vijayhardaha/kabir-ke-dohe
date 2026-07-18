@@ -18,6 +18,7 @@ import { fileURLToPath } from 'node:url';
 import ora from 'ora';
 
 import { generateVariants, generateSvgShades, getPalette } from '../lib/colors';
+import { formatCoupletText } from '../lib/string';
 import type { CoupletEntry } from '../types';
 
 const WEBSITE_URL = 'kabirdohehub.vercel.app';
@@ -133,7 +134,7 @@ async function main(): Promise<void> {
     // Build HTML with all couplets in batch
     const batchCards = batch
       .map(([_, entry], idx) => {
-        const textWithBreaks = entry.text.replace(/(।|,)\s+/g, '$1\n');
+        const textWithBreaks = formatCoupletText(entry.text, true);
         const palette = getPalette(entry.post_number);
         const variants = generateVariants(palette.background);
         const svgColors = generateSvgShades(palette.background);
