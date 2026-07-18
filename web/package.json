@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build && next-sitemap",
-    "generate:paths": "bun run --env-file=.env.production scripts/generate-paths.ts",
+    "generate": "bun run fetch:data && bun run build:llms-txt && bun run generate:paths",
+    "fetch:data": "bun run --env-file=.env.production scripts/fetch-data.ts",
+    "build:llms-txt": "bun run scripts/build-llms-txt.ts",
+    "generate:paths": "bun run scripts/generate-paths.ts",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "tsc": "tsc --noEmit",
