@@ -16,6 +16,7 @@
     "couplets:images:upload:prod": "NODE_ENV=production bun --env-file=.env.production run src/scripts/images-upload.ts",
     "tags:generate": "bun --env-file=.env.development run src/scripts/tags-generate.ts",
     "tags:generate:prod": "NODE_ENV=production bun --env-file=.env.production run src/scripts/tags-generate.ts",
+    "social-posts:generate": "bun run src/scripts/generate-social-posts.ts",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "tsc": "tsc --noEmit",
