@@ -25,6 +25,8 @@ export type TagResponse = z.infer<typeof TagResponseSchema>;
 export const CoupletEntrySchema = z.object({
   text: z.string(),
   meaning: z.string().nullable(),
+  core_message: z.string().nullable(),
+  practical_example: z.string().nullable(),
   post_number: z.number(),
 });
 

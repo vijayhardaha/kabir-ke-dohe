@@ -29,6 +29,8 @@ interface CoupletRow {
   slug: string;
   text_hi: string;
   meaning_hi: string | null;
+  core_message_hi: string | null;
+  practical_example_hi: string | null;
   post_number: number;
 }
 
@@ -52,7 +54,7 @@ async function main(): Promise<void> {
   const allRows = await fetchPaginated(async (from, pageSize) => {
     const { data, error } = await supabase
       .from('posts')
-      .select('slug, text_hi, meaning_hi, post_number')
+      .select('slug, text_hi, meaning_hi, core_message_hi, practical_example_hi, post_number')
       .eq('post_status', 'publish')
       .order('post_order', { ascending: true })
       .range(from, from + pageSize - 1);
@@ -74,6 +76,8 @@ async function main(): Promise<void> {
     const entry = CoupletEntrySchema.parse({
       text: row.text_hi,
       meaning: row.meaning_hi,
+      core_message: row.core_message_hi,
+      practical_example: row.practical_example_hi,
       post_number: row.post_number,
     });
     coupletsMap[row.slug] = entry;
