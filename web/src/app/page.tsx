@@ -169,7 +169,7 @@ export default async function HomePage(): Promise<JSX.Element> {
                     चुनिंदा <span className="text-primary">दोहे</span> — Featured Couplets
                   </h2>
                   <p className="text-muted-foreground mt-1">
-                    कबीर के अनमोल वचन, आपके लिए चुने गए — Handpicked gems of Kabir\u2019s timeless wisdom, specially
+                    कबीर के अनमोल वचन, आपके लिए चुने गए — Handpicked gems of Kabir&apos;s timeless wisdom, specially
                     curated for your spiritual journey.
                   </p>
                 </div>
