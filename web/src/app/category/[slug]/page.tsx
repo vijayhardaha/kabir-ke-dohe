@@ -1,46 +1,13 @@
 import type { JSX } from 'react';
 
-import type { Metadata } from 'next';
-
-import { fetchCategoryBySlug } from '@/lib/server/couplets';
 import { handlePageRedirect, parseSortParams } from '@/lib/server/page-utils';
-import { buildMetadata } from '@/lib/utils/meta';
 
-import { CategoryArchiveContent } from '../_components/CategoryArchiveContent';
+import { ArchiveContent } from '../_components/ArchiveContent';
+import { generateCategoryMetadata, type CategoryPageProps } from '../_utils/shared';
 
 // ── Metadata ──────────────────────────────────────────────────────────────
 
-/**
- * Generate metadata for the category page.
- *
- * @param {{ params: Promise<{ slug: string }> }} props - Route params
- *
- * @returns {Promise<Metadata>} The metadata object.
- */
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
-  const category = await fetchCategoryBySlug(slug);
-  const name = category?.name ?? slug;
-
-  return buildMetadata({
-    title: `${name} Couplets`,
-    description:
-      category?.meta_description ?? `Browse Kabir's dohas in the ${name} category — spiritual wisdom and life lessons.`,
-    path: `category/${slug}`,
-  });
-}
-
-/**
- * Props for the category page.
- *
- * @type {CategoryPageProps}
- * @property {Promise<{ slug: string }>} params - Route parameters containing the category slug.
- * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters for pagination and sorting.
- */
-interface CategoryPageProps {
-  params: Promise<{ slug: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}
+export const generateMetadata = generateCategoryMetadata;
 
 /**
  * Category page that displays a paginated, filtered list of couplets for a given category.
@@ -55,5 +22,5 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   handlePageRedirect(sp, `/category/${slug}`);
   const sort = parseSortParams(sp);
 
-  return <CategoryArchiveContent slug={slug} page={1} sort={sort} />;
+  return <ArchiveContent slug={slug} page={1} sort={sort} />;
 }
