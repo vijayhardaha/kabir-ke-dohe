@@ -1,0 +1,109 @@
+import type { JSX } from 'react';
+
+import { breadcrumbSchema, collectionPageSchema } from '@vijayhardaha/schema-builder';
+import { JsonLd } from '@vijayhardaha/schema-builder/react';
+import { notFound } from 'next/navigation';
+
+import { ArchiveListing } from '@/components/features/ArchiveListing';
+import { Container } from '@/components/layout/Container';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { PageLayout } from '@/components/layout/PageLayout';
+import { ArchiveSidebar } from '@/components/widgets/ArchiveSidebar';
+import { getTagBySlug, getCouplets } from '@/lib/server/couplets';
+import { globalSchema } from '@/lib/utils/schema';
+import { siteUrl } from '@/lib/utils/seo';
+import type { SortBy, SortOrder } from '@/types';
+
+// ── Props ─────────────────────────────────────────────────────────────────
+
+/**
+ * Props for the ArchiveContent component.
+ *
+ * @type {ArchiveContentProps}
+ * @property {string} slug - Tag slug.
+ * @property {number} page - Current page number.
+ * @property {{ sortBy: SortBy; sortOrder: SortOrder }} sort - Sort parameters.
+ */
+interface ArchiveContentProps {
+  slug: string;
+  page: number;
+  sort: { sortBy: SortBy; sortOrder: SortOrder };
+}
+
+/**
+ * Shared tag archive content used by both the base and paginated routes.
+ * Fetches the tag and couplets, and renders the full page layout.
+ *
+ * @param {ArchiveContentProps} props - Component props.
+ *
+ * @returns {Promise<JSX.Element>} The tag archive page content.
+ */
+export async function ArchiveContent({ slug, page, sort }: ArchiveContentProps): Promise<JSX.Element> {
+  const tag = await getTagBySlug(slug);
+
+  if (!tag) {
+    notFound();
+  }
+
+  const tagName = tag.name;
+  const rootUrl = siteUrl();
+
+  const { posts, pagination } = await getCouplets({
+    page,
+    perPage: 10,
+    tag: slug,
+    sortBy: sort.sortBy,
+    sortOrder: sort.sortOrder,
+  });
+
+  const itemListElement = posts.map((post, idx) => ({
+    '@type': 'ListItem',
+    position: (page - 1) * 10 + idx + 1,
+    url: `${rootUrl}/couplet/${post.slug}`,
+    name: post.text_hi.slice(0, 120),
+  }));
+
+  const tagSchema = [
+    ...globalSchema(),
+    collectionPageSchema(
+      { rootUrl, path: `tag/${slug}` },
+      {
+        name: `${tagName} — Kabir Ke Dohe`,
+        description: `Couplets tagged with "${tagName}" from Kabir's teachings.`,
+        mainEntity: { '@type': 'ItemList', numberOfItems: pagination.total, itemListElement },
+      }
+    ),
+    breadcrumbSchema({
+      rootUrl,
+      items: [
+        { name: 'Home', path: '' },
+        { name: 'Tags', path: 'tags' },
+        { name: tagName, path: `tag/${slug}` },
+      ],
+    }),
+  ];
+
+  return (
+    <>
+      <JsonLd data={tagSchema} />
+      <PageLayout>
+        <Container>
+          {/* ═══════════════ PAGE HEADER ═══════════════ */}
+          <PageHeader title={tagName} description={`Couplets tagged with "${tagName}"`} />
+
+          {/* ═══════════════ COUPLET LISTING ═══════════════ */}
+          <ArchiveListing
+            posts={posts}
+            pagination={pagination}
+            baseUrl={`/tag/${slug}`}
+            emptyMessage={`No couplets found with the tag "${tagName}".`}
+            currentSortBy={sort.sortBy}
+            currentSortOrder={sort.sortOrder}
+            showSidebar
+            sidebar={<ArchiveSidebar />}
+          />
+        </Container>
+      </PageLayout>
+    </>
+  );
+}
