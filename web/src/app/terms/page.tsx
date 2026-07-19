@@ -12,23 +12,22 @@ import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
 // ── SEO ───────────────────────────────────────────────────────────────────
 
-const pageConfig: PageConfig = {
+const PAGE_CONFIG: PageConfig = {
   seoTitle: 'Terms & Conditions',
   seoDescription: 'Terms and conditions for using Kabir Ke Dohe — rules, disclaimers, and usage guidelines.',
   seoPath: 'terms',
   seoKeywords: ['terms of service', 'terms and conditions'],
 };
 
-/** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({
-  title: pageConfig.seoTitle,
-  description: pageConfig.seoDescription,
-  path: pageConfig.seoPath,
-});
-
 // ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
-const pageSchema = buildPageSchema(pageConfig);
+const PAGE_SCHEMA = buildPageSchema(PAGE_CONFIG);
+
+/** SEO metadata for the page. */
+export const metadata: Metadata = {
+  ...buildMetadata({ title: PAGE_CONFIG.seoTitle, description: PAGE_CONFIG.seoDescription, path: PAGE_CONFIG.seoPath }),
+  robots: { index: false, follow: false },
+};
 
 /**
  * Terms and conditions page outlining rules, disclaimers, and usage guidelines.
@@ -38,7 +37,7 @@ const pageSchema = buildPageSchema(pageConfig);
 export default function TermsPage(): JSX.Element {
   return (
     <>
-      <JsonLd data={pageSchema} />
+      <JsonLd data={PAGE_SCHEMA} />
       <PageLayout>
         <Container>
           <PageHeader title="Terms &amp; Conditions" description="Last updated: June 5, 2026" />
