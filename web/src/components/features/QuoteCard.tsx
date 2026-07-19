@@ -62,7 +62,7 @@ export default function QuoteCard({ slug, text_hi, meaning_hi, category, index }
         </div>
 
         {/* Hindi text */}
-        <h3 className="text-foreground mb-3 text-base font-bold md:text-lg">{formatDoha(text_hi)}</h3>
+        <h3 className="text-foreground mb-3 text-xl font-bold md:text-2xl">{formatDoha(text_hi)}</h3>
 
         {/* Hindi meaning */}
         {meaning_hi && (
