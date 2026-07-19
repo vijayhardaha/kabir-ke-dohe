@@ -21,10 +21,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
+import { loadSiteData } from './utils/site-data';
 import type { SiteData } from './utils/types';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_FILE = path.resolve(__dirname, 'data.json');
 const OUTPUT_FILE = path.resolve(__dirname, '..', 'public', 'paths.txt');
 
 const SITE_URL = 'https://kabirdohehub.vercel.app';
@@ -133,13 +133,7 @@ function writePathsFile(allUrls: string[]): void {
  * @returns {Promise<void>} Resolves when public/paths.txt has been written.
  */
 async function main(): Promise<void> {
-  if (!fs.existsSync(DATA_FILE)) {
-    console.error('data.json not found. Run fetch:data first.');
-    process.exit(1);
-  }
-
-  const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-  const data: SiteData = JSON.parse(raw);
+  const data = loadSiteData();
 
   console.log(
     'Generating paths from '
