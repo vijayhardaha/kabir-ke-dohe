@@ -14,23 +14,23 @@ import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
 // ── SEO ───────────────────────────────────────────────────────────────────
 
-const pageConfig: PageConfig = {
+const PAGE_CONFIG: PageConfig = {
   seoTitle: 'Tags',
   seoDescription: "Browse Kabir's dohas by thematic tags — each tag gathers couplets around a shared spiritual thread.",
   seoPath: 'tags',
   seoKeywords: ['Kabir tags', 'doha topics', 'spiritual tags'],
 };
 
-/** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({
-  title: pageConfig.seoTitle,
-  description: pageConfig.seoDescription,
-  path: pageConfig.seoPath,
-});
-
 // ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
-const pageSchema = buildPageSchema(pageConfig);
+const PAGE_SCHEMA = buildPageSchema(PAGE_CONFIG);
+
+/** SEO metadata for the page. */
+export const metadata: Metadata = buildMetadata({
+  title: PAGE_CONFIG.seoTitle,
+  description: PAGE_CONFIG.seoDescription,
+  path: PAGE_CONFIG.seoPath,
+});
 
 // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -75,7 +75,7 @@ export default async function TagsPage(): Promise<JSX.Element> {
 
   return (
     <>
-      <JsonLd data={pageSchema} />
+      <JsonLd data={PAGE_SCHEMA} />
       <PageLayout>
         <Container>
           <PageHeader
