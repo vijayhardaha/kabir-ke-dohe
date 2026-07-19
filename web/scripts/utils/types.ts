@@ -95,37 +95,3 @@ export interface SiteData {
   featuredCount: number;
   fetchedAt: string;
 }
-
-/**
- * Category row with nested published post statuses (legacy shape from generate-paths).
- *
- * @type {CategoryWithPosts}
- * @property {string} slug - URL-friendly category slug
- * @property {{ post_status: string }[]} posts - Published post status rows
- */
-export interface CategoryWithPosts {
-  slug: string;
-  posts: { post_status: string }[];
-}
-
-/**
- * Tag row with nested post tag mappings and post statuses (legacy shape from generate-paths).
- *
- * @type {TagWithPosts}
- * @property {string} slug - URL-friendly tag slug
- * @property {{ post: { post_status: string } }[]} post_tags - Post tag mappings
- */
-export interface TagWithPosts {
-  slug: string;
-  post_tags: { post: { post_status: string } }[];
-}
-
-/**
- * A published post row — slug only.
- *
- * @type {PostSlug}
- * @property {string} slug - URL-friendly post slug
- */
-export interface PostSlug {
-  slug: string;
-}
