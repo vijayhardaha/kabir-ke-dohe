@@ -11,7 +11,7 @@ import { type ArchivePageConfig } from '@/lib/utils/schema';
 export const COUPLETS_CONFIG: ArchivePageConfig = {
   seoTitle: "Kabir's Couplets",
   seoDescription:
-    "Explore the complete collection of Sant Kabir Das's dohas — spiritual wisdom, life truths, and inspiration with Hindi and English meanings.",
+    "Sant Kabir ke Dohe का संपूर्ण संग्रह। आध्यात्मिक ज्ञान और life truths, सरल Hindi and English meaning के साथ। Read Kabir Das's inspirational dohas here.",
   seoPath: 'couplets',
   seoKeywords: ['all couplets', 'Kabir dohe collection', 'complete dohas'],
   breadcrumbLabel: "Kabir's Couplets",
@@ -45,7 +45,7 @@ export const POPULAR_CONFIG: ArchivePageConfig = {
  *
  * @type {ArchivePageConfig}
  */
-export const PAGE_CONFIG: ArchivePageConfig = {
+export const FEATURED_CONFIG: ArchivePageConfig = {
   seoTitle: 'Featured Couplets',
   seoDescription:
     "A handpicked collection of Kabir's most profound and impactful dohas — spiritual wisdom and life lessons in Hindi and English.",
