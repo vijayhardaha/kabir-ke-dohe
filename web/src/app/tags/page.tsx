@@ -1,7 +1,6 @@
 import type { JSX } from 'react';
 
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
-import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { Container } from '@/components/layout/Container';
@@ -9,28 +8,10 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { getTags } from '@/lib/server/couplets';
 import { cn } from '@/lib/utils/cn';
-import { buildMetadata } from '@/lib/utils/meta';
-import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
-// ── SEO ───────────────────────────────────────────────────────────────────
+import { PAGE_SCHEMA } from './_config';
 
-const PAGE_CONFIG: PageConfig = {
-  seoTitle: 'Tags',
-  seoDescription: "Browse Kabir's dohas by thematic tags — each tag gathers couplets around a shared spiritual thread.",
-  seoPath: 'tags',
-  seoKeywords: ['Kabir tags', 'doha topics', 'spiritual tags'],
-};
-
-// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
-
-const PAGE_SCHEMA = buildPageSchema(PAGE_CONFIG);
-
-/** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({
-  title: PAGE_CONFIG.seoTitle,
-  description: PAGE_CONFIG.seoDescription,
-  path: PAGE_CONFIG.seoPath,
-});
+export { metadata } from './_config';
 
 // ── Helpers ───────────────────────────────────────────────────────────────
 
