@@ -2,7 +2,7 @@
 
 > Sant Kabir Das (1398-1518) was a 15th-century Indian mystic poet and saint. His dohas (couplets) offer timeless wisdom on spirituality, social harmony, and inner transformation.
 
-This site hosts 2287 couplets organised into 54 categories and 93 tags. Each couplet includes Hindi text, English transliteration, meaning, interpretation, philosophical analysis, and practical guidance.
+This site hosts 2282 couplets organised into 54 categories and 93 tags. Each couplet includes Hindi text, English transliteration, meaning, interpretation, philosophical analysis, and practical guidance.
 
 ## Sitemaps
 
@@ -11,7 +11,7 @@ This site hosts 2287 couplets organised into 54 categories and 93 tags. Each cou
 ## Pages
 
 - https://kabirdohehub.vercel.app/ (Home)
-- https://kabirdohehub.vercel.app/couplets -- All couplets (2287 couplets, 229 pages)
+- https://kabirdohehub.vercel.app/couplets -- All couplets (2282 couplets, 229 pages)
 - https://kabirdohehub.vercel.app/popular-couplets -- Popular couplets (66 couplets, 7 pages)
 - https://kabirdohehub.vercel.app/featured-couplets -- Featured couplets (32 couplets, 4 pages)
 - https://kabirdohehub.vercel.app/categories -- Browse categories (54)
@@ -80,7 +80,7 @@ This site hosts 2287 couplets organised into 54 categories and 93 tags. Each cou
 ## Tags (93)
 - https://kabirdohehub.vercel.app/tag/critique-of-dogma -- अंधविश्वास विरोध (Critique of Dogma) (45 couplets, 5 pages)
 - https://kabirdohehub.vercel.app/tag/spirituality -- अध्यात्म (Spirituality) (305 couplets, 31 pages)
-- https://kabirdohehub.vercel.app/tag/impermanence -- अनित्य (Impermanence) (112 couplets, 12 pages)
+- https://kabirdohehub.vercel.app/tag/impermanence -- अनित्य (Impermanence) (110 couplets, 11 pages)
 - https://kabirdohehub.vercel.app/tag/kabir-on-ego -- अहंकार का अंत (Kabir on Ego) (4 couplets, 1 page)
 - https://kabirdohehub.vercel.app/tag/ego-destruction -- अहंकार त्याग (Ego Destruction) (216 couplets, 22 pages)
 - https://kabirdohehub.vercel.app/tag/inner-strength -- आंतरिक शक्ति (Inner Strength) (63 couplets, 7 pages)
@@ -99,7 +99,7 @@ This site hosts 2287 couplets organised into 54 categories and 93 tags. Each cou
 - https://kabirdohehub.vercel.app/tag/kabirs-legacy -- कबीर की विरासत (Kabir's Legacy) (2 couplets, 1 page)
 - https://kabirdohehub.vercel.app/tag/kabirs-teachings -- कबीर की सीख (Kabir's Teachings) (304 couplets, 31 pages)
 - https://kabirdohehub.vercel.app/tag/life-lessons-by-kabir -- कबीर की सीख (Life Lessons by Kabir) (5 couplets, 1 page)
-- https://kabirdohehub.vercel.app/tag/compassion -- करुणा (Compassion) (57 couplets, 6 pages)
+- https://kabirdohehub.vercel.app/tag/compassion -- करुणा (Compassion) (56 couplets, 6 pages)
 - https://kabirdohehub.vercel.app/tag/law-of-karma -- कर्म सिद्धांत (Law of Karma) (84 couplets, 9 pages)
 - https://kabirdohehub.vercel.app/tag/rituals-vs-faith -- कर्मकांड बनाम श्रद्धा (Rituals vs Faith) (37 couplets, 4 pages)
 - https://kabirdohehub.vercel.app/tag/anger-management -- क्रोध नियंत्रण (Anger Management) (14 couplets, 2 pages)
@@ -179,7 +179,7 @@ This site hosts 2287 couplets organised into 54 categories and 93 tags. Each cou
 - **Categories** -- /categories (dropdown with all links)
 - **About Kabir** -- /about
 
-## Kabir Couplets (2287 couplets)
+## Kabir Couplets (2282 couplets)
 
 - **साईं इतना दीजिये, जा मे कुटुम समाय। मैं भी भूखा न रहूँ, साधु ना भूखा जाय।।**
   - English: Sai itna deejiye, ja me kutum samaye. Main bhi bhukha na rahun, sadhu na bhukha jaaye.
@@ -581,10 +581,6 @@ This site hosts 2287 couplets organised into 54 categories and 93 tags. Each cou
   - English: Chheer rup satnaam hai, neer rup vyavhar. Hans rup koi sadhu hai, sat ka chhaannanhari.
   - URL: https://kabirdohehub.vercel.app/couplet/chheer-rup-satnaam-hai-neer-kabir-doha-crshnr-6ff0ae-1543
 
-- **काया काढ़ा काल घुन, जतन-जतन सो खाय। काया बह्रा ईश बस, मर्म न काहूँ पाय।।**
-  - English: Kaya kadha kaal ghun, jatan-jatan so khay. Kaya bahra ish bas, marm na kahun pay.
-  - URL: https://kabirdohehub.vercel.app/couplet/kaya-kadha-kaal-ghun-jatan-kabir-doha-kkkgjj-ca2c38-1640
-
 - **ज्यों तिल मांही तेल है, ज्यों चकमक में आग। तेरा सांई तुझमें, बस जाग सके तो जाग।।**
   - English: Jyon til maahi tel hai, jyon chakmak mein aag. Tera saai tujhme, bas jaag sake to jaag.
   - URL: https://kabirdohehub.vercel.app/couplet/jyon-til-maahi-tel-hai-kabir-doha-jtmthj-1a8e2b-1967
@@ -884,10 +880,6 @@ This site hosts 2287 couplets organised into 54 categories and 93 tags. Each cou
 - **साँझ पड़े दिन बीतबै, चकवी दीन्ही रोय। चल चकवा वा देश को, जहाँ रैन नहिं होय।।**
   - English: Saanjh pade din beetbai, chakvi deenhi roy. Chal chakwa va desh ko, jahan rain nahin hoye.
   - URL: https://kabirdohehub.vercel.app/couplet/saanjh-pade-din-beetbai-chakvi-kabir-doha-spdbcd-d86d33-1631
-
-- **काजी-मुल्ला भ्रमियां, चल्या युनीं कै साथ। दिल थे दीन बिसारियां, करद लई जब हाथ।।**
-  - English: Kaaji-Mulla bhramiyan, chalya yunin kai saath. Dil the deen bisariyan, karad lai jab haath.
-  - URL: https://kabirdohehub.vercel.app/couplet/kaaji-mulla-bhramiyan-chalya-yunin-kabir-doha-kmbcyk-510979-1499
 
 - **लकड़ी कहै लुहार की, तू मति जारे मोहिं। एक दिन ऐसा होयगा, मैं जारौंगी तोहि।।**
   - English: Lakdi kahai luhar ki, tu mati jaare mohin. Ek din aisa hoyga, main jarungi tohi.
@@ -3712,10 +3704,6 @@ This site hosts 2287 couplets organised into 54 categories and 93 tags. Each cou
 - **काल चक्र चक्‍की चलै, बहुत दिवस औ रात। सगुन निगुन दोय पाटला, तामें जीव पिसात।।**
   - English: Kaal chakra chakki chalai, bahut divas au raat. Sagun nigun doy patla, taame jeev pisaat.
   - URL: https://kabirdohehub.vercel.app/couplet/kaal-chakra-chakki-chalai-bahut-kabir-doha-kcccbd-a37691-1520
-
-- **काल करै सो आज कर, आज करै सो अब। पल में परलय होयगी, बहुहि करेगा कब।।**
-  - English: Kaal karai so aaj kar, aaj karai so ab. Pal mein parlay hoygi, bahuhi karega kab.
-  - URL: https://kabirdohehub.vercel.app/couplet/kaal-karai-so-aaj-kar-kabir-doha-kksaka-92ee25-1634
 
 - **मेरा संगी कोय नहिं, सबै स्‍वारथी लोय। मन परतीति न ऊपजै, जिय विस्‍वास न होय।।**
   - English: Mera sangi koy nahin, sabai swarthi loy. Man partit na upjai, jiya vishwas na hoye.
@@ -7701,10 +7689,6 @@ This site hosts 2287 couplets organised into 54 categories and 93 tags. Each cou
   - English: Chandan bhanga gun karai, jaise choli pan. Boi janan bhagan na milai, muktahal aru man.
   - URL: https://kabirdohehub.vercel.app/couplet/chandan-bhanga-gun-karai-jaise-kabir-doha-cbgkjc-dd0268-1496
 
-- **खेत न छाडै सूरिवां, झझै द्वै दल मांहि। आसा जीवन मरण की, मन मैं आंणै नाहि।।**
-  - English: Khet na chhadai surivan, jhajhai dvai dal maahi. Aasa jeevan maran ki, man main aanai nahi.
-  - URL: https://kabirdohehub.vercel.app/couplet/khet-na-chhadai-surivan-jhajhai-kabir-doha-kncsjd-3066ce-1626
-
 - **पासि विनंठा कपड़ा, कदे सुरांग न होइ। कबीर त्‍याग्‍या ग्‍यान करि, कनक कामनी दोई।।**
   - English: Paasi vinantha kapda, kade surang na hoye. Kabir tyagya gyan kari, kanak kaamni doee.
   - URL: https://kabirdohehub.vercel.app/couplet/paasi-vinantha-kapda-kade-surang-kabir-doha-pvkksn-089ba3-1456
@@ -9305,10 +9289,6 @@ This site hosts 2287 couplets organised into 54 categories and 93 tags. Each cou
   - English: Sahkami sumiran karai, pavai uttam dhaam. Nihkami sumiran karai, pavai avichal ram.
   - URL: https://kabirdohehub.vercel.app/couplet/sahkami-sumiran-karai-pavai-uttam-kabir-doha-sskpud-ff438d-1225
 
-- **मांस-मांस सब एक है, मुर्गी हिरनी गाय। आँख देखि नर खात है, ते नर नरकही जाय।।**
-  - English: Maans-maans sab ek hai, murgi hirni gaay. Aankh dekh nar khaat hai, te nar narkahi jaay.
-  - URL: https://kabirdohehub.vercel.app/couplet/maans-maans-sab-ek-hai-kabir-doha-mmsehm-507499-1750
-
 - **कबीर संगत साधु की, जौ भी भूसी खाय। खीर खांड भोजन मिले, साकट संग न जाय।।**
   - English: Kabir sangat sadhu ki, jau bhi bhusi khaye. Kheer khand bhojan mile, sakat sang na jaaye.
   - URL: https://kabirdohehub.vercel.app/couplet/kabir-sangat-sadhu-ki-jau-kabir-doha-ssskjk-0adf6b-1673
@@ -9339,5 +9319,5 @@ This site hosts 2287 couplets organised into 54 categories and 93 tags. Each cou
 
 ---
 
-Generated at: 2026-07-18T01:20:02.211Z
-Total couplets: 2287
+Generated at: 2026-07-19T04:26:22.143Z
+Total couplets: 2282
