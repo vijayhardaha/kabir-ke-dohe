@@ -4,7 +4,7 @@ import { buildMetadata } from '@/lib/utils/meta';
 import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
 /** Config for the terms page. */
-export const PAGE_CONFIG: PageConfig = {
+const PAGE_CONFIG: PageConfig = {
   seoTitle: 'Terms & Conditions',
   seoDescription:
     'Terms and Conditions for Kabir Ke Dohe: Detailed rules, disclaimers, and usage guidelines governing the use of our website and services.',
