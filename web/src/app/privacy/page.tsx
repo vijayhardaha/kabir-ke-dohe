@@ -12,23 +12,22 @@ import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
 // ── SEO ───────────────────────────────────────────────────────────────────
 
-const pageConfig: PageConfig = {
+const PAGE_CONFIG: PageConfig = {
   seoTitle: 'Privacy Policy',
   seoDescription: 'Privacy policy for Kabir Ke Dohe — how we collect, use, and protect your information.',
   seoPath: 'privacy',
   seoKeywords: ['privacy policy', 'data protection'],
 };
 
-/** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({
-  title: pageConfig.seoTitle,
-  description: pageConfig.seoDescription,
-  path: pageConfig.seoPath,
-});
-
 // ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
-const pageSchema = buildPageSchema(pageConfig);
+const PAGE_SCHEMA = buildPageSchema(PAGE_CONFIG);
+
+/** SEO metadata for the page. */
+export const metadata: Metadata = {
+  ...buildMetadata({ title: PAGE_CONFIG.seoTitle, description: PAGE_CONFIG.seoDescription, path: PAGE_CONFIG.seoPath }),
+  robots: { index: false, follow: false },
+};
 
 /**
  * Privacy policy page explaining data collection, usage, and user rights.
@@ -38,7 +37,7 @@ const pageSchema = buildPageSchema(pageConfig);
 export default function PrivacyPage(): JSX.Element {
   return (
     <>
-      <JsonLd data={pageSchema} />
+      <JsonLd data={PAGE_SCHEMA} />
       <PageLayout>
         <Container>
           <PageHeader title="Privacy Policy" description="Last updated: June 5, 2026" />
