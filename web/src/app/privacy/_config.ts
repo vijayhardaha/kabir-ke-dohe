@@ -4,7 +4,7 @@ import { buildMetadata } from '@/lib/utils/meta';
 import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
 /** Config for the privacy page. */
-export const PAGE_CONFIG: PageConfig = {
+const PAGE_CONFIG: PageConfig = {
   seoTitle: 'Privacy Policy',
   seoDescription:
     'Privacy Policy for Kabir Ke Dohe: Clear information on how we collect, use, and protect your data to ensure a safe browsing experience.',
