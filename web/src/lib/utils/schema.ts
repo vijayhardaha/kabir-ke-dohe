@@ -12,7 +12,7 @@ import { siteUrl } from '@/lib/utils/seo';
 import type { Post, PaginationMeta } from '@/types';
 
 /** Default keywords used across all pages. */
-export const BASE_KEYWORDS = [
+const BASE_KEYWORDS = [
   'Kabir Das',
   'Sant Kabir',
   'Kabir ke dohe',

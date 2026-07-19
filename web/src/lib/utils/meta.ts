@@ -89,9 +89,11 @@ const mergeDeep = (target: Record<string, unknown>, source: Record<string, unkno
  * @example
  * buildSeoTitle('About', true) // -> 'About | Tools by Vijay Hardaha'
  */
-export const buildSeoTitle = (title: string = '', postfix: boolean): string => {
+const buildSeoTitle = (title: string = '', postfix: boolean): string => {
   if (!title) return SITE_CONFIG.title;
+
   if (!postfix) return title;
+
   return [title, '—', SITE_CONFIG.name].join(' ');
 };
 
