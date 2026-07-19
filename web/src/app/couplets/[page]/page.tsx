@@ -1,43 +1,25 @@
 import type { JSX } from 'react';
 
-import type { Metadata } from 'next';
-
-import { ArchivePageLayout } from '@/app/couplets/_components/ArchivePageLayout';
-import { COUPLETS_CONFIG } from '@/app/couplets/_utils/archive';
+import { ArchiveContent } from '@/app/couplets/_components/ArchiveContent';
+import { PAGE_CONFIG } from '@/app/couplets/_config';
 import { getCouplets } from '@/lib/server/couplets';
 import { parseSortParams, validatePageParam } from '@/lib/server/page-utils';
-import { buildMetadata } from '@/lib/utils/meta';
 import { buildArchivePageSchema } from '@/lib/utils/schema';
 
-/** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({
-  title: COUPLETS_CONFIG.seoTitle,
-  description: COUPLETS_CONFIG.seoDescription,
-  path: COUPLETS_CONFIG.seoPath,
-});
+import { type CoupletsPaginatedPageProps } from '../_utils/shared';
 
-/**
- * Props for the paginated couplets archive page.
- *
- * @type {CoupletsPageProps}
- * @property {Promise<{ page: string }>} params - Route parameters containing the page number.
- * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters for sorting and pagination.
- */
-interface CoupletsPageProps {
-  params: Promise<{ page: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}
+export { metadata } from '../_config';
 
 /**
  * Paginated couplets archive page — handles `/couplets/2`, `/couplets/3`, etc.
  *
- * @param {CoupletsPageProps} props - Component props.
+ * @param {CoupletsPaginatedPageProps} props - Component props.
  * @param {Promise<{ page: string }>} props.params - Route parameters containing the page number.
  * @param {Promise<Record<string, string | string[] | undefined>>} props.searchParams - URL search parameters.
  *
  * @returns {Promise<JSX.Element>} The paginated archive page.
  */
-export default async function CoupletsPage({ params, searchParams }: CoupletsPageProps): Promise<JSX.Element> {
+export default async function CoupletsPage({ params, searchParams }: CoupletsPaginatedPageProps): Promise<JSX.Element> {
   const { page: pageStr } = await params;
   const sp = await searchParams;
   const page = validatePageParam(pageStr, '/couplets', sp);
@@ -45,7 +27,7 @@ export default async function CoupletsPage({ params, searchParams }: CoupletsPag
 
   const { posts, pagination } = await getCouplets({ page, perPage, sortBy, sortOrder });
 
-  const pageSchema = buildArchivePageSchema(COUPLETS_CONFIG, {
+  const pageSchema = buildArchivePageSchema(PAGE_CONFIG, {
     posts,
     pagination,
     page,
@@ -54,10 +36,10 @@ export default async function CoupletsPage({ params, searchParams }: CoupletsPag
   });
 
   return (
-    <ArchivePageLayout
+    <ArchiveContent
       pageSchema={pageSchema}
-      pageTitle={COUPLETS_CONFIG.pageTitle}
-      pageDescription={COUPLETS_CONFIG.pageDescription}
+      pageTitle={PAGE_CONFIG.pageTitle}
+      pageDescription={PAGE_CONFIG.pageDescription}
       posts={posts}
       pagination={pagination}
       baseUrl="/couplets"
