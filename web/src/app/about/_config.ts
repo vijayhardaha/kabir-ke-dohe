@@ -7,7 +7,7 @@ import { globalSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
 /** Config for the about page. */
-export const PAGE_CONFIG: PageConfig = {
+const PAGE_CONFIG: PageConfig = {
   seoTitle: 'About Sant Kabir Das',
   seoDescription:
     'Learn about the life, teachings, and legacy of Sant Kabir Das. Discover how his 15th-century spiritual wisdom and dohas continue to inspire millions today.',
@@ -16,7 +16,7 @@ export const PAGE_CONFIG: PageConfig = {
 };
 
 /** Site URL used in JSON-LD schemas. */
-export const ROOT_URL = siteUrl();
+const ROOT_URL = siteUrl();
 
 /** JSON-LD schema for the about page. */
 export const PAGE_SCHEMA = [
