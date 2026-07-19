@@ -1,8 +1,6 @@
 import type { JSX } from 'react';
 
-import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
-import type { Metadata } from 'next';
 import Image from 'next/image';
 import { RiArrowRightLine, RiDoubleQuotesL } from 'react-icons/ri';
 
@@ -12,37 +10,10 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { ButtonLink } from '@/components/ui/Button';
 import { KABIR_QUOTES } from '@/constants/kabir-quotes';
 import { getFeaturedCouplets, getPopularCouplets, getLatestCouplets } from '@/lib/server/couplets';
-import { buildMetadata } from '@/lib/utils/meta';
-import { globalSchema } from '@/lib/utils/schema';
-import { siteUrl } from '@/lib/utils/seo';
 
-// ── Site description ──────────────────────────────────────────────────────
+import { PAGE_SCHEMA, metadata } from './_home/config';
 
-const SITE_DESCRIPTION =
-  "Explore the timeless wisdom of Sant Kabir through his dohas (couplets). Read, learn, and reflect on the spiritual teachings of one of India's most revered poets with Hindi and English translations.";
-
-/** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({
-  title: 'Kabir Ke Dohe - Wisdom of Sant Kabir',
-  description: SITE_DESCRIPTION,
-  path: '',
-  postfix: false,
-});
-
-// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
-
-const rootUrl = siteUrl();
-const homeSchema = [
-  ...globalSchema(),
-  webPageSchema({ rootUrl, path: '' }),
-  breadcrumbSchema({
-    rootUrl,
-    items: [
-      { name: 'Home', path: '' },
-      { name: 'Wisdom of Sant Kabir', path: '' },
-    ],
-  }),
-];
+export { metadata };
 
 /**
  * Pick a random message from KABIR_QUOTES.
@@ -117,7 +88,7 @@ export default async function HomePage(): Promise<JSX.Element> {
 
   return (
     <>
-      <JsonLd data={homeSchema} />
+      <JsonLd data={PAGE_SCHEMA} />
 
       <PageLayout className="pt-0">
         {/* ═══════════════ HERO SECTION ═══════════════ */}
