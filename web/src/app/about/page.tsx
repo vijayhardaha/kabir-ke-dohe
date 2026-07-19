@@ -1,54 +1,15 @@
 import type { JSX } from 'react';
 
-import { aboutPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
-import type { Metadata } from 'next';
 import Image from 'next/image';
 
 import { Container } from '@/components/layout/Container';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { buildMetadata } from '@/lib/utils/meta';
-import { type PageConfig } from '@/lib/utils/schema';
-import { globalSchema } from '@/lib/utils/schema';
-import { siteUrl } from '@/lib/utils/seo';
 
-// ── SEO ───────────────────────────────────────────────────────────────────
+import { PAGE_SCHEMA } from './_config';
 
-const SITE_DESCRIPTION =
-  'Learn about the life, teachings, and legacy of Sant Kabir Das, the 15th-century mystic poet whose dohas continue to inspire millions with spiritual wisdom.';
-
-const PAGE_CONFIG: PageConfig = {
-  seoTitle: 'About Sant Kabir Das',
-  seoDescription: SITE_DESCRIPTION,
-  seoPath: 'about',
-  seoKeywords: ['About Kabir', 'Sant Kabir biography', 'Kabir life story', 'Kabir Das history'],
-};
-
-// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
-
-const ROOT_URL = siteUrl();
-const PAGE_SCHEMA = [
-  ...globalSchema(),
-  aboutPageSchema(
-    { rootUrl: ROOT_URL, path: PAGE_CONFIG.seoPath },
-    { name: `${PAGE_CONFIG.seoTitle} — Kabir Ke Dohe` }
-  ),
-  breadcrumbSchema({
-    rootUrl: ROOT_URL,
-    items: [
-      { name: 'Home', path: '' },
-      { name: PAGE_CONFIG.seoTitle, path: PAGE_CONFIG.seoPath },
-    ],
-  }),
-];
-
-/** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({
-  title: PAGE_CONFIG.seoTitle,
-  description: PAGE_CONFIG.seoDescription,
-  path: PAGE_CONFIG.seoPath,
-});
+export { metadata } from './_config';
 
 // ── Famous dohas ──────────────────────────────────────────────────────────
 
