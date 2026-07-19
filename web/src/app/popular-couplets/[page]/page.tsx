@@ -16,6 +16,13 @@ export const metadata: Metadata = buildMetadata({
   path: POPULAR_CONFIG.seoPath,
 });
 
+/**
+ * Props for the paginated popular couplets page.
+ *
+ * @type {PopularCoupletsPageProps}
+ * @property {Promise<{ page: string }>} params - Route parameters containing the page number.
+ * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters for sorting and pagination.
+ */
 interface PopularCoupletsPageProps {
   params: Promise<{ page: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
