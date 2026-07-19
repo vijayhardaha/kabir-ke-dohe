@@ -6,13 +6,13 @@ import { buildKeywords, globalSchema } from '@/lib/utils/schema';
 import { siteUrl } from '@/lib/utils/seo';
 
 /** Path segment for search routes. */
-export const SEO_PATH = 'search';
+const SEO_PATH = 'search';
 
 /** Keywords used in search page schema. */
-export const SEO_KEYWORDS = ['search couplets', 'find dohas', 'Kabir search'];
+const SEO_KEYWORDS = ['search couplets', 'find dohas', 'Kabir search'];
 
 /** Site URL used in JSON-LD schemas. */
-export const ROOT_URL = siteUrl();
+const ROOT_URL = siteUrl();
 
 /** JSON-LD schema for search pages. */
 export const PAGE_SCHEMA = [
