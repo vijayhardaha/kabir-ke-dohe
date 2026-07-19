@@ -14,21 +14,30 @@ import type { SortBy, SortOrder } from '@/types';
 
 // ── SEO ───────────────────────────────────────────────────────────────────
 
-const seoPath = 'search';
-const seoKeywords = ['search couplets', 'find dohas', 'Kabir search'];
+const SEO_PATH = 'search';
+const SEO_KEYWORDS = ['search couplets', 'find dohas', 'Kabir search'];
 
-const rootUrl = siteUrl();
-const searchSchema = [
+const ROOT_URL = siteUrl();
+const PAGE_SCHEMA = [
   ...globalSchema(),
-  webPageSchema({ rootUrl, path: seoPath }, { name: 'Search — Kabir Ke Dohe', keywords: buildKeywords(seoKeywords) }),
+  webPageSchema(
+    { rootUrl: ROOT_URL, path: SEO_PATH },
+    { name: 'Search — Kabir Ke Dohe', keywords: buildKeywords(SEO_KEYWORDS) }
+  ),
 ];
 
 /** SEO metadata for the page. */
 export const metadata: Metadata = {
-  ...buildMetadata({ title: 'Search', description: 'Find couplets by keyword, theme, or meaning.', path: seoPath }),
+  ...buildMetadata({ title: 'Search', description: 'Find couplets by keyword, theme, or meaning.', path: SEO_PATH }),
   robots: { index: false, follow: false },
 };
 
+/**
+ * Props for the search archive page.
+ *
+ * @type {SearchPageProps}
+ * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters including search query and filters.
+ */
 interface SearchPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
@@ -56,7 +65,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps): Pro
 
   return (
     <ArchivePageLayout
-      pageSchema={searchSchema}
+      pageSchema={PAGE_SCHEMA}
       pageTitle={title}
       pageDescription="Find couplets by keyword, theme, or meaning"
       posts={posts}
