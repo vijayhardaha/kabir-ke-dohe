@@ -16,6 +16,13 @@ export const metadata: Metadata = buildMetadata({
   path: COUPLETS_CONFIG.seoPath,
 });
 
+/**
+ * Props for the paginated couplets archive page.
+ *
+ * @type {CoupletsPageProps}
+ * @property {Promise<{ page: string }>} params - Route parameters containing the page number.
+ * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters for sorting and pagination.
+ */
 interface CoupletsPageProps {
   params: Promise<{ page: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
