@@ -16,7 +16,7 @@ import { createClient } from '@supabase/supabase-js';
  *
  * @throws {Error} When `NEXT_PUBLIC_SUPABASE_URL` is not set.
  */
-export function getSupabaseUrl(): string {
+function getSupabaseUrl(): string {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   if (!url) {
     throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL environment variable.');
@@ -31,7 +31,7 @@ export function getSupabaseUrl(): string {
  *
  * @throws {Error} When `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` is not set.
  */
-export function getSupabaseKey(): string {
+function getSupabaseKey(): string {
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY;
   if (!key) {
     throw new Error('Missing NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY environment variable.');
