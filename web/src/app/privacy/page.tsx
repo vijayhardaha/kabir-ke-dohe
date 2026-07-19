@@ -1,33 +1,15 @@
 import type { JSX } from 'react';
 
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
-import type { Metadata } from 'next';
 
 import { Container } from '@/components/layout/Container';
 import { ContactSection, LegalSection } from '@/components/layout/LegalSection';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageLayout } from '@/components/layout/PageLayout';
-import { buildMetadata } from '@/lib/utils/meta';
-import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
-// ── SEO ───────────────────────────────────────────────────────────────────
+import { PAGE_SCHEMA } from './_config';
 
-const PAGE_CONFIG: PageConfig = {
-  seoTitle: 'Privacy Policy',
-  seoDescription: 'Privacy policy for Kabir Ke Dohe — how we collect, use, and protect your information.',
-  seoPath: 'privacy',
-  seoKeywords: ['privacy policy', 'data protection'],
-};
-
-// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
-
-const PAGE_SCHEMA = buildPageSchema(PAGE_CONFIG);
-
-/** SEO metadata for the page. */
-export const metadata: Metadata = {
-  ...buildMetadata({ title: PAGE_CONFIG.seoTitle, description: PAGE_CONFIG.seoDescription, path: PAGE_CONFIG.seoPath }),
-  robots: { index: false, follow: false },
-};
+export { metadata } from './_config';
 
 /**
  * Privacy policy page explaining data collection, usage, and user rights.
