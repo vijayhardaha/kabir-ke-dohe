@@ -4,7 +4,7 @@ import { buildMetadata } from '@/lib/utils/meta';
 import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
 /** Config for the 404 page. */
-export const PAGE_CONFIG: PageConfig = {
+const PAGE_CONFIG: PageConfig = {
   seoTitle: '404 - Page Not Found',
   seoDescription: 'The requested page could not be found.',
   seoPath: '404',
