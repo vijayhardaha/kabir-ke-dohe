@@ -26,6 +26,7 @@ export const metadata: Metadata = buildMetadata({
   title: 'Kabir Ke Dohe - Wisdom of Sant Kabir',
   description: SITE_DESCRIPTION,
   path: '',
+  postfix: false,
 });
 
 // ── Schema (JSON-LD) ──────────────────────────────────────────────────────
