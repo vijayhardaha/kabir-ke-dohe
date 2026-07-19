@@ -27,7 +27,7 @@ function capitalizeWord(word: string): string {
  * If no matching boundary is found the entire text is returned as-is.
  *
  * @param {string} text - The Hindi doha text (e.g. `text_hi`).
- * @param {boolean} [fourLines=false] - When true, split at every danda and comma.
+ * @param {boolean} [fourLines] - When true, split at every danda and comma.
  *
  * @returns {string} Text split into 2 or 4 lines.
  *
