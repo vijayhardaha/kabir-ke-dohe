@@ -1,6 +1,5 @@
-import type { Metadata } from 'next';
-
 import { webPageSchema, breadcrumbSchema } from '@vijayhardaha/schema-builder';
+import type { Metadata } from 'next';
 
 import { buildMetadata } from '@/lib/utils/meta';
 import { globalSchema } from '@/lib/utils/schema';
@@ -9,7 +8,7 @@ import { siteUrl } from '@/lib/utils/seo';
 // ── Home page config ──────────────────────────────────────────────────────
 
 /** Site URL used in JSON-LD schemas. */
-export const ROOT_URL = siteUrl();
+const ROOT_URL = siteUrl();
 
 /** JSON-LD schema for the home page. */
 export const PAGE_SCHEMA = [
