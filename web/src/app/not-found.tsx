@@ -6,9 +6,9 @@ import { Container } from '@/components/layout/Container';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { ButtonLink } from '@/components/ui/Button';
 
-import { PAGE_SCHEMA } from './_404/config';
+import { PAGE_SCHEMA, metadata } from './_404/config';
 
-export { metadata } from './_404/config';
+export { metadata };
 
 /**
  * Custom 404 page displayed when a route does not match any known page.
