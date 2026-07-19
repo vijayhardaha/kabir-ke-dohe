@@ -8,10 +8,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
+import { loadSiteData } from './utils/site-data';
 import type { SiteData } from './utils/types';
 
+// ── Config ─────────────────────────────────────────────────────────────────
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_FILE = path.resolve(__dirname, 'data.json');
 const OUTPUT_FILE = path.resolve(__dirname, '..', 'public', 'llms.txt');
 const SITE_URL = 'https://kabirdohehub.vercel.app';
 
@@ -175,13 +176,7 @@ function buildLlmstxt(data: SiteData): string {
  * @returns {Promise<void>} Resolves when public/llms.txt has been written.
  */
 async function main(): Promise<void> {
-  if (!fs.existsSync(DATA_FILE)) {
-    console.error('data.json not found. Run fetch:data first.');
-    process.exit(1);
-  }
-
-  const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-  const data: SiteData = JSON.parse(raw);
+  const data = loadSiteData();
 
   console.log('Building llms.txt from ' + data.posts.length + ' posts, ' + data.categories.length + ' categories...');
 
