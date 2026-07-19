@@ -46,24 +46,28 @@ export const CATEGORIES: CategoryConstant[] = [
  *
  * @type {CategoryConstant[]}
  */
-export const WIDGET_CATEGORIES: CategoryConstant[] = [
-  { slug: 'bhakti', name: 'भक्ति (Bhakti)' },
-  { slug: 'maya', name: 'माया (Maya)' },
-  { slug: 'truth', name: 'सत्य (Truth)' },
-  { slug: 'non-violence', name: 'अहिंसा (Non-Violence)' },
-  { slug: 'humility', name: 'विनम्रता (Humility)' },
-  { slug: 'patience', name: 'धैर्य (Patience)' },
-  { slug: 'forgiveness', name: 'क्षमा (Forgiveness)' },
-  { slug: 'compassion', name: 'करुणा (Compassion)' },
-  { slug: 'religious-hypocrisy', name: 'धार्मिक पाखंड (Religious Hypocrisy)' },
-  { slug: 'the-ego', name: 'अहंकार (The Ego)' },
-  { slug: 'anger', name: 'क्रोध (Anger)' },
-  { slug: 'greed', name: 'लोभ (Greed)' },
-  { slug: 'lust', name: 'काम (Lust)' },
-  { slug: 'fear', name: 'भय (Fear)' },
-  { slug: 'karma', name: 'कर्म (Karma)' },
-  { slug: 'liberation', name: 'मुक्ति (Liberation)' },
-];
+const WIDGET_SLUGS = [
+  'bhakti',
+  'maya',
+  'truth',
+  'non-violence',
+  'humility',
+  'patience',
+  'forgiveness',
+  'compassion',
+  'religious-hypocrisy',
+  'the-ego',
+  'anger',
+  'greed',
+  'lust',
+  'fear',
+  'karma',
+  'liberation',
+] as const;
+
+export const WIDGET_CATEGORIES: CategoryConstant[] = WIDGET_SLUGS.map((slug) =>
+  CATEGORIES.find((c) => c.slug === slug)
+).filter((c): c is CategoryConstant => c !== undefined);
 
 /**
  * Looks up a category constant by its slug.
