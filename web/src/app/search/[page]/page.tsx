@@ -1,34 +1,12 @@
 import type { JSX } from 'react';
 
-import { webPageSchema } from '@vijayhardaha/schema-builder';
-import type { Metadata } from 'next';
-
-import { ArchivePageLayout } from '@/app/couplets/_components/ArchivePageLayout';
+import { ArchiveContent } from '@/app/couplets/_components/ArchiveContent';
 import { getCouplets } from '@/lib/server/couplets';
 import { parseSortParams, validatePageParam } from '@/lib/server/page-utils';
-import { buildMetadata } from '@/lib/utils/meta';
-import { buildKeywords, globalSchema } from '@/lib/utils/schema';
-import { siteUrl } from '@/lib/utils/seo';
 
-// ── SEO ───────────────────────────────────────────────────────────────────
+import { PAGE_SCHEMA } from '../_config';
 
-const SEO_PATH = 'search';
-const SEO_KEYWORDS = ['search couplets', 'find dohas', 'paginated'];
-
-const ROOT_URL = siteUrl();
-const PAGE_SCHEMA = [
-  ...globalSchema(),
-  webPageSchema(
-    { rootUrl: ROOT_URL, path: SEO_PATH },
-    { name: 'Search — Kabir Ke Dohe', keywords: buildKeywords(SEO_KEYWORDS) }
-  ),
-];
-
-/** SEO metadata for the page. */
-export const metadata: Metadata = {
-  ...buildMetadata({ title: 'Search', description: 'Find couplets by keyword, theme, or meaning.', path: SEO_PATH }),
-  robots: { index: false, follow: false },
-};
+export { metadata } from '../_config';
 
 /**
  * Props for the paginated search results page.
@@ -64,7 +42,7 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
   const title = query ? `Search results for "${query}" — Page ${page}` : `Search — Page ${page}`;
 
   return (
-    <ArchivePageLayout
+    <ArchiveContent
       pageSchema={PAGE_SCHEMA}
       pageTitle={title}
       pageDescription="Find couplets by keyword, theme, or meaning"
