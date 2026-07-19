@@ -11,23 +11,23 @@ import { type PageConfig, buildPageSchema } from '@/lib/utils/schema';
 
 // ── SEO ───────────────────────────────────────────────────────────────────
 
-const pageConfig: PageConfig = {
+const PAGE_CONFIG: PageConfig = {
   seoTitle: '404 - Page Not Found',
   seoDescription: 'The requested page could not be found.',
   seoPath: '404',
   seoKeywords: ['404', 'not found', 'page missing'],
 };
 
-/** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({
-  title: pageConfig.seoTitle,
-  description: pageConfig.seoDescription,
-  path: pageConfig.seoPath,
-});
-
 // ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
-const pageSchema = buildPageSchema(pageConfig);
+const PAGE_SCHEMA = buildPageSchema(PAGE_CONFIG);
+
+/** SEO metadata for the page. */
+export const metadata: Metadata = buildMetadata({
+  title: PAGE_CONFIG.seoTitle,
+  description: PAGE_CONFIG.seoDescription,
+  path: PAGE_CONFIG.seoPath,
+});
 
 /**
  * Custom 404 page displayed when a route does not match any known page.
@@ -37,7 +37,7 @@ const pageSchema = buildPageSchema(pageConfig);
 export default function NotFound(): JSX.Element {
   return (
     <>
-      <JsonLd data={pageSchema} />
+      <JsonLd data={PAGE_SCHEMA} />
 
       <PageLayout>
         <Container className="flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
