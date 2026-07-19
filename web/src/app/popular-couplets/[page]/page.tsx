@@ -1,37 +1,19 @@
 import type { JSX } from 'react';
 
-import type { Metadata } from 'next';
-
-import { ArchivePageLayout } from '@/app/couplets/_components/ArchivePageLayout';
-import { POPULAR_CONFIG } from '@/app/couplets/_utils/archive';
+import { ArchiveContent } from '@/app/couplets/_components/ArchiveContent';
 import { getCouplets } from '@/lib/server/couplets';
 import { parseSortParams, validatePageParam } from '@/lib/server/page-utils';
-import { buildMetadata } from '@/lib/utils/meta';
 import { buildArchivePageSchema } from '@/lib/utils/schema';
 
-/** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({
-  title: POPULAR_CONFIG.seoTitle,
-  description: POPULAR_CONFIG.seoDescription,
-  path: POPULAR_CONFIG.seoPath,
-});
+import { PAGE_CONFIG } from '../_config';
+import { type PopularCoupletsPaginatedPageProps } from '../_utils/shared';
 
-/**
- * Props for the paginated popular couplets page.
- *
- * @type {PopularCoupletsPageProps}
- * @property {Promise<{ page: string }>} params - Route parameters containing the page number.
- * @property {Promise<Record<string, string | string[] | undefined>>} searchParams - URL search parameters for sorting and pagination.
- */
-interface PopularCoupletsPageProps {
-  params: Promise<{ page: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}
+export { metadata } from '../_config';
 
 /**
  * Paginated popular couplets page — handles `/popular-couplets/2`, etc.
  *
- * @param {PopularCoupletsPageProps} props - Component props.
+ * @param {PopularCoupletsPaginatedPageProps} props - Component props.
  * @param {Promise<{ page: string }>} props.params - Route parameters containing the page number.
  * @param {Promise<Record<string, string | string[] | undefined>>} props.searchParams - URL search parameters.
  *
@@ -40,15 +22,15 @@ interface PopularCoupletsPageProps {
 export default async function PopularCoupletsPage({
   params,
   searchParams,
-}: PopularCoupletsPageProps): Promise<JSX.Element> {
+}: PopularCoupletsPaginatedPageProps): Promise<JSX.Element> {
   const { page: pageStr } = await params;
   const sp = await searchParams;
   const page = validatePageParam(pageStr, '/popular-couplets', sp);
   const { sortBy, sortOrder, perPage } = parseSortParams(sp);
 
-  const { posts, pagination } = await getCouplets({ page, perPage, ...POPULAR_CONFIG.filter, sortBy, sortOrder });
+  const { posts, pagination } = await getCouplets({ page, perPage, ...PAGE_CONFIG.filter, sortBy, sortOrder });
 
-  const pageSchema = buildArchivePageSchema(POPULAR_CONFIG, {
+  const pageSchema = buildArchivePageSchema(PAGE_CONFIG, {
     posts,
     pagination,
     page,
@@ -57,10 +39,10 @@ export default async function PopularCoupletsPage({
   });
 
   return (
-    <ArchivePageLayout
+    <ArchiveContent
       pageSchema={pageSchema}
-      pageTitle={POPULAR_CONFIG.pageTitle}
-      pageDescription={POPULAR_CONFIG.pageDescription}
+      pageTitle={PAGE_CONFIG.pageTitle}
+      pageDescription={PAGE_CONFIG.pageDescription}
       posts={posts}
       pagination={pagination}
       baseUrl="/popular-couplets"
