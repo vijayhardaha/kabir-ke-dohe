@@ -18,18 +18,36 @@ import { siteUrl } from '@/lib/utils/seo';
 const SITE_DESCRIPTION =
   'Learn about the life, teachings, and legacy of Sant Kabir Das, the 15th-century mystic poet whose dohas continue to inspire millions with spiritual wisdom.';
 
-const pageConfig: PageConfig = {
+const PAGE_CONFIG: PageConfig = {
   seoTitle: 'About Sant Kabir Das',
   seoDescription: SITE_DESCRIPTION,
   seoPath: 'about',
-  seoKeywords: ['about Kabir', 'Sant Kabir biography', 'Kabir life story', 'Kabir Das history'],
+  seoKeywords: ['About Kabir', 'Sant Kabir biography', 'Kabir life story', 'Kabir Das history'],
 };
+
+// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
+
+const ROOT_URL = siteUrl();
+const PAGE_SCHEMA = [
+  ...globalSchema(),
+  aboutPageSchema(
+    { rootUrl: ROOT_URL, path: PAGE_CONFIG.seoPath },
+    { name: `${PAGE_CONFIG.seoTitle} — Kabir Ke Dohe` }
+  ),
+  breadcrumbSchema({
+    rootUrl: ROOT_URL,
+    items: [
+      { name: 'Home', path: '' },
+      { name: PAGE_CONFIG.seoTitle, path: PAGE_CONFIG.seoPath },
+    ],
+  }),
+];
 
 /** SEO metadata for the page. */
 export const metadata: Metadata = buildMetadata({
-  title: pageConfig.seoTitle,
-  description: pageConfig.seoDescription,
-  path: pageConfig.seoPath,
+  title: PAGE_CONFIG.seoTitle,
+  description: PAGE_CONFIG.seoDescription,
+  path: PAGE_CONFIG.seoPath,
 });
 
 // ── Famous dohas ──────────────────────────────────────────────────────────
@@ -61,21 +79,6 @@ const FAMOUS_DOHAS: Array<[string, string]> = [
   ['हाड़ जले ज्यो लाकड़ी, केस जले ज्यों घास।', 'सब जग जलता देख के, भए कबीर उदास।।'],
 ];
 
-// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
-
-const rootUrl = siteUrl();
-const aboutSchema = [
-  ...globalSchema(),
-  aboutPageSchema({ rootUrl, path: pageConfig.seoPath }, { name: `${pageConfig.seoTitle} — Kabir Ke Dohe` }),
-  breadcrumbSchema({
-    rootUrl,
-    items: [
-      { name: 'Home', path: '' },
-      { name: pageConfig.seoTitle, path: pageConfig.seoPath },
-    ],
-  }),
-];
-
 /**
  * About page detailing Sant Kabir's life, teachings, and legacy.
  *
@@ -84,7 +87,7 @@ const aboutSchema = [
 export default function AboutPage(): JSX.Element {
   return (
     <>
-      <JsonLd data={aboutSchema} />
+      <JsonLd data={PAGE_SCHEMA} />
       <PageLayout>
         <Container>
           <PageHeader title="संत कबीर दास के बारे में (About Sant Kabir Das)" />
