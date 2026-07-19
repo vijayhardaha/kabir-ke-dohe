@@ -1,7 +1,6 @@
 import type { JSX } from 'react';
 
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
-import type { Metadata } from 'next';
 import { RiArrowRightLine } from 'react-icons/ri';
 
 import { Container } from '@/components/layout/Container';
@@ -10,29 +9,10 @@ import { PageLayout } from '@/components/layout/PageLayout';
 import { ButtonLink } from '@/components/ui/Button';
 import { CATEGORIES } from '@/constants/categories';
 import { getCategories } from '@/lib/server/couplets';
-import { buildMetadata } from '@/lib/utils/meta';
-import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
-// ── SEO ───────────────────────────────────────────────────────────────────
+import { PAGE_SCHEMA } from './_config';
 
-const PAGE_CONFIG: PageConfig = {
-  seoTitle: 'Categories',
-  seoDescription:
-    "Browse Kabir's dohas organised by theme — each category offers a unique lens on his spiritual and philosophical teachings.",
-  seoPath: 'categories',
-  seoKeywords: ['Kabir categories', 'doha themes', 'spiritual topics', 'Kabir teachings by category'],
-};
-
-// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
-
-const PAGE_SCHEMA = buildPageSchema(PAGE_CONFIG);
-
-/** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({
-  title: PAGE_CONFIG.seoTitle,
-  description: PAGE_CONFIG.seoDescription,
-  path: PAGE_CONFIG.seoPath,
-});
+export { metadata } from './_config';
 
 /**
  * Categories overview page that displays all predefined categories
