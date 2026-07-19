@@ -1,33 +1,14 @@
 import type { JSX } from 'react';
 
 import { JsonLd } from '@vijayhardaha/schema-builder/react';
-import type { Metadata } from 'next';
 
 import { Container } from '@/components/layout/Container';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { ButtonLink } from '@/components/ui/Button';
-import { buildMetadata } from '@/lib/utils/meta';
-import { type PageConfig, buildPageSchema } from '@/lib/utils/schema';
 
-// ── SEO ───────────────────────────────────────────────────────────────────
+import { PAGE_SCHEMA } from './_404/config';
 
-const PAGE_CONFIG: PageConfig = {
-  seoTitle: '404 - Page Not Found',
-  seoDescription: 'The requested page could not be found.',
-  seoPath: '404',
-  seoKeywords: ['404', 'not found', 'page missing'],
-};
-
-// ── Schema (JSON-LD) ──────────────────────────────────────────────────────
-
-const PAGE_SCHEMA = buildPageSchema(PAGE_CONFIG);
-
-/** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({
-  title: PAGE_CONFIG.seoTitle,
-  description: PAGE_CONFIG.seoDescription,
-  path: PAGE_CONFIG.seoPath,
-});
+export { metadata } from './_404/config';
 
 /**
  * Custom 404 page displayed when a route does not match any known page.
