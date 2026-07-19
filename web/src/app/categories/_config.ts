@@ -4,7 +4,7 @@ import { buildMetadata } from '@/lib/utils/meta';
 import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
 /** Config for the categories page. */
-export const PAGE_CONFIG: PageConfig = {
+const PAGE_CONFIG: PageConfig = {
   seoTitle: 'Categories',
   seoDescription:
     "Browse Sant Kabir Das's dohas by category. जीवन के सत्य और spiritual teachings, organised by theme with Hindi and English meanings. Explore Kabir's wisdom here.",
