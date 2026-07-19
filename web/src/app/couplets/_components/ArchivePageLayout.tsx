@@ -11,6 +11,21 @@ import type { Post, PaginationMeta, SortBy, SortOrder } from '@/types';
 
 // ── Props ─────────────────────────────────────────────────────────────────
 
+/**
+ * Props for the ArchivePageLayout component.
+ *
+ * @type {ArchivePageLayoutProps}
+ * @property {Record<string, unknown>[]} pageSchema - JSON-LD schema objects for structured data.
+ * @property {string} pageTitle - Heading text displayed at the top of the page.
+ * @property {string} pageDescription - Subtitle or description below the page title.
+ * @property {Post[]} posts - List of couplet posts to display in the archive.
+ * @property {PaginationMeta} pagination - Pagination metadata for the current page.
+ * @property {string} baseUrl - Base URL path for pagination links.
+ * @property {SortBy} currentSortBy - Currently active sort field.
+ * @property {SortOrder} currentSortOrder - Currently active sort direction.
+ * @property {boolean} [showSidebar] - Whether to display the archive sidebar.
+ * @property {JSX.Element} [searchForm] - Optional search form element for the search archive page.
+ */
 interface ArchivePageLayoutProps {
   pageSchema: Record<string, unknown>[];
   pageTitle: string;
