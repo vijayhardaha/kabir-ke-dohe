@@ -15,7 +15,7 @@ import { buildPageSchema, type PageConfig } from '@/lib/utils/schema';
 
 // ── SEO ───────────────────────────────────────────────────────────────────
 
-const pageConfig: PageConfig = {
+const PAGE_CONFIG: PageConfig = {
   seoTitle: 'Categories',
   seoDescription:
     "Browse Kabir's dohas organised by theme — each category offers a unique lens on his spiritual and philosophical teachings.",
@@ -23,16 +23,16 @@ const pageConfig: PageConfig = {
   seoKeywords: ['Kabir categories', 'doha themes', 'spiritual topics', 'Kabir teachings by category'],
 };
 
-/** SEO metadata for the page. */
-export const metadata: Metadata = buildMetadata({
-  title: pageConfig.seoTitle,
-  description: pageConfig.seoDescription,
-  path: pageConfig.seoPath,
-});
-
 // ── Schema (JSON-LD) ──────────────────────────────────────────────────────
 
-const pageSchema = buildPageSchema(pageConfig);
+const PAGE_SCHEMA = buildPageSchema(PAGE_CONFIG);
+
+/** SEO metadata for the page. */
+export const metadata: Metadata = buildMetadata({
+  title: PAGE_CONFIG.seoTitle,
+  description: PAGE_CONFIG.seoDescription,
+  path: PAGE_CONFIG.seoPath,
+});
 
 /**
  * Categories overview page that displays all predefined categories
@@ -54,7 +54,7 @@ export default async function CategoriesPage(): Promise<JSX.Element> {
 
   return (
     <>
-      <JsonLd data={pageSchema} />
+      <JsonLd data={PAGE_SCHEMA} />
       <PageLayout>
         <Container>
           <PageHeader
